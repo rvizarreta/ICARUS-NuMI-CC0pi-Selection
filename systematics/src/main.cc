@@ -22,6 +22,7 @@
 #include "TROOT.h"
 #include "TFile.h"
 #include "TDirectory.h"
+#include "TInterpreter.h"
 
 int main(int argc, char * argv[])
 {

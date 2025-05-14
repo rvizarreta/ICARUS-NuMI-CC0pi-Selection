@@ -115,6 +115,17 @@ namespace sys::cfg
         bool has_field(const std::string & field);
 
         /**
+         * @brief Get the requested boolean field from the ConfigurationTable.
+         * @details This function gets the requested boolean field from the
+         * ConfigurationTable. If the field is not present, the function throws
+         * an exception.
+         * @param field The name of the field that is requested.
+         * @return The value of the requested boolean field.
+         * @throw ConfigurationError
+         */
+        bool get_bool_field(const std::string & field);
+
+        /**
          * @brief Get the requested string field from the ConfigurationTable.
          * @details This function gets the requested string field from the
          * ConfigurationTable. If the field is not present, the function throws

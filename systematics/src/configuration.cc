@@ -50,6 +50,15 @@ namespace sys::cfg
         return config.contains(field);
     }
 
+    // Retrieve the requested boolean field from the configuration table.
+    bool ConfigurationTable::get_bool_field(const std::string & field)
+    {
+        std::optional<bool> value(config.at_path(field).value<bool>());
+        if(!value)
+            throw ConfigurationError("Field " + field + " (bool) not found in the configuration file.");
+        return *value;
+    }
+
     // Retrieve the requested string field from the configuration table.
     std::string ConfigurationTable::get_string_field(const std::string & field)
     {
