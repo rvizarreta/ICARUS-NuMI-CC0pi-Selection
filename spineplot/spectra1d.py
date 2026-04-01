@@ -654,7 +654,11 @@ class SpineSpectra1D(SpineSpectra):
                         uncertainty = np.where(y_pred > 0, uncertainty / y_pred, 0)
 
                 # Plot - use dots for statistical, lines for others
-                label = systs[0].label if systs[0].label is not None else syst_name
+                #label = systs[0].label if systs[0].label is not None else syst_name
+                base_label = systs[0].label if systs[0].label is not None else syst_name
+                mean_frac = np.mean(uncertainty) if fractional else np.mean(
+                    np.where(y_pred > 0, uncertainty / y_pred, 0))
+                label = f'{base_label} ({mean_frac:.1%})'
 
                 if is_stat:
                     # Plot statistical as black dots
@@ -689,15 +693,18 @@ class SpineSpectra1D(SpineSpectra):
                     with np.errstate(divide='ignore', invalid='ignore'):
                         syst_only_uncertainty = np.where(y_pred > 0, syst_only_uncertainty / y_pred, 0)
 
-                ax.step(bincenters, syst_only_uncertainty, where='mid', label='Syst.',
+                syst_mean = np.mean(syst_only_uncertainty)
+                ax.step(bincenters, syst_only_uncertainty, where='mid', label=f'Syst. ({syst_mean:.1%})',
                         color='black', linewidth=1.5, linestyle='--')
 
                 # Total includes stat, so plot as solid line
-                ax.step(bincenters, total_uncertainty, where='mid', label='Total Uncertainty',
+                total_mean = np.mean(total_uncertainty)
+                ax.step(bincenters, total_uncertainty, where='mid', label=f'Total Uncertainty ({total_mean:.1%})',
                         color='black', linewidth=1.5, linestyle='-')
             else:
                 # No stat component, just plot total as dashed
-                ax.step(bincenters, total_uncertainty, where='mid', label='Total Systematic',
+                total_mean = np.mean(total_uncertainty)
+                ax.step(bincenters, total_uncertainty, where='mid', label=f'Total Systematic ({total_mean:.1%})',
                         color='black', linewidth=2.5, linestyle='--')
 
         # Add legend

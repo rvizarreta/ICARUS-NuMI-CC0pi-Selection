@@ -13,7 +13,7 @@ exposure_type = "pot"
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['selected_multisigmaTree']
+systematics = ['selected_NuMIfluxsimTree']
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -25,36 +25,42 @@ trees = ['selected']
 [output]
 path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
 
+# ── Subgroup totals ───────────────────────────────────────────────────────────
 [[systematic_recipe]]
-name = 'xsec_ccqe'
-label = 'CCQE'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_(ZExpA[1-4]CCQE|RPA_CCQE|CoulombCCQE|VecFFCCQEshape|LowQ2Suppression)\b'
+name = 'flux_beam_focusing'
+label = 'Beam focusing total'
+pattern = '\bhysyst_beam_(horn_2kA|horn1_x_3mm|horn1_y_3mm|spot_1_3mm|spot_1_7mm|horn2_x_3mm|horn2_y_3mm|horns_0mm_water|horns_2mm_water|Beam_shift_x_1mm|Beam_shift_y_1mm|Target_z_7mm)\b'
 
 [[systematic_recipe]]
-name = 'xsec_mec'
-label = 'MEC'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCMEC|NormNCMEC|DecayAngMEC)\b'
+name = 'flux_hadron_prod'
+label = 'Hadron production total'
+pattern = '\bhysyst_hpc_([0-9]|1[0-4])\b'
+
+# ── Individual beam lines (only the ones with >0.05% impact) ─────────────────
+[[systematic_recipe]]
+name = 'flux_beam_shift_x'
+label = 'Beam shift x 1mm'
+pattern = '\bhysyst_beam_Beam_shift_x_1mm\b'
 
 [[systematic_recipe]]
-name = 'xsec_res'
-label = 'Resonant'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MaNCEL|EtaNCEL|MaCCRES|MvCCRES|MaNCRES|MvNCRES|CC1piTPi|RDecBR1gamma|RDecBR1eta|Theta_Delta2Npi|ThetaDelta2NRad)\b'
+name = 'flux_beam_shift_y'
+label = 'Beam shift y 1mm'
+pattern = '\bhysyst_beam_Beam_shift_y_1mm\b'
 
 [[systematic_recipe]]
-name = 'xsec_nonres'
-label = 'Non-resonant'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBG(vp|vn|vbarp|vbarn)(CC|NC)(1|2)pi\b'
+name = 'flux_spot_7mm'
+label = 'Spot 1.7mm'
+pattern = '\bhysyst_beam_spot_1_7mm\b'
 
 [[systematic_recipe]]
-name = 'xsec_fsi'
-label = 'FSI'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MFP|FrCEx|FrInel|FrAbs|FrPiProd)_(pi|N)\b'
+name = 'flux_spot_3mm'
+label = 'Spot 1.3mm'
+pattern = '\bhysyst_beam_spot_1_3mm\b'
 
 [[systematic_recipe]]
-name = 'xsec_other'
-label = 'Other'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCCOH|NormNCCOH|AhtBY|BhtBY|CV1uBY|CV2uBY)\b'
-
+name = 'flux_horn1_y'
+label = 'Horn1 y 3mm'
+pattern = '\bhysyst_beam_horn1_y_3mm\b'
 [analysis]
 #ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
@@ -65,16 +71,20 @@ category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
-name = "dpT_xSecUncertainty_expanded"
+name = "dpT_FluxUncertainty_expanded"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
-yrange = [0.0, 0.45]
+yrange = [0.0, 0.25]
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
-systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+systematic_names = [
+    "flux_beam_focusing", "flux_hadron_prod",
+    "flux_beam_shift_x", "flux_beam_shift_y",
+    "flux_spot_7mm", "flux_spot_3mm", "flux_horn1_y"
+]
 fractional = true
-show_total = true      # This will show MC_total (sum of all components)
-show_individual = true # This shows flux, xsec, stats separately
+show_total = true
+show_individual = true

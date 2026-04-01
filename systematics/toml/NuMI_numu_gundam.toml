@@ -56,6 +56,25 @@ table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
 gundam_store_syst = true
 is_nu = true
 is_data = false
+
+[[tree]]
+origin = 'events/onbeam/selected'
+destination = 'events/onbeam/'
+name = 'selected'
+action = 'copy'
+gundam_store_syst = false
+is_nu = true
+is_data = true
+
+[[tree]]
+origin = 'events/onbeam/sideband'
+destination = 'events/onbeam/'
+name = 'sideband'
+action = 'copy'
+gundam_store_syst = false
+is_nu = true
+is_data = true
+
 #
 #[[sys]]
 #name = 'var00'
