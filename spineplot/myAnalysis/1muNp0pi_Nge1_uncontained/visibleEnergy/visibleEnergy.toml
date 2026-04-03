@@ -23,7 +23,7 @@ override_category = -100
 trees = ['selected']
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/visibleEnergy'
 
 [[systematic_recipe]]
 name = 'stats'
@@ -63,48 +63,10 @@ category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
-name = 'dpT_reco'
+name = 'visibleEnergy_reco'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_dpT'
+variable = 'reco_visible_energy'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
-
-[[figure]]
-name = 'dpT_fractional_residual'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_dpT_residual'
-xvariable = 'true_dpT_residual'
-xrange = [-2,2]
-xtitle = '$\frac{\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}}{\delta_{pT,\mathrm{true}}}$'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-[[figure]]
-name = 'dpT_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_dpT_smearing'
-yvariable = 'reco_dpT_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
-
-[[figure]]
-name = "systematics_dpT"
-type = "SimpleFigure"
-style = 'selected_icarus_mc'
-[[figure.artists]]
-type = "SpineSpectra1D"
-variable = "reco_dpT"
-#yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = "draw_systematics"
-#systematic_names = ["detsys", "flux", "xsec", "stats"]
-systematic_names = ["flux", "xsec", "stats"]
-fractional = true
-show_total = true      # This will show MC_total (sum of all components)
-show_individual = true # This shows flux, xsec, stats separately

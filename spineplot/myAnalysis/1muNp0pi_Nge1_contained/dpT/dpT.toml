@@ -25,10 +25,10 @@ path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.co
 #ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
-category_assignment = [[0,2], [4,5,6], [7], [1,3], [8], [-100]]
-category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['C0', 'C1', 'C3','C5', 'C4', 'black']
-category_types = ['histogram', 'histogram', 'histogram','histogram','histogram','scatter']
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[systematic_recipe]]
 name = 'stats'
@@ -38,16 +38,16 @@ pattern = 'mc_statistical'
 [[figure]]
 name = 'dpT_reco'
 type = 'SimpleFigure'
-style = 'selected_icarus_1muNp0pi_N>=1'
+style = 'selected_icarus_data'
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = true, 'draw_error' = 'stats', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'stats', 'draw_ratio'='True'}
 
 [[figure]]
 name = 'dpT_fractional_residual'
 type = 'SimpleFigure'
-style = 'selected_icarus_1muNp0pi_N>=1'
+style = 'selected_icarus_mc'
 [[figure.artists]]
 type = 'SpineSpectra2D'
 yvariable = 'reco_dpT_residual'
@@ -59,7 +59,7 @@ draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_color
 [[figure]]
 name = 'dpT_2d_correlation'
 type = 'SimpleFigure'
-style = 'selected_icarus_1muNp0pi_N>=1'
+style = 'selected_icarus_mc'
 [[figure.artists]]
 type = 'SpineSpectra2D'
 xvariable = 'true_dpT'
@@ -69,7 +69,7 @@ draw_kwargs = {'show_option' = '2d', 'draw_identity' = true, 'draw_colorbar' = t
 [[figure]]
 name = 'dpT_smearing_matrix_normalized'
 type = 'SimpleFigure'
-style = 'selected_icarus_1muNp0pi_N>=1'
+style = 'selected_icarus_mc'
 [[figure.artists]]
 type = 'SpineSpectra2D'
 xvariable = 'true_dpT_smearing'
