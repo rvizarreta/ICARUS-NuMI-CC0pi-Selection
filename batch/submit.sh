@@ -62,8 +62,9 @@ ups active
 
 # Build medulla
 git clone https://github.com/rvizarreta/ICARUS-NuMI-CC0pi-Selection.git
-cd ICARUS-NuMI-CC0pi-Selection/medulla
+cd ICARUS-NuMI-CC0pi-Selection
 git checkout feature/rvizarr_cc0pi_selection
+cd medulla
 mkdir build && cd build
 export CC=$(which gcc)
 export CXX=$(which g++)
