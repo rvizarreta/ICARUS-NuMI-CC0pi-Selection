@@ -61,9 +61,9 @@ setup cmake v3_27_4
 ups active
 
 # Build medulla
-git clone https://github.com/justinjmueller/medulla.git
-cd medulla
-git checkout develop
+git clone https://github.com/rvizarreta/ICARUS-NuMI-CC0pi-Selection.git
+cd ICARUS-NuMI-CC0pi-Selection/medulla
+git checkout feature/rvizarr_cc0pi_selection
 mkdir build && cd build
 export CC=$(which gcc)
 export CXX=$(which g++)
