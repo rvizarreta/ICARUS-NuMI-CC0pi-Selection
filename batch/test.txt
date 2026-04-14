@@ -1,0 +1,111 @@
+# CAF Merging & Flattening Pipeline
+
+## Setup (run once per session)
+
+```bash
+sh /exp/$(id -ng)/data/users/vito/podman/start_SL7dev_jsl.sh
+source /cvmfs/icarus.opensciencegrid.org/products/icarus/setup_icarus.sh
+exp=sbn
+export SAM_EXPERIMENT=$exp
+export SAM_GROUP=$exp
+export SAM_STATION=$exp
+export SAM_WEB_HOST=sam$exp.fnal.gov
+export IFDH_BASE_URI=http://sam/$exp.fnal.gov:8480/sam/$exp/api/
+setup sam_web_client
+setup sbnana v10_01_04 -q e26:prof
+setup cmake v3_27_4
+htgettoken -a htvaultprod.fnal.gov -i icarus
+```
+
+> ⚠️ `sbnana v10_01_04` is required — `v10_01_02_01` causes segfaults in `merge_sources_simulation`.
+
+## Per-dial commands
+
+Set the dial name once, then run all steps without modification:
+
+```bash
+DIAL=CV_sample   # change this each time
+S3DF_FILE=/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/CV_sample/jobs/20260307_005130_spine_icarus_full_chain_co_260212/output/
+```
+
+Available dials: `CV_sample`, `Cathode_Bend`, `GainHigh`, `GainLow`, `High_Coh`, `High_Int`, `High_Lifetime`, `Low_Coh`, `Low_Int`, `Low_Lifetime`, `Null_Sample`, `RecombModel_sample`, `Scint_var`, `Wire_Gap`
+
+### 0. Transfer HDF5 files from S3DF
+
+HDF5 files are not registered in SAMWeb and live only at S3DF. Fermilab scratch has a 30-day retention limit — if files have been evicted they must be re-transferred.
+
+```bash
+rsync --ignore-existing -ahvzP \
+    rvizar@sdfdtn002.slac.stanford.edu:$S3DF_FILE*.h5 \
+    /pnfs/icarus/scratch/users/rvizarr/spine/NuMI_Nue_det_sys/$DIAL/
+```
+
+> ⚠️ If the transfer is interrupted, rerun the same command — `--ignore-existing` will skip already-transferred files.
+
+### 1. Generate larcv file list
+
+```bash
+ls /pnfs/icarus/scratch/users/rvizarr/spine/NuMI_Nue_det_sys/$DIAL/*.h5 | \
+awk -F'/' '{print $NF}' | \
+sed 's/_spine_icarus.*\.h5$/.root/' > \
+/exp/icarus/app/users/rvizarr/cafMerger/$DIAL/larcv_file_list.txt
+```
+
+### 2. Generate matched list
+
+```bash
+/exp/icarus/app/users/rvizarr/cafMerger/make_input_list_fast_parallel.sh \
+    /exp/icarus/app/users/rvizarr/cafMerger/$DIAL/larcv_file_list.txt \
+    /exp/icarus/app/users/rvizarr/cafMerger/$DIAL/matched_list.txt
+```
+
+### 3. Run merge
+
+```bash
+/exp/icarus/app/users/rvizarr/cafMerger/run_merge_mc_fast.sh \
+    /exp/icarus/app/users/rvizarr/cafMerger/$DIAL/matched_list.txt \
+    /pnfs/icarus/scratch/users/rvizarr/spine/NuMI_Nue_det_sys/$DIAL/ \
+    /pnfs/icarus/persistent/users/rvizarr/spine/NuMI_Nue_det_sys_flat_cafs/$DIAL/mergedFiles
+```
+
+Verify output count matches matched list:
+```bash
+ls /pnfs/icarus/persistent/users/rvizarr/spine/NuMI_Nue_det_sys_flat_cafs/$DIAL/mergedFiles/ | wc -l
+```
+
+### 4. Flatten
+
+```bash
+ls /pnfs/icarus/persistent/users/rvizarr/spine/NuMI_Nue_det_sys_flat_cafs/$DIAL/mergedFiles/*_caf.root | \
+awk '{print $NF}' > \
+/exp/icarus/app/users/rvizarr/cafFlatter/NuMI_Nue_det_sys/$DIAL/file_list_merged_cafs_paths.txt
+
+cd /pnfs/icarus/persistent/users/rvizarr/spine/NuMI_Nue_det_sys_flat_cafs/$DIAL
+
+/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/run_flatten_cafs_fast.sh \
+    /exp/icarus/app/users/rvizarr/cafFlatter/NuMI_Nue_det_sys/$DIAL/file_list_merged_cafs_paths.txt
+```
+
+Verify flat file count:
+```bash
+ls /pnfs/icarus/persistent/users/rvizarr/spine/NuMI_Nue_det_sys_flat_cafs/$DIAL/ | grep "flat.root" | wc -l
+```
+
+## Dial Variations
+
+| Dial | S3DF path | Status |
+|------|-----------|--------|
+| CV_sample | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/CV_sample/jobs/20260307_005130_spine_icarus_full_chain_co_260212/output/` | ✅ Done |
+| Cathode_Bend | TBD | Pending |
+| GainHigh | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/GainHigh/jobs/20260307_155050_spine_icarus_full_chain_co_260212/output/` | Pending |
+| GainLow | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/GainLow/jobs/20260307_194122_spine_icarus_full_chain_co_260212/output/` | Pending |
+| High_Coh | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/High_Coh/jobs/20260307_154855_spine_icarus_full_chain_co_260212/output/` | Pending |
+| High_Int | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/High_Int/jobs/20260307_082749_spine_icarus_full_chain_co_260212/output/` | Pending |
+| High_Lifetime | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/High_Lifetime/jobs/20260307_194149_spine_icarus_full_chain_co_260212/output/` | Pending |
+| Low_Coh | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/Low_Coh/jobs/20260307_154908_spine_icarus_full_chain_co_260212/output/` | Pending |
+| Low_Int | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/Low_Int/jobs/20260307_082759_spine_icarus_full_chain_co_260212/output/` | Pending |
+| Low_Lifetime | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/Low_Lifetime/jobs/20260307_194206_spine_icarus_full_chain_co_260212/output/` | Pending |
+| Null_Sample | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/Null_sample/jobs/20260307_235715_spine_icarus_full_chain_co_260212/output/` | Pending |
+| RecombModel_sample | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/RecombModel_sample/jobs/20260307_235731_spine_icarus_full_chain_co_260212/output/` | Pending |
+| Scint_var | TBD | Pending |
+| Wire_Gap | `/sdf/data/neutrino/dcarber/NuMI_nue_det_sys/WireGap/jobs/20260307_005248_spine_icarus_full_chain_co_260212/output/` | Pending |
