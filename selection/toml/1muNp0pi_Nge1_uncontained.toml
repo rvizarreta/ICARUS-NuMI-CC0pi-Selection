@@ -135,11 +135,11 @@ ismc = true
 disable = false
 
 # INCLUDE DATA
-[[sample]]
-name = "onbeam"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_data_flat_cafs_2/*.root"
-ismc = false
-disable = false
+#[[sample]]
+#name = "onbeam"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_data_flat_cafs_2/*.root"
+#ismc = false
+#disable = false
 #
 ## ADDING DETECTOR UNCERTAINTIES
 #[[sample]]
