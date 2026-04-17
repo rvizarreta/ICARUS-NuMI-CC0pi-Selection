@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
   /// Syst trees
   /// To-do: Automate this
   TTree* multisigma_tree = (TTree*)input->Get("events/nominal/selected_multisigmaTree");
-  TTree* variation_tree = (TTree*)input->Get("events/nominal/selected_variationTree");
+  //TTree* variation_tree = (TTree*)input->Get("events/nominal/selected_variationTree");
   //TTree* multisim_tree = (TTree*)input->Get("events/full/selected_multisimTree"); // TEST...delete if anything breaks
   TTree* NuMIflux_tree = (TTree*)input->Get("events/nominal/selected_NuMIfluxsimTree");
 
@@ -69,8 +69,8 @@ int main(int argc, char * argv[])
         {
           copy_with_syst(config, table, out_tree, in_tree, multisigma_tree, "multisigma");
           std::cout<<"10"<<std::endl;
-          copy_with_syst(config, table, out_tree, in_tree, variation_tree, "variation");
-          std::cout<<"11"<<std::endl;
+//          copy_with_syst(config, table, out_tree, in_tree, variation_tree, "variation");
+//          std::cout<<"11"<<std::endl;
 	  copy_with_syst(config, table, out_tree, in_tree, NuMIflux_tree, "NuMIfluxsim");
           std::cout<<"12"<<std::endl;
 	}
