@@ -7,13 +7,14 @@ file = '../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-#key = "nominal"
-key = "full"
+key = "nominal"
+#key = "full"
 exposure_type = "pot"
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['selected_multisimTree', 'selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+#systematics = ['selected_multisimTree', 'selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+systematics = ['selected_multisimTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 # DATA SAMPLE
 [samples.onbeam]

@@ -26,7 +26,7 @@ flux_pca = file_flux['pca;1/principal_components;1']
 ppfx_hweights_numu   = file_flux[f'ppfx_flux_weights/hweights_{horn_current}_numu;1']
 ppfx_hweights_numubar = file_flux[f'ppfx_flux_weights/hweights_{horn_current}_numubar;1']
 
-nu_df = file_nu['events/full/sideband;1']
+nu_df = file_nu['events/nominal/sideband;1']
 nu_df=nu_df.arrays(library='pd')
 
 hysyst_beam_horn_2kA = []
@@ -110,6 +110,44 @@ for e,event in tqdm(nu_df.iterrows()):
     pdg = event['true_pdg']
     parent_pdg = event['true_parent_pdg']
     nu_e = event['true_neutrino_energy']
+    if np.isnan(parent_pdg) or np.isnan(pdg) or np.isnan(nu_e):
+        hnom_mu_weights.append(float("nan"))
+        hnom_pipm_weights.append(float("nan"))
+        hnom_kpm_weights.append(float("nan"))
+        hnom_k0l_weights.append(float("nan"))
+        hysyst_beam_horn_2kA.append(None)
+        hysyst_beam_horn_2kA_sigma.append(None)
+        hysyst_beam_horn1_x_3mm.append(None)
+        hysyst_beam_horn1_x_3mm_sigma.append(None)
+        hysyst_beam_horn1_y_3mm.append(None)
+        hysyst_beam_horn1_y_3mm_sigma.append(None)
+        hysyst_beam_spot_1_3mm.append(None)
+        hysyst_beam_spot_1_3mm_sigma.append(None)
+        hysyst_beam_spot_1_7mm.append(None)
+        hysyst_beam_spot_1_7mm_sigma.append(None)
+        hysyst_beam_horn2_x_3mm.append(None)
+        hysyst_beam_horn2_x_3mm_sigma.append(None)
+        hysyst_beam_horn2_y_3mm.append(None)
+        hysyst_beam_horn2_y_3mm_sigma.append(None)
+        hysyst_beam_horns_0mm_water.append(None)
+        hysyst_beam_horns_0mm_water_sigma.append(None)
+        hysyst_beam_horns_2mm_water.append(None)
+        hysyst_beam_horns_2mm_water_sigma.append(None)
+        hysyst_beam_Beam_shift_x_1mm.append(None)
+        hysyst_beam_Beam_shift_x_1mm_sigma.append(None)
+        hysyst_beam_Beam_shift_y_1mm.append(None)
+        hysyst_beam_Beam_shift_y_1mm_sigma.append(None)
+        hysyst_beam_Target_z_7mm.append(None)
+        hysyst_beam_Target_z_7mm_sigma.append(None)
+        for pc in [hpc_0, hpc_1, hpc_2, hpc_3, hpc_4, hpc_5, hpc_6, hpc_7, hpc_8, hpc_9, hpc_10, hpc_11, hpc_12, hpc_13,
+                   hpc_14]:
+            pc.append(None)
+        for pc in [hpc_0_sigma, hpc_1_sigma, hpc_2_sigma, hpc_3_sigma, hpc_4_sigma, hpc_5_sigma, hpc_6_sigma,
+                   hpc_7_sigma, hpc_8_sigma, hpc_9_sigma, hpc_10_sigma, hpc_11_sigma, hpc_12_sigma, hpc_13_sigma,
+                   hpc_14_sigma]:
+            pc.append(None)
+        ppfx_cv_weight.append(float("nan"))
+        continue
     if abs(int(parent_pdg)) == 311: #K0
         if int(pdg) == 12:
             hnom_k0l_weights.append(flux_g4numi['hnom_nue_k0l_weights;1'].values()[np.searchsorted(flux_g4numi['hnom_nue_k0l_weights;1'].axes[0].edges(),nu_e)-1])
@@ -539,7 +577,7 @@ for k in keys_1d:
         raise ValueError(f"{k}: length {len(spec[k][1])} != {N}")
 
 # ------------ build tree in the desired directory -------------
-tdir = ensure_dir(f, "events/full")
+tdir = ensure_dir(f, "events/nominal")
 tdir.cd()
 
 t = ROOT.TTree("sideband_NuMIfluxsimTree", "per-entry vectors (len=7) plus scalars")
@@ -594,7 +632,7 @@ tdir.WriteTObject(t, t.GetName(), "Overwrite")
 
 # --- write ppfx_cv_weight into the main sideband tree ---
 
-main_tree = f.Get("events/full/sideband")
+main_tree = f.Get("events/nominal/sideband")
 existing_branch = main_tree.GetBranch("ppfx_cv_weight")
 if existing_branch:
     main_tree.GetListOfBranches().Remove(existing_branch)
@@ -603,7 +641,7 @@ ppfx_branch = main_tree.Branch("ppfx_cv_weight", ppfx_buf, "ppfx_cv_weight/D")
 for i in range(main_tree.GetEntries()):
     ppfx_buf[0] = float(ppfx_cv_weight[i]) if not np.isnan(ppfx_cv_weight[i]) else 1.0
     ppfx_branch.Fill()
-f.cd("events/full")
+f.cd("events/nominal")
 main_tree.Write("", ROOT.TObject.kOverwrite)
 
 f.Close()
