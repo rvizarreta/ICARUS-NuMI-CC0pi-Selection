@@ -1,8 +1,8 @@
-
 [input]
 #path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained.root'
 path = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root'
-weights = '/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root'
+#weights = '/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root'
+weights = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root"
 
 use_additional_hash = true
 
@@ -32,7 +32,8 @@ destination = 'events/nominal/'
 name = 'selected'
 action = 'add_weights'
 #table_types = ['multisim', 'multisigma']
-table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
+#table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
+table_types = ['multisim', 'multisigma', 'NuMIfluxsim']
 gundam_store_syst = true
 is_nu = true
 is_data = false
@@ -42,7 +43,8 @@ origin = 'events/nominal/sideband'
 destination = 'events/nominal/'
 name = 'sideband'
 action = 'add_weights'
-table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
+#table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
+table_types = ['multisim', 'multisigma', 'NuMIfluxsim']
 gundam_store_syst = true
 is_nu = true
 is_data = false
@@ -52,7 +54,8 @@ origin = 'events/nominal/signal'
 destination = 'events/nominal/'
 name = 'signal'
 action = 'add_weights'
-table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
+#table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
+table_types = ['multisim', 'multisigma', 'NuMIfluxsim']
 gundam_store_syst = true
 is_nu = true
 is_data = false
