@@ -27,8 +27,8 @@ bins = [25, 0, 3000]
 #variable_length = false
 
 [[tree]]
-origin = 'events/full/selected'
-destination = 'events/full/'
+origin = 'events/nominal/selected'
+destination = 'events/nominal/'
 name = 'selected'
 action = 'add_weights'
 #table_types = ['multisim', 'multisigma']
@@ -38,8 +38,8 @@ is_nu = true
 is_data = false
 
 [[tree]]
-origin = 'events/full/sideband'
-destination = 'events/full/'
+origin = 'events/nominal/sideband'
+destination = 'events/nominal/'
 name = 'sideband'
 action = 'add_weights'
 table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
@@ -48,8 +48,8 @@ is_nu = true
 is_data = false
 
 [[tree]]
-origin = 'events/full/signal'
-destination = 'events/full/'
+origin = 'events/nominal/signal'
+destination = 'events/nominal/'
 name = 'signal'
 action = 'add_weights'
 table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']

@@ -18,6 +18,7 @@ print_sys = true
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam"
+override_exposure = 2.36124e19 # CORRECTED POT
 exposure_type = "pot"
 override_category = -100
 trees = ['selected']
