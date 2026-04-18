@@ -1,4 +1,4 @@
-void sum_source_pot() {
+void sum_pot() {
     const char* dir = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2";
     const char* pattern = "*.root";
 
