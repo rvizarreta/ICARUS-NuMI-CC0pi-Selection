@@ -1,25 +1,24 @@
 void sum_pot() {
-    const char* dir = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2";
+    const char* dir = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/combined_files";
 
-    // Use find with -maxdepth 1 to skip combined_files subdir
     TString cmd = TString::Format("find %s -maxdepth 1 -name '*.flat.root' 2>/dev/null", dir);
     TString file_list = gSystem->GetFromPipe(cmd.Data());
     TObjArray* files = file_list.Tokenize("\n");
     int n = files->GetEntries();
-    std::cout << "Source files: " << n << std::endl;
+    std::cout << "Combined files: " << n << std::endl << std::endl;
 
     double total_pot = 0.0;
-    double total_events_hist = 0.0;
-    long long total_rec_entries = 0;
-    int n_ok = 0;
-    int n_failed = 0;
-    int n_missing_pot = 0;
+    double total_events = 0.0;
+    long long total_rec = 0;
+
+    std::cout << Form("%-50s %-14s %-12s %-12s", "File", "POT", "Events", "recTree") << std::endl;
+    std::cout << std::string(92, '-') << std::endl;
 
     for (int i = 0; i < n; ++i) {
         TString fname = ((TObjString*)files->At(i))->GetString();
         TFile* f = TFile::Open(fname, "READ");
         if (!f || f->IsZombie()) {
-            n_failed++;
+            std::cout << "FAILED: " << fname << std::endl;
             if (f) delete f;
             continue;
         }
@@ -32,14 +31,13 @@ void sum_pot() {
         double evs = h_ev  ? h_ev->Integral()  : 0.0;
         long long rec_ent = t ? t->GetEntries() : 0;
 
-        if (!h_pot || pot == 0) n_missing_pot++;
+        TString short_name = gSystem->BaseName(fname.Data());
+        std::cout << Form("%-50s %.4e  %.3e  %lld",
+                          short_name.Data(), pot, evs, rec_ent) << std::endl;
 
         total_pot += pot;
-        total_events_hist += evs;
-        total_rec_entries += rec_ent;
-        n_ok++;
-
-        if (i % 50 == 0) std::cout << "  " << i << "/" << n << " done" << std::endl;
+        total_events += evs;
+        total_rec += rec_ent;
 
         f->Close();
         delete f;
@@ -47,15 +45,11 @@ void sum_pot() {
 
     std::cout << std::endl;
     std::cout << "======================================================================" << std::endl;
-    std::cout << "Opened OK                   : " << n_ok << " / " << n << std::endl;
-    std::cout << "Failed to open              : " << n_failed << std::endl;
-    std::cout << "Files missing/zero POT      : " << n_missing_pot << std::endl;
-    std::cout << Form("Sum POT (source CAFs)       : %.6e", total_pot) << std::endl;
-    std::cout << Form("Sum TotalEvents histogram   : %.3e", total_events_hist) << std::endl;
-    std::cout << Form("Sum recTree entries         : %lld", total_rec_entries) << std::endl;
+    std::cout << Form("Sum POT (combined)      : %.6e", total_pot) << std::endl;
+    std::cout << Form("Sum TotalEvents         : %.3e", total_events) << std::endl;
+    std::cout << Form("Sum recTree entries     : %lld", total_rec) << std::endl;
     std::cout << std::endl;
-    std::cout << "Compare to:" << std::endl;
-    std::cout << "  Merged medulla file POT    : 7.78521e20" << std::endl;
-    std::cout << Form("  Ratio source / medulla     : %.4f", total_pot/7.78521e20) << std::endl;
+    std::cout << Form("Medulla file POT        : %.6e", 7.78521e20) << std::endl;
+    std::cout << Form("Ratio combined / medulla: %.4f", total_pot/7.78521e20) << std::endl;
     std::cout << "======================================================================" << std::endl;
 }
