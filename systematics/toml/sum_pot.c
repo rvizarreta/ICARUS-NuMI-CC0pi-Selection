@@ -1,8 +1,8 @@
 void sum_pot() {
     const char* dir = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2";
-    const char* pattern = "*.root";
 
-    TString cmd = TString::Format("ls %s/%s 2>/dev/null", dir, pattern);
+    // Use find with -maxdepth 1 to skip combined_files subdir
+    TString cmd = TString::Format("find %s -maxdepth 1 -name '*.flat.root' 2>/dev/null", dir);
     TString file_list = gSystem->GetFromPipe(cmd.Data());
     TObjArray* files = file_list.Tokenize("\n");
     int n = files->GetEntries();
@@ -12,12 +12,17 @@ void sum_pot() {
     double total_events_hist = 0.0;
     long long total_rec_entries = 0;
     int n_ok = 0;
+    int n_failed = 0;
     int n_missing_pot = 0;
 
     for (int i = 0; i < n; ++i) {
         TString fname = ((TObjString*)files->At(i))->GetString();
         TFile* f = TFile::Open(fname, "READ");
-        if (!f || f->IsZombie()) { if (f) delete f; continue; }
+        if (!f || f->IsZombie()) {
+            n_failed++;
+            if (f) delete f;
+            continue;
+        }
 
         TH1D* h_pot = (TH1D*) f->Get("TotalPOT");
         TH1D* h_ev  = (TH1D*) f->Get("TotalEvents");
@@ -34,7 +39,7 @@ void sum_pot() {
         total_rec_entries += rec_ent;
         n_ok++;
 
-        if (i % 20 == 0) std::cout << "  " << i << "/" << n << " done" << std::endl;
+        if (i % 50 == 0) std::cout << "  " << i << "/" << n << " done" << std::endl;
 
         f->Close();
         delete f;
@@ -43,6 +48,7 @@ void sum_pot() {
     std::cout << std::endl;
     std::cout << "======================================================================" << std::endl;
     std::cout << "Opened OK                   : " << n_ok << " / " << n << std::endl;
+    std::cout << "Failed to open              : " << n_failed << std::endl;
     std::cout << "Files missing/zero POT      : " << n_missing_pot << std::endl;
     std::cout << Form("Sum POT (source CAFs)       : %.6e", total_pot) << std::endl;
     std::cout << Form("Sum TotalEvents histogram   : %.3e", total_events_hist) << std::endl;
@@ -50,6 +56,6 @@ void sum_pot() {
     std::cout << std::endl;
     std::cout << "Compare to:" << std::endl;
     std::cout << "  Merged medulla file POT    : 7.78521e20" << std::endl;
-    std::cout << Form("  Ratio source / merged      : %.4f", total_pot/7.78521e20) << std::endl;
+    std::cout << Form("  Ratio source / medulla     : %.4f", total_pot/7.78521e20) << std::endl;
     std::cout << "======================================================================" << std::endl;
 }
