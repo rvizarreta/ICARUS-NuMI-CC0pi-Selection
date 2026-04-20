@@ -340,7 +340,7 @@ cut = [
     { name = "!no_protons",               type = "true",  parameters = [ "@proton_threshold"   ] },
     { name = "no_neutral_pions",            type = "mctruth"                   },
     { name = "no_extra_particles_minerva",  type = "mctruth"                   },
-    { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
+    #{ name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
 ]
 branch = [
     # Interaction-level truth branches
