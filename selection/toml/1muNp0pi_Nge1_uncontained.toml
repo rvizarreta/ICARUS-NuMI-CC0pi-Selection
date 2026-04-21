@@ -261,6 +261,7 @@ branch = [
     { name = "pion_multiplicity",       type = "reco", parameters = [ "@pion_threshold"     ]},
     { name = "proton_multiplicity",     type = "reco", parameters = [ "@proton_threshold"   ]},
     { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
+    { name = "nuisance_is_signal",      type = "mctruth" },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
@@ -360,6 +361,7 @@ branch = [
     { name = "neutrino_energy",        type = "mctruth" },     # Needed for NuMI Flux calculation
     { name = "visible_energy",         type = "both"    },
     { name = "visible_energy_calosub", type = "true"    },
+    { name = "nuisance_is_signal",      type = "mctruth" },
 
     # Interaction-level selection variables
     { name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
