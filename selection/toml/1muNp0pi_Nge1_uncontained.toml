@@ -467,6 +467,7 @@ branch = [
     { name = "pion_multiplicity",       type = "reco", parameters = [ "@pion_threshold"     ]},
     { name = "proton_multiplicity",     type = "reco", parameters = [ "@proton_threshold"   ]},
     { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
+    { name = "nuisance_is_signal",      type = "mctruth" },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
