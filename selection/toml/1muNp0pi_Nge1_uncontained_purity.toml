@@ -1,0 +1,377 @@
+[general]
+output = "/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_purity"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+
+[parameters]
+photon_threshold = 10.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+flash_low_t = 0.0
+flash_high_t = 9.6
+QE_parameter = 0.0
+
+
+# ============================================================
+# CATEGORIES (unchanged - needed to identify signal events)
+# ============================================================
+[[category]] # 0 : Uncontained muon, fiducial, single proton, not QE
+cuts = [
+    { name = "neutrino"        },
+    { name = "!is_interaction_mode",    parameters = [ "@QE_parameter"       ] },
+    { name = "fiducial_cut"    },
+    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "single_proton",           parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 1 : Uncontained muon, fiducial, single proton, QE
+cuts = [
+    { name = "neutrino"        },
+    { name = "is_interaction_mode",     parameters = [ "@QE_parameter"       ] },
+    { name = "fiducial_cut"    },
+    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "single_proton",           parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 2 : Uncontained muon, single proton
+cuts = [
+    { name = "neutrino" },
+    { name = "no_photons",       parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",     parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions", parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",      parameters = [ "@muon_threshold"     ] },
+    { name = "single_proton",    parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"            },
+    { name = "no_extra_particles_minerva",  type = "mctruth"            },
+]
+
+[[category]] # 3 : Uncontained muon, fiducial, multiple protons, not QE
+cuts = [
+    { name = "neutrino"        },
+    { name = "fiducial_cut"    },
+    { name = "!is_interaction_mode",    parameters = [ "@QE_parameter"       ] },
+    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 4 : Uncontained muon, fiducial, multiple protons, QE
+cuts = [
+    { name = "neutrino"        },
+    { name = "is_interaction_mode",     parameters = [ "@QE_parameter"       ] },
+    { name = "fiducial_cut"    },
+    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 5 : Uncontained muon, multiple protons
+cuts = [
+    { name = "neutrino" },
+    { name = "no_photons",       parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",     parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions", parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",      parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",      parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"            },
+    { name = "no_extra_particles_minerva",  type = "mctruth"            },
+]
+
+[[category]] # 6 : Uncontained muon, fiducial
+cuts = [
+    { name = "neutrino"        },
+    { name = "fiducial_cut"    },
+    { name = "single_muon",             parameters = [ "@muon_threshold" ] },
+]
+
+[[category]] # 7 : Uncontained muon
+cuts = [
+    { name = "neutrino" },
+    { name = "single_muon", parameters = [ "@muon_threshold" ] },
+]
+
+[[category]] # 8 : Neutrino, charged current
+cuts = [
+    { name = "neutrino" },
+    { name = "iscc"     },
+]
+
+[[category]] # 9 : Neutrino, neutral current
+cuts = [
+    { name = "neutrino" },
+    { name = "!iscc"    },
+]
+
+[[category]] # 10 : Cosmic
+cuts = [
+    { name = "!neutrino" },
+]
+
+# ============================================================
+# SAMPLE: MC only, no data
+# ============================================================
+[[sample]]
+name = "nominal"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
+ismc = true
+disable = false
+
+# ============================================================
+# CUMULATIVE-CUT TREES
+# Each tree applies cuts 1..N with minimal branches for purity.
+# Branch "category" identifies signal events; the rest are IDs.
+# ============================================================
+
+# Stage 1: fiducial
+[[tree]]
+name = "cut1_fiducial"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut", type = "reco" },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 2: + flash
+[[tree]]
+name = "cut2_flash"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut", type = "reco" },
+    { name = "flash_cut",    type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 3: + no_photons
+[[tree]]
+name = "cut3_no_photons"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut", type = "reco" },
+    { name = "flash_cut",    type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",   type = "reco", parameters = [ "@photon_threshold"             ] },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 4: + no_electrons
+[[tree]]
+name = "cut4_no_electrons"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",  type = "reco" },
+    { name = "flash_cut",     type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",    type = "reco", parameters = [ "@photon_threshold"             ] },
+    { name = "no_electrons",  type = "reco", parameters = [ "@electron_threshold"           ] },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 5: + single_muon
+[[tree]]
+name = "cut5_single_muon"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",  type = "reco" },
+    { name = "flash_cut",     type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",    type = "reco", parameters = [ "@photon_threshold"             ] },
+    { name = "no_electrons",  type = "reco", parameters = [ "@electron_threshold"           ] },
+    { name = "single_muon",   type = "reco", parameters = [ "@muon_threshold"               ] },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 6: + no_charged_pions
+[[tree]]
+name = "cut6_no_charged_pions"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",       type = "reco" },
+    { name = "flash_cut",          type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",         type = "reco", parameters = [ "@photon_threshold"             ] },
+    { name = "no_electrons",       type = "reco", parameters = [ "@electron_threshold"           ] },
+    { name = "single_muon",        type = "reco", parameters = [ "@muon_threshold"               ] },
+    { name = "no_charged_pions",   type = "reco", parameters = [ "@pion_threshold"               ] },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 7: + !no_protons (at least one proton)
+[[tree]]
+name = "cut7_has_protons"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",       type = "reco" },
+    { name = "flash_cut",          type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",         type = "reco", parameters = [ "@photon_threshold"             ] },
+    { name = "no_electrons",       type = "reco", parameters = [ "@electron_threshold"           ] },
+    { name = "single_muon",        type = "reco", parameters = [ "@muon_threshold"               ] },
+    { name = "no_charged_pions",   type = "reco", parameters = [ "@pion_threshold"               ] },
+    { name = "!no_protons",        type = "reco", parameters = [ "@proton_threshold"             ] },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 8: + trigger_emulation_cut
+[[tree]]
+name = "cut8_trigger_emulation"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",           type = "reco" },
+    { name = "flash_cut",              type = "reco",  parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",             type = "reco",  parameters = [ "@photon_threshold"             ] },
+    { name = "no_electrons",           type = "reco",  parameters = [ "@electron_threshold"           ] },
+    { name = "single_muon",            type = "reco",  parameters = [ "@muon_threshold"               ] },
+    { name = "no_charged_pions",       type = "reco",  parameters = [ "@pion_threshold"               ] },
+    { name = "!no_protons",            type = "reco",  parameters = [ "@proton_threshold"             ] },
+    { name = "trigger_emulation_cut",  type = "event", decrements_exposure = false },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
+
+# Stage 9: + data_quality_cut (full selection)
+[[tree]]
+name = "cut9_full_selection"
+sim_only = true
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",           type = "reco" },
+    { name = "flash_cut",              type = "reco",  parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",             type = "reco",  parameters = [ "@photon_threshold"             ] },
+    { name = "no_electrons",           type = "reco",  parameters = [ "@electron_threshold"           ] },
+    { name = "single_muon",            type = "reco",  parameters = [ "@muon_threshold"               ] },
+    { name = "no_charged_pions",       type = "reco",  parameters = [ "@pion_threshold"               ] },
+    { name = "!no_protons",            type = "reco",  parameters = [ "@proton_threshold"             ] },
+    { name = "trigger_emulation_cut",  type = "event", decrements_exposure = false },
+    { name = "data_quality_cut",       type = "event", decrements_exposure = true  },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "cut_type",           type = "both"    },
+    { name = "neutrino_id",        type = "true"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "cc",                 type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+]
