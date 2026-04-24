@@ -1,0 +1,2 @@
+spineplot/myAnalysis/**/*.toml filter=localpath
+spineplot/configurations/**/*.toml filter=localpath
