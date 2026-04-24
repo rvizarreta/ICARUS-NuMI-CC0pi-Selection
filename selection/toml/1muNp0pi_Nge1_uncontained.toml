@@ -139,6 +139,12 @@ name = "onbeam"
 path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_data_flat_cafs_2/*.root"
 ismc = false
 disable = false
+
+[[sample]]
+name = "offbeam"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/offbeam/*.root"
+ismc = false
+disable = false
 #
 ## ADDING DETECTOR UNCERTAINTIES
 #[[sample]]
