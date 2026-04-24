@@ -14,8 +14,8 @@ from math import nan
 
 #file_nu = input("Enter path to medulla file")
 #file_flux = input("Enter path to NuMI flux file")
-#file_name = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/data/icarus_numi_numu_mc_onbeam_offbeam_syst.root'
-file_name = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/data/1muNp0pi_Nge1_uncontained_systematics.root'
+file_name = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/data/icarus_numi_numu_mc_onbeam_offbeam_syst.root'
+#file_name = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/data/1muNp0pi_Nge1_uncontained_systematics.root'
 horn_current = 'fhc'
 file_nu = uproot.open(file_name)
 file_flux = uproot.open('/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/systematics/2025-04-08_out_450.37_7991.98_79512.66.root')
@@ -29,7 +29,7 @@ flux_pca = file_flux['pca;1/principal_components;1']
 ppfx_hweights_numu   = file_flux[f'ppfx_flux_weights/hweights_{horn_current}_numu;1']
 ppfx_hweights_numubar = file_flux[f'ppfx_flux_weights/hweights_{horn_current}_numubar;1']
 
-nu_df = file_nu['events/nominal/selected;1']
+nu_df = file_nu['events/full/selected;1']
 nu_df=nu_df.arrays(library='pd')
 
 hysyst_beam_horn_2kA = []
@@ -582,7 +582,7 @@ for k in keys_1d:
         raise ValueError(f"{k}: length {len(spec[k][1])} != {N}")
 
 # ------------ build tree in the desired directory -------------
-tdir = ensure_dir(f, "events/nominal")
+tdir = ensure_dir(f, "events/full")
 tdir.cd()
 
 t = ROOT.TTree("selected_NuMIfluxsimTree", "per-entry vectors (len=7) plus scalars")
@@ -637,7 +637,7 @@ tdir.WriteTObject(t, t.GetName(), "Overwrite")
 
 # --- write ppfx_cv_weight into the main selected tree ---
 
-main_tree = f.Get("events/nominal/selected")
+main_tree = f.Get("events/full/selected")
 existing_branch = main_tree.GetBranch("ppfx_cv_weight")
 if existing_branch:
     main_tree.GetListOfBranches().Remove(existing_branch)
@@ -646,7 +646,7 @@ ppfx_branch = main_tree.Branch("ppfx_cv_weight", ppfx_buf, "ppfx_cv_weight/D")
 for i in range(main_tree.GetEntries()):
     ppfx_buf[0] = float(ppfx_cv_weight[i]) if not np.isnan(ppfx_cv_weight[i]) else 1.0
     ppfx_branch.Fill()
-f.cd("events/nominal")
+f.cd("events/full")
 main_tree.Write("", ROOT.TObject.kOverwrite)
 
 f.Close()

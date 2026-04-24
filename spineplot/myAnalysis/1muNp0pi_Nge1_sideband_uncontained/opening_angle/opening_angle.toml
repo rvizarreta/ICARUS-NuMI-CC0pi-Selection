@@ -13,12 +13,14 @@ exposure_type = "pot"
 trees = ['sideband']
 print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+#systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+systematics = ['sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 
@@ -62,7 +64,7 @@ style = 'selected_sideband_icarus_data'
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = true, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]
 name = 'opening_angle_fractional_residual'

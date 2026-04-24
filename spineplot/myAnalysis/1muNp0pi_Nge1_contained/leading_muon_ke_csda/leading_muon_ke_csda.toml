@@ -1,0 +1,62 @@
+[[this_includes]]
+file = '../configurations/common/variables_contained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+key = "nominal"
+exposure_type = "pot"
+trees = ['selected']
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_category = -100
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/__ARCHIVE__/1muNp0pi_Nge1_contained/leading_muon_ke_csda'
+
+[analysis]
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'C6', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+
+[[figure]]
+name = 'reco_leading_muon_ke_csda'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_ke_csda'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_ratio'='True'}
+
+[[figure]]
+name = 'leading_muon_ke_csda_fractional_residual'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+yvariable = 'reco_leading_muon_ke_csda_residual'
+xvariable = 'true_leading_muon_ke_residual'
+xrange = [-2,2]
+xtitle = '$\frac{ke_{\mu,\mathrm{reco}} - ke_{\mu,\mathrm{true}}}{ke_{\mu,\mathrm{true}}}$'
+draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+
+[[figure]]
+name = 'leading_muon_csda_ke_smearing_matrix_normalized'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_leading_muon_ke_smearing'
+yvariable = 'reco_leading_muon_ke_csda_smearing'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}

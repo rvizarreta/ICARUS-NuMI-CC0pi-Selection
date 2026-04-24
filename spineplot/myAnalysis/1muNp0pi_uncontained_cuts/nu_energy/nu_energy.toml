@@ -1,0 +1,33 @@
+[[this_includes]]
+file = '../configurations/common/variables_uncontained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+key = "nominal"
+exposure_type = "pot"
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_uncontained_cuts/nu_energy'
+
+[analysis]
+ordinate_sample = 'mc'
+category_branch = 'true_category'
+category_assignment = [[0,1], [2,3], [4,5], [6,7]]
+category_labels = ['Quasielastic scattering', 'Meson-exchange currents', 'Resonance production', 'Deep Inelastic Scattering']
+category_colors = ['darkblue', 'orange', 'darkgreen','deepskyblue']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram']
+
+[[figure]]
+name = 'nu_energy_true'
+type = 'SimpleFigure'
+style = 'selected_icarus_1muNp0pi_N>=1'
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'true_neutrino_energy'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = false, 'normalize' = false}
+

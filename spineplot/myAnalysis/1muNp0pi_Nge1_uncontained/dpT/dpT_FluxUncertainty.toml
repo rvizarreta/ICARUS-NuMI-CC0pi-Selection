@@ -37,30 +37,31 @@ label = 'Hadron production total'
 pattern = '\bhysyst_hpc_([0-9]|1[0-4])\b'
 
 # ── Individual beam lines (only the ones with >0.05% impact) ─────────────────
-[[systematic_recipe]]
-name = 'flux_beam_shift_x'
-label = 'Beam shift x 1mm'
-pattern = '\bhysyst_beam_Beam_shift_x_1mm\b'
+#[[systematic_recipe]]
+#name = 'flux_beam_shift_x'
+#label = 'Beam shift x 1mm'
+#pattern = '\bhysyst_beam_Beam_shift_x_1mm\b'
+#
+#[[systematic_recipe]]
+#name = 'flux_beam_shift_y'
+#label = 'Beam shift y 1mm'
+#pattern = '\bhysyst_beam_Beam_shift_y_1mm\b'
+#
+#[[systematic_recipe]]
+#name = 'flux_spot_7mm'
+#label = 'Spot 1.7mm'
+#pattern = '\bhysyst_beam_spot_1_7mm\b'
+#
+#[[systematic_recipe]]
+#name = 'flux_spot_3mm'
+#label = 'Spot 1.3mm'
+#pattern = '\bhysyst_beam_spot_1_3mm\b'
+#
+#[[systematic_recipe]]
+#name = 'flux_horn1_y'
+#label = 'Horn1 y 3mm'
+#pattern = '\bhysyst_beam_horn1_y_3mm\b'
 
-[[systematic_recipe]]
-name = 'flux_beam_shift_y'
-label = 'Beam shift y 1mm'
-pattern = '\bhysyst_beam_Beam_shift_y_1mm\b'
-
-[[systematic_recipe]]
-name = 'flux_spot_7mm'
-label = 'Spot 1.7mm'
-pattern = '\bhysyst_beam_spot_1_7mm\b'
-
-[[systematic_recipe]]
-name = 'flux_spot_3mm'
-label = 'Spot 1.3mm'
-pattern = '\bhysyst_beam_spot_1_3mm\b'
-
-[[systematic_recipe]]
-name = 'flux_horn1_y'
-label = 'Horn1 y 3mm'
-pattern = '\bhysyst_beam_horn1_y_3mm\b'
 [analysis]
 #ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
@@ -71,7 +72,7 @@ category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
-name = "dpT_FluxUncertainty_expanded"
+name = "dpT_FluxUncertainty"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
 [[figure.artists]]
@@ -82,8 +83,8 @@ yrange = [0.0, 0.25]
 method = "draw_systematics"
 systematic_names = [
     "flux_beam_focusing", "flux_hadron_prod",
-    "flux_beam_shift_x", "flux_beam_shift_y",
-    "flux_spot_7mm", "flux_spot_3mm", "flux_horn1_y"
+    #"flux_beam_shift_x", "flux_beam_shift_y",
+    #"flux_spot_7mm", "flux_spot_3mm", "flux_horn1_y"
 ]
 fractional = true
 show_total = true

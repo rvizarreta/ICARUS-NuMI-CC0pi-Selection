@@ -51,6 +51,12 @@ range = [0, 10000]
 nbins = 15
 xlabel = "True $p_{KE}$ [MeV/c]"
 
+[variables.true_dphiT_deg]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 25
+xlabel = 'True $\delta \phi_T$ [degrees]'
+
 ### Efficiency table ------------------------------------
 [[figure]]
 name = "icarus_sig_1muNp0pi_efficiency_table"
@@ -66,11 +72,11 @@ draw_kwargs = {show_option = "table", percentage = true, show_seqeff = true, sho
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-single_muon_cut = "Single Muon"
-multiple_protons_cut = "Multiple Protons"
-no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "Multiple Protons"
 
 ### True muon momentum ------------------------------------
 
@@ -116,6 +122,28 @@ no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
 
+### True dphiT momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_dphiT"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [8.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_dphiT_deg"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+single_muon_cut = "Single Muon"
+multiple_protons_cut = "Multiple Protons"
+no_pions_cut = "No Charged Pions"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+
 ### True muon KE ------------------------------------
 
 [[figure]]
@@ -137,3 +165,4 @@ multiple_protons_cut = "Multiple Protons"
 no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+

@@ -1,0 +1,52 @@
+[[this_includes]]
+file = '../configurations/common/variables_uncontained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+#key = "nominal"
+key = "full"
+exposure_type = "pot"
+trees = ['sideband']
+#print_sys = false
+# Comment this to avoid systematics when plotting (usually done for testing plots)
+#systematics = ['multisimTree','multisigmaTree','selected_NuMIfluxsimTree']
+
+#[samples.mc.precompute]
+#pions_cut = "reco_pion_multiplicity > 0"
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained_sideband/leading_pion_KE'
+
+[analysis]
+ordinate_sample = 'mc'
+category_branch = 'true_category'
+category_assignment = [[0,1,2,3]]
+category_labels = ['Pion']
+category_colors = ['darkblue']
+category_types = ['histogram']
+
+[[figure]]
+name = 'leading_pion_KE_true'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'true_leading_pion_ke'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = false, 'normalize' = false, 'prediction' = false, 'show_fraction' = false}
+
+#[[figure]]
+#name = 'leading_pion_KE_true_fractional'
+#type = 'SimpleFigure'
+#style = 'selected_sideband_icarus_mc'
+#[[figure.artists]]
+#type = 'SpineSpectra1D'
+#yrange = [0.0, 1.4]
+#variable = 'true_leading_pion_ke'
+#draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = false, 'normalize' = false, 'prediction' = false, 'show_fraction' = true}
+
+#[figure.artists.cuts]
+#pions_cut = "No Charged Pions"

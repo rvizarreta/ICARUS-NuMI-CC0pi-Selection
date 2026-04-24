@@ -1,0 +1,44 @@
+[[this_includes]]
+file = '../configurations/common/variables_uncontained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+#key = "nominal"
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+# Comment this to avoid systematics when plotting (usually done for testing plots)
+#systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_category = -100
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/pions_in_otherCC'
+
+[analysis]
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[6,7,8], [-100]]
+category_labels = ['Other CC', 'Data']
+category_colors = ['C1', 'black']
+category_types = ['histogram', 'scatter']
+
+[[figure]]
+name = 'no_charged_pions'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'no_charged_pions'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_ratio'='False'}

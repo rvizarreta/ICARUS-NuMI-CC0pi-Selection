@@ -610,7 +610,28 @@ class SpineSpectra1D(SpineSpectra):
             systematic_names = sorted(list(all_syst_names))
 
         # Define colors for individual systematics
-        colors = ['green', 'mediumblue', 'darkred', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
+        #colors = ['green', 'mediumblue', 'darkred', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
+        colors = [
+            'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple', 'brown',
+            'aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'blanchedalmond',
+            'blueviolet', 'burlywood',
+            'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'darkblue',
+            'darkcyan', 'darkgoldenrod',
+            'darkgray', 'darkgreen', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid',
+            'darkred', 'darksalmon', 'darkseagreen',
+            'darkslateblue', 'darkslategray', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 'dimgray',
+            'dodgerblue', 'firebrick', 'floralwhite',
+            'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'greenyellow', 'honeydew',
+            'hotpink',
+            'indianred', 'indigo', 'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen', 'lemonchiffon',
+            'lightblue', 'lightcoral',
+            'lightcyan', 'lightgoldenrodyellow', 'lightgray', 'lightgreen', 'lightpink', 'lightsalmon', 'lightseagreen',
+            'lightskyblue', 'lightslategray', 'lightsteelblue',
+            'lightyellow', 'lime', 'limegreen', 'linen', 'maroon', 'mediumaquamarine', 'mediumblue', 'mediumorchid',
+            'mediumpurple', 'mediumseagreen',
+            'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream',
+            'mistyrose', 'moccasin', 'navajowhite', 'navy'
+        ]
 
         # Storage for total uncertainty calculation
         total_cov = None
@@ -709,6 +730,14 @@ class SpineSpectra1D(SpineSpectra):
 
         # Add legend
         ax.legend(loc='best', fontsize=10)
+        # Add legend outside the plot to the right
+        # ax.legend(
+        #     loc='upper left',
+        #     bbox_to_anchor=(1.02, 1.0),
+        #     fontsize=8,
+        #     borderaxespad=0.,
+        #     ncol=2  # Optional: Split the legend into 2 columns if it is too tall
+        # )
 
         # Add grid for readability
         ax.grid(True, alpha=0.3, linestyle='--')

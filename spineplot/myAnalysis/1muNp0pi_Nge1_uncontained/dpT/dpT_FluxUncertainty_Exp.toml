@@ -1,0 +1,200 @@
+[[this_includes]]
+file = '../configurations/common/variables_uncontained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+#key = "nominal"
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+# Comment this to avoid systematics when plotting (usually done for testing plots)
+systematics = ['selected_NuMIfluxsimTree']
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_category = -100
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
+
+# ==========================================
+# UNGROUPED FLUX SYSTEMATIC RECIPES
+# ==========================================
+
+# --- Beam Focusing Dials ---
+[[systematic_recipe]]
+name = 'flux_horn_2kA'
+label = 'Horn 2kA'
+pattern = '\bhysyst_beam_horn_2kA\b'
+
+[[systematic_recipe]]
+name = 'flux_horn1_x_3mm'
+label = 'Horn1 x 3mm'
+pattern = '\bhysyst_beam_horn1_x_3mm\b'
+
+[[systematic_recipe]]
+name = 'flux_horn1_y_3mm'
+label = 'Horn1 y 3mm'
+pattern = '\bhysyst_beam_horn1_y_3mm\b'
+
+[[systematic_recipe]]
+name = 'flux_spot_1_3mm'
+label = 'Spot 1.3mm'
+pattern = '\bhysyst_beam_spot_1_3mm\b'
+
+[[systematic_recipe]]
+name = 'flux_spot_1_7mm'
+label = 'Spot 1.7mm'
+pattern = '\bhysyst_beam_spot_1_7mm\b'
+
+[[systematic_recipe]]
+name = 'flux_horn2_x_3mm'
+label = 'Horn2 x 3mm'
+pattern = '\bhysyst_beam_horn2_x_3mm\b'
+
+[[systematic_recipe]]
+name = 'flux_horn2_y_3mm'
+label = 'Horn2 y 3mm'
+pattern = '\bhysyst_beam_horn2_y_3mm\b'
+
+[[systematic_recipe]]
+name = 'flux_horns_0mm_water'
+label = 'Horns 0mm water'
+pattern = '\bhysyst_beam_horns_0mm_water\b'
+
+[[systematic_recipe]]
+name = 'flux_horns_2mm_water'
+label = 'Horns 2mm water'
+pattern = '\bhysyst_beam_horns_2mm_water\b'
+
+[[systematic_recipe]]
+name = 'flux_Beam_shift_x_1mm'
+label = 'Beam shift x 1mm'
+pattern = '\bhysyst_beam_Beam_shift_x_1mm\b'
+
+[[systematic_recipe]]
+name = 'flux_Beam_shift_y_1mm'
+label = 'Beam shift y 1mm'
+pattern = '\bhysyst_beam_Beam_shift_y_1mm\b'
+
+[[systematic_recipe]]
+name = 'flux_Target_z_7mm'
+label = 'Target z 7mm'
+pattern = '\bhysyst_beam_Target_z_7mm\b'
+
+# --- Hadron Production Dials (hpc_0 to hpc_14) ---
+[[systematic_recipe]]
+name = 'flux_hpc_0'
+label = 'Hadron Prod 0'
+pattern = '\bhysyst_hpc_0\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_1'
+label = 'Hadron Prod 1'
+pattern = '\bhysyst_hpc_1\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_2'
+label = 'Hadron Prod 2'
+pattern = '\bhysyst_hpc_2\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_3'
+label = 'Hadron Prod 3'
+pattern = '\bhysyst_hpc_3\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_4'
+label = 'Hadron Prod 4'
+pattern = '\bhysyst_hpc_4\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_5'
+label = 'Hadron Prod 5'
+pattern = '\bhysyst_hpc_5\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_6'
+label = 'Hadron Prod 6'
+pattern = '\bhysyst_hpc_6\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_7'
+label = 'Hadron Prod 7'
+pattern = '\bhysyst_hpc_7\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_8'
+label = 'Hadron Prod 8'
+pattern = '\bhysyst_hpc_8\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_9'
+label = 'Hadron Prod 9'
+pattern = '\bhysyst_hpc_9\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_10'
+label = 'Hadron Prod 10'
+pattern = '\bhysyst_hpc_10\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_11'
+label = 'Hadron Prod 11'
+pattern = '\bhysyst_hpc_11\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_12'
+label = 'Hadron Prod 12'
+pattern = '\bhysyst_hpc_12\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_13'
+label = 'Hadron Prod 13'
+pattern = '\bhysyst_hpc_13\b'
+
+[[systematic_recipe]]
+name = 'flux_hpc_14'
+label = 'Hadron Prod 14'
+pattern = '\bhysyst_hpc_14\b'
+
+[analysis]
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+
+[[figure]]
+name = "dpT_FluxUncertainty_expanded"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT"
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = [
+    # Beam Focusing
+    "flux_horn_2kA", "flux_horn1_x_3mm", "flux_horn1_y_3mm", "flux_spot_1_3mm",
+    "flux_spot_1_7mm", "flux_horn2_x_3mm", "flux_horn2_y_3mm", "flux_horns_0mm_water",
+    "flux_horns_2mm_water", "flux_Beam_shift_x_1mm", "flux_Beam_shift_y_1mm", "flux_Target_z_7mm",
+    # Hadron Production
+    "flux_hpc_0", "flux_hpc_1", "flux_hpc_2", "flux_hpc_3", "flux_hpc_4",
+    "flux_hpc_5", "flux_hpc_6", "flux_hpc_7", "flux_hpc_8", "flux_hpc_9",
+    "flux_hpc_10", "flux_hpc_11", "flux_hpc_12", "flux_hpc_13", "flux_hpc_14"
+]
+fractional = true
+show_total = true
+show_individual = true

@@ -1,0 +1,33 @@
+[[this_includes]]
+file = '../configurations/common/variables_contained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# DATA SAMPLE
+[samples]
+[samples.mc]
+key = "nominal"
+exposure_type = "pot"
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/__ARCHIVE__/1muNp0pi_Nge1_contained/leading_muon_ke'
+
+[analysis]
+ordinate_sample = 'mc'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic']
+category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'C6']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram']
+
+[[figure]]
+name = 'leading_muon_ke_comparison_smearing_matrix_normalized_mc'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'reco_leading_muon_ke_csda_smearing'
+yvariable = 'reco_leading_muon_ke_mcs_smearing'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}

@@ -1,0 +1,35 @@
+[[this_includes]]
+file = '../configurations/common/variables_contained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# DATA SAMPLE
+[samples]
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_category = -100
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/__ARCHIVE__/1muNp0pi_Nge1_contained/leading_muon_ke'
+
+[analysis]
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[-100]]
+category_labels = ['Data']
+category_colors = ['black']
+category_types = ['scatter']
+
+[[figure]]
+name = 'leading_muon_ke_comparison_smearing_matrix_normalized_data'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'reco_leading_muon_ke_csda_smearing'
+yvariable = 'reco_leading_muon_ke_mcs_smearing'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
