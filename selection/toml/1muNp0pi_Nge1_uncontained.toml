@@ -153,11 +153,11 @@ disable = false
 #ismc = true
 #disable = false
 #
-[[sample]]
-name = "var00"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Null/*.root"
-ismc = true
-disable = false
+#[[sample]]
+#name = "var00"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Null/*.root"
+#ismc = true
+#disable = false
 #
 [[sample]]
 name = "var01p"
