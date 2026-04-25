@@ -153,78 +153,86 @@ disable = false
 #ismc = true
 #disable = false
 #
-#[[sample]]
-#name = "var00"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Null_var/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var00"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Null/*.root"
+ismc = true
+disable = false
 #
-#[[sample]]
-#name = "var01p"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Gain_high/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var01p"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Gain/*.root"
+ismc = true
+disable = false
 #
-#[[sample]]
-#name = "var01m"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Gain_low/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var01m"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Gain/*.root"
+ismc = true
+disable = false
 #
-#[[sample]]
-#name = "var02p"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Coh_high/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var02p"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Coh/*.root"
+ismc = true
+disable = false
 #
-#[[sample]]
-#name = "var02m"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Coh_low/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var02m"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Coh/*.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "var03p"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Int_high/*.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "var03m"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Int_low/*.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "var04p"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Lifetime/*.root"
+ismc = true
+disable = false
 #
-#[[sample]]
-#name = "var03p"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Int_high/*.root"
-#ismc = true
-#disable = false
-#
-#[[sample]]
-#name = "var03m"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Int_low/*.root"
-#ismc = true
-#disable = false
-#
-#[[sample]]
-#name = "var04p"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Lifetime_high/*.root"
-#ismc = true
-#disable = false
-#
-#[[sample]]
-#name = "var04m"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Lifetime_low/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var04m"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Lifetime/*.root"
+ismc = true
+disable = false
 #
 #
-#[[sample]]
-#name = "var05"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Scint_Var/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var05"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Scint_Var/*.root"
+ismc = true
+disable = false
 #
-#[[sample]]
-#name = "var06"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/WireGap/*.root"
-#ismc = true
-#disable = false
-#
-#[[sample]]
-#name = "var07"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/YZ_unif/*.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "var06"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/WireGap/*.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "var07"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/YZ_unif/*.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "var08"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Recomb/*.root"
+ismc = true
+disable = false
+
+## CATHODE BENDING MISSING
 
 # SELECTION TREE
 [[tree]]

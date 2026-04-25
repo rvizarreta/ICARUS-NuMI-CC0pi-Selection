@@ -14,7 +14,7 @@ trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
 #systematics = ['selected_multisimTree', 'selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
-systematics = ['selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+#systematics = ['selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -22,6 +22,12 @@ key = "onbeam"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
+trees = ['selected']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
 trees = ['selected']
 
 [output]
