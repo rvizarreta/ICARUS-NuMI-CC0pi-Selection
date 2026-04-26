@@ -1,8 +1,7 @@
 
 [input]
 path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained.root'
-#weights = '/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root'
-weights = '/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root'
+weights = '/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root'
 
 use_additional_hash = true
 
@@ -33,7 +32,7 @@ name = 'selected'
 action = 'add_weights'
 table_types = ['multisim', 'multisigma', 'variation']
 
-[[tree]]
+[[tree]]/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2
 origin = 'events/nominal/sideband'
 destination = 'events/full/'
 name = 'sideband'
