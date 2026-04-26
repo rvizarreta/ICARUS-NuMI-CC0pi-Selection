@@ -11,6 +11,17 @@ histogram_destination = 'variations/'
 name = 'reco_leading_muon_ke'
 bins = [25, 0, 5000]
 
+[variations]
+#keys = ['nominal', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
+keys = ['nominal', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
+origin = 'events/'
+tree = 'selected'
+result_destination = 'detsys_results/'
+variable = 'reco_leading_muon_ke'
+bins = [0.0, 100.0, 200.0, 400.0, 600.0, 800.0, 1000.0, 1500.0, 2000.0, 3000.0, 4000.0, 5000.0]
+nuniverses = 1000
+variable_length = true
+
 #[[sys]]
 #name = 'var00'
 #type = 'variation'
