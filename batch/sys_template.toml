@@ -22,6 +22,39 @@ bins = [0.0, 100.0, 200.0, 400.0, 600.0, 800.0, 1000.0, 1500.0, 2000.0, 3000.0, 
 nuniverses = 1000
 variable_length = true
 
+[[tree]]
+origin = 'events/nominal/selected'
+destination = 'events/full/'
+name = 'selected'
+action = 'add_weights'
+table_types = ['multisim', 'multisigma', 'variation']
+
+[[tree]]
+origin = 'events/nominal/sideband'
+destination = 'events/full/'
+name = 'sideband'
+action = 'add_weights'
+table_types = ['multisim', 'multisigma', 'variation']
+
+[[tree]]
+origin = 'events/nominal/signal'
+destination = 'events/full/'
+name = 'signal'
+action = 'add_weights'
+table_types = ['multisim', 'multisigma', 'variation']
+
+[[tree]]
+origin = 'events/onbeam/selected'
+destination = 'events/onbeam/'
+name = 'selected'
+action = 'copy'
+
+[[tree]]
+origin = 'events/onbeam/sideband'
+destination = 'events/onbeam/'
+name = 'sideband'
+action = 'copy'
+
 #[[sys]]
 #name = 'var00'
 #type = 'variation'
