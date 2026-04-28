@@ -7,17 +7,17 @@ file = '../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-key = "nominal"
-#key = "full"
+#key = "nominal"
+key = "full"
 exposure_type = "pot"
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-#systematics = ['selected_multisimTree', 'selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+systematics = ['selected_multisimTree', 'selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 #systematics = ['selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 [samples.mc_nonmatched]
-key = "nominal"
+key = "full"
 exposure_type = "pot"
 trees = ['selected_nonmatched']
 
@@ -29,11 +29,11 @@ override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
-[samples.offbeam]
-key = "offbeam"
-exposure_type = "livetime"
-override_category = 10
-trees = ['selected']
+#[samples.offbeam]
+#key = "offbeam"
+#exposure_type = "livetime"
+#override_category = 10
+#trees = ['selected']
 
 [output]
 path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
@@ -58,13 +58,14 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 [[systematic_recipe]]
 name = 'detsys'
 label = 'Detector Systematics'
-pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
+#pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
+pattern = '\bvar(01|02|03|04|05|06|07|08)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
 label = 'Stats, Flux & Interaction Uncertainty'
-#pattern = '^(flux|xsec|stats|detsys)$'
-pattern = '^(flux|xsec|stats)$'
+pattern = '^(flux|xsec|stats|detsys)$'
+#pattern = '^(flux|xsec|stats)$'
 
 [analysis]
 #ordinate_sample = 'mc'
