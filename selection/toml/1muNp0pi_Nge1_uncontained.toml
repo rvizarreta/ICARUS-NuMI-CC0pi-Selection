@@ -13,7 +13,6 @@ flash_low_t = 0.0
 flash_high_t = 9.6
 QE_parameter = 0.0
 
-
 [[category]] # 0 : Uncontained muon, fiducial, single proton, not QE
 cuts = [
     { name = "neutrino"        },
@@ -133,6 +132,12 @@ path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_
 ismc = true
 disable = false
 
+[[sample]]
+name = "cv"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/CV/*.root"
+ismc = true
+disable = false
+
 # INCLUDE DATA
 [[sample]]
 name = "onbeam"
@@ -144,13 +149,6 @@ disable = false
 name = "offbeam"
 path = "/pnfs/icarus/persistent/users/spine/NuMI/offbeam/*.root"
 ismc = false
-disable = false
-#
-## ADDING DETECTOR UNCERTAINTIES
-[[sample]]
-name = "cv"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/CV/*.root"
-ismc = true
 disable = false
 #
 #[[sample]]
@@ -206,7 +204,6 @@ name = "var04m"
 path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Lifetime/*.root"
 ismc = true
 disable = false
-#
 #
 [[sample]]
 name = "var05"
