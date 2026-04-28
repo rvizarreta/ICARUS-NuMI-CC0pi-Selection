@@ -19,8 +19,8 @@ cuts = [
     { name = "neutrino"        },
     { name = "!is_interaction_mode",    parameters = [ "@QE_parameter"       ] },
     { name = "fiducial_cut"    },
-    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    #{ name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    #{ name = "no_electrons",            parameters = [ "@electron_threshold" ] },
     { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
     { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
     { name = "single_proton",           parameters = [ "@proton_threshold"   ] },
@@ -33,8 +33,8 @@ cuts = [
     { name = "neutrino"        },
     { name = "is_interaction_mode",     parameters = [ "@QE_parameter"       ] },
     { name = "fiducial_cut"    },
-    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    #{ name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    #{ name = "no_electrons",            parameters = [ "@electron_threshold" ] },
     { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
     { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
     { name = "single_proton",           parameters = [ "@proton_threshold"   ] },
@@ -45,8 +45,8 @@ cuts = [
 [[category]] # 2 : Uncontained muon, single proton
 cuts = [
     { name = "neutrino" },
-    { name = "no_photons",       parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",     parameters = [ "@electron_threshold" ] },
+    #{ name = "no_photons",       parameters = [ "@photon_threshold"   ] },
+    #{ name = "no_electrons",     parameters = [ "@electron_threshold" ] },
     { name = "no_charged_pions", parameters = [ "@pion_threshold"     ] },
     { name = "single_muon",      parameters = [ "@muon_threshold"     ] },
     { name = "single_proton",    parameters = [ "@proton_threshold"   ] },
@@ -59,8 +59,8 @@ cuts = [
     { name = "neutrino"        },
     { name = "fiducial_cut"    },
     { name = "!is_interaction_mode",    parameters = [ "@QE_parameter"       ] },
-    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    #{ name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    #{ name = "no_electrons",            parameters = [ "@electron_threshold" ] },
     { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
     { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
     { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
@@ -73,8 +73,8 @@ cuts = [
     { name = "neutrino"        },
     { name = "is_interaction_mode",     parameters = [ "@QE_parameter"       ] },
     { name = "fiducial_cut"    },
-    { name = "no_photons",              parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",            parameters = [ "@electron_threshold" ] },
+    #{ name = "no_photons",              parameters = [ "@photon_threshold"   ] },
+    #{ name = "no_electrons",            parameters = [ "@electron_threshold" ] },
     { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
     { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
     { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
@@ -85,8 +85,8 @@ cuts = [
 [[category]] # 5 : Uncontained muon, multiple protons
 cuts = [
     { name = "neutrino" },
-    { name = "no_photons",       parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",     parameters = [ "@electron_threshold" ] },
+    #{ name = "no_photons",       parameters = [ "@photon_threshold"   ] },
+    #{ name = "no_electrons",     parameters = [ "@electron_threshold" ] },
     { name = "no_charged_pions", parameters = [ "@pion_threshold"     ] },
     { name = "single_muon",      parameters = [ "@muon_threshold"     ] },
     { name = "!no_protons",      parameters = [ "@proton_threshold"   ] },
@@ -147,11 +147,11 @@ ismc = false
 disable = false
 #
 ## ADDING DETECTOR UNCERTAINTIES
-#[[sample]]
-#name = "cvext"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_Nue_det_sys_flat_cafs/NuMI_nue_det_CV.root"
-#ismc = true
-#disable = false
+[[sample]]
+name = "cv"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/CV/*.root"
+ismc = true
+disable = false
 #
 #[[sample]]
 #name = "var00"
@@ -331,13 +331,14 @@ branch = [
     { name = "energy",             type = "both_particle", selector = "leading_pion"},
 
     # Vertex & flash
-    { name = "vertex_x",         type = "both" },
-    { name = "vertex_y",         type = "both" },
-    { name = "vertex_z",         type = "both" },
-    { name = "flash_time",       type = "reco" },
-    { name = "flash_total_pe",   type = "reco" },
-    { name = "flash_hypothesis", type = "reco" },
-    { name = "fiducial",         type = "reco" },
+    { name = "vertex_x",            type = "both" },
+    { name = "vertex_y",            type = "both" },
+    { name = "vertex_z",            type = "both" },
+    { name = "flash_time",          type = "reco" },
+    { name = "flash_total_pe",      type = "reco" },
+    { name = "flash_hypothesis",    type = "reco" },
+    { name = "fiducial",            type = "reco" },
+    { name = "trigger_within_gate", type = "reco" },
 ]
 
 [[tree]]

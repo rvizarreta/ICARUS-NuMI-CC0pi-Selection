@@ -26,7 +26,7 @@ flux_pca = file_flux['pca;1/principal_components;1']
 ppfx_hweights_numu   = file_flux[f'ppfx_flux_weights/hweights_{horn_current}_numu;1']
 ppfx_hweights_numubar = file_flux[f'ppfx_flux_weights/hweights_{horn_current}_numubar;1']
 
-nu_df = file_nu['events/nominal/signal;1']
+nu_df = file_nu['events/full/signal']
 nu_df=nu_df.arrays(library='pd')
 
 hysyst_beam_horn_2kA = []
@@ -577,7 +577,7 @@ for k in keys_1d:
         raise ValueError(f"{k}: length {len(spec[k][1])} != {N}")
 
 # ------------ build tree in the desired directory -------------
-tdir = ensure_dir(f, "events/nominal")
+tdir = ensure_dir(f, "events/full")
 tdir.cd()
 
 t = ROOT.TTree("signal_NuMIfluxsimTree", "per-entry vectors (len=7) plus scalars")
@@ -632,7 +632,7 @@ tdir.WriteTObject(t, t.GetName(), "Overwrite")
 
 # --- write ppfx_cv_weight into the main signal tree ---
 
-main_tree = f.Get("events/nominal/signal")
+main_tree = f.Get("events/full/signal")
 existing_branch = main_tree.GetBranch("ppfx_cv_weight")
 if existing_branch:
     main_tree.GetListOfBranches().Remove(existing_branch)
@@ -641,7 +641,7 @@ ppfx_branch = main_tree.Branch("ppfx_cv_weight", ppfx_buf, "ppfx_cv_weight/D")
 for i in range(main_tree.GetEntries()):
     ppfx_buf[0] = float(ppfx_cv_weight[i]) if not np.isnan(ppfx_cv_weight[i]) else 1.0
     ppfx_branch.Fill()
-f.cd("events/nominal")
+f.cd("events/full")
 main_tree.Write("", ROOT.TObject.kOverwrite)
 
 f.Close()

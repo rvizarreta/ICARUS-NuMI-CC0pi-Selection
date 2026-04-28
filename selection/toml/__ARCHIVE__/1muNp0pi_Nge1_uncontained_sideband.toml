@@ -1,7 +1,5 @@
-# Wrong file: In here I am rejecting pions in the sideband
-
 [general]
-output = "/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_uncontained_sideband"
+output = "/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_sideband"
 primfn = "default_primary_classification"
 pidfn = "default_pid"
 
@@ -45,14 +43,16 @@ cuts = [
 # SIMULATION ONLY
 [[sample]]
 name = "nominal"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_07.root"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_07.root"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
 ismc = true
 disable = false
 
+# SIDEBAND TREE
 [[tree]]
-name = "selected"
+name = "sideband"
 sim_only = false
+add_systematics = true
 add_exposure = true
 mode = "reco"
 cut = [
@@ -61,13 +61,16 @@ cut = [
     { name = "no_photons",                type = "reco",  parameters = [ "@photon_threshold"             ] },
     { name = "no_electrons",              type = "reco",  parameters = [ "@electron_threshold"           ] },
     { name = "single_muon",               type = "reco",  parameters = [ "@muon_threshold"               ] },
-    { name = "no_charged_pions",          type = "reco",  parameters = [ "@pion_threshold"               ] },
+    { name = "!no_charged_pions",         type = "reco",  parameters = [ "@pion_threshold"               ] },
     { name = "!no_protons",               type = "reco",  parameters = [ "@proton_threshold"             ] },
     { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
     { name = "data_quality_cut",          type = "event", decrements_exposure = true },
 ]
 branch = [
     # Interaction-level truth/reco branches
+    { name = "is_nu",                   type = "both"    },
+    { name = "is_data",                 type = "both"    },
+    { name = "cut_type",                type = "both"    },
     { name = "neutrino_id",             type = "true"    },
     { name = "baseline",                type = "mctruth" },
     { name = "containment_cut",         type = "both"    },
@@ -85,7 +88,7 @@ branch = [
     { name = "muon_multiplicity",       type = "reco", parameters = [ "@muon_threshold"     ]},
     { name = "pion_multiplicity",       type = "reco", parameters = [ "@pion_threshold"     ]},
     { name = "proton_multiplicity",     type = "reco", parameters = [ "@proton_threshold"   ]},
-    { name = "is_pion_group_code",      type = "true", parameters = [ "@DECAY_parameter"    ]},
+    { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
@@ -147,100 +150,4 @@ branch = [
     { name = "flash_total_pe",   type = "reco" },
     { name = "flash_hypothesis", type = "reco" },
     { name = "fiducial",         type = "reco" },
-]
-
-[[tree]]
-name = "signal"
-sim_only = true
-add_exposure = true
-mode = "true"
-cut = [
-    { name = "neutrino",                  type = "true" },
-    { name = "fiducial_cut",              type = "true" },
-    { name = "no_photons",                type = "true",  parameters = [ "@photon_threshold"   ] },
-    { name = "no_electrons",              type = "true",  parameters = [ "@electron_threshold" ] },
-    { name = "single_muon",               type = "true",  parameters = [ "@muon_threshold"     ] },
-    { name = "no_charged_pions",          type = "true",  parameters = [ "@pion_threshold"     ] },
-    { name = "!no_protons",               type = "true",  parameters = [ "@proton_threshold"   ] },
-    { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
-]
-branch = [
-    # Interaction-level truth branches
-    { name = "neutrino_id",            type = "true"    },
-    { name = "containment_cut",        type = "both"    },
-    { name = "fiducial_cut",           type = "both"    },
-    { name = "baseline",               type = "mctruth" },
-    { name = "cc",                     type = "mctruth" },
-    { name = "pdg",                    type = "mctruth" },     # Needed for NuMI Flux calculation
-    { name = "parent_pdg",             type = "mctruth" },     # Needed for NuMI Flux calculation
-    { name = "interaction_mode",       type = "mctruth" },
-    { name = "interaction_type",       type = "mctruth" },
-    { name = "category",               type = "true"    },
-    { name = "neutrino_energy",        type = "mctruth" },     # Needed for NuMI Flux calculation
-    { name = "visible_energy",         type = "both"    },
-    { name = "visible_energy_calosub", type = "true"    },
-
-    # Interaction-level selection variables
-    { name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
-    { name = "electron_multiplicity", type = "reco", parameters = [ "@electron_threshold" ]},
-    { name = "muon_multiplicity",     type = "reco", parameters = [ "@muon_threshold"     ]},
-    { name = "pion_multiplicity",     type = "reco", parameters = [ "@pion_threshold"     ]},
-    { name = "proton_multiplicity",   type = "reco", parameters = [ "@proton_threshold"   ]},
-    { name = "flash_time",            type = "reco" },
-    { name = "is_pion_group_code",    type = "true", parameters = [ "@DECAY_parameter"    ]},
-
-    # Kinematic imbalance & angles
-    { name = "opening_angle_deg", type = "both" },
-    { name = "opening_angle_cos", type = "both" },
-    { name = "dpT",               type = "both" },
-    { name = "dpT_lp",            type = "both" },
-    { name = "dphiT_deg",         type = "both" },
-    { name = "dalphaT_deg",       type = "both" },
-    { name = "dpL",               type = "both" },
-    { name = "dpL_lp",            type = "both" },
-    { name = "pn",                type = "both" },
-    { name = "pn_lp",             type = "both" },
-
-    # Fundamental kinematic variables
-    { name = "Q2",            type = "both" },
-    { name = "W",             type = "both" },
-
-    # Leading MUON particle-level
-    { name = "momentum",           type = "both_particle", selector = "leading_muon"},
-    { name = "mass",               type = "both_particle", selector = "leading_muon"},
-    { name = "csda_ke",            type = "both_particle", selector = "leading_muon"},
-    { name = "containment",        type = "both_particle", selector = "leading_muon"},
-    { name = "mcs_ke",             type = "both_particle", selector = "leading_muon"},
-    { name = "energy",             type = "both_particle", selector = "leading_muon"},
-    { name = "length",             type = "both_particle", selector = "leading_muon"},
-    { name = "dpT",                type = "both_particle", selector = "leading_muon"},
-    { name = "end_x",              type = "both_particle", selector = "leading_muon" },
-    { name = "end_y",              type = "both_particle", selector = "leading_muon" },
-    { name = "end_z",              type = "both_particle", selector = "leading_muon" },
-    { name = "ke",                 type = "both_particle", selector = "leading_muon" },
-    { name = "length",             type = "both_particle", selector = "leading_muon" },
-    { name = "polar_angle",        type = "both_particle", selector = "leading_muon" },
-    { name = "polar_angle_cos",    type = "both_particle", selector = "leading_muon" },
-    { name = "azimuthal_angle",    type = "both_particle", selector = "leading_muon" },
-
-    # Leading PROTON particle-level
-    { name = "momentum",           type = "both_particle", selector = "leading_proton"},
-    { name = "mass",               type = "both_particle", selector = "leading_proton"},
-    { name = "csda_ke",            type = "both_particle", selector = "leading_proton"},
-    { name = "containment",        type = "both_particle", selector = "leading_proton"},
-    { name = "mcs_ke",             type = "both_particle", selector = "leading_proton"},
-    { name = "energy",             type = "both_particle", selector = "leading_proton"},
-    { name = "length",             type = "both_particle", selector = "leading_proton"},
-
-    # Leading PION particle-level
-    { name = "momentum",           type = "both_particle", selector = "leading_pion"},
-    { name = "ke",                 type = "both_particle", selector = "leading_pion" },
-    { name = "length",             type = "both_particle", selector = "leading_pion" },
-    { name = "containment",        type = "both_particle", selector = "leading_pion" },
-    { name = "energy",             type = "both_particle", selector = "leading_pion" },
-
-    # True-vertex
-    { name = "vertex_x", type = "true" },
-    { name = "vertex_y", type = "true" },
-    { name = "vertex_z", type = "true" },
 ]
