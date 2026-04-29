@@ -335,7 +335,7 @@ branch = [
     { name = "flash_total_pe",      type = "reco" },
     { name = "flash_hypothesis",    type = "reco" },
     { name = "fiducial",            type = "reco" },
-    { name = "trigger_within_gate", type = "event" },
+    #{ name = "trigger_within_gate", type = "event" },
 ]
 
 [[tree]]
