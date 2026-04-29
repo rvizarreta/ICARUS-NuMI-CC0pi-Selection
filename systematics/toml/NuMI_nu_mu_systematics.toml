@@ -17,7 +17,7 @@ bins = [25, 0, 5000]
 
 [variations]
 #keys = ['nominal', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
-keys = ['nominal', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
+keys = ['cv', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
 origin = 'events/'
 tree = 'selected'
 result_destination = 'detsys_results/'
@@ -77,8 +77,8 @@ action = 'copy'
 #index = -1
 #nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 #scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'nominal'
-#points = ['var00', 'var00', 'var00', 'nominal', 'var00', 'var00', 'var00']
+#ordinate = 'cv'
+#points = ['var00', 'var00', 'var00', 'cv', 'var00', 'var00', 'var00']
 
 [[sys]]
 name = 'var01'
@@ -86,8 +86,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var01m', 'var01m', 'var01m', 'nominal', 'var01p', 'var01p', 'var01p']
+ordinate = 'cv'
+points = ['var01m', 'var01m', 'var01m', 'cv', 'var01p', 'var01p', 'var01p']
 
 [[sys]]
 name = 'var02'
@@ -95,8 +95,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var02m', 'var02m', 'var02m', 'nominal', 'var02p', 'var02p', 'var02p']
+ordinate = 'cv'
+points = ['var02m', 'var02m', 'var02m', 'cv', 'var02p', 'var02p', 'var02p']
 
 [[sys]]
 name = 'var03'
@@ -104,8 +104,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [3, 2, 1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var03m', 'var03m', 'var03m', 'nominal', 'var03p', 'var03p', 'var03p']
+ordinate = 'cv'
+points = ['var03m', 'var03m', 'var03m', 'cv', 'var03p', 'var03p', 'var03p']
 
 [[sys]]
 name = 'var04'
@@ -113,8 +113,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var04m', 'var04m', 'var04m', 'nominal', 'var04p', 'var04p', 'var04p']
+ordinate = 'cv'
+points = ['var04m', 'var04m', 'var04m', 'cv', 'var04p', 'var04p', 'var04p']
 
 [[sys]]
 name = 'var05'
@@ -122,8 +122,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var05', 'var05', 'var05', 'nominal', 'var05', 'var05', 'var05']
+ordinate = 'cv'
+points = ['var05', 'var05', 'var05', 'cv', 'var05', 'var05', 'var05']
 
 [[sys]]
 name = 'var06'
@@ -131,8 +131,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var06', 'var06', 'var06', 'nominal', 'var06', 'var06', 'var06']
+ordinate = 'cv'
+points = ['var06', 'var06', 'var06', 'cv', 'var06', 'var06', 'var06']
 
 [[sys]]
 name = 'var07'
@@ -140,8 +140,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var07', 'var07', 'var07', 'nominal', 'var07', 'var07', 'var07']
+ordinate = 'cv'
+points = ['var07', 'var07', 'var07', 'cv', 'var07', 'var07', 'var07']
 
 [[sys]]
 name = 'var08'
@@ -149,8 +149,8 @@ type = 'variation'
 index = -1
 nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
-ordinate = 'nominal'
-points = ['var08', 'var08', 'var08', 'nominal', 'var08', 'var08', 'var08']
+ordinate = 'cv'
+points = ['var08', 'var08', 'var08', 'cv', 'var08', 'var08', 'var08']
 
 [[sys]]
 name = 'GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE'
