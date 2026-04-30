@@ -152,7 +152,7 @@ class SpineSpectra1D(SpineSpectra):
     def draw(self, ax, style, show_component_number=False,
              show_component_percentage=False, invert_stack_order=False,
              fit_type=None, logx=False, logy=False, normalize=False,
-             draw_error=None, draw_ratio=False, prediction=True, show_fraction=False) -> None:
+             draw_error=None, draw_ratio=False, prediction=True, show_fraction=False, draw_data=True) -> None:
         """
         Plots the data for the SpineSpectra1D object.
 
@@ -383,29 +383,30 @@ class SpineSpectra1D(SpineSpectra):
 
 
             reduce = lambda x : [x[i] for i in scatter_mask]
-            for i, label in enumerate(reduce(labels)):
-                idx = scatter_mask[i]  # Get the actual index in the original arrays
-                scale = 1.0 if not normalize else 1.0 / np.sum(data[idx])
+            if draw_data:
+                for i, label in enumerate(reduce(labels)):
+                    idx = scatter_mask[i]  # Get the actual index in the original arrays
+                    scale = 1.0 if not normalize else 1.0 / np.sum(data[idx])
 
-                # Filter out bins with no data
-                data_mask = data[scatter_mask[i]] > 0
-                if not np.any(data_mask):  # Skip if no data at all
-                    continue
+                    # Filter out bins with no data
+                    data_mask = data[scatter_mask[i]] > 0
+                    if not np.any(data_mask):  # Skip if no data at all
+                        continue
 
-                xerr_data = [x / 2 for x in binwidths[idx]]  # Get bin widths for this category
-                ax.errorbar(bincenters[scatter_mask[i]][data_mask],
-                            scale * data[scatter_mask[i]][data_mask],
-                            xerr=[xerr_data[j] for j in range(len(xerr_data)) if data_mask[j]],
-                            yerr=scale * np.sqrt(data[scatter_mask[i]][data_mask]),
-                            fmt='o',
-                            markersize=6,
-                            markerfacecolor='black',
-                            markeredgecolor='black',
-                            color='black',
-                            capsize=3,
-                            capthick=1.5,
-                            elinewidth=1.5,
-                            label=label)
+                    xerr_data = [x / 2 for x in binwidths[idx]]  # Get bin widths for this category
+                    ax.errorbar(bincenters[scatter_mask[i]][data_mask],
+                                scale * data[scatter_mask[i]][data_mask],
+                                xerr=[xerr_data[j] for j in range(len(xerr_data)) if data_mask[j]],
+                                yerr=scale * np.sqrt(data[scatter_mask[i]][data_mask]),
+                                fmt='o',
+                                markersize=6,
+                                markerfacecolor='black',
+                                markeredgecolor='black',
+                                color='black',
+                                capsize=3,
+                                capthick=1.5,
+                                elinewidth=1.5,
+                                label=label)
         if invert_stack_order:
             h, l = ax.get_legend_handles_labels()
             if draw_error:
@@ -728,16 +729,44 @@ class SpineSpectra1D(SpineSpectra):
                 ax.step(bincenters, total_uncertainty, where='mid', label=f'Total Systematic ({total_mean:.1%})',
                         color='black', linewidth=2.5, linestyle='--')
 
-        # Add legend
-        ax.legend(loc='best', fontsize=10)
-        # Add legend outside the plot to the right
-        # ax.legend(
-        #     loc='upper left',
-        #     bbox_to_anchor=(1.02, 1.0),
-        #     fontsize=8,
-        #     borderaxespad=0.,
-        #     ncol=2  # Optional: Split the legend into 2 columns if it is too tall
-        # )
+        # Legend: inside for small legends, outside-right for large ones
+        handles, labels_text = ax.get_legend_handles_labels()
+        n_entries = len(handles)
+        legend_threshold = 10
+
+        if n_entries <= legend_threshold:
+            ax.legend(handles, labels_text, loc='best', fontsize=10)
+        else:
+            ncol = 1 if n_entries <= 20 else 2
+            ax.legend(
+                handles, labels_text,
+                loc='upper left',
+                bbox_to_anchor=(1.02, 1.0),
+                fontsize=8,
+                borderaxespad=0.0,
+                ncol=ncol,
+                frameon=False,
+            )
+
+            fig = ax.figure
+            fig.canvas.draw()
+
+            legend = ax.get_legend()
+            renderer = fig.canvas.get_renderer()
+            legend_bbox_px = legend.get_window_extent(renderer)
+            axes_bbox_px = ax.get_window_extent()
+            dpi = fig.dpi
+
+            legend_overflow_px = legend_bbox_px.x1 - axes_bbox_px.x1
+            if legend_overflow_px > 0:
+                fig_w_in, fig_h_in = fig.get_size_inches()
+                extra_w_in = legend_overflow_px / dpi + 0.2
+                fig.set_size_inches(fig_w_in + extra_w_in, fig_h_in)
+
+            if legend_bbox_px.height > axes_bbox_px.height:
+                fig_w_in, fig_h_in = fig.get_size_inches()
+                extra_h_in = (legend_bbox_px.height - axes_bbox_px.height) / dpi + 0.2
+                fig.set_size_inches(fig_w_in, fig_h_in + extra_h_in)
 
         # Add grid for readability
         ax.grid(True, alpha=0.3, linestyle='--')
@@ -748,6 +777,19 @@ class SpineSpectra1D(SpineSpectra):
         elif isinstance(self._yrange, (int, float)):
             yl = ax.get_ylim()[1]
             ax.set_ylim(None, yl * self._yrange)
+        else:
+            # Auto y-limit based on plotted data.
+            # Inside legend needs more headroom; outside legend doesn't.
+            if n_entries <= legend_threshold:
+                headroom = 1.4
+            else:
+                headroom = 1.15
+            y_data_max = max(
+                line.get_ydata().max()
+                for line in ax.get_lines()
+                if len(line.get_ydata()) > 0
+            )
+            ax.set_ylim(0, y_data_max * headroom)
 
         # Add POT and preliminary labels if needed
         if style.mark_pot:

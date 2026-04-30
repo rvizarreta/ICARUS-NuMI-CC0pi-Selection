@@ -65,7 +65,7 @@ category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
-name = "dpT_xSecUncertainty_expanded"
+name = "dpT_xSecUncertainty"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
 [[figure.artists]]

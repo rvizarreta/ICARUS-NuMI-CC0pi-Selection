@@ -20,6 +20,26 @@ analysis.run(close_figs=False)
 analysis = Analysis(ana_directory + '/dpT/dpT.toml', data_file)
 analysis.run(close_figs=False)
 #%%
+# Delta p_T cross-section uncertainties plot
+analysis = Analysis(ana_directory + '/dpT/dpT_xSecUncertainty.toml', data_file)
+analysis.run(close_figs=False)
+#%%
+# Delta p_T cross-section uncertainties plot expanded
+analysis = Analysis(ana_directory + '/dpT/dpT_xSecUncertainty_Exp.toml', data_file)
+analysis.run(close_figs=False)
+#%%
+# Delta p_T flux uncertainties plot
+analysis = Analysis(ana_directory + '/dpT/dpT_FluxUncertainty.toml', data_file)
+analysis.run(close_figs=False)
+#%%
+# Delta p_T flux uncertainties plot expanded
+analysis = Analysis(ana_directory + '/dpT/dpT_FluxUncertainty_Exp.toml', data_file)
+analysis.run(close_figs=False)
+#%%
+# Delta p_T detector uncertainties plot
+analysis = Analysis(ana_directory + '/dpT/dpT_DetectorUncertainty.toml', data_file)
+analysis.run(close_figs=False)
+#%%
 # Delta phiT plots
 analysis = Analysis(ana_directory + '/dphiT/dphiT.toml', data_file)
 analysis.run(close_figs=False)
@@ -77,9 +97,5 @@ analysis.run(close_figs=False)
 #%%
 # Delta p_T cross-section uncertainties plot
 analysis = Analysis(ana_directory + '/dpT/dpT_FluxUncertainty_Exp.toml', data_file)
-analysis.run(close_figs=False)
-#%%
-# No charged pions - Truth
-analysis = Analysis(ana_directory + '/pions_in_otherCC/pions_in_otherCC.toml', data_file)
 analysis.run(close_figs=False)
 #%%

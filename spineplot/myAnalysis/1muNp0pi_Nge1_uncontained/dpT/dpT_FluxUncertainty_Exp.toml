@@ -182,7 +182,6 @@ style = 'selected_icarus_mc'
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
-yrange = [0.0, 0.25]
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [

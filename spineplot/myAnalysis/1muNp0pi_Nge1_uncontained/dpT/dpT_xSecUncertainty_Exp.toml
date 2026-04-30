@@ -19,6 +19,7 @@ systematics = ['selected_multisigmaTree']
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
@@ -321,7 +322,6 @@ style = 'selected_icarus_mc'
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
-yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [

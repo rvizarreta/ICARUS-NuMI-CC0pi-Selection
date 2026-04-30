@@ -13,8 +13,12 @@ exposure_type = "pot"
 trees = ['selected']
 print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-#systematics = ['selected_multisimTree', 'selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
-systematics = ['selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['selected_nonmatched']
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -22,6 +26,12 @@ key = "onbeam"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
+trees = ['selected']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
 trees = ['selected']
 
 [output]
@@ -44,9 +54,15 @@ label = 'Cross-section'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
+name = 'detsys'
+label = 'Detector Systematics'
+#pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
+pattern = '\bvar(01|02|03|04|05|06|07|08)\b'
+
+[[systematic_recipe]]
 name = 'MC_total'
 label = 'Stats, Flux & Interaction Uncertainty'
-pattern = '^(flux|xsec|stats)$'
+pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]
 #ordinate_sample = 'mc'
@@ -76,7 +92,7 @@ variable = "reco_leading_muon_length"
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
-systematic_names = ["flux", "xsec", "stats"]
+systematic_names = ["detsys", "flux", "xsec", "stats"]
 fractional = true
 show_total = true      # This will show MC_total (sum of all components)
 show_individual = true # This shows flux, xsec, stats separately
