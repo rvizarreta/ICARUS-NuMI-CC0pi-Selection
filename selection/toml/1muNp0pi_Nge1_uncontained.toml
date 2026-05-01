@@ -229,6 +229,12 @@ path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Re
 ismc = true
 disable = false
 
+[[sample]]
+name = "var09"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Cath_bend/*.root"
+ismc = true
+disable = false
+
 ## CATHODE BENDING MISSING
 
 # SELECTION TREE
