@@ -105,7 +105,7 @@ yvariable = 'reco_leading_muon_momentum_smearing'
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
-name = "systematics_dpT"
+name = "systematics_leading_muon_momentum"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
 [[figure.artists]]

@@ -145,37 +145,37 @@ xlabel = 'Reco $\delta \phi_T$ [degrees]'
 
 [variables.reco_leading_muon_momentum_residual]
 key = "reco_leading_muon_momentum"
-range = [0,8]
+range = [0,3]
 nbins = 200
 xlabel = 'Reco Leading Muon Momentum [GeV/c]'
 
 [variables.true_leading_muon_momentum_residual]
 key = "true_leading_muon_momentum"
-range = [0,8]
+range = [0,3]
 nbins = 200
 xlabel = 'True Leading Muon Momentum [GeV/c]'
 
 [variables.reco_leading_muon_momentum_smearing]
 key = "reco_leading_muon_momentum"
-range = [0,8]
+range = [0,3]
 nbins = 10
 xlabel = 'Reco Leading Muon Momentum [GeV/c]'
 
 [variables.true_leading_muon_momentum_smearing]
 key = "true_leading_muon_momentum"
-range = [0,8]
+range = [0,3]
 nbins = 10
 xlabel = 'True Leading Muon Momentum [GeV/c]'
 
 [variables.true_leading_muon_momentum]
 key = "true_leading_muon_momentum"
-range = [0,8]
+range = [0,3]
 nbins = 25
 xlabel = 'True Leading Muon Momentum [GeV/c]'
 
 [variables.reco_leading_muon_momentum]
 key = "reco_leading_muon_momentum"
-range = [0,8]
+range = [0,3]
 nbins = 25
 xlabel = 'Reco Leading Muon Momentum [GeV/c]'
 

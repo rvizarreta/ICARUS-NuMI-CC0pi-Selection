@@ -17,7 +17,7 @@ bins = [25, 0, 5000]
 
 [variations]
 #keys = ['nominal', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
-keys = ['cv', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08']
+keys = ['cv', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08','var09']
 origin = 'events/'
 tree = 'selected'
 result_destination = 'detsys_results/'
@@ -151,6 +151,15 @@ nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 scale = [-3, -2, -1, 1, 1, 2, 3]
 ordinate = 'cv'
 points = ['var08', 'var08', 'var08', 'cv', 'var08', 'var08', 'var08']
+
+[[sys]]
+name = 'var09'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var09', 'var09', 'var09', 'cv', 'var09', 'var09', 'var09']
 
 [[sys]]
 name = 'GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE'
