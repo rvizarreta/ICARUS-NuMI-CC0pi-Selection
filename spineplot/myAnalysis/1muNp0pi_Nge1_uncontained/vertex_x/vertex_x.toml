@@ -61,9 +61,7 @@ pattern = '\bvar(01|02|03|04|05|06|07|08)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'Stats, Flux & Interaction Uncertainty'
-#pattern = 'mc_statistical'
-#pattern = 'mc_nu_statistical'
+label = 'Stats, Detector, Flux, & Interaction Uncertainty'
 pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]

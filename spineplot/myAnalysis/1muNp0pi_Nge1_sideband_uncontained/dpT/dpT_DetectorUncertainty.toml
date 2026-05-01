@@ -1,0 +1,88 @@
+[[this_includes]]
+file = '../configurations/common/variables_uncontained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+systematics = ['selected_variationTree']
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
+override_category = -100
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_sideband_uncontained/DetSys_Plots'
+
+# ── Detector systematics ───────────────────────────────────────────────────────
+[[systematic_recipe]]
+name = 'det_induction_gain'
+label = 'Induction Gain'
+pattern = '\bvar01\b'
+
+[[systematic_recipe]]
+name = 'det_coherent_noise'
+label = 'TPC Coherent Noise'
+pattern = '\bvar02\b'
+
+[[systematic_recipe]]
+name = 'det_intrinsic_noise'
+label = 'TPC Intrinsic Noise'
+pattern = '\bvar03\b'
+
+[[systematic_recipe]]
+name = 'det_lifetime'
+label = 'Lifetime'
+pattern = '\bvar04\b'
+
+[[systematic_recipe]]
+name = 'det_scintillation'
+label = 'Scintillation (PMT QE)'
+pattern = '\bvar05\b'
+
+[[systematic_recipe]]
+name = 'det_induction_gap'
+label = 'Induction Gap'
+pattern = '\bvar06\b'
+
+[[systematic_recipe]]
+name = 'det_yz_uniformity'
+label = 'YZ Uniformity'
+pattern = '\bvar07\b'
+
+[[systematic_recipe]]
+name = 'det_recombination'
+label = 'Recombination'
+pattern = '\bvar08\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+
+[[figure]]
+name = "dpT_detSysUncertainty"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination"]
+fractional = true
+show_total = true
+show_individual = true

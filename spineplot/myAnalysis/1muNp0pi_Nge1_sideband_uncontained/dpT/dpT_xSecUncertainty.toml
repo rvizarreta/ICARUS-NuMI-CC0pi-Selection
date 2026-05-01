@@ -1,0 +1,80 @@
+[[this_includes]]
+file = '../configurations/common/variables_uncontained.toml'
+
+[[this_includes]]
+file = '../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+#key = "nominal"
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+# Comment this to avoid systematics when plotting (usually done for testing plots)
+systematics = ['selected_multisigmaTree']
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_category = -100
+trees = ['selected']
+
+[output]
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_sideband_uncontained/dpT'
+
+[[systematic_recipe]]
+name = 'xsec_ccqe'
+label = 'CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(ZExpA[1-4]CCQE|RPA_CCQE|CoulombCCQE|VecFFCCQEshape|LowQ2Suppression)\b'
+
+[[systematic_recipe]]
+name = 'xsec_mec'
+label = 'MEC'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCMEC|NormNCMEC|DecayAngMEC)\b'
+
+[[systematic_recipe]]
+name = 'xsec_res'
+label = 'Resonant'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MaNCEL|EtaNCEL|MaCCRES|MvCCRES|MaNCRES|MvNCRES|CC1piTPi|RDecBR1gamma|RDecBR1eta|Theta_Delta2Npi|ThetaDelta2NRad)\b'
+
+[[systematic_recipe]]
+name = 'xsec_nonres'
+label = 'Non-resonant'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBG(vp|vn|vbarp|vbarn)(CC|NC)(1|2)pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_fsi'
+label = 'FSI'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MFP|FrCEx|FrInel|FrAbs|FrPiProd)_(pi|N)\b'
+
+[[systematic_recipe]]
+name = 'xsec_other'
+label = 'Other'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCCOH|NormNCCOH|AhtBY|BhtBY|CV1uBY|CV2uBY)\b'
+
+[analysis]
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+
+[[figure]]
+name = "dpT_xSecUncertainty"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT"
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+fractional = true
+show_total = true      # This will show MC_total (sum of all components)
+show_individual = true # This shows flux, xsec, stats separately

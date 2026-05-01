@@ -13,8 +13,12 @@ exposure_type = "pot"
 trees = ['sideband']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-#systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
-systematics = ['sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband_nonmatched']
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -22,6 +26,12 @@ key = "onbeam"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
+trees = ['sideband']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
 trees = ['sideband']
 
 [output]
@@ -36,7 +46,6 @@ pattern = 'mc_statistical'
 name = 'flux'
 label = 'Flux'
 pattern = 'hysyst*(?!\w*sigma\b)\w+\b'
-#pattern = '\bhysyst_\w+\b'
 
 [[systematic_recipe]]
 name = 'xsec'
@@ -47,13 +56,13 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 [[systematic_recipe]]
 name = 'detsys'
 label = 'Detector Systematics'
-pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
+#pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
+pattern = '\bvar(01|02|03|04|05|06|07|08)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'Stats, Flux & Interaction Uncertainty'
-#pattern = '^(flux|xsec|stats|detsys)$'
-pattern = '^(flux|xsec|stats)$'
+label = 'Stats, Detector, Flux, & Interaction Uncertainty'
+pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]
 #ordinate_sample = 'mc'

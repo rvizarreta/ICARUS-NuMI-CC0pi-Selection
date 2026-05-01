@@ -61,13 +61,13 @@ pattern = '\bvar(01|02|03|04|05|06|07|08)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'Stats, Flux & Interaction Uncertainty'
+label = 'Stats, Detector, Flux, & Interaction Uncertainty'
 pattern = '^(flux|xsec|stats|detsys)$'
 #pattern = '^(flux|xsec|stats)$'
 
 [analysis]
-ordinate_sample = 'mc'
-#ordinate_sample = 'onbeam'
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
 category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']

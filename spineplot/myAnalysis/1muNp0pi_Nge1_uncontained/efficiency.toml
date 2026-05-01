@@ -5,7 +5,8 @@ path = "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.co
 file = '../configurations/common/styles.toml'
 
 [samples.signal]
-key = "nominal"
+#key = "nominal"
+key = "full"
 exposure_type = "pot"
 trees = ["signal"]
 

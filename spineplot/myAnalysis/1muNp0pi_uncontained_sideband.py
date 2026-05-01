@@ -7,14 +7,10 @@ sys.path.insert(0, workspace_root + "/..")
 from analysis import Analysis
 #%%
 # ANALYSIS SPECIFIC DIRECTORIES
-ana_directory = "1muNp0pi_Nge1_uncontained"
+ana_directory = "1muNp0pi_Nge1_sideband_uncontained"
 #data_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/data/1muNp0pi_Nge1_uncontained.root'
 data_file = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root'
 #data_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/data/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root'
-#%%
-# Visible energy plot
-analysis = Analysis(ana_directory + '/visibleEnergy/visibleEnergy.toml', data_file)
-analysis.run(close_figs=False)
 #%%
 # Delta p_T plots
 analysis = Analysis(ana_directory + '/dpT/dpT.toml', data_file)
