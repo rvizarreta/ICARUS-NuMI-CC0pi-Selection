@@ -414,7 +414,7 @@ namespace vars
     template<class T>
     double dpT_lp(const T & obj)
     {
-        
+
         utilities::three_vector l_pt = {0, 0, 0};
         utilities::three_vector p_pt = {0, 0, 0};
         double l_ke(0), p_ke(0);
@@ -708,6 +708,54 @@ namespace vars
             return angle_rad * 180.0 / M_PI;
     }
     REGISTER_VAR_SCOPE(RegistrationScope::Both, opening_angle_deg, opening_angle_deg);
+
+    /**
+     * @brief Variable for the cosine of the angle between the leading muon
+     * direction and the incoming neutrino direction.
+     * @details The cosine of the angle between the muon and the neutrino
+     * direction is computed as the dot product of the muon unit direction
+     * vector with the unit neutrino direction vector. The neutrino direction
+     * is approximated event-by-event as the unit vector from the NuMI target
+     * position (31512.0380, 3364.4912, 73363.2532) cm (in detector coordinates)
+     * offset by the interaction vertex position, consistent with the definition
+     * used in utilities::transverse_momentum.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to apply the variable on.
+     * @return the cosine of the angle between the leading muon direction
+     * and the neutrino direction.
+     */
+    template<class T>
+    double cos_theta_mu(const T & obj)
+    {
+        double l_ke(0);
+        utilities::three_vector l_dir = std::make_tuple(0, 0, 0);
+        utilities::three_vector vtx = std::make_tuple(0, 0, 0);
+
+        for(const auto & p : obj.particles)
+        {
+            if(pcuts::final_state_signal(p))
+            {
+                if(pvars::pid(p) == pvars::kMuon && pvars::ke(p) > l_ke)
+                {
+                    l_ke = pvars::ke(p);
+                    l_dir = std::make_tuple(p.start_dir[0], p.start_dir[1], p.start_dir[2]);
+                    vtx = std::make_tuple(pvars::start_x(p), pvars::start_y(p), pvars::start_z(p));
+                }
+            }
+        }
+
+        if(l_ke == 0)
+            return PLACEHOLDERVALUE;
+
+        utilities::three_vector beam = std::make_tuple(
+            31512.0380 + std::get<0>(vtx),
+             3364.4912 + std::get<1>(vtx),
+            73363.2532 + std::get<2>(vtx));
+        utilities::three_vector nu_dir = utilities::normalize(beam);
+
+        return utilities::dot_product(l_dir, nu_dir);
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::Both, cos_theta_mu, cos_theta_mu);
 
     /**
      * @brief Variable for the cosine of the opening angle between leading muon and proton.
