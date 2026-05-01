@@ -2,6 +2,7 @@ import numpy as np
 from scipy.stats import binom
 import pandas as pd
 import matplotlib.pyplot as plt
+import uproot
 
 from artists import SpineArtist
 from style import Style
@@ -50,6 +51,24 @@ class SpineEfficiency(SpineArtist):
         A dictionary containing the number of successful events in each
         bin of the variable.
     """
+
+    # --- Hardcoded purity inputs --------------------------------------
+    _PURITY_FILE = (
+        "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-"
+        "rvizarreta14@gmail.com/My Drive/\U0001f3db PhD Repository/"
+        "\U0001f680 Research/\U0001f916 Experiments&Projects/ICARUS/"
+        "ICARUS_CC0pi_Selection/data/"
+        "1muNp0pi_Nge1_uncontained_purity.root"
+    )
+    _PURITY_TREE_MAP = {
+        "reco_fiducial_cut": "events/nominal/cut1_fiducial",
+        "no_photons_cut": "events/nominal/cut3_no_photons",
+        "no_electrons_cut": "events/nominal/cut4_no_electrons",
+        "single_muon_cut": "events/nominal/cut5_single_muon",
+        "no_pions_cut": "events/nominal/cut6_no_charged_pions",
+        "multiple_protons_cut": "events/nominal/cut7_has_protons",
+    }
+    _PURITY_SIGNAL_CATEGORIES = (0, 1, 3, 4)
     def __init__(self, variable, categories, cuts, title,
                  xrange=None, xtitle=None, show_option='table',
                  npts=1e6):
@@ -89,6 +108,7 @@ class SpineEfficiency(SpineArtist):
         self._posteriors = dict()
         self._totals = dict()
         self._successes = dict()
+        self._purity_results = None
 
     def draw(self, ax, show_option, percentage=True, show_seqeff=True,
              show_unseqeff=True, yrange=None, npts=1e6, style=None,
@@ -154,14 +174,25 @@ class SpineEfficiency(SpineArtist):
                 formatter = lambda x,y,z: rf'${100*x:.2f}^{{\ +{100*y:.2f}}}_{{\ -{100*z:.2f}}}$'
                 diff_key = 'Differential\nEfficiency [%]'
                 cumu_key = 'Cumulative\nEfficiency [%]'
+                purity_key = 'Purity [%]'
             else:
                 formatter = lambda x,y,z: rf'${x:.2f}^{{\ +{y:.2e}}}_{{\ -{z:.2e}}}$'
                 diff_key = 'Differential\nEfficiency'
                 cumu_key = 'Cumulative\nEfficiency'
+                purity_key = 'Purity'
 
             # Clear up the axis because we are going to draw a table
             # on it (no need for any other plot elements).
             ax.axis('off')
+
+            purity_results = self._calculate_purity()
+
+            def fmt_purity(cut_key):
+                res = purity_results.get(cut_key)
+                if res is None:
+                    return r'$-$'
+                cv, ms, ps = res
+                return formatter(cv, ms, ps)
 
             # Create the table data.
             results = pd.DataFrame({r'   ': list(), r'Cut': list(), r'Efficiency [%]': list(), r'Cumulative [%]': list()})
@@ -169,8 +200,7 @@ class SpineEfficiency(SpineArtist):
 
             # Loop over the groups requested in the plot.
             for group in groups:
-                # Extract the cv, msigma, and psigma values for the
-                # group.
+                # Extract the cv, msigma, and psigma values for the group.
                 _, cv, msigma, psigma = self.reduce(group, significance=0.6827)
 
                 seq = lambda x : [v for k, v in x.items() if 'unbinned_seq_' in k and 'unseq' not in k]
@@ -179,7 +209,8 @@ class SpineEfficiency(SpineArtist):
                 entry = {   r'   ': [group,] + [r'' for _ in range(1, len(self._cuts))],
                             r'Cut': self._cuts.values(),
                             diff_key: [formatter(x,y,z) for x,y,z in zip(unseq(cv), unseq(msigma), unseq(psigma))],
-                            cumu_key: [formatter(x,y,z) for x,y,z in zip(seq(cv), seq(msigma), seq(psigma))] }
+                            cumu_key: [formatter(x,y,z) for x,y,z in zip(seq(cv), seq(msigma), seq(psigma))],
+                            purity_key: [fmt_purity(cut_key) for cut_key in self._cuts.keys()]}
                 results = pd.concat([results, pd.DataFrame(entry)])
                 group_endpoint[group] = len(results)
 
@@ -190,6 +221,7 @@ class SpineEfficiency(SpineArtist):
                 cols.append(diff_key)
             if show_seqeff:
                 cols.append(cumu_key)
+            cols.append(purity_key)
             results = results[cols]
 
             # Rename "Cumulative" to "Efficiency" if it is the only
@@ -272,7 +304,7 @@ class SpineEfficiency(SpineArtist):
                                 xerr=self._variable._bin_widths[groups[0]] / 2.0,
                                 yerr=[  fmt(msigma[f'{key_base}{cut}']),
                                         fmt(psigma[f'{key_base}{cut}'])],
-                                fmt='o', color=colors[ci], label=cutname, markersize=6, capsize=2, elinewidth=1)
+                                fmt='o', color=colors[ci], label=cutname, markersize=6, capsize=2, elinewidth=1, zorder=3)
             else:
                 for gi, group in enumerate(groups):
                     for ci, (cut, cutname) in enumerate(self._cuts.items()):
@@ -282,13 +314,40 @@ class SpineEfficiency(SpineArtist):
                                     yerr=[  fmt(msigma[f'{key_base}{cut}']),
                                             fmt(psigma[f'{key_base}{cut}'])],
                                     fmt=style.get_marker(ci), color=colors[gi],
-                                    label=f'{group} : {cutname}', markersize=6, capsize=2, elinewidth=1)
+                                    label=f'{group} : {cutname}', markersize=6, capsize=2, elinewidth=1, zorder=3)
 
             ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=12, weight='bold')
             ax.set_ylabel('Efficiency [%]' if percentage else 'Efficiency', fontsize=12, weight='bold')
             ax.set_xlim(self._variable._range if self._xrange is None else self._xrange)
             if yrange is not None:
                 ax.set_ylim(yrange)
+
+            # --- Background histogram of the true variable distribution ---
+            # Uses the per-bin truth-level totals already accumulated for the
+            # group during calculate(). Scaled so that the peak sits at ~50%
+            # of the y-axis, with the bottom anchored at the current y-min.
+            if len(groups) == 1 and groups[0] in self._totals:
+                hist_group = groups[0]
+                totals = np.asarray(self._totals[hist_group], dtype=float)
+                if totals.max() > 0:
+                    y_lo, y_hi = ax.get_ylim()
+                    target_peak = y_lo + (y_hi - y_lo)
+                    hist_scaled = y_lo + (totals / totals.max()) * (target_peak - y_lo)
+
+                    bin_edges = self._variable._bin_edges[hist_group]
+                    ax.bar(
+                        bin_edges[:-1],
+                        hist_scaled - y_lo,
+                        width=np.diff(bin_edges),
+                        bottom=y_lo,
+                        align='edge',
+                        color='grey',
+                        alpha=0.15,
+                        edgecolor='none',
+                        zorder=0,
+                    )
+                    # Restore the y-limits in case bar() perturbed them.
+                    ax.set_ylim(y_lo, y_hi)
 
             # Set the axis to be logarithmic if requested.
             if logx:
@@ -577,3 +636,68 @@ class SpineEfficiency(SpineArtist):
                 psigma[key][psigma[key] < 0] = 0
 
         return final_posteriors, cv, msigma, psigma
+
+    def _purity_posterior_stats(self, n_signal, n_total, significance=0.6827):
+        """Bayesian posterior on purity, same grid + extraction as reduce()."""
+        if n_total <= 0:
+            return 0.0, 0.0, 0.0
+        efficiencies = np.linspace(0.0, 1.0, self._npts)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            log_post = (
+                    n_signal * np.log(efficiencies)
+                    + (n_total - n_signal) * np.log1p(-efficiencies)
+            )
+        log_post = np.where(np.isnan(log_post), -np.inf, log_post)
+        log_post -= np.max(log_post)
+        post = np.exp(log_post)
+        post_sum = np.sum(post)
+        if post_sum <= 0 or not np.isfinite(post_sum):
+            return 0.0, 0.0, 0.0
+        post /= post_sum
+
+        cv = efficiencies[int(np.argmax(post))]
+        cumulative = np.cumsum(post)
+        sig_lo = 0.5 - significance / 2.0
+        sig_hi = 0.5 + significance / 2.0
+        msigma = cv - efficiencies[int(np.argmax(cumulative > sig_lo))]
+        psigma = efficiencies[int(np.argmax(cumulative > sig_hi))] - cv
+        if msigma < 0:
+            msigma = 0.0
+        if psigma < 0:
+            psigma = 0.0
+        return cv, msigma, psigma
+
+    def _calculate_purity(self):
+        """Read purity ROOT file and compute (cv, msigma, psigma) per cut."""
+        if self._purity_results is not None:
+            return self._purity_results
+
+        results = {}
+        try:
+            f = uproot.open(self._PURITY_FILE)
+        except (FileNotFoundError, OSError) as exc:
+            print(f"Warning: purity file unreadable ({self._PURITY_FILE}): {exc}.")
+            self._purity_results = {cut: None for cut in self._cuts.keys()}
+            return self._purity_results
+
+        try:
+            for cut_key in self._cuts.keys():
+                tree_path = self._PURITY_TREE_MAP.get(cut_key)
+                if tree_path is None:
+                    results[cut_key] = None
+                    continue
+                try:
+                    cats = f[tree_path]["true_category"].array(library="np")
+                except (KeyError, uproot.exceptions.KeyInFileError):
+                    print(f"Warning: tree '{tree_path}' not found; skipping '{cut_key}'.")
+                    results[cut_key] = None
+                    continue
+
+                n_total = int(len(cats))
+                n_signal = int(np.isin(cats, self._PURITY_SIGNAL_CATEGORIES).sum())
+                results[cut_key] = self._purity_posterior_stats(n_signal, n_total)
+        finally:
+            f.close()
+
+        self._purity_results = results
+        return self._purity_results
