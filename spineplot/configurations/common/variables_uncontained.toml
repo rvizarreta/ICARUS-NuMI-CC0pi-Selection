@@ -483,6 +483,44 @@ range = [-1000,1000]
 nbins = 75
 xlabel = 'True Vertex Z [cm]'
 
+### leading_muon_cos_theta_mu ------------------------------------
+
+[variables.reco_leading_muon_angle_residual]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1,1]
+nbins = 200
+xlabel = 'Reco $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
+
+[variables.true_leading_muon_angle_residual]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1,1]
+nbins = 200
+xlabel = 'True $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
+
+[variables.reco_leading_muon_angle_smearing]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1,1]
+nbins = 10
+xlabel = 'Reco $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
+
+[variables.true_leading_muon_angle_smearing]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1,1]
+nbins = 10
+xlabel = 'True $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
+
+[variables.reco_leading_muon_angle]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1,1]
+nbins = 25
+xlabel = 'Reco $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
+
+[variables.true_leading_muon_angle]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1,1]
+nbins = 25
+xlabel = 'True $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
+
 ### Sideband Variables
 
 [variables.no_charged_pions]

@@ -60,6 +60,10 @@ analysis.run(close_figs=False)
 analysis = Analysis(ana_directory + '/leading_muon_polar_angle/leading_muon_polar_angle.toml', data_file)
 analysis.run(close_figs=False)
 #%%
+# Leading muon polar angle plots
+analysis = Analysis(ana_directory + '/leading_muon_NuMI_angle/leading_muon_NuMI_angle.toml', data_file)
+analysis.run(close_figs=False)
+#%%
 # Leading Proton Momentum
 analysis = Analysis(ana_directory + '/leading_proton_momentum/leading_proton_momentum.toml', data_file)
 analysis.run(close_figs=False)
