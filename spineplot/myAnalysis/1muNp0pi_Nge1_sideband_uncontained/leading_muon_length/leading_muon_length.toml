@@ -80,10 +80,10 @@ style = 'selected_sideband_icarus_data'
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = true, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]
-name = "systematics_dpT"
+name = "leading_muon_length_systematics"
 type = "SimpleFigure"
 style = 'selected_sideband_icarus_mc'
 [[figure.artists]]

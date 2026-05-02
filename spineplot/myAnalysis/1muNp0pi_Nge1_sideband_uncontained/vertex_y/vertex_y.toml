@@ -13,7 +13,7 @@ exposure_type = "pot"
 trees = ['sideband']
 print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_NuMIfluxsimTree']
+systematics = ['sideband_multisigmaTree', 'sideband_variationTree', 'sideband_NuMIfluxsimTree']
 
 [samples.mc_nonmatched]
 key = "full"
@@ -80,6 +80,5 @@ style = 'selected_sideband_icarus_data'
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vtx_y'
-yrange = [0.0, 0.055]
+yrange = [0.0, 0.085]
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
-

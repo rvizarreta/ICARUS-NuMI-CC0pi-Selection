@@ -52,6 +52,10 @@ analysis.run(close_figs=False)
 analysis = Analysis(ana_directory + '/leading_muon_length/leading_muon_length.toml', data_file)
 analysis.run(close_figs=False)
 #%%
+# Leading Pion Length
+analysis = Analysis(ana_directory + '/leading_pion_length/leading_pion_length.toml', data_file)
+analysis.run(close_figs=False)
+#%%
 # Leading muon polar angle plots
 analysis = Analysis(ana_directory + '/leading_muon_polar_angle/leading_muon_polar_angle.toml', data_file)
 analysis.run(close_figs=False)

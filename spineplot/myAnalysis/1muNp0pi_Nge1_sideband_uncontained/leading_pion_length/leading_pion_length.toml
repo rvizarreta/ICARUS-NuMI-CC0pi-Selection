@@ -13,7 +13,7 @@ exposure_type = "pot"
 trees = ['sideband']
 print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['sideband_multisigmaTree', 'sideband_variationTree', 'sideband_NuMIfluxsimTree']
+systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
 [samples.mc_nonmatched]
 key = "full"
@@ -35,21 +35,21 @@ override_category = 10
 trees = ['sideband']
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_sideband_uncontained/vertex_x'
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_sideband_uncontained/leading_pion_length'
 
 [[systematic_recipe]]
 name = 'stats'
-label = 'MC Statistical Uncertainty'
+label = 'Stat.'
 pattern = 'mc_statistical'
 
 [[systematic_recipe]]
 name = 'flux'
-label = 'Flux Systematics'
+label = 'Flux'
 pattern = 'hysyst*(?!\w*sigma\b)\w+\b'
 
 [[systematic_recipe]]
 name = 'xsec'
-label = 'Interaction Systematics'
+label = 'Cross-section'
 #pattern = '\bGENIEReWeight_SBN_v1_multisim_\w+\b'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
@@ -74,11 +74,25 @@ category_colors = ['darkgreen','C1', 'C3','C5', 'C4', 'black']
 category_types = ['histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
-name = 'vertex_x_reco'
+name = 'leading_pion_length_reco'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_vtx_x'
-yrange = [0.0, 0.085]
+variable = 'reco_leading_pion_length'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+
+[[figure]]
+name = "leading_pion_length_systematics"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_leading_pion_length"
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["detsys", "flux", "xsec", "stats"]
+fractional = true
+show_total = true      # This will show MC_total (sum of all components)
+show_individual = true # This shows flux, xsec, stats separately
