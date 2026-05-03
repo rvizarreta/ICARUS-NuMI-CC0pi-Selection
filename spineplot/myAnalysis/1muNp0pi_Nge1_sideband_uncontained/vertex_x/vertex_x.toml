@@ -57,7 +57,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 name = 'detsys'
 label = 'Detector Systematics'
 #pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
-pattern = '\bvar(01|02|03|04|05|06|07|08)\b'
+pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
