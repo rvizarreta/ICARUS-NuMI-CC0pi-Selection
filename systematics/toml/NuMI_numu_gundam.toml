@@ -15,20 +15,20 @@ histogram_destination = 'variations/'
 name = 'reco_leading_muon_ke'
 bins = [25, 0, 3000]
 
-#[variations]
-#keys = ['nominal','cvext', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07']
-##keys = ['nominal', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07']
-#origin = 'events/'
-#tree = 'selected'
-#result_destination = 'detsys_results/'
-#variable = 'reco_leading_muon_ke'
-#bins = [25, 0, 3000]
-#nuniverses = 1000
-#variable_length = false
+[variations]
+keys = ['cv', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07','var08','var09']
+#keys = ['full', 'var00', 'var01p','var01m', 'var02m','var02p', 'var03m', 'var03p', 'var04m','var04p', 'var05','var06','var07']
+origin = 'events/'
+tree = 'selected'
+result_destination = 'detsys_results/'
+variable = 'reco_leading_muon_ke'
+bins = [25, 0, 3000]
+nuniverses = 1000
+variable_length = false
 
 [[tree]]
-origin = 'events/nominal/selected'
-destination = 'events/nominal/'
+origin = 'events/full/selected'
+destination = 'events/full/'
 name = 'selected'
 action = 'add_weights'
 #table_types = ['multisim', 'multisigma']
@@ -39,8 +39,8 @@ is_nu = true
 is_data = false
 
 [[tree]]
-origin = 'events/nominal/sideband'
-destination = 'events/nominal/'
+origin = 'events/full/sideband'
+destination = 'events/full/'
 name = 'sideband'
 action = 'add_weights'
 #table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
@@ -50,8 +50,8 @@ is_nu = true
 is_data = false
 
 [[tree]]
-origin = 'events/nominal/signal'
-destination = 'events/nominal/'
+origin = 'events/full/signal'
+destination = 'events/full/'
 name = 'signal'
 action = 'add_weights'
 #table_types = ['multisim', 'multisigma', 'variation','NuMIfluxsim']
@@ -85,71 +85,89 @@ is_data = true
 #index = -1
 #nsigma = [-3, -2, -1, 0, 1 ,2, 3]
 #scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var00', 'var00', 'var00', 'cvext', 'var00', 'var00', 'var00']
-#
-#[[sys]]
-#name = 'var01'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var01m', 'var01m', 'var01m', 'cvext', 'var01p', 'var01p', 'var01p']
-#
-#[[sys]]
-#name = 'var02'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var02m', 'var02m', 'var02m', 'cvext', 'var02p', 'var02p', 'var02p']
-#
-#[[sys]]
-#name = 'var03'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [3, 2, 1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var03m', 'var03m', 'var03m', 'cvext', 'var03p', 'var03p', 'var03p']
-#
-#[[sys]]
-#name = 'var04'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var04m', 'var04m', 'var04m', 'cvext', 'var04p', 'var04p', 'var04p']
-#
-#[[sys]]
-#name = 'var05'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var05', 'var05', 'var05', 'cvext', 'var05', 'var05', 'var05']
-#
-#[[sys]]
-#name = 'var06'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'cvext'
-#points = ['var06', 'var06', 'var06', 'cvext', 'var06', 'var06', 'var06']
-#
-#[[sys]]
-#name = 'var07'
-#type = 'variation'
-#index = -1
-#nsigma = [-3, -2, -1, 0, 1 ,2, 3]
-#scale = [-3, -2, -1, 1, 1, 2, 3]
-#ordinate = 'simulation'
-#points = ['var07', 'var07', 'var07', 'simulation', 'var07', 'var07', 'var07']
+#ordinate = 'cv'
+#points = ['var00', 'var00', 'var00', 'cv', 'var00', 'var00', 'var00']
+
+[[sys]]
+name = 'var01'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var01m', 'var01m', 'var01m', 'cv', 'var01p', 'var01p', 'var01p']
+
+[[sys]]
+name = 'var02'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var02m', 'var02m', 'var02m', 'cv', 'var02p', 'var02p', 'var02p']
+
+[[sys]]
+name = 'var03'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [3, 2, 1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var03m', 'var03m', 'var03m', 'cv', 'var03p', 'var03p', 'var03p']
+
+[[sys]]
+name = 'var04'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var04m', 'var04m', 'var04m', 'cv', 'var04p', 'var04p', 'var04p']
+
+[[sys]]
+name = 'var05'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var05', 'var05', 'var05', 'cv', 'var05', 'var05', 'var05']
+
+[[sys]]
+name = 'var06'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var06', 'var06', 'var06', 'cv', 'var06', 'var06', 'var06']
+
+[[sys]]
+name = 'var07'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var07', 'var07', 'var07', 'cv', 'var07', 'var07', 'var07']
+
+[[sys]]
+name = 'var08'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var08', 'var08', 'var08', 'cv', 'var08', 'var08', 'var08']
+
+[[sys]]
+name = 'var09'
+type = 'variation'
+index = -1
+nsigma = [-3, -2, -1, 0, 1 ,2, 3]
+scale = [-3, -2, -1, 1, 1, 2, 3]
+ordinate = 'cv'
+points = ['var09', 'var09', 'var09', 'cv', 'var09', 'var09', 'var09']
 
 
 [[sys]]

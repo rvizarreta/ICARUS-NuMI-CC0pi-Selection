@@ -19,6 +19,7 @@ systematics = ['selected_NuMIfluxsimTree']
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 

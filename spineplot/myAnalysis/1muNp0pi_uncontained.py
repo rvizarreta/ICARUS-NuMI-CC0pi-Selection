@@ -64,7 +64,7 @@ analysis.run(close_figs=False)
 analysis = Analysis(ana_directory + '/leading_muon_polar_angle/leading_muon_polar_angle.toml', data_file)
 analysis.run(close_figs=False)
 #%%
-# Leading muon polar angle plots
+# Leading muon NuMI angle plots
 analysis = Analysis(ana_directory + '/leading_muon_NuMI_angle/leading_muon_NuMI_angle.toml', data_file)
 analysis.run(close_figs=False)
 #%%
