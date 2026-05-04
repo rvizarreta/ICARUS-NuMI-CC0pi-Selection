@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
   /// Syst trees
   /// To-do: Automate this
   TTree* multisigma_tree = (TTree*)input->Get("events/full/selected_multisigmaTree");
-  //TTree* variation_tree = (TTree*)input->Get("events/full/selected_variationTree");
+  TTree* variation_tree = (TTree*)input->Get("events/full/selected_variationTree");
   //TTree* multisim_tree = (TTree*)input->Get("events/full/selected_multisimTree"); // TEST...delete if anything breaks
   TTree* NuMIflux_tree = (TTree*)input->Get("events/full/selected_NuMIfluxsimTree");
 
