@@ -927,6 +927,40 @@ namespace vars
     REGISTER_VAR_SCOPE(RegistrationScope::Both, Q2, Q2);
 
     /**
+     * @brief Low-Q2 suppression weight derived from MINERvA data.
+     * @details Computes the per-event low-Q2 suppression weight following
+     * Stowell et al. (arXiv:1903.01558). This weight is intended to be applied
+     * selectively to CC background events in GUNDAM via a conditional on the
+     * event category. For events above Q2_max or with negative Q2 the weight
+     * returns 1.0.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to apply the variable on.
+     * @return the per-event low-Q2 suppression weight.
+     */
+    template<class T>
+    double low_q2_weight(const T & obj)
+    {
+        static const double Q2_max = 0.70; // GeV^2
+        static const double Q2_t1  = 0.00; // GeV^2
+        static const double Q2_t2  = 0.35; // GeV^2
+        static const double R1     = 0.30;
+        static const double R2     = 0.60;
+
+        double q2 = vars::Q2(obj); // GeV^2
+
+        if(q2 > Q2_max || q2 < 0.0)
+            return 1.0;
+
+        double RQ2 = R2 * ((q2 - Q2_t1) * (q2 - Q2_max))
+                        / ((Q2_t2 - Q2_t1) * (Q2_t2 - Q2_max))
+                   + ((q2 - Q2_t1) * (q2 - Q2_t2))
+                        / ((Q2_max - Q2_t1) * (Q2_max - Q2_t2));
+
+        return 1.0 - (1.0 - R1) * std::pow(1.0 - RQ2, 2);
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::True, low_q2_weight, low_q2_weight);
+
+    /**
      * @brief Variable for hadronic invariant mass.
      * @tparam T the type of interaction (true or reco).
      * @param obj the interaction to apply the variable on.
