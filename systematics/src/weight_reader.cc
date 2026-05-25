@@ -36,12 +36,17 @@ sys::WeightReader::WeightReader(const std::string & input)
     }
     else if(input.find(".txt") != std::string::npos)
     {
-        // Input is a .txt file containing a list of files
         std::ifstream infile(input);
         std::string line;
+        isflat = false;
+
         while(std::getline(infile, line))
+        {
+            if(line.empty()) continue;
             chain.Add(line.c_str());
-        isflat = line.find("flat") != std::string::npos;
+            if(!isflat && line.find("flat") != std::string::npos)
+                isflat = true;
+        }
     }
     else
     {
