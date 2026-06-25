@@ -293,7 +293,8 @@ class Analysis:
             os.makedirs(self._output_path)
         for figname, figure in self._figures.items():
             figure.create()
-            figure.figure.savefig(f"{self._output_path}/{figname}.jpeg", dpi=300)
+            figure.figure.savefig(f"{self._output_path}/jpeg/{figname}.jpeg", dpi=300)
+            figure._figure.savefig(f"{self._output_path}/pdf/{figname}.pdf")
             if close_figs:
                 figure.close()
 

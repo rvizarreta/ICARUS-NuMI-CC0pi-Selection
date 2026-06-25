@@ -1,34 +1,51 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/dpT.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-#key = "nominal"
 key = "full"
 exposure_type = "pot"
 trees = ['selected']
 print_sys = true
-# Comment this to avoid systematics when plotting (usually done for testing plots)
 systematics = ['selected_multisigmaTree']
+
+[samples.mc.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['selected_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
-override_exposure = 2.36124e19 # CORRECTED POT
+override_exposure = 2.36124e19
 override_category = -100
 trees = ['selected']
 
+[samples.onbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['selected']
+
+[samples.offbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
 [output]
 path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
-
-# ==========================================
-# UNGROUPED SYSTEMATIC RECIPES
-# ==========================================
 
 # --- CCQE Dials ---
 [[systematic_recipe]]
@@ -307,44 +324,96 @@ label = 'CV2uBY'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_CV2uBY\b'
 
 [analysis]
-#ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
 category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
-category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
 
 [[figure]]
 name = "dpT_xSecUncertainty_expanded"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
+figsize = [5, 4]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [
-    # CCQE
     "xsec_ZExpA1CCQE", "xsec_ZExpA2CCQE", "xsec_ZExpA3CCQE", "xsec_ZExpA4CCQE",
     "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
-    # MEC
     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
-    # Resonant
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
     "xsec_MvNCRES", "xsec_CC1piTPi", "xsec_RDecBR1gamma", "xsec_RDecBR1eta",
     "xsec_Theta_Delta2Npi", "xsec_ThetaDelta2NRad",
-    # Non-Resonant
     "xsec_NonRESBGvpCC1pi", "xsec_NonRESBGvpCC2pi", "xsec_NonRESBGvpNC1pi", "xsec_NonRESBGvpNC2pi",
     "xsec_NonRESBGvnCC1pi", "xsec_NonRESBGvnCC2pi", "xsec_NonRESBGvnNC1pi", "xsec_NonRESBGvnNC2pi",
     "xsec_NonRESBGvbarpCC1pi", "xsec_NonRESBGvbarpCC2pi", "xsec_NonRESBGvbarpNC1pi", "xsec_NonRESBGvbarpNC2pi",
     "xsec_NonRESBGvbarnCC1pi", "xsec_NonRESBGvbarnCC2pi", "xsec_NonRESBGvbarnNC1pi", "xsec_NonRESBGvbarnNC2pi",
-    # FSI
     "xsec_MFP_pi", "xsec_MFP_N", "xsec_FrCEx_pi", "xsec_FrCEx_N", "xsec_FrInel_pi",
     "xsec_FrInel_N", "xsec_FrAbs_pi", "xsec_FrAbs_N", "xsec_FrPiProd_pi", "xsec_FrPiProd_N",
-    # Other
     "xsec_NormCCCOH", "xsec_NormNCCOH", "xsec_AhtBY", "xsec_BhtBY", "xsec_CV1uBY", "xsec_CV2uBY"
 ]
 fractional = true
-show_total = true      # This will show MC_total (sum of all components)
-show_individual = true # This shows flux, xsec, stats separately
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_xSecUncertainty_expanded_contained"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_contained"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = [
+    "xsec_ZExpA1CCQE", "xsec_ZExpA2CCQE", "xsec_ZExpA3CCQE", "xsec_ZExpA4CCQE",
+    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
+    "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
+    "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
+    "xsec_MvNCRES", "xsec_CC1piTPi", "xsec_RDecBR1gamma", "xsec_RDecBR1eta",
+    "xsec_Theta_Delta2Npi", "xsec_ThetaDelta2NRad",
+    "xsec_NonRESBGvpCC1pi", "xsec_NonRESBGvpCC2pi", "xsec_NonRESBGvpNC1pi", "xsec_NonRESBGvpNC2pi",
+    "xsec_NonRESBGvnCC1pi", "xsec_NonRESBGvnCC2pi", "xsec_NonRESBGvnNC1pi", "xsec_NonRESBGvnNC2pi",
+    "xsec_NonRESBGvbarpCC1pi", "xsec_NonRESBGvbarpCC2pi", "xsec_NonRESBGvbarpNC1pi", "xsec_NonRESBGvbarpNC2pi",
+    "xsec_NonRESBGvbarnCC1pi", "xsec_NonRESBGvbarnCC2pi", "xsec_NonRESBGvbarnNC1pi", "xsec_NonRESBGvbarnNC2pi",
+    "xsec_MFP_pi", "xsec_MFP_N", "xsec_FrCEx_pi", "xsec_FrCEx_N", "xsec_FrInel_pi",
+    "xsec_FrInel_N", "xsec_FrAbs_pi", "xsec_FrAbs_N", "xsec_FrPiProd_pi", "xsec_FrPiProd_N",
+    "xsec_NormCCCOH", "xsec_NormNCCOH", "xsec_AhtBY", "xsec_BhtBY", "xsec_CV1uBY", "xsec_CV2uBY"
+]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_xSecUncertainty_expanded_exiting"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = [
+    "xsec_ZExpA1CCQE", "xsec_ZExpA2CCQE", "xsec_ZExpA3CCQE", "xsec_ZExpA4CCQE",
+    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
+    "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
+    "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
+    "xsec_MvNCRES", "xsec_CC1piTPi", "xsec_RDecBR1gamma", "xsec_RDecBR1eta",
+    "xsec_Theta_Delta2Npi", "xsec_ThetaDelta2NRad",
+    "xsec_NonRESBGvpCC1pi", "xsec_NonRESBGvpCC2pi", "xsec_NonRESBGvpNC1pi", "xsec_NonRESBGvpNC2pi",
+    "xsec_NonRESBGvnCC1pi", "xsec_NonRESBGvnCC2pi", "xsec_NonRESBGvnNC1pi", "xsec_NonRESBGvnNC2pi",
+    "xsec_NonRESBGvbarpCC1pi", "xsec_NonRESBGvbarpCC2pi", "xsec_NonRESBGvbarpNC1pi", "xsec_NonRESBGvbarpNC2pi",
+    "xsec_NonRESBGvbarnCC1pi", "xsec_NonRESBGvbarnCC2pi", "xsec_NonRESBGvbarnNC1pi", "xsec_NonRESBGvbarnNC2pi",
+    "xsec_MFP_pi", "xsec_MFP_N", "xsec_FrCEx_pi", "xsec_FrCEx_N", "xsec_FrInel_pi",
+    "xsec_FrInel_N", "xsec_FrAbs_pi", "xsec_FrAbs_N", "xsec_FrPiProd_pi", "xsec_FrPiProd_N",
+    "xsec_NormCCCOH", "xsec_NormNCCOH", "xsec_AhtBY", "xsec_BhtBY", "xsec_CV1uBY", "xsec_CV2uBY"
+]
+fractional = true
+show_total = true
+show_individual = true

@@ -351,7 +351,7 @@ class SpineSpectra1D(SpineSpectra):
             else:
                 # Draw stacked histogram (original behavior)
                 ax.hist(reduce(bincenters), weights=[scale * x for x in reduce(data)], bins=self._variable._nbins,
-                        range=xr, label=reduce(labels), color=reduce(colors), alpha=0.85, **style.plot_kwargs)
+                        range=xr, label=reduce(labels), color=reduce(colors), alpha=0.75, **style.plot_kwargs)
 
             # Draw top border line for components with 'QE' in label (only for stacked plots)
             if not show_fraction:
@@ -754,7 +754,7 @@ class SpineSpectra1D(SpineSpectra):
                 # No stat component, just plot total as dashed
                 total_mean = np.mean(total_uncertainty)
                 ax.step(bincenters, total_uncertainty, where='mid', label=f'Total Systematic ({total_mean:.1%})',
-                        color='black', linewidth=2.5, linestyle='--')
+                        color='black', linewidth=1.5, linestyle='--')
 
         # Legend: inside for small legends, outside-right for large ones
         handles, labels_text = ax.get_legend_handles_labels()

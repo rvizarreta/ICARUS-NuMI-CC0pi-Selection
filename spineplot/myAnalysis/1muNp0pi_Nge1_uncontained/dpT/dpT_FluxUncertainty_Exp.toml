@@ -1,34 +1,51 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/dpT.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-#key = "nominal"
 key = "full"
 exposure_type = "pot"
 trees = ['selected']
 print_sys = true
-# Comment this to avoid systematics when plotting (usually done for testing plots)
 systematics = ['selected_NuMIfluxsimTree']
+
+[samples.mc.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['selected_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
-override_exposure = 2.36124e19 # CORRECTED POT
+override_exposure = 2.36124e19
 override_category = -100
 trees = ['selected']
 
+[samples.onbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['selected']
+
+[samples.offbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
 [output]
 path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
-
-# ==========================================
-# UNGROUPED FLUX SYSTEMATIC RECIPES
-# ==========================================
 
 # --- Beam Focusing Dials ---
 [[systematic_recipe]]
@@ -91,7 +108,7 @@ name = 'flux_Target_z_7mm'
 label = 'Target z 7mm'
 pattern = '\bhysyst_beam_Target_z_7mm\b'
 
-# --- Hadron Production Dials (hpc_0 to hpc_14) ---
+# --- Hadron Production Dials ---
 [[systematic_recipe]]
 name = 'flux_hpc_0'
 label = 'Hadron Prod 0'
@@ -168,29 +185,71 @@ label = 'Hadron Prod 14'
 pattern = '\bhysyst_hpc_14\b'
 
 [analysis]
-#ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
 category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
-category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
 
 [[figure]]
 name = "dpT_FluxUncertainty_expanded"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
+figsize = [5, 4]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [
-    # Beam Focusing
     "flux_horn_2kA", "flux_horn1_x_3mm", "flux_horn1_y_3mm", "flux_spot_1_3mm",
     "flux_spot_1_7mm", "flux_horn2_x_3mm", "flux_horn2_y_3mm", "flux_horns_0mm_water",
     "flux_horns_2mm_water", "flux_Beam_shift_x_1mm", "flux_Beam_shift_y_1mm", "flux_Target_z_7mm",
-    # Hadron Production
+    "flux_hpc_0", "flux_hpc_1", "flux_hpc_2", "flux_hpc_3", "flux_hpc_4",
+    "flux_hpc_5", "flux_hpc_6", "flux_hpc_7", "flux_hpc_8", "flux_hpc_9",
+    "flux_hpc_10", "flux_hpc_11", "flux_hpc_12", "flux_hpc_13", "flux_hpc_14"
+]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_FluxUncertainty_expanded_contained"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_contained"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = [
+    "flux_horn_2kA", "flux_horn1_x_3mm", "flux_horn1_y_3mm", "flux_spot_1_3mm",
+    "flux_spot_1_7mm", "flux_horn2_x_3mm", "flux_horn2_y_3mm", "flux_horns_0mm_water",
+    "flux_horns_2mm_water", "flux_Beam_shift_x_1mm", "flux_Beam_shift_y_1mm", "flux_Target_z_7mm",
+    "flux_hpc_0", "flux_hpc_1", "flux_hpc_2", "flux_hpc_3", "flux_hpc_4",
+    "flux_hpc_5", "flux_hpc_6", "flux_hpc_7", "flux_hpc_8", "flux_hpc_9",
+    "flux_hpc_10", "flux_hpc_11", "flux_hpc_12", "flux_hpc_13", "flux_hpc_14"
+]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_FluxUncertainty_expanded_exiting"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = [
+    "flux_horn_2kA", "flux_horn1_x_3mm", "flux_horn1_y_3mm", "flux_spot_1_3mm",
+    "flux_spot_1_7mm", "flux_horn2_x_3mm", "flux_horn2_y_3mm", "flux_horns_0mm_water",
+    "flux_horns_2mm_water", "flux_Beam_shift_x_1mm", "flux_Beam_shift_y_1mm", "flux_Target_z_7mm",
     "flux_hpc_0", "flux_hpc_1", "flux_hpc_2", "flux_hpc_3", "flux_hpc_4",
     "flux_hpc_5", "flux_hpc_6", "flux_hpc_7", "flux_hpc_8", "flux_hpc_9",
     "flux_hpc_10", "flux_hpc_11", "flux_hpc_12", "flux_hpc_13", "flux_hpc_14"
