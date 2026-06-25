@@ -1,0 +1,152 @@
+### dpT - Combined ------------------------------------
+
+[variables.reco_dpT_residual]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 100
+xlabel = 'Reco $\delta p_T$ [MeV/c]'
+
+[variables.true_dpT_residual]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 100
+xlabel = 'True $\delta p_T$ [MeV/c]'
+
+[variables.reco_dpT_smearing]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 12
+binning_scheme = 'custom_bins'
+custom_bins = [0, 40, 80, 120, 160, 200, 240, 280, 320, 420, 520, 610, 800]
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dpT_smearing]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [0, 80, 160, 240, 320, 520, 800]
+xlabel = 'True $\delta p_T$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+
+[variables.true_dpT]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 20
+xlabel = 'True $\delta p_T$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+[variables.reco_dpT]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 20
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+### dpT - Contained ------------------------------------
+
+[variables.reco_dpT_residual_contained]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 100
+xlabel = 'Reco $\delta p_T$ [MeV/c]'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dpT_residual_contained]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 100
+xlabel = 'True $\delta p_T$ [MeV/c]'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_dpT_smearing_contained]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 20
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dpT_smearing_contained]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 10
+xlabel = 'True $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dpT_contained]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 20
+xlabel = 'True $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_dpT_contained]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 20
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+### dpT - Exiting ------------------------------------
+
+[variables.reco_dpT_residual_exiting]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 100
+xlabel = 'Reco $\delta p_T$ [MeV/c]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dpT_residual_exiting]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 100
+xlabel = 'True $\delta p_T$ [MeV/c]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dpT_smearing_exiting]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 20
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dpT_smearing_exiting]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 10
+xlabel = 'True $\delta p_T$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dpT_exiting]
+key = "true_dpT_lp_genie"
+range = [0,800]
+nbins = 20
+xlabel = 'True $\delta p_T$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dpT_exiting]
+key = "reco_dpT_lp"
+range = [0,800]
+nbins = 20
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+### dpT - Absolute Residual ------------------------------------
+
+[variables.abs_dpT_residual]
+key = "abs_dpT_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+[variables.abs_dpT_residual_contained]
+key = "abs_dpT_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_dpT_residual_exiting]
+key = "abs_dpT_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'

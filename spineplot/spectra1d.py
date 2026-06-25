@@ -320,7 +320,7 @@ class SpineSpectra1D(SpineSpectra):
 
             if draw_error:
                 systs = [s[draw_error] for s in self._systematics.values() if draw_error in s]
-                cov = np.sum(s.get_covariance(self._variable._key) for s in systs)
+                cov = np.sum(s.get_covariance(self._variable._name) for s in systs)
                 x = reduce(bincenters)[0]
                 y = scale * np.sum(reduce(data), axis=0)
                 xerr = [x / 2 for x in binwidths[0]]
@@ -412,15 +412,43 @@ class SpineSpectra1D(SpineSpectra):
             if draw_error:
                 h.append(plt.Rectangle((0, 0), 1, 1, fc='lightgray', ec='gray', alpha=0.6, hatch='xxx', linewidth=0.8))
                 l.append(systs[0].label)
-                ax.legend(h[-2::-1]+h[-1:], l[-2::-1]+l[-1:], fontsize=8)
+                h_reversed = h[-2::-1] + h[-1:]
+                l_reversed = l[-2::-1] + l[-1:]
+                h_reversed.append(plt.Line2D([0], [0], color='none'))
+                l_reversed.append('')
+                h_reversed.append(plt.Line2D([0], [0], color='none'))
+                ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
+                ax.text(0.95, 0.5, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                        transform=ax.transAxes,
+                        fontsize=7, color='black',
+                        horizontalalignment='right',
+                        verticalalignment='top')
             else:
-                ax.legend(h[::-1], l[::-1], fontsize=8)
+                h_reversed = h[::-1]
+                l_reversed = l[::-1]
+                h_reversed.append(plt.Line2D([0], [0], color='none'))
+                l_reversed.append('')
+                h_reversed.append(plt.Line2D([0], [0], color='none'))
+                ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
+                ax.text(0.95, 0.5, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                        transform=ax.transAxes,
+                        fontsize=7, color='black',
+                        horizontalalignment='right',
+                        verticalalignment='top')
         else:
             h, l = ax.get_legend_handles_labels()
             if draw_error:
                 h.append(plt.Rectangle((0, 0), 1, 1, fc='lightgray', ec='gray', alpha=0.6, hatch='xxx', linewidth=0.8))
                 l.append(systs[0].label)
-            ax.legend(h, l, fontsize=8)
+            h.append(plt.Line2D([0], [0], color='none'))
+            l.append('')
+            h.append(plt.Line2D([0], [0], color='none'))
+            ax.legend(h, l, fontsize=8, ncol=2, loc='upper left')
+            ax.text(0.95, 0.5, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                    transform=ax.transAxes,
+                    fontsize=7, color='black',
+                    horizontalalignment='right',
+                    verticalalignment='top')
 
         # Add borders to legend patches for 'QE' entries
         legend = ax.get_legend()
@@ -459,7 +487,7 @@ class SpineSpectra1D(SpineSpectra):
             if draw_error:
                 systs_ratio = [s[draw_error] for s in self._systematics.values() if draw_error in s]
                 if systs_ratio:
-                    cov_ratio = np.sum(s.get_covariance(self._variable._key) for s in systs_ratio)
+                    cov_ratio = np.sum(s.get_covariance(self._variable._name) for s in systs_ratio)
                     scov_ratio = Systematic.transform_as(cov_ratio, 1.0)
                     mc_syst_err = np.sqrt(np.diag(scov_ratio))
                     # Add MC statistical and systematic errors in quadrature
@@ -651,8 +679,7 @@ class SpineSpectra1D(SpineSpectra):
                     continue
 
                 # Sum covariance matrices from all samples
-                cov = np.sum([s.get_covariance(self._variable._key) for s in systs], axis=0)
-
+                cov = np.sum([s.get_covariance(self._variable._name) for s in systs], axis=0)
                 # Check if this is statistical uncertainty
                 is_stat = 'stat' in syst_name.lower()
 
@@ -735,7 +762,7 @@ class SpineSpectra1D(SpineSpectra):
         legend_threshold = 10
 
         if n_entries <= legend_threshold:
-            ax.legend(handles, labels_text, loc='best', fontsize=10)
+            ax.legend(handles, labels_text, loc='upper left', fontsize=8, ncol=2)
         else:
             ncol = 1 if n_entries <= 20 else 2
             ax.legend(
@@ -744,7 +771,7 @@ class SpineSpectra1D(SpineSpectra):
                 bbox_to_anchor=(1.02, 1.0),
                 fontsize=8,
                 borderaxespad=0.0,
-                ncol=ncol,
+                ncol=2,
                 frameon=False,
             )
 
@@ -796,5 +823,3 @@ class SpineSpectra1D(SpineSpectra):
             mark_pot(ax, self._exposure, style.mark_pot_horizontal)
         if style.mark_preliminary is not None:
             mark_preliminary(ax, style.mark_preliminary)
-
-

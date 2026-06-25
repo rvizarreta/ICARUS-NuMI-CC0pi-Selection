@@ -164,18 +164,20 @@ class SpineSpectra2D(SpineSpectra):
 
         data, weights = sample.get_data([self._variables[0]._key, self._variables[1]._key], joint_mask)
 
-        
         for category, values in data.items():
             if category not in self._categories.keys():
                 continue
-            if self._categories[category] not in self._plotdata:
-                self._plotdata[self._categories[category]] = np.zeros((self._variables[0]._nbins, self._variables[1]._nbins))
             xr = self._variables[0]._range if self._xrange is None else self._xrange
             yr = self._variables[1]._range if self._yrange is None else self._yrange
-            h = np.histogram2d(values[0], values[1], bins=(self._variables[0]._nbins, self._variables[1]._nbins), range=(xr, yr), weights=weights[category])
-            
+            x_bin_edges = list(self._variables[0]._bin_edges.values())[0] if self._variables[
+                0]._bin_edges else np.linspace(xr[0], xr[1], self._variables[0]._nbins + 1)
+            y_bin_edges = list(self._variables[1]._bin_edges.values())[0] if self._variables[
+                1]._bin_edges else np.linspace(yr[0], yr[1], self._variables[1]._nbins + 1)
+            if self._categories[category] not in self._plotdata:
+                self._plotdata[self._categories[category]] = np.zeros((len(x_bin_edges) - 1, len(y_bin_edges) - 1))
+            h = np.histogram2d(values[0], values[1], bins=(x_bin_edges, y_bin_edges), weights=weights[category])
             self._plotdata[self._categories[category]] += h[0]
-            self._binedges[self._categories[category]] = h[1]
+            self._binedges[self._categories[category]] = (h[1], h[2])
 
             if self._categories[category] not in self._plotdata_diagonal:
                 self._plotdata_diagonal[self._categories[category]] = np.zeros(self._variables[0]._nbins)
@@ -277,18 +279,15 @@ class SpineSpectra2D(SpineSpectra):
                 cbar.ax.tick_params(labelsize=12, size=6, width=1.5)
 
         if show_option == 'smearing' and self._plotdata is not None:
-
             values = np.sum([v for v in self._plotdata.values()], axis=0)
             binedges = self._binedges[list(self._plotdata.keys())[0]]
 
             # Handle different binedges structures
             if isinstance(binedges, (list, tuple)) and len(binedges) == 2:
-                # Case 1: binedges is [x_edges, y_edges]
                 x_edges = binedges[0]
                 y_edges = binedges[1]
                 extent = (x_edges[0], x_edges[-1], y_edges[0], y_edges[-1])
             else:
-                # Case 2: binedges is a single array - use same for both axes
                 x_edges = y_edges = binedges
                 extent = (binedges[0], binedges[-1], binedges[0], binedges[-1])
 
@@ -297,67 +296,49 @@ class SpineSpectra2D(SpineSpectra):
             column_sums[column_sums == 0] = 1
             normalized_values = values / column_sums
 
-            # Create the plot
-            im = ax.imshow(normalized_values.T,
-                           extent=extent,
-                           aspect='auto', origin='lower',
-                           cmap='Reds', vmin=0, vmax=0.25)
-
-            # Add percentage labels
+            # ny corresponds to reco (y_edges), nx corresponds to truth (x_edges)
             ny, nx = normalized_values.T.shape
-            x_bins = np.linspace(extent[0], extent[1], nx + 1)
-            y_bins = np.linspace(extent[2], extent[3], ny + 1)
+            x_bins = x_edges  # truth bins, nx+1 edges
+            y_bins = y_edges  # reco bins, ny+1 edges
+
+            # Create the plot using pcolormesh for correct variable-width bin handling
+            im = ax.pcolormesh(x_edges, y_edges, normalized_values.T,
+                               cmap='Reds', vmin=0, vmax=0.25)
 
             for i in range(ny):
                 for j in range(nx):
                     percentage = normalized_values.T[i, j] * 100
+                    x_pos = (x_edges[j] + x_edges[j + 1]) / 2
+                    y_pos = (y_edges[i] + y_edges[i + 1]) / 2
                     if percentage >= 0.01:
                         text_color = 'white' if percentage > 12.5 else 'black'
-                        x_pos = (x_bins[j] + x_bins[j + 1]) / 2
-                        y_pos = (y_bins[i] + y_bins[i + 1]) / 2
                         ax.text(x_pos, y_pos, f'{percentage:.1f}%',
                                 ha='center', va='center',
                                 color=text_color, fontsize=6, weight='bold')
-                    elif percentage == 0.0:  # Show zeros explicitly
-                        x_pos = (x_bins[j] + x_bins[j + 1]) / 2
-                        y_pos = (y_bins[i] + y_bins[i + 1]) / 2
+                    elif percentage == 0.0:
                         ax.text(x_pos, y_pos, '0.0%',
                                 ha='center', va='center',
                                 color='black', fontsize=6, weight='bold')
 
             # Set labels and formatting
-            ax.set_xlabel(self._variables[0]._xlabel if self._xtitle is None else self._xtitle, fontsize=12, weight='bold')
-            ax.set_ylabel(self._variables[1]._xlabel if self._ytitle is None else self._ytitle, fontsize=12, weight='bold')
-            ax.set_aspect('equal')
+            ax.set_xlabel(self._variables[0]._xlabel if self._xtitle is None else self._xtitle, fontsize=12,
+                          weight='bold')
+            ax.set_ylabel(self._variables[1]._xlabel if self._ytitle is None else self._ytitle, fontsize=12,
+                          weight='bold')
 
-            # Set tick mark size and tick label font size
             ax.tick_params(axis='both', which='major',
-                           labelsize=12,  # Font size of tick labels
-                           size=8,  # Length of major tick marks
-                           width=2)  # Width/thickness of tick marks
+                           labelsize=12,
+                           size=8,
+                           width=2)
 
-            # Ensure the maximum values appear as ticks
-            x_min, x_max = extent[0], extent[1]
-            y_min, y_max = extent[2], extent[3]
-
-            # Get current ticks and add max values if not already present
-            x_ticks = list(ax.get_xticks())
-            y_ticks = list(ax.get_yticks())
-
-            if x_max not in x_ticks:
-                x_ticks.append(x_max)
-            if y_max not in y_ticks:
-                y_ticks.append(y_max)
-
-            ax.set_xticks(x_ticks)
-            ax.set_yticks(y_ticks)
+            ax.set_xticks(x_edges)
+            ax.set_yticks(y_edges)
 
             # Add colorbar
             if draw_colorbar:
                 cbar = plt.colorbar(im, ax=ax)
                 cbar.set_label('Column Normalized Fraction', fontsize=12, weight='bold')
                 cbar.ax.tick_params(labelsize=12, size=6, width=1.5)
-
         if show_option == 'projection' and self._plotdata_diagonal is not None:
             labels, data = zip(*self._plotdata_diagonal.items())
             colors = [self._colors[label] for label in labels]
@@ -388,12 +369,20 @@ class SpineSpectra2D(SpineSpectra):
 
             if invert_stack_order:
                 h, l = ax.get_legend_handles_labels()
+                filtered = [(h, l) for h, l in zip(h, l) if 'QE' not in l]
+                if filtered:
+                    h, l = zip(*filtered)
+                h, l = list(h), list(l)
                 if draw_stat_error:
                     h.append(plt.Rectangle((0, 0), 1, 1, fc='gray', alpha=0.5, hatch='///'))
                     l.append('MC Statistical Uncertainty')
-                ax.legend(h[-2::-1]+h[-1:], l[-2::-1]+l[-1:], fontsize=10)
+                ax.legend(h[-2::-1] + h[-1:], l[-2::-1] + l[-1:], fontsize=10)
             else:
                 h, l = ax.get_legend_handles_labels()
+                filtered = [(hh, ll) for hh, ll in zip(h, l) if 'QE' not in ll]
+                if filtered:
+                    h, l = zip(*filtered)
+                h, l = list(h), list(l)
                 if draw_stat_error:
                     h.append(plt.Rectangle((0, 0), 1, 1, fc='gray', alpha=0.5, hatch='///'))
                     l.append('MC Statistical Uncertainty')

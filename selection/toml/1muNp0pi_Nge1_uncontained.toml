@@ -235,6 +235,32 @@ path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Cath_bend/*.root"
 ismc = true
 disable = false
 
+# PRE-SELECTION TREE
+[[tree]]
+name = "preselection"
+sim_only = false
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut", type = "reco" },
+    { name = "flash_cut",    type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
+    { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
+]
+branch = [
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+    { name = "vertex_x",           type = "both"    },
+    { name = "vertex_y",           type = "both"    },
+    { name = "vertex_z",           type = "both"    },
+    { name = "flash_time",         type = "reco"    },
+    { name = "flash_total_pe",     type = "reco"    },
+]
+
 # SELECTION TREE
 [[tree]]
 name = "selected"
@@ -332,6 +358,11 @@ branch = [
     { name = "length",             type = "both_particle", selector = "leading_pion" },
     { name = "containment",        type = "both_particle", selector = "leading_pion"},
     { name = "energy",             type = "both_particle", selector = "leading_pion"},
+
+    # PID for leading particles
+    { name = "pid", type = "both_particle", selector = "leading_muon"   },
+    { name = "pid", type = "both_particle", selector = "leading_proton" },
+    { name = "pid", type = "both_particle", selector = "leading_pion"   },
 
     # Vertex & flash
     { name = "vertex_x",            type = "both" },
@@ -442,6 +473,11 @@ branch = [
     { name = "containment",        type = "both_particle", selector = "leading_pion"},
     { name = "energy",             type = "both_particle", selector = "leading_pion"},
 
+    # PID for leading particles
+    { name = "pid", type = "both_particle", selector = "leading_muon"   },
+    { name = "pid", type = "both_particle", selector = "leading_proton" },
+    { name = "pid", type = "both_particle", selector = "leading_pion"   },
+
     # True-vertex
     { name = "vertex_x", type = "true" },
     { name = "vertex_y", type = "true" },
@@ -545,6 +581,11 @@ branch = [
     { name = "length",             type = "both_particle", selector = "leading_pion" },
     { name = "containment",        type = "both_particle", selector = "leading_pion"},
     { name = "energy",             type = "both_particle", selector = "leading_pion"},
+
+    # PID for leading particles
+    { name = "pid", type = "both_particle", selector = "leading_muon"   },
+    { name = "pid", type = "both_particle", selector = "leading_proton" },
+    { name = "pid", type = "both_particle", selector = "leading_pion"   },
 
     # Vertex & flash
     { name = "vertex_x",         type = "both" },

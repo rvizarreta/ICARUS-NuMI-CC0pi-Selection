@@ -105,7 +105,7 @@ class Systematic:
         variable : Variable
             The Variable object to register.
         """
-        self._variables[variable._key] = variable
+        self._variables[variable._name] = variable
 
     def process(self, sample, mask, nuniv=1000) -> np.ndarray:
         """
@@ -157,16 +157,23 @@ class Systematic:
             # name, which are used to bin the events for each set of
             # universe weights.
             self._covariances = dict()
-            for name, variable in self._variables.items():
-                data = sample._data[name].to_numpy()
+            for var_name, variable in self._variables.items():
+                if variable._key not in sample._data.columns:
+                    continue
+                data = sample._data[variable._key].to_numpy()
+                if variable.mask is not None:
+                    var_mask = sample._data.eval(variable.mask).to_numpy(dtype=bool)
+                else:
+                    var_mask = np.ones(len(data), dtype=bool)
+                data = data[var_mask]
                 bin_edges = list(variable._bin_edges.values())[0]
                 bin_indices = np.digitize(data, bin_edges) - 1
                 valid_indices = (bin_indices >= 0) & (bin_indices < len(bin_edges) - 1)
                 bin_indices = bin_indices[valid_indices]
-                
+
                 # Universes
                 histogram = np.zeros((len(bin_edges) - 1, self._universe_weights.shape[1]))
-                filtered_weights = self._universe_weights[valid_indices, :]
+                filtered_weights = self._universe_weights[var_mask, :][valid_indices, :]
                 np.add.at(histogram, bin_indices, filtered_weights)
 
                 # Central value
@@ -176,7 +183,7 @@ class Systematic:
                 # Covariance matrix calculated with respect to the central
                 # value.
                 diff = histogram - cv_histogram[:, np.newaxis]
-                self._covariances[f'{self._name}_{name}'] = (diff @ diff.T) / (self._universe_weights.shape[1])
+                self._covariances[f'{self._name}_{var_name}'] = (diff @ diff.T) / (self._universe_weights.shape[1])
 
                 # One-bin uncertainty
                 diff = np.sum(diff, axis=0)
@@ -188,17 +195,24 @@ class Systematic:
         # calculate the statistical uncertainty.
         else:
             self._covariances = dict()
-            for name, variable in self._variables.items():
-                data = sample._data[name].to_numpy()
+            for var_name, variable in self._variables.items():
+                if variable._key not in sample._data.columns:
+                    continue
+                data = sample._data[variable._key].to_numpy()
+                if variable.mask is not None:
+                    var_mask = sample._data.eval(variable.mask).to_numpy(dtype=bool)
+                else:
+                    var_mask = np.ones(len(data), dtype=bool)
+                data = data[var_mask]
                 bin_edges = list(variable._bin_edges.values())[0]
                 bin_indices = np.digitize(data, bin_edges) - 1
                 valid_indices = (bin_indices >= 0) & (bin_indices < len(bin_edges) - 1)
                 bin_indices = bin_indices[valid_indices]
-                
+
                 histogram = np.zeros(len(bin_edges) - 1)
                 np.add.at(histogram, bin_indices, 1)
 
-                self._covariances[f'{self._name}_{name}'] = np.diag(histogram)
+                self._covariances[f'{self._name}_{var_name}'] = np.diag(histogram)
                 histogram_sum = histogram.sum()
                 if histogram_sum > 0:
                     self._std = np.sqrt(histogram_sum) / histogram_sum
@@ -243,7 +257,10 @@ class Systematic:
         None.
         """
         for kvar, vvar in self._variables.items():
-            self._covariances[f'{self._name}_{kvar}'] *= weight**2
+            key = f'{self._name}_{kvar}'
+            if key not in self._covariances:
+                continue
+            self._covariances[key] *= weight ** 2
 
     @staticmethod
     def combine(systematics, name, label) -> 'Systematic':

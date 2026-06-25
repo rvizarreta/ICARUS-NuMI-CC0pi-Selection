@@ -181,8 +181,12 @@ class Sample:
 
         print(f"Setting weight for {self._name} to {scale:.2e}")
         self._data['weight'] = scale
+
+        if 'ppfx_cv_weight' in self._data.columns:
+            self._data['weight'] *= self._data['ppfx_cv_weight']
+
         for syst in self._systematics.values():
-            syst.set_weight(scale)        
+            syst.set_weight(scale)
 
     def get_data(self, variables, with_mask=None) -> dict:
         """
