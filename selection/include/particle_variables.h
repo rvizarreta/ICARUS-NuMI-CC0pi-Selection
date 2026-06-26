@@ -912,5 +912,23 @@ namespace pvars
         return p.primary_scores[0];
     }
     REGISTER_VAR_SCOPE(RegistrationScope::RecoParticle, secondary_softmax, secondary_softmax);
+
+    /**
+     * @brief Variable for the PDG code of the particle.
+     * @details This variable returns the PDG code of the particle as determined
+     * by the Monte Carlo truth information. For reconstructed particles, this
+     * returns the PDG code of the truth-matched particle. If no truth match
+     * exists, a placeholder value is returned.
+     * @tparam T the type of particle (true or reco).
+     * @param p the particle to apply the variable on.
+     * @return the PDG code of the particle.
+     */
+     template<class T>
+    double pdg_code(const T & p)
+    {
+        return p.pdg_code;
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::BothParticle, pdg_code, pdg_code);
+
 }
 #endif // PARTICLE_VARIABLES_H
