@@ -235,6 +235,25 @@ path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Cath_bend/*.root"
 ismc = true
 disable = false
 
+# PARTICLES TREE
+[[tree]]
+name = "particles"
+sim_only = true
+add_systematics = false
+add_exposure = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut", type = "reco" },
+    { name = "flash_cut",    type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
+    { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
+]
+branch = [
+    { name = "is_nu",    type = "both"         },
+    { name = "category", type = "true"          },
+    { name = "pid",      type = "both_particle" },
+]
+
 # PRE-SELECTION TREE
 [[tree]]
 name = "preselection"

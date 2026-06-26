@@ -1,8 +1,8 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/dalphaT.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
@@ -11,14 +11,21 @@ file = '../configurations/common/styles.toml'
 key = "full"
 exposure_type = "pot"
 trees = ['selected']
-print_sys = false
+print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
 systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+#systematics = ['selected_NuMIfluxsimTree']
+
+[samples.mc.precompute]
+abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
 trees = ['selected_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -28,11 +35,17 @@ override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
+[samples.onbeam.precompute]
+abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
+
 [samples.offbeam]
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 10
 trees = ['selected']
+
+[samples.offbeam.precompute]
+abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
 
 [output]
 path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dalphaT'
@@ -50,7 +63,7 @@ pattern = 'hysyst*(?!\w*sigma\b)\w+\b'
 [[systematic_recipe]]
 name = 'xsec'
 label = 'Cross-section'
-#pattern = '\bGENIEReWeight_SBN_v1_multisim_\w+\b'
+#pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
@@ -61,7 +74,7 @@ pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'Stats, Detector, Flux, & Interaction Uncertainty'
+label = 'All Systematics (No G4)'
 pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]
@@ -70,28 +83,80 @@ ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
 category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'C6', 'black']
+#category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
 name = 'dalphaT_reco'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
+figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dalphaT'
+yrange = 1.5
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+
+[[figure]]
+name = 'dalphaT_reco_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dalphaT_contained'
+yrange = 1.5
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+
+[[figure]]
+name = 'dalphaT_reco_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dalphaT_exiting'
+yrange = 1.5
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]
 name = 'dalphaT_fractional_residual'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
+figsize = [5, 4]
 [[figure.artists]]
 type = 'SpineSpectra2D'
 yvariable = 'reco_dalphaT_residual'
 xvariable = 'true_dalphaT_residual'
 xrange = [-2,2]
-xtitle = '$\frac{\delta_{\alpha_T,\mathrm{reco}} - \delta_{\alpha_T,\mathrm{true}}}{\delta_{\alpha_T,\mathrm{true}}}$'
+xtitle = '$\frac{\delta_{\alpha T,\mathrm{reco}} - \delta_{\alpha T,\mathrm{true}}}{\delta_{\alpha T,\mathrm{true}}}$'
+draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+
+[[figure]]
+name = 'dalphaT_fractional_residual_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra2D'
+yvariable = 'reco_dalphaT_residual_contained'
+xvariable = 'true_dalphaT_residual_contained'
+xrange = [-2,2]
+xtitle = '$\frac{\delta_{\alpha T,\mathrm{reco}} - \delta_{\alpha T,\mathrm{true}}}{\delta_{\alpha T,\mathrm{true}}}$ (Contained $\mu^\pm$)'
+draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+
+[[figure]]
+name = 'dalphaT_fractional_residual_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra2D'
+yvariable = 'reco_dalphaT_residual_exiting'
+xvariable = 'true_dalphaT_residual_exiting'
+xrange = [-2,2]
+xtitle = '$\frac{\delta_{\alpha T,\mathrm{reco}} - \delta_{\alpha T,\mathrm{true}}}{\delta_{\alpha T,\mathrm{true}}}$ (Exiting $\mu^\pm$)'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
 
 [[figure]]
@@ -105,16 +170,99 @@ yvariable = 'reco_dalphaT_smearing'
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
-name = "systematics_dpT"
-type = "SimpleFigure"
+name = 'dalphaT_smearing_matrix_normalized_contained'
+type = 'SimpleFigure'
 style = 'selected_icarus_mc'
 [[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_dalphaT_smearing_contained'
+yvariable = 'reco_dalphaT_smearing_contained'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+
+[[figure]]
+name = 'dalphaT_smearing_matrix_normalized_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_dalphaT_smearing_exiting'
+yvariable = 'reco_dalphaT_smearing_exiting'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+
+[[figure]]
+name = "systematics_dalphaT_contained"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
 type = "SpineSpectra1D"
-variable = "reco_dalphaT"
-yrange = [0.0, 0.45]
+variable = "reco_dalphaT_contained"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = ["detsys", "flux", "xsec", "stats"]
 fractional = true
-show_total = true      # This will show MC_total (sum of all components)
-show_individual = true # This shows flux, xsec, stats separately
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "systematics_dalphaT_exiting"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dalphaT_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["detsys", "flux", "xsec", "stats"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "systematics_dalphaT"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dalphaT"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["detsys", "flux", "xsec", "stats"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'dalphaT_absolute_residual'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_dalphaT_residual'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+[[figure]]
+name = 'dalphaT_absolute_residual_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_dalphaT_residual_contained'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+[[figure]]
+name = 'dalphaT_absolute_residual_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_dalphaT_residual_exiting'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}

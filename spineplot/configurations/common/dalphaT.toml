@@ -1,0 +1,153 @@
+[variables]
+
+### dalphaT - Combined ------------------------------------
+
+[variables.reco_dalphaT_residual]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'Reco $\delta \alpha_T$ [degrees]'
+
+[variables.true_dalphaT_residual]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'True $\delta \alpha_T$ [degrees]'
+
+[variables.reco_dalphaT_smearing]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 12
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 12.5, 25.0, 42.5, 60.0, 80.0, 100.0, 115.0, 130.0, 145.0, 160.0, 170.0, 180.0]
+xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dalphaT_smearing]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 25.0, 60.0, 100.0, 130.0, 160.0, 180.0]
+xlabel = 'True $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.reco_dalphaT]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dalphaT]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'True $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+### dalphaT - Contained ------------------------------------
+
+[variables.reco_dalphaT_residual_contained]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'Reco $\delta \alpha_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dalphaT_residual_contained]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'True $\delta \alpha_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_dalphaT_smearing_contained]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dalphaT_smearing_contained]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'True $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_dalphaT_contained]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dalphaT_contained]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'True $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+### dalphaT - Exiting ------------------------------------
+
+[variables.reco_dalphaT_residual_exiting]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'Reco $\delta \alpha_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dalphaT_residual_exiting]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'True $\delta \alpha_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dalphaT_smearing_exiting]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'Reco $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dalphaT_smearing_exiting]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'True $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dalphaT_exiting]
+key = "reco_dalphaT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'Reco $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dalphaT_exiting]
+key = "true_dalphaT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'True $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+### dalphaT - Absolute Residual ------------------------------------
+
+[variables.abs_dalphaT_residual]
+key = "abs_dalphaT_residual"
+range = [-90, 90]
+nbins = 50
+xlabel = '$\delta_{\alpha T,\mathrm{reco}} - \delta_{\alpha T,\mathrm{true}}$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.abs_dalphaT_residual_contained]
+key = "abs_dalphaT_residual"
+range = [-90, 90]
+nbins = 50
+xlabel = '$\delta_{\alpha T,\mathrm{reco}} - \delta_{\alpha T,\mathrm{true}}$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_dalphaT_residual_exiting]
+key = "abs_dalphaT_residual"
+range = [-90, 90]
+nbins = 50
+xlabel = '$\delta_{\alpha T,\mathrm{reco}} - \delta_{\alpha T,\mathrm{true}}$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
