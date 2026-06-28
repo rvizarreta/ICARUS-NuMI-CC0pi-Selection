@@ -1,0 +1,51 @@
+[general]
+output = "/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_pid_confusion"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+
+[parameters]
+photon_threshold   = 10.0
+electron_threshold = 25.0
+muon_threshold     = 143.425
+pion_threshold     = 25.0
+proton_threshold   = 50.0
+flash_low_t        = 0.0
+flash_high_t       = 9.6
+
+[[sample]]
+name = "nominal"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root"
+ismc = true
+disable = false
+
+[[tree]]
+name = "pid_confusion"
+sim_only = true
+add_systematics = false
+add_exposure = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco"                                                    },
+    { name = "flash_cut",             type = "reco",  parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",            type = "reco",  parameters = [ "@photon_threshold"              ] },
+    { name = "no_electrons",          type = "reco",  parameters = [ "@electron_threshold"            ] },
+    { name = "single_muon",           type = "reco",  parameters = [ "@muon_threshold"                ] },
+    { name = "no_charged_pions",      type = "reco",  parameters = [ "@pion_threshold"                ] },
+    { name = "!no_protons",           type = "reco",  parameters = [ "@proton_threshold"              ] },
+    { name = "trigger_emulation_cut", type = "event", decrements_exposure = false                       },
+    { name = "data_quality_cut",      type = "event", decrements_exposure = true                        },
+    { name = "is_primary",            type = "reco_particle"                                            },
+]
+branch = [
+    { name = "pid",                    type = "both_particle" },
+    { name = "pdg_code",               type = "both_particle" },
+    { name = "ke",                     type = "both_particle" },
+    { name = "primary_classification", type = "both_particle" },
+    { name = "muon_softmax",           type = "reco_particle" },
+    { name = "proton_softmax",         type = "reco_particle" },
+    { name = "pion_softmax",           type = "reco_particle" },
+    { name = "photon_softmax",         type = "reco_particle" },
+    { name = "electron_softmax",       type = "reco_particle" },
+    { name = "length",                 type = "both_particle" },
+    { name = "containment",            type = "both_particle" },
+]

@@ -36,6 +36,7 @@ class Variable:
     """
     def __init__(self, name, key, range, nbins,
                  binning_scheme='equal_width', xlabel=None,
+                 xlabel_fontsize=12,
                  mask=None, custom_bins = None) -> None:
         """
         Initializes the Variable object with the given kwargs.
@@ -76,6 +77,7 @@ class Variable:
         self._nbins = nbins
         self._binning_scheme = binning_scheme
         self._xlabel = xlabel
+        self._xlabel_fontsize = xlabel_fontsize
         self._mask = mask
         self._custom_bins = custom_bins
         self._validity_check = {}

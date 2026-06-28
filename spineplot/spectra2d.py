@@ -331,8 +331,8 @@ class SpineSpectra2D(SpineSpectra):
                            size=8,
                            width=2)
 
-            ax.set_xticks(x_edges)
-            ax.set_yticks(y_edges)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
+            ax.yaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
 
             # Add colorbar
             if draw_colorbar:

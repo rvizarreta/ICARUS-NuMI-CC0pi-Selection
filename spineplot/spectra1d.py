@@ -144,7 +144,11 @@ class SpineSpectra1D(SpineSpectra):
                 self._plotdata[self._categories[category]] = np.zeros(self._variable._nbins)
                 self._onebincount[self._categories[category]] = 0
             xr = self._variable._range if self._xrange is None else self._xrange
-            h = np.histogram(values, bins=self._variable._nbins, range=xr, weights=weights[category])
+            group = self._categories[category]
+            if self._variable._binning_scheme == 'custom_bins' and group in self._variable._bin_edges:
+                h = np.histogram(values, bins=self._variable._bin_edges[group], weights=weights[category])
+            else:
+                h = np.histogram(values, bins=self._variable._nbins, range=xr, weights=weights[category])
             self._onebincount[self._categories[category]] += np.sum(weights[category])
             self._plotdata[self._categories[category]] += h[0]
             self._binedges[self._categories[category]] = h[1]
@@ -214,7 +218,7 @@ class SpineSpectra1D(SpineSpectra):
         else:
             ax_ratio = None
 
-        ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=12, weight='bold')
+        ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
         ylabel = 'Fraction' if show_fraction else 'Candidates'
         ax.set_ylabel(ylabel, fontsize=12, weight='bold')
         ax.set_xlim(*self._variable._range if self._xrange is None else self._xrange)
@@ -350,8 +354,13 @@ class SpineSpectra1D(SpineSpectra):
                             where='post', label=label, color=color, linewidth=1.5)
             else:
                 # Draw stacked histogram (original behavior)
-                ax.hist(reduce(bincenters), weights=[scale * x for x in reduce(data)], bins=self._variable._nbins,
-                        range=xr, label=reduce(labels), color=reduce(colors), alpha=0.75, **style.plot_kwargs)
+                if self._variable._binning_scheme == 'custom_bins':
+                    hist_bins = list(self._binedges.values())[0]
+                else:
+                    hist_bins = self._variable._nbins
+                ax.hist(reduce(bincenters), weights=[scale * x for x in reduce(data)], bins=hist_bins,
+                        range=xr if self._variable._binning_scheme != 'custom_bins' else None,
+                        label=reduce(labels), color=reduce(colors), alpha=0.75, **style.plot_kwargs)
 
             # Draw top border line for components with 'QE' in label (only for stacked plots)
             if not show_fraction:
@@ -418,7 +427,7 @@ class SpineSpectra1D(SpineSpectra):
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
-                ax.text(0.95, 0.5, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -430,7 +439,7 @@ class SpineSpectra1D(SpineSpectra):
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
-                ax.text(0.95, 0.5, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -444,7 +453,7 @@ class SpineSpectra1D(SpineSpectra):
             l.append('')
             h.append(plt.Line2D([0], [0], color='none'))
             ax.legend(h, l, fontsize=8, ncol=2, loc='upper left')
-            ax.text(0.95, 0.5, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+            ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                     transform=ax.transAxes,
                     fontsize=7, color='black',
                     horizontalalignment='right',
@@ -531,7 +540,7 @@ class SpineSpectra1D(SpineSpectra):
 
             ax_ratio.set_ylabel('Data/MC', fontsize=10, weight='bold')
             ax_ratio.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle,
-                                fontsize=12, weight='bold')
+                                fontsize=self._variable._xlabel_fontsize, weight='bold')
             ax_ratio.set_ylim(0.0, 2.0)
             ax_ratio.grid(True, alpha=0.3, axis='y')
             ax_ratio.tick_params(axis='both', which='major', labelsize=10)
@@ -609,7 +618,7 @@ class SpineSpectra1D(SpineSpectra):
             is True.
         """
         # Set axis labels
-        ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=12, weight='bold')
+        ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
         if fractional:
             ax.set_ylabel('Fractional Uncertainty', fontsize=12, weight='bold')
         else:

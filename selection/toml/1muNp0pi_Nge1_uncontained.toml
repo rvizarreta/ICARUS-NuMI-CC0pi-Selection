@@ -243,7 +243,7 @@ add_systematics = false
 add_exposure = true
 mode = "reco"
 cut = [
-    { name = "fiducial_cut", type = "reco" },
+    { name = "fiducial_cut",          type = "reco" },
     { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
     { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
 ]
