@@ -13,7 +13,7 @@ exposure_type = "pot"
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-#systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+systematics = ['sideband_multisimTree', 'sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -23,7 +23,7 @@ override_category = -100
 trees = ['selected']
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/pions_in_otherCC'
+path = '.'
 
 [analysis]
 #ordinate_sample = 'mc'

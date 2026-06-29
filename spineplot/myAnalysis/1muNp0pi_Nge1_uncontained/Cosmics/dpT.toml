@@ -1,8 +1,8 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '../../../configurations/common/variables_uncontained.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
@@ -13,7 +13,7 @@ exposure_type = "pot"
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-#systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 #[samples.mc_nonmatched]
 #key = "full"
@@ -35,7 +35,7 @@ override_category = 10
 trees = ['selected']
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/Cosmics'
+path = '.'
 
 [[systematic_recipe]]
 name = 'stats'

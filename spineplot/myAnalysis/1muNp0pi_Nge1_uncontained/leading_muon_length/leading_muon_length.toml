@@ -1,8 +1,8 @@
 [[this_includes]]
-file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/leading_muon_length.toml'
+file = '../../../configurations/common/leading_muon_length.toml'
 
 [[this_includes]]
-file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
@@ -33,7 +33,7 @@ override_category = 10
 trees = ['selected']
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/leading_muon_length'
+path = '.'
 
 [[systematic_recipe]]
 name = 'stats'

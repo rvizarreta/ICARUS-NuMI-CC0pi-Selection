@@ -1,8 +1,8 @@
 [[this_includes]]
-file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/leading_proton_momentum.toml'
+file = '../../../configurations/common/leading_proton_momentum.toml'
 
 [[this_includes]]
-file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
@@ -45,7 +45,7 @@ trees = ['selected']
 abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - reco_leading_proton_momentum"
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/leading_proton_momentum'
+path = '.'
 
 [[systematic_recipe]]
 name = 'stats'

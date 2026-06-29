@@ -1,8 +1,8 @@
 [output]
-path = "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained"
+path = "."
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '../../configurations/common/styles.toml'
 
 [samples.signal]
 #key = "nominal"

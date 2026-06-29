@@ -53,15 +53,19 @@ class Analysis:
         None
         """
         self._toml_path = toml_path
+        self._toml_dir = os.path.dirname(os.path.abspath(toml_path))
         self._config = toml.load(self._toml_path)
         for table in self._config.get('this_includes', []):
-            Analysis.handle_include(self._config, table)
+            Analysis.handle_include(self._config, table, self._toml_dir)
         rf = uproot.open(rf_path)
 
         # Load the output path
         if 'output' not in self._config.keys():
             raise ConfigException(f"No output path defined in the TOML file. Please check for a valid output configuration block in the TOML file ('{toml_path}').")
-        self._output_path = self._config['output']['path']
+        output_path = self._config['output']['path']
+        if not os.path.isabs(output_path):
+            output_path = os.path.join(self._toml_dir, output_path)
+        self._output_path = output_path
 
         # Load the categories table
         self._categories = dict()
@@ -327,7 +331,7 @@ class Analysis:
         return self._figures[figure].figure
 
     @staticmethod
-    def handle_include(config, table):
+    def handle_include(config, table, toml_dir=None):
         """
         Handles the inclusion of other configuration files in the main
         configuration file. The include directive may also contain some
@@ -343,13 +347,23 @@ class Analysis:
             The configuration dictionary to update.
         table : dict
             The block representing the include directive.
-        
+        toml_dir : str, optional
+            Directory of the parent TOML file; used to resolve relative paths.
+
         Returns
         -------
         None.
         """
-        with open(table['file'], 'r') as f:
+        file_path = table['file']
+        if toml_dir is not None and not os.path.isabs(file_path):
+            file_path = os.path.join(toml_dir, file_path)
+        include_dir = os.path.dirname(os.path.abspath(file_path))
+        with open(file_path, 'r') as f:
             c = toml.load(f)
+            for style_entry in c.get('style', []):
+                sheet = style_entry.get('style_sheet', '')
+                if sheet and not os.path.isabs(sheet):
+                    style_entry['style_sheet'] = os.path.join(include_dir, sheet)
             if 'choose' in table.keys():
                 for key, value in table['choose'].items():
                     if key in config.keys():
