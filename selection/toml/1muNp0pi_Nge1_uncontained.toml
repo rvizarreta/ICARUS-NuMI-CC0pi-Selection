@@ -260,6 +260,8 @@ branch = [
     { name = "vertex_z",           type = "both"    },
     { name = "fiducial",           type = "reco"    },
     { name = "neutrino_energy",    type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "parent_pdg",         type = "mctruth" },
 
     # Flash variables (as branches, not cuts)
     { name = "flash_time",         type = "reco"    },
