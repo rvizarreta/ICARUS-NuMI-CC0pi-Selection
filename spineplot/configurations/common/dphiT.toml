@@ -1,0 +1,154 @@
+### dphiT - Combined ------------------------------------
+
+[variables.reco_dphiT_residual]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'Reco $\delta \phi_T$ [degrees]'
+
+[variables.true_dphiT_residual]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'True $\delta \phi_T$ [degrees]'
+
+[variables.reco_dphiT_smearing]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 12
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 12.5, 25.0, 42.5, 60.0, 80.0, 100.0, 115.0, 130.0, 145.0, 160.0, 170.0, 180.0]
+xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dphiT_smearing]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 25.0, 60.0, 100.0, 130.0, 160.0, 180.0]
+xlabel = 'True $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dphiT]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'True $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+[variables.reco_dphiT]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+
+### dphiT - Contained ------------------------------------
+
+[variables.reco_dphiT_residual_contained]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'Reco $\delta \phi_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dphiT_residual_contained]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'True $\delta \phi_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_dphiT_smearing_contained]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dphiT_smearing_contained]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'True $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_dphiT_contained]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_dphiT_contained]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'True $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+### dphiT - Exiting ------------------------------------
+
+[variables.reco_dphiT_residual_exiting]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'Reco $\delta \phi_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dphiT_residual_exiting]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 100
+xlabel = 'True $\delta \phi_T$ [degrees]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dphiT_smearing_exiting]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'Reco $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dphiT_smearing_exiting]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 10
+xlabel = 'True $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dphiT_exiting]
+key = "reco_dphiT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'Reco $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dphiT_exiting]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 20
+xlabel = 'True $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+### dphiT - Absolute Residual ------------------------------------
+
+[variables.abs_dphiT_residual]
+key = "abs_dphiT_residual"
+range = [-90, 90]
+nbins = 50
+xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_dphiT_residual_contained]
+key = "abs_dphiT_residual"
+range = [-90, 90]
+nbins = 50
+xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_dphiT_residual_exiting]
+key = "abs_dphiT_residual"
+range = [-90, 90]
+nbins = 50
+xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'

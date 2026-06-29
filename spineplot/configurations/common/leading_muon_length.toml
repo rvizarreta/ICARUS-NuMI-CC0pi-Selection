@@ -1,0 +1,28 @@
+### leading_muon_length - Combined ------------------------------------
+
+[variables.reco_leading_muon_length]
+key = "reco_leading_muon_length"
+range = [50, 500]
+nbins = 25
+xlabel = '$L_\mu$ [cm] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+### leading_muon_length - Contained ------------------------------------
+
+[variables.reco_leading_muon_length_contained]
+key = "reco_leading_muon_length"
+range = [50, 500]
+nbins = 25
+xlabel = '$L_\mu$ [cm] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+### leading_muon_length - Exiting ------------------------------------
+
+[variables.reco_leading_muon_length_exiting]
+key = "reco_leading_muon_length"
+range = [50, 500]
+nbins = 25
+xlabel = '$L_\mu$ [cm] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'

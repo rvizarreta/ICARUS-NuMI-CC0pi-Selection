@@ -1,0 +1,141 @@
+# --- Combined (Contained + Exiting muons) ---
+
+[variables.reco_opening_angle]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 25
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.reco_opening_angle_residual]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 200
+xlabel = 'Reco $\cos(\theta_{\mu p})$'
+
+[variables.true_opening_angle_residual]
+key = "true_opening_angle_cos"
+range = [-1, 1]
+nbins = 200
+xlabel = 'True $\cos(\theta_{\mu p})$'
+
+[variables.reco_opening_angle_smearing]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 20
+binning_scheme = 'custom_bins'
+custom_bins = [-1.0, -0.8, -0.6, -0.475, -0.35, -0.285, -0.22, -0.135, -0.05, 0.0125, 0.075, 0.1375, 0.2, 0.26, 0.32, 0.4, 0.48, 0.59, 0.7, 0.85, 1.0]
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.true_opening_angle_smearing]
+key = "true_opening_angle_cos"
+range = [-1, 1]
+nbins = 10
+binning_scheme = 'custom_bins'
+custom_bins = [-1.0, -0.6, -0.35, -0.22, -0.05, 0.075, 0.2, 0.32, 0.48, 0.7, 1.0]
+xlabel = 'True $\cos(\theta_{\mu p})$ (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_opening_angle_residual]
+key = "abs_opening_angle_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$\cos(\theta_{\mu p,\mathrm{reco}}) - \cos(\theta_{\mu p,\mathrm{true}})$ (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+# --- Contained muon ---
+
+[variables.reco_opening_angle_contained]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 25
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_opening_angle_residual_contained]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 200
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_opening_angle_residual_contained]
+key = "true_opening_angle_cos"
+range = [-1, 1]
+nbins = 200
+xlabel = 'True $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_opening_angle_smearing_contained]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 10
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_opening_angle_smearing_contained]
+key = "true_opening_angle_cos"
+range = [-1, 1]
+nbins = 10
+xlabel = 'True $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_opening_angle_residual_contained]
+key = "abs_opening_angle_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$\cos(\theta_{\mu p,\mathrm{reco}}) - \cos(\theta_{\mu p,\mathrm{true}})$ (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+# --- Exiting muon ---
+
+[variables.reco_opening_angle_exiting]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 25
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_opening_angle_residual_exiting]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 200
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_opening_angle_residual_exiting]
+key = "true_opening_angle_cos"
+range = [-1, 1]
+nbins = 200
+xlabel = 'True $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_opening_angle_smearing_exiting]
+key = "reco_opening_angle_cos"
+range = [-1, 1]
+nbins = 10
+xlabel = 'Reco $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_opening_angle_smearing_exiting]
+key = "true_opening_angle_cos"
+range = [-1, 1]
+nbins = 10
+xlabel = 'True $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.abs_opening_angle_residual_exiting]
+key = "abs_opening_angle_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$\cos(\theta_{\mu p,\mathrm{reco}}) - \cos(\theta_{\mu p,\mathrm{true}})$ (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'

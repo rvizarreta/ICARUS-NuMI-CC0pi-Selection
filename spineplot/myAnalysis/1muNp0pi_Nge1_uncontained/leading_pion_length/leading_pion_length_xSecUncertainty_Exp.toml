@@ -1,0 +1,405 @@
+[[this_includes]]
+file = '../../../configurations/common/leading_pion_length.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+systematics = ['selected_multisigmaTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['selected_nonmatched']
+
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19
+override_category = -100
+trees = ['selected']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['selected']
+
+[output]
+path = '.'
+
+# --- CCQE Dials ---
+[[systematic_recipe]]
+name = 'xsec_ZExpA1CCQE'
+label = 'ZExpA1CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE\b'
+
+[[systematic_recipe]]
+name = 'xsec_ZExpA2CCQE'
+label = 'ZExpA2CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE\b'
+
+[[systematic_recipe]]
+name = 'xsec_ZExpA3CCQE'
+label = 'ZExpA3CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE\b'
+
+[[systematic_recipe]]
+name = 'xsec_ZExpA4CCQE'
+label = 'ZExpA4CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE\b'
+
+[[systematic_recipe]]
+name = 'xsec_RPA_CCQE'
+label = 'RPA_CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_RPA_CCQE\b'
+
+[[systematic_recipe]]
+name = 'xsec_CoulombCCQE'
+label = 'CoulombCCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_CoulombCCQE\b'
+
+[[systematic_recipe]]
+name = 'xsec_VecFFCCQEshape'
+label = 'VecFFCCQEshape'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape\b'
+
+[[systematic_recipe]]
+name = 'xsec_LowQ2Suppression'
+label = 'LowQ2Suppression'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_LowQ2Suppression\b'
+
+# --- MEC Dials ---
+[[systematic_recipe]]
+name = 'xsec_NormCCMEC'
+label = 'NormCCMEC'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NormCCMEC\b'
+
+[[systematic_recipe]]
+name = 'xsec_NormNCMEC'
+label = 'NormNCMEC'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NormNCMEC\b'
+
+[[systematic_recipe]]
+name = 'xsec_DecayAngMEC'
+label = 'DecayAngMEC'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_DecayAngMEC\b'
+
+# --- Resonant Dials ---
+[[systematic_recipe]]
+name = 'xsec_MaNCEL'
+label = 'MaNCEL'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MaNCEL\b'
+
+[[systematic_recipe]]
+name = 'xsec_EtaNCEL'
+label = 'EtaNCEL'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_EtaNCEL\b'
+
+[[systematic_recipe]]
+name = 'xsec_MaCCRES'
+label = 'MaCCRES'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MaCCRES\b'
+
+[[systematic_recipe]]
+name = 'xsec_MvCCRES'
+label = 'MvCCRES'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MvCCRES\b'
+
+[[systematic_recipe]]
+name = 'xsec_MaNCRES'
+label = 'MaNCRES'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MaNCRES\b'
+
+[[systematic_recipe]]
+name = 'xsec_MvNCRES'
+label = 'MvNCRES'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MvNCRES\b'
+
+[[systematic_recipe]]
+name = 'xsec_CC1piTPi'
+label = 'CC1piTPi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_CC1piTPi\b'
+
+[[systematic_recipe]]
+name = 'xsec_RDecBR1gamma'
+label = 'RDecBR1gamma'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_RDecBR1gamma\b'
+
+[[systematic_recipe]]
+name = 'xsec_RDecBR1eta'
+label = 'RDecBR1eta'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_RDecBR1eta\b'
+
+[[systematic_recipe]]
+name = 'xsec_Theta_Delta2Npi'
+label = 'Theta_Delta2Npi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi\b'
+
+[[systematic_recipe]]
+name = 'xsec_ThetaDelta2NRad'
+label = 'ThetaDelta2NRad'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad\b'
+
+# --- Non-Resonant Dials ---
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvpCC1pi'
+label = 'NonRESBGvpCC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvpCC2pi'
+label = 'NonRESBGvpCC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvpNC1pi'
+label = 'NonRESBGvpNC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvpNC2pi'
+label = 'NonRESBGvpNC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvnCC1pi'
+label = 'NonRESBGvnCC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvnCC2pi'
+label = 'NonRESBGvnCC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvnNC1pi'
+label = 'NonRESBGvnNC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvnNC2pi'
+label = 'NonRESBGvnNC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarpCC1pi'
+label = 'NonRESBGvbarpCC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarpCC2pi'
+label = 'NonRESBGvbarpCC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarpNC1pi'
+label = 'NonRESBGvbarpNC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarpNC2pi'
+label = 'NonRESBGvbarpNC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarnCC1pi'
+label = 'NonRESBGvbarnCC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarnCC2pi'
+label = 'NonRESBGvbarnCC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC2pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarnNC1pi'
+label = 'NonRESBGvbarnNC1pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC1pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_NonRESBGvbarnNC2pi'
+label = 'NonRESBGvbarnNC2pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC2pi\b'
+
+# --- FSI Dials ---
+[[systematic_recipe]]
+name = 'xsec_MFP_pi'
+label = 'MFP_pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MFP_pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_MFP_N'
+label = 'MFP_N'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_MFP_N\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrCEx_pi'
+label = 'FrCEx_pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrCEx_pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrCEx_N'
+label = 'FrCEx_N'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrCEx_N\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrInel_pi'
+label = 'FrInel_pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrInel_pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrInel_N'
+label = 'FrInel_N'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrInel_N\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrAbs_pi'
+label = 'FrAbs_pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrAbs_pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrAbs_N'
+label = 'FrAbs_N'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrAbs_N\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrPiProd_pi'
+label = 'FrPiProd_pi'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrPiProd_pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_FrPiProd_N'
+label = 'FrPiProd_N'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_FrPiProd_N\b'
+
+# --- Other Dials ---
+[[systematic_recipe]]
+name = 'xsec_NormCCCOH'
+label = 'NormCCCOH'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NormCCCOH\b'
+
+[[systematic_recipe]]
+name = 'xsec_NormNCCOH'
+label = 'NormNCCOH'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NormNCCOH\b'
+
+[[systematic_recipe]]
+name = 'xsec_AhtBY'
+label = 'AhtBY'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_AhtBY\b'
+
+[[systematic_recipe]]
+name = 'xsec_BhtBY'
+label = 'BhtBY'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_BhtBY\b'
+
+[[systematic_recipe]]
+name = 'xsec_CV1uBY'
+label = 'CV1uBY'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_CV1uBY\b'
+
+[[systematic_recipe]]
+name = 'xsec_CV2uBY'
+label = 'CV2uBY'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_CV2uBY\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+
+[[figure]]
+name = 'leading_pion_length_xSecUncertainty_expanded'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length'
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = [
+    'xsec_ZExpA1CCQE', 'xsec_ZExpA2CCQE', 'xsec_ZExpA3CCQE', 'xsec_ZExpA4CCQE',
+    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', 'xsec_LowQ2Suppression',
+    'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+    'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
+    'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
+    'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',
+    'xsec_NonRESBGvpCC1pi', 'xsec_NonRESBGvpCC2pi', 'xsec_NonRESBGvpNC1pi', 'xsec_NonRESBGvpNC2pi',
+    'xsec_NonRESBGvnCC1pi', 'xsec_NonRESBGvnCC2pi', 'xsec_NonRESBGvnNC1pi', 'xsec_NonRESBGvnNC2pi',
+    'xsec_NonRESBGvbarpCC1pi', 'xsec_NonRESBGvbarpCC2pi', 'xsec_NonRESBGvbarpNC1pi', 'xsec_NonRESBGvbarpNC2pi',
+    'xsec_NonRESBGvbarnCC1pi', 'xsec_NonRESBGvbarnCC2pi', 'xsec_NonRESBGvbarnNC1pi', 'xsec_NonRESBGvbarnNC2pi',
+    'xsec_MFP_pi', 'xsec_MFP_N', 'xsec_FrCEx_pi', 'xsec_FrCEx_N', 'xsec_FrInel_pi',
+    'xsec_FrInel_N', 'xsec_FrAbs_pi', 'xsec_FrAbs_N', 'xsec_FrPiProd_pi', 'xsec_FrPiProd_N',
+    'xsec_NormCCCOH', 'xsec_NormNCCOH', 'xsec_AhtBY', 'xsec_BhtBY', 'xsec_CV1uBY', 'xsec_CV2uBY'
+]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'leading_pion_length_xSecUncertainty_expanded_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length_contained'
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = [
+    'xsec_ZExpA1CCQE', 'xsec_ZExpA2CCQE', 'xsec_ZExpA3CCQE', 'xsec_ZExpA4CCQE',
+    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', 'xsec_LowQ2Suppression',
+    'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+    'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
+    'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
+    'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',
+    'xsec_NonRESBGvpCC1pi', 'xsec_NonRESBGvpCC2pi', 'xsec_NonRESBGvpNC1pi', 'xsec_NonRESBGvpNC2pi',
+    'xsec_NonRESBGvnCC1pi', 'xsec_NonRESBGvnCC2pi', 'xsec_NonRESBGvnNC1pi', 'xsec_NonRESBGvnNC2pi',
+    'xsec_NonRESBGvbarpCC1pi', 'xsec_NonRESBGvbarpCC2pi', 'xsec_NonRESBGvbarpNC1pi', 'xsec_NonRESBGvbarpNC2pi',
+    'xsec_NonRESBGvbarnCC1pi', 'xsec_NonRESBGvbarnCC2pi', 'xsec_NonRESBGvbarnNC1pi', 'xsec_NonRESBGvbarnNC2pi',
+    'xsec_MFP_pi', 'xsec_MFP_N', 'xsec_FrCEx_pi', 'xsec_FrCEx_N', 'xsec_FrInel_pi',
+    'xsec_FrInel_N', 'xsec_FrAbs_pi', 'xsec_FrAbs_N', 'xsec_FrPiProd_pi', 'xsec_FrPiProd_N',
+    'xsec_NormCCCOH', 'xsec_NormNCCOH', 'xsec_AhtBY', 'xsec_BhtBY', 'xsec_CV1uBY', 'xsec_CV2uBY'
+]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'leading_pion_length_xSecUncertainty_expanded_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length_exiting'
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = [
+    'xsec_ZExpA1CCQE', 'xsec_ZExpA2CCQE', 'xsec_ZExpA3CCQE', 'xsec_ZExpA4CCQE',
+    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', 'xsec_LowQ2Suppression',
+    'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+    'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
+    'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
+    'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',
+    'xsec_NonRESBGvpCC1pi', 'xsec_NonRESBGvpCC2pi', 'xsec_NonRESBGvpNC1pi', 'xsec_NonRESBGvpNC2pi',
+    'xsec_NonRESBGvnCC1pi', 'xsec_NonRESBGvnCC2pi', 'xsec_NonRESBGvnNC1pi', 'xsec_NonRESBGvnNC2pi',
+    'xsec_NonRESBGvbarpCC1pi', 'xsec_NonRESBGvbarpCC2pi', 'xsec_NonRESBGvbarpNC1pi', 'xsec_NonRESBGvbarpNC2pi',
+    'xsec_NonRESBGvbarnCC1pi', 'xsec_NonRESBGvbarnCC2pi', 'xsec_NonRESBGvbarnNC1pi', 'xsec_NonRESBGvbarnNC2pi',
+    'xsec_MFP_pi', 'xsec_MFP_N', 'xsec_FrCEx_pi', 'xsec_FrCEx_N', 'xsec_FrInel_pi',
+    'xsec_FrInel_N', 'xsec_FrAbs_pi', 'xsec_FrAbs_N', 'xsec_FrPiProd_pi', 'xsec_FrPiProd_N',
+    'xsec_NormCCCOH', 'xsec_NormNCCOH', 'xsec_AhtBY', 'xsec_BhtBY', 'xsec_CV1uBY', 'xsec_CV2uBY'
+]
+fractional = true
+show_total = true
+show_individual = true

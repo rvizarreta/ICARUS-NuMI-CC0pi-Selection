@@ -1,0 +1,120 @@
+[[this_includes]]
+file = '../../../configurations/common/vertex_z.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+systematics = ['selected_multisigmaTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['selected_nonmatched']
+
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19
+override_category = -100
+trees = ['selected']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['selected']
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'xsec_ccqe'
+label = 'CCQE'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(ZExpA[1-4]CCQE|RPA_CCQE|CoulombCCQE|VecFFCCQEshape|LowQ2Suppression)\b'
+
+[[systematic_recipe]]
+name = 'xsec_mec'
+label = 'MEC'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCMEC|NormNCMEC|DecayAngMEC)\b'
+
+[[systematic_recipe]]
+name = 'xsec_res'
+label = 'Resonant'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MaNCEL|EtaNCEL|MaCCRES|MvCCRES|MaNCRES|MvNCRES|CC1piTPi|RDecBR1gamma|RDecBR1eta|Theta_Delta2Npi|ThetaDelta2NRad)\b'
+
+[[systematic_recipe]]
+name = 'xsec_nonres'
+label = 'Non-resonant'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBG(vp|vn|vbarp|vbarn)(CC|NC)(1|2)pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_fsi'
+label = 'FSI'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MFP|FrCEx|FrInel|FrAbs|FrPiProd)_(pi|N)\b'
+
+[[systematic_recipe]]
+name = 'xsec_other'
+label = 'Other'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCCOH|NormNCCOH|AhtBY|BhtBY|CV1uBY|CV2uBY)\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+
+[[figure]]
+name = 'vertex_z_xSecUncertainty'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['xsec_ccqe', 'xsec_mec', 'xsec_res', 'xsec_nonres', 'xsec_fsi', 'xsec_other']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'vertex_z_xSecUncertainty_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z_contained'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['xsec_ccqe', 'xsec_mec', 'xsec_res', 'xsec_nonres', 'xsec_fsi', 'xsec_other']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'vertex_z_xSecUncertainty_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z_exiting'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['xsec_ccqe', 'xsec_mec', 'xsec_res', 'xsec_nonres', 'xsec_fsi', 'xsec_other']
+fractional = true
+show_total = true
+show_individual = true

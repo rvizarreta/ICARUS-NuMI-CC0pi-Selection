@@ -1,0 +1,137 @@
+# --- Combined (Contained + Exiting protons) ---
+
+[variables.reco_leading_proton_momentum]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 25
+xlabel = 'Reco $p_p$ [GeV/c] (Contained + Exiting $p$)'
+xlabel_fontsize = 10
+
+[variables.reco_leading_proton_momentum_residual]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 200
+xlabel = 'Reco $p_p$ [GeV/c]'
+
+[variables.true_leading_proton_momentum_residual]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 200
+xlabel = 'True $p_p$ [GeV/c]'
+
+[variables.reco_leading_proton_momentum_smearing]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 10
+xlabel = 'Reco $p_p$ [GeV/c] (Contained + Exiting $p$)'
+xlabel_fontsize = 10
+
+[variables.true_leading_proton_momentum_smearing]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [0.31, 0.42, 0.54, 0.67, 0.82, 1.00, 1.20]
+xlabel = 'True $p_p$ [GeV/c] (Contained + Exiting $p$)'
+xlabel_fontsize = 10
+
+[variables.abs_leading_proton_momentum_residual]
+key = "abs_leading_proton_momentum_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained + Exiting $p$)'
+xlabel_fontsize = 10
+
+# --- Contained proton ---
+
+[variables.reco_leading_proton_momentum_contained]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 25
+xlabel = 'Reco $p_p$ [GeV/c] (Contained $p$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.reco_leading_proton_momentum_residual_contained]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 200
+xlabel = 'Reco $p_p$ [GeV/c] (Contained $p$)'
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.true_leading_proton_momentum_residual_contained]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 200
+xlabel = 'True $p_p$ [GeV/c] (Contained $p$)'
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.reco_leading_proton_momentum_smearing_contained]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 10
+xlabel = 'Reco $p_p$ [GeV/c] (Contained $p$)'
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.true_leading_proton_momentum_smearing_contained]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 8
+xlabel = 'True $p_p$ [GeV/c] (Contained $p$)'
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.abs_leading_proton_momentum_residual_contained]
+key = "abs_leading_proton_momentum_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained $p$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_proton_containment == 1'
+
+# --- Exiting proton ---
+
+[variables.reco_leading_proton_momentum_exiting]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 11
+binning_scheme = 'custom_bins'
+custom_bins = [0.31, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00, 1.05, 1.10, 1.15, 1.20]
+xlabel = 'Reco $p_p$ [GeV/c] (Exiting $p$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_proton_containment == 0'
+
+[variables.reco_leading_proton_momentum_residual_exiting]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 200
+xlabel = 'Reco $p_p$ [GeV/c] (Exiting $p$)'
+mask = 'reco_leading_proton_containment == 0'
+
+[variables.true_leading_proton_momentum_residual_exiting]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 200
+xlabel = 'True $p_p$ [GeV/c] (Exiting $p$)'
+mask = 'reco_leading_proton_containment == 0'
+
+[variables.reco_leading_proton_momentum_smearing_exiting]
+key = "reco_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 10
+xlabel = 'Reco $p_p$ [GeV/c] (Exiting $p$)'
+mask = 'reco_leading_proton_containment == 0'
+
+[variables.true_leading_proton_momentum_smearing_exiting]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.2]
+nbins = 8
+xlabel = 'True $p_p$ [GeV/c] (Exiting $p$)'
+mask = 'reco_leading_proton_containment == 0'
+
+[variables.abs_leading_proton_momentum_residual_exiting]
+key = "abs_leading_proton_momentum_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Exiting $p$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_proton_containment == 0'

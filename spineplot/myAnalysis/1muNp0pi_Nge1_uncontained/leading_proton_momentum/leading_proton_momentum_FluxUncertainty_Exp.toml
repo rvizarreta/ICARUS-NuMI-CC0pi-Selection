@@ -1,0 +1,220 @@
+[[this_includes]]
+file = '../../../configurations/common/leading_proton_momentum.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+trees = ['selected']
+print_sys = true
+systematics = ['selected_NuMIfluxsimTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['selected_nonmatched']
+
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19
+override_category = -100
+trees = ['selected']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['selected']
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'horn_current'
+label = 'horn\_current'
+pattern = 'hysyst_horn_current(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'horn1_x'
+label = 'horn1\_x'
+pattern = 'hysyst_horn1_x(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'horn1_y'
+label = 'horn1\_y'
+pattern = 'hysyst_horn1_y(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'beam_spot'
+label = 'beam\_spot'
+pattern = 'hysyst_beam_spot(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'horn_water'
+label = 'horn\_water'
+pattern = 'hysyst_horn_water(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'beam_shift_x'
+label = 'beam\_shift\_x'
+pattern = 'hysyst_beam_shift_x(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'beam_shift_y'
+label = 'beam\_shift\_y'
+pattern = 'hysyst_beam_shift_y(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'target_to_horn1'
+label = 'target\_to\_horn1'
+pattern = 'hysyst_target_to_horn1(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'decay_pipe_radius'
+label = 'decay\_pipe\_radius'
+pattern = 'hysyst_decay_pipe_radius(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'beam_divergence'
+label = 'beam\_divergence'
+pattern = 'hysyst_beam_divergence(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'beam_momentum'
+label = 'beam\_momentum'
+pattern = 'hysyst_beam_momentum(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_0'
+label = 'hpc\_0'
+pattern = 'hysyst_hpc_0(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_1'
+label = 'hpc\_1'
+pattern = 'hysyst_hpc_1(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_2'
+label = 'hpc\_2'
+pattern = 'hysyst_hpc_2(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_3'
+label = 'hpc\_3'
+pattern = 'hysyst_hpc_3(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_4'
+label = 'hpc\_4'
+pattern = 'hysyst_hpc_4(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_5'
+label = 'hpc\_5'
+pattern = 'hysyst_hpc_5(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_6'
+label = 'hpc\_6'
+pattern = 'hysyst_hpc_6(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_7'
+label = 'hpc\_7'
+pattern = 'hysyst_hpc_7(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_8'
+label = 'hpc\_8'
+pattern = 'hysyst_hpc_8(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_9'
+label = 'hpc\_9'
+pattern = 'hysyst_hpc_9(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_10'
+label = 'hpc\_10'
+pattern = 'hysyst_hpc_10(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_11'
+label = 'hpc\_11'
+pattern = 'hysyst_hpc_11(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_12'
+label = 'hpc\_12'
+pattern = 'hysyst_hpc_12(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_13'
+label = 'hpc\_13'
+pattern = 'hysyst_hpc_13(?!\w*sigma\b)\w*\b'
+
+[[systematic_recipe]]
+name = 'hpc_14'
+label = 'hpc\_14'
+pattern = 'hysyst_hpc_14(?!\w*sigma\b)\w*\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+
+[[figure]]
+name = 'leading_proton_momentum_FluxUncertainty_Exp'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_proton_momentum'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['horn_current', 'horn1_x', 'horn1_y', 'beam_spot', 'horn_water', 'beam_shift_x', 'beam_shift_y', 'target_to_horn1', 'decay_pipe_radius', 'beam_divergence', 'beam_momentum', 'hpc_0', 'hpc_1', 'hpc_2', 'hpc_3', 'hpc_4', 'hpc_5', 'hpc_6', 'hpc_7', 'hpc_8', 'hpc_9', 'hpc_10', 'hpc_11', 'hpc_12', 'hpc_13', 'hpc_14']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'leading_proton_momentum_FluxUncertainty_Exp_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_proton_momentum_contained'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['horn_current', 'horn1_x', 'horn1_y', 'beam_spot', 'horn_water', 'beam_shift_x', 'beam_shift_y', 'target_to_horn1', 'decay_pipe_radius', 'beam_divergence', 'beam_momentum', 'hpc_0', 'hpc_1', 'hpc_2', 'hpc_3', 'hpc_4', 'hpc_5', 'hpc_6', 'hpc_7', 'hpc_8', 'hpc_9', 'hpc_10', 'hpc_11', 'hpc_12', 'hpc_13', 'hpc_14']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'leading_proton_momentum_FluxUncertainty_Exp_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_proton_momentum_exiting'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['horn_current', 'horn1_x', 'horn1_y', 'beam_spot', 'horn_water', 'beam_shift_x', 'beam_shift_y', 'target_to_horn1', 'decay_pipe_radius', 'beam_divergence', 'beam_momentum', 'hpc_0', 'hpc_1', 'hpc_2', 'hpc_3', 'hpc_4', 'hpc_5', 'hpc_6', 'hpc_7', 'hpc_8', 'hpc_9', 'hpc_10', 'hpc_11', 'hpc_12', 'hpc_13', 'hpc_14']
+fractional = true
+show_total = true
+show_individual = true

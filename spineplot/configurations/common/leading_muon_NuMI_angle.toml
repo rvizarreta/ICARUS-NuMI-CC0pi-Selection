@@ -1,0 +1,137 @@
+### leading_muon_NuMI_angle - Combined ------------------------------------
+
+[variables.reco_leading_muon_angle_residual]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 200
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI'
+
+[variables.true_leading_muon_angle_residual]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 200
+xlabel = 'True $\cos(\theta_\mu)$ w.r.t. NuMI'
+
+[variables.reco_leading_muon_angle_smearing]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 10
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.true_leading_muon_angle_smearing]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 10
+xlabel = 'True $\cos(\theta_\mu)$ w.r.t. NuMI (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.reco_leading_muon_angle]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 25
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_leading_muon_NuMI_angle_residual]
+key = "abs_leading_muon_NuMI_angle_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}$ (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+### leading_muon_NuMI_angle - Contained ------------------------------------
+
+[variables.reco_leading_muon_angle_residual_contained]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 200
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_leading_muon_angle_residual_contained]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 200
+xlabel = 'True $\cos(\theta_\mu)$ w.r.t. NuMI'
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_leading_muon_angle_smearing_contained]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 10
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.true_leading_muon_angle_smearing_contained]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 10
+xlabel = 'True $\cos(\theta_\mu)$ w.r.t. NuMI (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.reco_leading_muon_angle_contained]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 25
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_leading_muon_NuMI_angle_residual_contained]
+key = "abs_leading_muon_NuMI_angle_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}$ (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+### leading_muon_NuMI_angle - Exiting ------------------------------------
+
+[variables.reco_leading_muon_angle_residual_exiting]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 200
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_leading_muon_angle_residual_exiting]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 200
+xlabel = 'True $\cos(\theta_\mu)$ w.r.t. NuMI'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_leading_muon_angle_smearing_exiting]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 10
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_leading_muon_angle_smearing_exiting]
+key = "true_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 10
+xlabel = 'True $\cos(\theta_\mu)$ w.r.t. NuMI (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_leading_muon_angle_exiting]
+key = "reco_leading_muon_cos_theta_mu"
+range = [-1, 1]
+nbins = 25
+xlabel = 'Reco $\cos(\theta_\mu)$ w.r.t. NuMI (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.abs_leading_muon_NuMI_angle_residual_exiting]
+key = "abs_leading_muon_NuMI_angle_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}$ (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
