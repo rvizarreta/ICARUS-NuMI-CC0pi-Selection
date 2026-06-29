@@ -1,24 +1,28 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/vertex_z.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-#key = "nominal"
 key = "full"
 exposure_type = "pot"
 trees = ['selected']
-print_sys = false
-# Comment this to avoid systematics when plotting (usually done for testing plots)
+print_sys = true
 systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+
+[samples.mc.precompute]
+abs_vertex_z_residual = "reco_vertex_z - true_vertex_z"
 
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
 trees = ['selected_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_vertex_z_residual = "reco_vertex_z - true_vertex_z"
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -28,59 +32,243 @@ override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
+[samples.onbeam.precompute]
+abs_vertex_z_residual = "reco_vertex_z - reco_vertex_z"
+
 [samples.offbeam]
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 10
 trees = ['selected']
 
+[samples.offbeam.precompute]
+abs_vertex_z_residual = "reco_vertex_z - reco_vertex_z"
+
 [output]
 path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/vertex_z'
 
 [[systematic_recipe]]
 name = 'stats'
-label = 'MC Statistical Uncertainty'
+label = 'Stat.'
 pattern = 'mc_statistical'
 
 [[systematic_recipe]]
 name = 'flux'
-label = 'Flux Systematics'
+label = 'Flux'
 pattern = 'hysyst*(?!\w*sigma\b)\w+\b'
 
 [[systematic_recipe]]
 name = 'xsec'
-label = 'Interaction Systematics'
-#pattern = '\bGENIEReWeight_SBN_v1_multisim_\w+\b'
+label = 'Cross-section'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
 label = 'Detector Systematics'
-#pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'Stats, Detector, Flux, & Interaction Uncertainty'
-#pattern = 'mc_statistical'
-#pattern = 'mc_nu_statistical'
+label = 'All Systematics (No G4)'
 pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]
-#ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
 category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'C6', 'black']
-category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+
+# --- Reco distribution ---
 
 [[figure]]
-name = 'vertex_z_reco'
+name = 'vertex_z'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
+figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_vtx_z'
-yrange = [0.0, 280.0]
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+variable = 'reco_vertex_z'
+yrange = 1.5
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+
+[[figure]]
+name = 'vertex_z_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z_contained'
+yrange = 1.5
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+
+[[figure]]
+name = 'vertex_z_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_data'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z_exiting'
+yrange = 1.5
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+
+# --- Fractional residual ---
+
+[[figure]]
+name = 'vertex_z_fractional_residual'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra2D'
+yvariable = 'reco_vertex_z_residual'
+xvariable = 'true_vertex_z_residual'
+xrange = [-1000, 1000]
+xtitle = 'True Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
+draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+
+[[figure]]
+name = 'vertex_z_fractional_residual_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra2D'
+yvariable = 'reco_vertex_z_residual_contained'
+xvariable = 'true_vertex_z_residual_contained'
+xrange = [-1000, 1000]
+xtitle = 'True Vertex Z [cm] (Contained $\mu^\pm$)'
+draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+
+[[figure]]
+name = 'vertex_z_fractional_residual_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra2D'
+yvariable = 'reco_vertex_z_residual_exiting'
+xvariable = 'true_vertex_z_residual_exiting'
+xrange = [-1000, 1000]
+xtitle = 'True Vertex Z [cm] (Exiting $\mu^\pm$)'
+draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+
+# --- Smearing matrix ---
+
+[[figure]]
+name = 'vertex_z_smearing_matrix_normalized'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_vertex_z_smearing'
+yvariable = 'reco_vertex_z_smearing'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+
+[[figure]]
+name = 'vertex_z_smearing_matrix_normalized_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_vertex_z_smearing_contained'
+yvariable = 'reco_vertex_z_smearing_contained'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+
+[[figure]]
+name = 'vertex_z_smearing_matrix_normalized_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_vertex_z_smearing_exiting'
+yvariable = 'reco_vertex_z_smearing_exiting'
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+
+# --- Absolute residual ---
+
+[[figure]]
+name = 'vertex_z_absolute_residual'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_vertex_z_residual'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+[[figure]]
+name = 'vertex_z_absolute_residual_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_vertex_z_residual_contained'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+[[figure]]
+name = 'vertex_z_absolute_residual_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_vertex_z_residual_exiting'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+# --- Systematics ---
+
+[[figure]]
+name = 'systematics_vertex_z'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'systematics_vertex_z_contained'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z_contained'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'systematics_vertex_z_exiting'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_z_exiting'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+fractional = true
+show_total = true
+show_individual = true
