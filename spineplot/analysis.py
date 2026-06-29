@@ -293,8 +293,8 @@ class Analysis:
                 artist.add_sample(sample, sample==ordinate)
 
         # Check if the output path exists. If not, create it.
-        if not os.path.exists(self._output_path):
-            os.makedirs(self._output_path)
+        os.makedirs(os.path.join(self._output_path, 'jpeg'), exist_ok=True)
+        os.makedirs(os.path.join(self._output_path, 'pdf'), exist_ok=True)
         for figname, figure in self._figures.items():
             figure.create()
             figure.figure.savefig(f"{self._output_path}/jpeg/{figname}.jpeg", dpi=300)
