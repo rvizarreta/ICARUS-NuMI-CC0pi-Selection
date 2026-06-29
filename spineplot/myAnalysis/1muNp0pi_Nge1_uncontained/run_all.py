@@ -1,5 +1,6 @@
 import os
 import sys
+import multiprocessing
 
 workspace_root = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(workspace_root, "../../.."))
@@ -58,49 +59,38 @@ sys.path.insert(0, os.path.join(workspace_root, "vertex_z"))
 print("  vertex_z", flush=True)
 import vertex_z_plots
 
-print("All modules loaded. Starting analysis...\n", flush=True)
+print("All modules loaded. Starting parallel analysis...\n", flush=True)
+
+OBSERVABLES = [
+    ('dalphaT',              dalphaT_plots),
+    ('dpT',                  dpT_plots),
+    ('dphiT',                dphiT_plots),
+    ('leading_muon_NuMI_angle',  leading_muon_NuMI_angle_plots),
+    ('leading_muon_length',      leading_muon_length_plots),
+    ('leading_muon_momentum',    leading_muon_momentum_plots),
+    ('leading_muon_polar_angle', leading_muon_polar_angle_plots),
+    ('leading_pion_length',      leading_pion_length_plots),
+    ('leading_proton_momentum',  leading_proton_momentum_plots),
+    ('opening_angle',            opening_angle_plots),
+    ('vertex_x',                 vertex_x_plots),
+    ('vertex_y',                 vertex_y_plots),
+    ('vertex_z',                 vertex_z_plots),
+]
 
 
-def main(close_figs=True):
-    print("=== Running dalphaT plots ===", flush=True)
-    dalphaT_plots.run(close_figs=close_figs)
+def _run_one(args):
+    name, module = args
+    print(f"[{name}] Starting...", flush=True)
+    module.run(close_figs=True)
+    print(f"[{name}] Done.", flush=True)
 
-    print("=== Running dpT plots ===", flush=True)
-    dpT_plots.run(close_figs=close_figs)
 
-    print("=== Running dphiT plots ===", flush=True)
-    dphiT_plots.run(close_figs=close_figs)
-
-    print("=== Running leading_muon_NuMI_angle plots ===", flush=True)
-    leading_muon_NuMI_angle_plots.run(close_figs=close_figs)
-
-    print("=== Running leading_muon_length plots ===", flush=True)
-    leading_muon_length_plots.run(close_figs=close_figs)
-
-    print("=== Running leading_muon_momentum plots ===", flush=True)
-    leading_muon_momentum_plots.run(close_figs=close_figs)
-
-    print("=== Running leading_muon_polar_angle plots ===", flush=True)
-    leading_muon_polar_angle_plots.run(close_figs=close_figs)
-
-    print("=== Running leading_pion_length plots ===", flush=True)
-    leading_pion_length_plots.run(close_figs=close_figs)
-
-    print("=== Running leading_proton_momentum plots ===", flush=True)
-    leading_proton_momentum_plots.run(close_figs=close_figs)
-
-    print("=== Running opening_angle plots ===", flush=True)
-    opening_angle_plots.run(close_figs=close_figs)
-
-    print("=== Running vertex_x plots ===", flush=True)
-    vertex_x_plots.run(close_figs=close_figs)
-
-    print("=== Running vertex_y plots ===", flush=True)
-    vertex_y_plots.run(close_figs=close_figs)
-
-    print("=== Running vertex_z plots ===", flush=True)
-    vertex_z_plots.run(close_figs=close_figs)
+def main():
+    with multiprocessing.Pool(processes=len(OBSERVABLES)) as pool:
+        pool.map(_run_one, OBSERVABLES)
+    print("\nAll observables complete.", flush=True)
 
 
 if __name__ == '__main__':
+    multiprocessing.set_start_method('spawn')
     main()
