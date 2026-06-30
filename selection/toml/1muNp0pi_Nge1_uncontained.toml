@@ -449,6 +449,7 @@ branch = [
     { name = "px",                 type = "both_particle", selector = "leading_proton" },
     { name = "py",                 type = "both_particle", selector = "leading_proton" },
     { name = "pz",                 type = "both_particle", selector = "leading_proton" },
+    { name = "polar_angle",        type = "both_particle", selector = "leading_proton" },
 
     # Leading PION particle-level
     { name = "momentum",           type = "both_particle", selector = "leading_pion"},
@@ -459,6 +460,7 @@ branch = [
     { name = "px",                 type = "both_particle", selector = "leading_pion" },
     { name = "py",                 type = "both_particle", selector = "leading_pion" },
     { name = "pz",                 type = "both_particle", selector = "leading_pion" },
+    { name = "polar_angle",        type = "both_particle", selector = "leading_pion" },
 
     # PID and PDG for leading particles
     { name = "pid", type = "both_particle", selector = "leading_muon"   },
