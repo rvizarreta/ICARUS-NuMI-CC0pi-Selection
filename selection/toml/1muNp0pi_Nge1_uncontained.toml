@@ -133,6 +133,12 @@ ismc = true
 disable = false
 
 [[sample]]
+name = "rock"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/FHCv09_89_01_02p02_Rock_muons/*.root"
+ismc = true
+disable = false
+
+[[sample]]
 name = "cv"
 path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/CV/*.root"
 ismc = true
