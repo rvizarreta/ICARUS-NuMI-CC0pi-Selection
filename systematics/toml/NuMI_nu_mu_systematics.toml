@@ -49,6 +49,18 @@ action = 'add_weights'
 table_types = ['multisim', 'multisigma', 'variation']
 
 [[tree]]
+origin = 'events/rock/selected'
+destination = 'events/rock/'
+name = 'selected'
+action = 'copy'
+
+[[tree]]
+origin = 'events/rock/sideband'
+destination = 'events/rock/'
+name = 'sideband'
+action = 'copy'
+
+[[tree]]
 origin = 'events/onbeam/selected'
 destination = 'events/onbeam/'
 name = 'selected'
