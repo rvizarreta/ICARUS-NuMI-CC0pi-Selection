@@ -4,6 +4,29 @@ file = '../../../configurations/common/leading_muon_momentum.toml'
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
 
+[variables.abs_leading_muon_momentum_residual]
+key = "abs_leading_muon_momentum_residual"
+range = [-1.5, 1.5]
+nbins = 50
+xlabel = '$p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_leading_muon_momentum_residual_contained]
+key = "abs_leading_muon_momentum_residual"
+range = [-1.5, 1.5]
+nbins = 50
+xlabel = '$p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}$ [GeV/c] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_leading_muon_momentum_residual_exiting]
+key = "abs_leading_muon_momentum_residual"
+range = [-1.5, 1.5]
+nbins = 50
+xlabel = '$p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}$ [GeV/c] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]

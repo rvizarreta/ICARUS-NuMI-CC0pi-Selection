@@ -128,28 +128,3 @@ range = [0,800]
 nbins = 20
 xlabel = 'Reco $\delta p_T$ [MeV/c] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'
-
-### dpT - Absolute Residual ------------------------------------
-
-[variables.abs_dpT_residual]
-key = "abs_dpT_residual"
-range = [-600, 600]
-nbins = 50
-xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-
-[variables.abs_dpT_residual_contained]
-key = "abs_dpT_residual"
-range = [-600, 600]
-nbins = 50
-xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Contained $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
-
-[variables.abs_dpT_residual_exiting]
-key = "abs_dpT_residual"
-range = [-600, 600]
-nbins = 50
-xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'

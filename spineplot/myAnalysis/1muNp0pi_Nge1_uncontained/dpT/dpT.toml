@@ -5,6 +5,29 @@ file = '../../../configurations/common/dpT.toml'
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
 
+[variables.abs_dpT_residual]
+key = "abs_dpT_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_dpT_residual_contained]
+key = "abs_dpT_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_dpT_residual_exiting]
+key = "abs_dpT_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}$ [MeV/c] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
@@ -49,7 +72,7 @@ trees = ['selected']
 abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
 
 [output]
-path = '.'
+path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
 
 [[systematic_recipe]]
 name = 'stats'
@@ -131,7 +154,7 @@ type = 'SpineSpectra2D'
 yvariable = 'reco_dpT_residual'
 xvariable = 'true_dpT_residual'
 xrange = [-2,2]
-xtitle = '$\frac{\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}}{\delta_{pT,\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
+xtitle = '$\frac{\delta_{pT,\mathrm{reco}} - \delta_{pT,\mathrm{true}}}{\delta_{pT,\mathrm{true}}}$'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
 
 [[figure]]

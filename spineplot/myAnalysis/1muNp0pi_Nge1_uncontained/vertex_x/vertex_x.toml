@@ -4,6 +4,29 @@ file = '../../../configurations/common/vertex_x.toml'
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
 
+[variables.abs_vertex_x_residual]
+key = "abs_vertex_x_residual"
+range = [-20, 20]
+nbins = 50
+xlabel = '$x_{\mathrm{vtx,reco}} - x_{\mathrm{vtx,true}}$ [cm] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_vertex_x_residual_contained]
+key = "abs_vertex_x_residual"
+range = [-20, 20]
+nbins = 50
+xlabel = '$x_{\mathrm{vtx,reco}} - x_{\mathrm{vtx,true}}$ [cm] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_vertex_x_residual_exiting]
+key = "abs_vertex_x_residual"
+range = [-20, 20]
+nbins = 50
+xlabel = '$x_{\mathrm{vtx,reco}} - x_{\mathrm{vtx,true}}$ [cm] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]

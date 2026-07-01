@@ -4,6 +4,29 @@ file = '../../../configurations/common/leading_proton_momentum.toml'
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
 
+[variables.abs_leading_proton_momentum_residual]
+key = "abs_leading_proton_momentum_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained + Exiting $p$)'
+xlabel_fontsize = 10
+
+[variables.abs_leading_proton_momentum_residual_contained]
+key = "abs_leading_proton_momentum_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained $p$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.abs_leading_proton_momentum_residual_exiting]
+key = "abs_leading_proton_momentum_residual"
+range = [-0.5, 0.5]
+nbins = 50
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Exiting $p$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_proton_containment == 0'
+
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
