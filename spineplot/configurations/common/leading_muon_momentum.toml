@@ -31,13 +31,6 @@ nbins = 25
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
-[variables.abs_leading_muon_momentum_residual]
-key = "abs_leading_muon_momentum_residual"
-range = [-1.5, 1.5]
-nbins = 50
-xlabel = '$p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-
 ### leading_muon_momentum - Contained ------------------------------------
 
 [variables.reco_leading_muon_momentum_residual_contained]
@@ -76,14 +69,6 @@ xlabel = 'Reco $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
 
-[variables.abs_leading_muon_momentum_residual_contained]
-key = "abs_leading_muon_momentum_residual"
-range = [-1.5, 1.5]
-nbins = 50
-xlabel = '$p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}$ [GeV/c] (Contained $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
-
 ### leading_muon_momentum - Exiting ------------------------------------
 
 [variables.reco_leading_muon_momentum_residual_exiting]
@@ -119,13 +104,5 @@ key = "reco_leading_muon_momentum"
 range = [0.226, 3]
 nbins = 25
 xlabel = 'Reco $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
-
-[variables.abs_leading_muon_momentum_residual_exiting]
-key = "abs_leading_muon_momentum_residual"
-range = [-1.5, 1.5]
-nbins = 50
-xlabel = '$p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}$ [GeV/c] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

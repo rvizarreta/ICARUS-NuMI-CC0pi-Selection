@@ -33,13 +33,6 @@ nbins = 10
 xlabel = 'True $\cos(\theta_z)$ (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
-[variables.abs_leading_muon_polar_angle_residual]
-key = "abs_leading_muon_polar_angle_residual"
-range = [-0.5, 0.5]
-nbins = 50
-xlabel = '$\cos(\theta_z)_\mathrm{reco} - \cos(\theta_z)_\mathrm{true}$ (Contained + Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-
 # --- Contained ---
 
 [variables.reco_leading_muon_polar_angle_contained]
@@ -78,14 +71,6 @@ nbins = 10
 xlabel = 'True $\cos(\theta_z)$ (Contained $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 1'
 
-[variables.abs_leading_muon_polar_angle_residual_contained]
-key = "abs_leading_muon_polar_angle_residual"
-range = [-0.5, 0.5]
-nbins = 50
-xlabel = '$\cos(\theta_z)_\mathrm{reco} - \cos(\theta_z)_\mathrm{true}$ (Contained $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
-
 # --- Exiting ---
 
 [variables.reco_leading_muon_polar_angle_exiting]
@@ -122,12 +107,4 @@ key = "true_leading_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'True $\cos(\theta_z)$ (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
-
-[variables.abs_leading_muon_polar_angle_residual_exiting]
-key = "abs_leading_muon_polar_angle_residual"
-range = [-0.5, 0.5]
-nbins = 50
-xlabel = '$\cos(\theta_z)_\mathrm{reco} - \cos(\theta_z)_\mathrm{true}$ (Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

@@ -127,28 +127,3 @@ range = [0,180]
 nbins = 20
 xlabel = 'True $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'
-
-### dphiT - Absolute Residual ------------------------------------
-
-[variables.abs_dphiT_residual]
-key = "abs_dphiT_residual"
-range = [-90, 90]
-nbins = 50
-xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Contained + Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-
-[variables.abs_dphiT_residual_contained]
-key = "abs_dphiT_residual"
-range = [-90, 90]
-nbins = 50
-xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Contained $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
-
-[variables.abs_dphiT_residual_exiting]
-key = "abs_dphiT_residual"
-range = [-90, 90]
-nbins = 50
-xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'

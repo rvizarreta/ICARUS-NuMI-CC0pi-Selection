@@ -33,13 +33,6 @@ nbins = 10
 xlabel = 'True Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
-[variables.abs_vertex_z_residual]
-key = "abs_vertex_z_residual"
-range = [-20, 20]
-nbins = 50
-xlabel = '$z_{\mathrm{vtx,reco}} - z_{\mathrm{vtx,true}}$ [cm] (Contained + Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-
 # --- Contained muon ---
 
 [variables.reco_vertex_z_contained]
@@ -80,14 +73,6 @@ xlabel = 'True Vertex Z [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
 
-[variables.abs_vertex_z_residual_contained]
-key = "abs_vertex_z_residual"
-range = [-20, 20]
-nbins = 50
-xlabel = '$z_{\mathrm{vtx,reco}} - z_{\mathrm{vtx,true}}$ [cm] (Contained $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
-
 # --- Exiting muon ---
 
 [variables.reco_vertex_z_exiting]
@@ -125,13 +110,5 @@ key = "true_vertex_z"
 range = [-1000, 1000]
 nbins = 10
 xlabel = 'True Vertex Z [cm] (Exiting $\mu^\pm$)'
-xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
-
-[variables.abs_vertex_z_residual_exiting]
-key = "abs_vertex_z_residual"
-range = [-20, 20]
-nbins = 50
-xlabel = '$z_{\mathrm{vtx,reco}} - z_{\mathrm{vtx,true}}$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'
