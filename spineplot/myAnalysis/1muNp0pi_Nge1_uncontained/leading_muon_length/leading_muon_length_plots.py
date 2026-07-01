@@ -5,7 +5,7 @@ workspace_root = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(workspace_root, "../../.."))
 from analysis import Analysis
 
-data_file = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root'
+data_file = os.environ.get('SPINE_DATA_FILE', '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root')
 
 ana_directory = os.path.dirname(os.path.abspath(__file__))
 

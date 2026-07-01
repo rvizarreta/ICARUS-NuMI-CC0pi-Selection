@@ -1,14 +1,13 @@
 import os
 import sys
 
-workspace_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
-sys.path.insert(0, workspace_root)
-
+workspace_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(workspace_root, "../../.."))
 from analysis import Analysis
 
-DATA_FILE = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root'
+data_file = os.environ.get('SPINE_DATA_FILE', '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root')
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+ana_directory = os.path.dirname(os.path.abspath(__file__))
 
 ANALYSES = [
     'leading_muon_polar_angle.toml',
@@ -20,7 +19,7 @@ ANALYSES = [
 ]
 
 def run_one(toml_name, close_figs=True):
-    Analysis(os.path.join(BASE, toml_name), DATA_FILE).run(close_figs=close_figs)
+    Analysis(os.path.join(ana_directory, toml_name), data_file).run(close_figs=close_figs)
 
 def run(close_figs=True):
     for toml_name in ANALYSES:
