@@ -10,20 +10,24 @@ DATA_FILE = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_o
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
-CONFIGS = {
-    'main':     f'{BASE}/leading_proton_momentum.toml',
-    'xsec':     f'{BASE}/leading_proton_momentum_xSecUncertainty.toml',
-    'xsec_exp': f'{BASE}/leading_proton_momentum_xSecUncertainty_Exp.toml',
-    'flux':     f'{BASE}/leading_proton_momentum_FluxUncertainty.toml',
-    'flux_exp': f'{BASE}/leading_proton_momentum_FluxUncertainty_Exp.toml',
-    'detsys':   f'{BASE}/leading_proton_momentum_DetectorUncertainty.toml',
-}
+ANALYSES = [
+    'leading_proton_momentum.toml',
+    'leading_proton_momentum_xSecUncertainty.toml',
+    'leading_proton_momentum_xSecUncertainty_Exp.toml',
+    'leading_proton_momentum_FluxUncertainty.toml',
+    'leading_proton_momentum_FluxUncertainty_Exp.toml',
+    'leading_proton_momentum_DetectorUncertainty.toml',
+]
+
+def run_one(toml_name, close_figs=True):
+    Analysis(os.path.join(BASE, toml_name), DATA_FILE).run(close_figs=close_figs)
 
 def run(close_figs=True):
-    for name, config in CONFIGS.items():
-        print(f'\n--- Running: {name} ---')
-        analysis = Analysis(config, DATA_FILE)
-        analysis.run(close_figs=close_figs)
+    for toml_name in ANALYSES:
+        run_one(toml_name, close_figs=close_figs)
 
 if __name__ == '__main__':
-    run()
+    if len(sys.argv) > 1:
+        run_one(ANALYSES[int(sys.argv[1])])
+    else:
+        run()

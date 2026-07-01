@@ -10,14 +10,24 @@ data_file = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_o
 
 ana_directory = os.path.dirname(os.path.abspath(__file__))
 
+ANALYSES = [
+    'dalphaT.toml',
+    'dalphaT_xSecUncertainty.toml',
+    'dalphaT_xSecUncertainty_Exp.toml',
+    'dalphaT_FluxUncertainty.toml',
+    'dalphaT_FluxUncertainty_Exp.toml',
+    'dalphaT_DetectorUncertainty.toml',
+]
+
+def run_one(toml_name, close_figs=True):
+    Analysis(os.path.join(ana_directory, toml_name), data_file).run(close_figs=close_figs)
+
 def run(close_figs=True):
-    Analysis(os.path.join(ana_directory, 'dalphaT.toml'), data_file).run(close_figs=close_figs)
-    # Analysis(os.path.join(ana_directory, 'dalphaT_xSecUncertainty.toml'), data_file).run(close_figs=close_figs)
-    # Analysis(os.path.join(ana_directory, 'dalphaT_xSecUncertainty_Exp.toml'), data_file).run(close_figs=close_figs)
-    # Analysis(os.path.join(ana_directory, 'dalphaT_FluxUncertainty.toml'), data_file).run(close_figs=close_figs)
-    # Analysis(os.path.join(ana_directory, 'dalphaT_FluxUncertainty_Exp.toml'), data_file).run(close_figs=close_figs)
-    # Analysis(os.path.join(ana_directory, 'dalphaT_DetectorUncertainty.toml'), data_file).run(close_figs=close_figs)
+    for toml_name in ANALYSES:
+        run_one(toml_name, close_figs=close_figs)
 
 if __name__ == '__main__':
-    run()
-
+    if len(sys.argv) > 1:
+        run_one(ANALYSES[int(sys.argv[1])])
+    else:
+        run()
