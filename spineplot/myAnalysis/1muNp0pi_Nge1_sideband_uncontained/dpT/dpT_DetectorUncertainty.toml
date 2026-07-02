@@ -1,30 +1,52 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '../../../configurations/common/dpT.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
 key = "full"
 exposure_type = "pot"
-trees = ['selected']
+trees = ['sideband']
 print_sys = true
-systematics = ['selected_variationTree']
+systematics = ['sideband_variationTree']
+
+[samples.mc.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
-override_exposure = 2.36124e19 # CORRECTED POT
+override_exposure = 2.36124e19
 override_category = -100
-trees = ['selected']
+trees = ['sideband']
+
+[samples.onbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['sideband']
+
+[samples.offbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_sideband_uncontained/DetSys_Plots'
+path = '.'
 
-# ── Detector systematics ───────────────────────────────────────────────────────
 [[systematic_recipe]]
 name = 'det_induction_gain'
 label = 'Induction Gain'
@@ -65,24 +87,60 @@ name = 'det_recombination'
 label = 'Recombination'
 pattern = '\bvar08\b'
 
+[[systematic_recipe]]
+name = 'cat_bending'
+label = 'Cathode Bending'
+pattern = '\bvar09\b'
+
 [analysis]
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
-category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
-category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
-category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+category_assignment = [[0,3,1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
 
 [[figure]]
 name = "dpT_detSysUncertainty"
 type = "SimpleFigure"
-style = 'selected_icarus_mc'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
-systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination"]
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_detSysUncertainty_contained"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_contained"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_detSysUncertainty_exiting"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
 fractional = true
 show_total = true
 show_individual = true

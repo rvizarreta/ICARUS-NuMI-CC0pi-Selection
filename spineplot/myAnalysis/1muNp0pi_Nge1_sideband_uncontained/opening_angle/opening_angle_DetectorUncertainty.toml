@@ -1,0 +1,135 @@
+[[this_includes]]
+file = '../../../configurations/common/opening_angle.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband']
+print_sys = true
+systematics = ['sideband_variationTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband_nonmatched']
+
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19
+override_category = -100
+trees = ['sideband']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['sideband']
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'det_induction_gain'
+label = 'Induction Gain'
+pattern = '\bvar01\b'
+
+[[systematic_recipe]]
+name = 'det_coherent_noise'
+label = 'Coherent Noise'
+pattern = '\bvar02\b'
+
+[[systematic_recipe]]
+name = 'det_intrinsic_noise'
+label = 'Intrinsic Noise'
+pattern = '\bvar03\b'
+
+[[systematic_recipe]]
+name = 'det_lifetime'
+label = 'Electron Lifetime'
+pattern = '\bvar04\b'
+
+[[systematic_recipe]]
+name = 'det_scintillation'
+label = 'Scintillation'
+pattern = '\bvar05\b'
+
+[[systematic_recipe]]
+name = 'det_induction_gap'
+label = 'Induction Gap'
+pattern = '\bvar06\b'
+
+[[systematic_recipe]]
+name = 'det_yz_uniformity'
+label = 'YZ Uniformity'
+pattern = '\bvar07\b'
+
+[[systematic_recipe]]
+name = 'det_recombination'
+label = 'Recombination'
+pattern = '\bvar08\b'
+
+[[systematic_recipe]]
+name = 'cat_bending'
+label = 'Cathode Bending'
+pattern = '\bvar09\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3,1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+
+[[figure]]
+name = 'opening_angle_DetectorUncertainty'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_opening_angle'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['det_induction_gain', 'det_coherent_noise', 'det_intrinsic_noise', 'det_lifetime', 'det_scintillation', 'det_induction_gap', 'det_yz_uniformity', 'det_recombination', 'cat_bending']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'opening_angle_DetectorUncertainty_contained'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_opening_angle_contained'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['det_induction_gain', 'det_coherent_noise', 'det_intrinsic_noise', 'det_lifetime', 'det_scintillation', 'det_induction_gap', 'det_yz_uniformity', 'det_recombination', 'cat_bending']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'opening_angle_DetectorUncertainty_exiting'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_opening_angle_exiting'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['det_induction_gain', 'det_coherent_noise', 'det_intrinsic_noise', 'det_lifetime', 'det_scintillation', 'det_induction_gap', 'det_yz_uniformity', 'det_recombination', 'cat_bending']
+fractional = true
+show_total = true
+show_individual = true

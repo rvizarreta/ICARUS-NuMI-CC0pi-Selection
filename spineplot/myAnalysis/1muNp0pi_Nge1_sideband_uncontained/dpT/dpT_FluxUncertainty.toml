@@ -1,91 +1,114 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '../../../configurations/common/dpT.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-#key = "nominal"
 key = "full"
 exposure_type = "pot"
-trees = ['selected']
+trees = ['sideband']
 print_sys = true
-# Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['selected_NuMIfluxsimTree']
+systematics = ['sideband_NuMIfluxsimTree']
+
+[samples.mc.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam"
 exposure_type = "pot"
+override_exposure = 2.36124e19
 override_category = -100
-trees = ['selected']
+trees = ['sideband']
+
+[samples.onbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['sideband']
+
+[samples.offbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_sideband_uncontained/dpT'
+path = '.'
 
-# ── Subgroup totals ───────────────────────────────────────────────────────────
 [[systematic_recipe]]
 name = 'flux_beam_focusing'
-label = 'Beam focusing total'
+label = 'Beam focusing'
 pattern = '\bhysyst_beam_(horn_2kA|horn1_x_3mm|horn1_y_3mm|spot_1_3mm|spot_1_7mm|horn2_x_3mm|horn2_y_3mm|horns_0mm_water|horns_2mm_water|Beam_shift_x_1mm|Beam_shift_y_1mm|Target_z_7mm)\b'
 
 [[systematic_recipe]]
 name = 'flux_hadron_prod'
-label = 'Hadron production total'
+label = 'Hadron production'
 pattern = '\bhysyst_hpc_([0-9]|1[0-4])\b'
 
-# ── Individual beam lines (only the ones with >0.05% impact) ─────────────────
-#[[systematic_recipe]]
-#name = 'flux_beam_shift_x'
-#label = 'Beam shift x 1mm'
-#pattern = '\bhysyst_beam_Beam_shift_x_1mm\b'
-#
-#[[systematic_recipe]]
-#name = 'flux_beam_shift_y'
-#label = 'Beam shift y 1mm'
-#pattern = '\bhysyst_beam_Beam_shift_y_1mm\b'
-#
-#[[systematic_recipe]]
-#name = 'flux_spot_7mm'
-#label = 'Spot 1.7mm'
-#pattern = '\bhysyst_beam_spot_1_7mm\b'
-#
-#[[systematic_recipe]]
-#name = 'flux_spot_3mm'
-#label = 'Spot 1.3mm'
-#pattern = '\bhysyst_beam_spot_1_3mm\b'
-#
-#[[systematic_recipe]]
-#name = 'flux_horn1_y'
-#label = 'Horn1 y 3mm'
-#pattern = '\bhysyst_beam_horn1_y_3mm\b'
-
 [analysis]
-#ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
-category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
-category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
-category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
-category_types = ['histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
+category_assignment = [[0,3,1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
 
 [[figure]]
 name = "dpT_FluxUncertainty"
 type = "SimpleFigure"
-style = 'selected_icarus_mc'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
 yrange = [0.0, 0.25]
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
-systematic_names = [
-    "flux_beam_focusing", "flux_hadron_prod",
-    #"flux_beam_shift_x", "flux_beam_shift_y",
-    #"flux_spot_7mm", "flux_spot_3mm", "flux_horn1_y"
-]
+systematic_names = ["flux_beam_focusing", "flux_hadron_prod"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_FluxUncertainty_contained"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_contained"
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["flux_beam_focusing", "flux_hadron_prod"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_FluxUncertainty_exiting"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_exiting"
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["flux_beam_focusing", "flux_hadron_prod"]
 fractional = true
 show_total = true
 show_individual = true

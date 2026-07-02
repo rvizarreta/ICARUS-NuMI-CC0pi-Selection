@@ -1,0 +1,102 @@
+[[this_includes]]
+file = '../../../configurations/common/leading_muon_momentum.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband']
+print_sys = true
+systematics = ['sideband_NuMIfluxsimTree']
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+trees = ['sideband_nonmatched']
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19
+override_category = -100
+trees = ['sideband']
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 10
+trees = ['sideband']
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'flux_beam_focusing'
+label = 'Beam focusing'
+pattern = '\bhysyst_beam_(horn_2kA|horn1_x_3mm|horn1_y_3mm|spot_1_3mm|spot_1_7mm|horn2_x_3mm|horn2_y_3mm|horns_0mm_water|horns_2mm_water|Beam_shift_x_1mm|Beam_shift_y_1mm|Target_z_7mm)\b'
+
+[[systematic_recipe]]
+name = 'flux_hadron_prod'
+label = 'Hadron production'
+pattern = '\bhysyst_hpc_([0-9]|1[0-4])\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0,3,1,4], [6,7,8], [9], [2,5], [10], [-100]]
+category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_colors = ['#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+
+[[figure]]
+name = 'leading_muon_momentum_FluxUncertainty'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_momentum'
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['flux_beam_focusing', 'flux_hadron_prod']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'leading_muon_momentum_FluxUncertainty_contained'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_momentum_contained'
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['flux_beam_focusing', 'flux_hadron_prod']
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = 'leading_muon_momentum_FluxUncertainty_exiting'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_momentum_exiting'
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['flux_beam_focusing', 'flux_hadron_prod']
+fractional = true
+show_total = true
+show_individual = true
