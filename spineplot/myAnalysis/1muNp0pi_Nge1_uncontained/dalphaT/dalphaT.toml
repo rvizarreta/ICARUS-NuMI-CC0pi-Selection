@@ -71,7 +71,7 @@ trees = ['selected']
 abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dalphaT'
+path = '.'
 
 [[systematic_recipe]]
 name = 'stats'

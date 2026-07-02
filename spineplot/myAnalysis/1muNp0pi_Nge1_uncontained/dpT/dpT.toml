@@ -72,7 +72,7 @@ trees = ['selected']
 abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
 
 [output]
-path = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_Selection/ICARUS-NuMI-CC0pi-Selection/spineplot/myAnalysis/1muNp0pi_Nge1_uncontained/dpT'
+path = '.'
 
 [[systematic_recipe]]
 name = 'stats'
