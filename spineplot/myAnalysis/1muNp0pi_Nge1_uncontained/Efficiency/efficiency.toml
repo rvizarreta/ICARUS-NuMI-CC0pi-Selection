@@ -2,7 +2,7 @@
 path = "."
 
 [[this_includes]]
-file = '../../configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 [samples.signal]
 #key = "nominal"
