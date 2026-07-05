@@ -112,7 +112,8 @@ class SpineEfficiency(SpineArtist):
 
     def draw(self, ax, show_option, percentage=True, show_seqeff=True,
              show_unseqeff=True, yrange=None, npts=1e6, style=None,
-             logx=False, logy=False):
+             logx=False, logy=False, legend_loc='best', legend_ncol=1,
+             threshold_line=None):
         """
         Draw the artist on the given axis.
 
@@ -364,7 +365,16 @@ class SpineEfficiency(SpineArtist):
             if logy:
                 ax.set_yscale('log')
 
-            ax.legend(fontsize=10)
+            # Vertical dashed line marking the signal definition threshold.
+            if threshold_line is not None:
+                ax.axvline(threshold_line, color='#CC0000', linestyle='--',
+                           linewidth=1.5, zorder=4)
+
+            # In percentage mode, do not draw tick marks above 100%.
+            if percentage and ax.get_ylim()[1] > 100.0:
+                ax.set_yticks([t for t in ax.get_yticks() if t <= 100.0])
+
+            ax.legend(fontsize=10, loc=legend_loc, ncol=legend_ncol)
 
             # Set tick mark size and tick label font size
             ax.tick_params(axis='both', which='major',

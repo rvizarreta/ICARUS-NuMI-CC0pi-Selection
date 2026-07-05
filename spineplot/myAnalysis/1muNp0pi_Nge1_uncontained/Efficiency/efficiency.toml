@@ -8,6 +8,7 @@ file = '../../../configurations/common/styles.toml'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
 trees = ["signal"]
 
 [samples.signal.precompute]
@@ -36,21 +37,27 @@ xlabel = "True Neutrino Energy [GeV]"
 
 [variables.true_leading_muon_momentum]
 key = "true_leading_muon_momentum"
-range = [0, 10]
+range = [0.226, 3.0] # lower bound = KE threshold 143.425 MeV in momentum
 nbins = 15
 xlabel = 'True $p_\mu$ [GeV/c]'
 
 [variables.true_leading_proton_momentum]
 key = "true_leading_proton_momentum"
-range = [0, 2]
+range = [0.31, 1.2]
 nbins = 15
+xlabel = 'True $p_p$ [GeV/c]'
+
+[variables.true_leading_proton_momentum_zoom]
+key = "true_leading_proton_momentum"
+range = [0.31, 1.0]
+nbins = 23
 xlabel = 'True $p_p$ [GeV/c]'
 
 [variables.true_leading_muon_ke]
 key = "true_leading_muon_ke"
-range = [0, 10000]
+range = [143.425, 2896.0] # KE equivalent of p_mu = 3 GeV/c
 nbins = 15
-xlabel = "True $p_{KE}$ [MeV/c]"
+xlabel = "True $KE_\\mu$ [MeV]"
 
 [variables.true_dphiT_deg]
 key = "true_dphiT_deg"
@@ -85,13 +92,13 @@ multiple_protons_cut = "Multiple Protons"
 name = "efficiency_plot_true_leading_muon_momentum"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [8.0, 4.0]
+figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
 variable = "true_leading_muon_momentum"
 groups = ['1$\mu$Np0$\pi$']
-draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000}
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
@@ -107,13 +114,35 @@ no_electrons_cut = "No Electrons"
 name = "efficiency_plot_true_leading_proton_momentum"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [8.0, 4.0]
+figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
 variable = "true_leading_proton_momentum"
 groups = ['1$\mu$Np0$\pi$']
-draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000}
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+single_muon_cut = "Single Muon"
+multiple_protons_cut = "Multiple Protons"
+no_pions_cut = "No Charged Pions"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+
+### True proton momentum (threshold zoom) ------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_proton_momentum_zoom"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_proton_momentum_zoom"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
@@ -129,13 +158,13 @@ no_electrons_cut = "No Electrons"
 name = "efficiency_plot_true_dphiT"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [8.0, 4.0]
+figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
 variable = "true_dphiT_deg"
 groups = ['1$\mu$Np0$\pi$']
-draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000}
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
@@ -151,13 +180,13 @@ no_electrons_cut = "No Electrons"
 name = "efficiency_plot_true_leading_muon_ke"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [8.0, 4.0]
+figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
 variable = "true_leading_muon_ke"
 groups = ['1$\mu$Np0$\pi$']
-draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000}
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"

@@ -1,0 +1,38 @@
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[variables.true_neutrino_energy]
+key = "true_neutrino_energy"
+range = [0.0, 4.0]
+nbins = 50
+xlabel = 'True Neutrino Energy [GeV]'
+xlabel_fontsize = 10
+
+# SIMULATION SAMPLE (MC only, no data points)
+[samples]
+[samples.mc]
+key = "nominal"
+exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
+trees = ['selected']
+
+[output]
+path = '.'
+
+[analysis]
+ordinate_sample = 'mc'
+category_branch = 'true_interaction_mode'
+category_assignment = [[0], [10], [1], [2]]
+category_labels = ['Quasielastic', 'MEC', 'RES', 'DIS']
+category_colors = ['darkblue', 'orange', 'darkgreen', 'deepskyblue']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram']
+
+[[figure]]
+name = 'nu_energy_true'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'true_neutrino_energy'
+yrange = 1.2
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = false, 'normalize' = false}

@@ -17,6 +17,7 @@ OBSERVABLES = [
     'leading_pion_length',
     'leading_proton_momentum',
     'opening_angle',
+    'proton_multiplicity',
     'vertex_x',
     'vertex_y',
     'vertex_z',

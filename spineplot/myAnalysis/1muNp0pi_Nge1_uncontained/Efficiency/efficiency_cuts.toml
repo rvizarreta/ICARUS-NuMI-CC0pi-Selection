@@ -1,0 +1,155 @@
+# Per-cut efficiency plots as a function of the true particle kinematics,
+# used to motivate the signal definition thresholds. These run on the
+# dedicated cuts sample (1muNp0pi_Nge1_uncontained_cuts.root), generated
+# without the kinematic thresholds in the signal definition, so the
+# efficiency below threshold is visible. Figure names carry the "_cuts"
+# suffix to avoid overwriting the outputs of efficiency.toml.
+
+[output]
+path = "."
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[samples.signal]
+key = "nominal"
+exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
+trees = ["signal"]
+
+[samples.signal.precompute]
+no_photons_cut = "reco_photon_multiplicity == 0"
+no_electrons_cut = "reco_electron_multiplicity == 0"
+no_pions_cut = "reco_pion_multiplicity == 0"
+single_muon_cut = "reco_muon_multiplicity == 1"
+multiple_protons_cut = "reco_proton_multiplicity > 0"
+
+[analysis]
+ordinate_sample = "signal"
+category_branch = "true_category"
+category_assignment = [[0.0, 1.0, 3.0, 4.0], [6.0, 7.0, 8.0], [9.0], [2.0, 5.0], [10.0]]
+category_labels = ['1$\mu$Np0$\pi$', 'Other CC', 'NC', 'OOFV', 'Cosmic']
+category_colors = ['darkgreen','C1', 'C3', 'C5', 'C4']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram']
+
+### Variables ------------------------------------
+
+[variables.true_leading_muon_momentum]
+key = "true_leading_muon_momentum"
+range = [0.0, 3.0]
+nbins = 30
+xlabel = 'True $p_\mu$ [GeV/c]'
+
+[variables.true_leading_proton_momentum]
+key = "true_leading_proton_momentum"
+range = [0.0, 2.0]
+nbins = 40
+xlabel = 'True $p_p$ [GeV/c]'
+
+[variables.true_leading_pion_momentum]
+key = "true_leading_pion_momentum"
+range = [0.0, 0.4]
+nbins = 20
+xlabel = 'True $p_\pi$ [GeV/c]'
+
+[variables.true_leading_electron_momentum]
+key = "true_leading_electron_momentum"
+range = [0.0, 0.08]
+nbins = 10
+xlabel = 'True $p_e$ [GeV/c]'
+
+[variables.true_leading_photon_momentum]
+key = "true_leading_photon_momentum"
+range = [0.0, 0.015]
+nbins = 10
+xlabel = 'True $p_\gamma$ [GeV/c]'
+
+### True muon momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_muon_momentum_cuts"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_muon_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower right", legend_ncol = 2, threshold_line = 0.226}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+single_muon_cut = "Single Muon"
+
+### True proton momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_proton_momentum_cuts"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_proton_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower right", legend_ncol = 2, threshold_line = 0.31}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+multiple_protons_cut = "Multiple Protons"
+
+### True pion momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_pion_momentum_cuts"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_pion_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2, threshold_line = 0.0872}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_pions_cut = "No Charged Pions"
+
+### True electron momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_electron_momentum_cuts"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_electron_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2, threshold_line = 0.0255}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_electrons_cut = "No Electrons"
+
+### True photon momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_photon_momentum_cuts"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_photon_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2, threshold_line = 0.01}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"

@@ -1,0 +1,28 @@
+# --- Combined (Contained + Exiting muons) ---
+
+[variables.reco_proton_multiplicity]
+key = "reco_proton_multiplicity"
+range = [0.0, 5.0]
+nbins = 5
+xlabel = 'Reco Proton Multiplicity (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+# --- Contained muon ---
+
+[variables.reco_proton_multiplicity_contained]
+key = "reco_proton_multiplicity"
+range = [0.0, 5.0]
+nbins = 5
+xlabel = 'Reco Proton Multiplicity (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+# --- Exiting muon ---
+
+[variables.reco_proton_multiplicity_exiting]
+key = "reco_proton_multiplicity"
+range = [0.0, 5.0]
+nbins = 5
+xlabel = 'Reco Proton Multiplicity (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'

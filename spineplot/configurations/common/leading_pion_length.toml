@@ -2,8 +2,8 @@
 
 [variables.reco_leading_pion_length]
 key = "reco_leading_pion_length"
-range = [0, 15]
-nbins = 15
+range = [0, 100]
+nbins = 40
 xlabel = '$L_\pi$ [cm] (Contained + Exiting $\pi^\pm$)'
 xlabel_fontsize = 10
 
@@ -11,8 +11,8 @@ xlabel_fontsize = 10
 
 [variables.reco_leading_pion_length_contained]
 key = "reco_leading_pion_length"
-range = [0, 15]
-nbins = 15
+range = [0, 100]
+nbins = 40
 xlabel = '$L_\pi$ [cm] (Contained $\pi^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_pion_containment == 1'
@@ -21,8 +21,8 @@ mask = 'reco_leading_pion_containment == 1'
 
 [variables.reco_leading_pion_length_exiting]
 key = "reco_leading_pion_length"
-range = [0, 15]
-nbins = 15
+range = [0, 100]
+nbins = 40
 xlabel = '$L_\pi$ [cm] (Exiting $\pi^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_pion_containment == 0'
