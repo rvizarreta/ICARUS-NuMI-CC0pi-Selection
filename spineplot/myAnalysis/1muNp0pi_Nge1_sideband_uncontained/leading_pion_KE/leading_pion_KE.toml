@@ -10,10 +10,11 @@ file = '../configurations/common/styles.toml'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
+override_exposure = 7.178e20 # CORRECTED POT
 trees = ['sideband']
 #print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-#systematics = ['multisimTree','multisigmaTree','selected_NuMIfluxsimTree']
+systematics = ['multisimTree','multisigmaTree','selected_NuMIfluxsimTree']
 
 #[samples.mc.precompute]
 #pions_cut = "reco_pion_multiplicity > 0"

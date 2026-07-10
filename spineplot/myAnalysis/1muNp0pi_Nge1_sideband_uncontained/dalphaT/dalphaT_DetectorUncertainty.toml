@@ -9,6 +9,7 @@ file = '../../../configurations/common/styles.toml'
 [samples.mc]
 key = "full"
 exposure_type = "pot"
+override_exposure = 7.178e20 # CORRECTED POT
 trees = ['sideband']
 print_sys = true
 systematics = ['sideband_variationTree']
@@ -19,6 +20,7 @@ abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
+override_exposure = 7.178e20 # CORRECTED POT
 trees = ['sideband_nonmatched']
 
 [samples.mc_nonmatched.precompute]
@@ -43,6 +45,17 @@ trees = ['sideband']
 
 [samples.offbeam.precompute]
 abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
+
+
+# ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
+[samples.rock]
+key = "rock"
+exposure_type = "pot"
+override_category = 10
+trees = ['selected']
+
+[samples.rock.precompute]
+abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
 [output]
 path = '.'
@@ -96,7 +109,7 @@ pattern = '\bvar09\b'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3,1,4], [6,7,8], [9], [2,5], [10], [-100]]
-category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_labels = ['Signal', 'Other CC', '$\nu$ NC', 'OOFV', 'Others', 'Data']
 category_colors = ['#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
 

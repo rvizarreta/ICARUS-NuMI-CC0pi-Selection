@@ -156,7 +156,7 @@ class SpineSpectra1D(SpineSpectra):
     def draw(self, ax, style, show_component_number=False,
              show_component_percentage=False, invert_stack_order=False,
              fit_type=None, logx=False, logy=False, normalize=False,
-             draw_error=None, draw_ratio=False, prediction=True, show_fraction=False, draw_data=True) -> None:
+             draw_error=None, draw_ratio=False, ratio_yrange=None, prediction=True, show_fraction=False, draw_data=True) -> None:
         """
         Plots the data for the SpineSpectra1D object.
 
@@ -194,6 +194,9 @@ class SpineSpectra1D(SpineSpectra):
         draw_error : str, optional
             Indicates the name of the Systematic object to use for
             drawing the error boxes. The default is None.
+        ratio_yrange : list, optional
+            The [min, max] y-axis range of the Data/MC ratio panel.
+            The default is None, which uses [0.0, 2.0].
         prediction : bool, optional
             A flag to indicate if the prediction line legend (sum of all MC
             components) should be drawn. The default is True.
@@ -541,7 +544,7 @@ class SpineSpectra1D(SpineSpectra):
             ax_ratio.set_ylabel('Data/MC', fontsize=10, weight='bold')
             ax_ratio.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle,
                                 fontsize=self._variable._xlabel_fontsize, weight='bold')
-            ax_ratio.set_ylim(0.0, 2.0)
+            ax_ratio.set_ylim(*(ratio_yrange if ratio_yrange is not None else (0.0, 2.0)))
             ax_ratio.grid(True, alpha=0.3, axis='y')
             ax_ratio.tick_params(axis='both', which='major', labelsize=10)
             ax_ratio.set_xlim(*self._variable._range if self._xrange is None else self._xrange)

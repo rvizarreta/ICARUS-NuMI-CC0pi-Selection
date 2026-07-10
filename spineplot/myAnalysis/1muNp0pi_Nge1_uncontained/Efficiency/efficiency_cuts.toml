@@ -98,7 +98,7 @@ draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = tr
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-multiple_protons_cut = "Multiple Protons"
+multiple_protons_cut = "At Least One Proton"
 
 ### True pion momentum ------------------------------------
 

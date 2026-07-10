@@ -84,7 +84,7 @@ no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
 single_muon_cut = "Single Muon"
 no_pions_cut = "No Charged Pions"
-multiple_protons_cut = "Multiple Protons"
+multiple_protons_cut = "At Least One Proton"
 
 ### True muon momentum ------------------------------------
 
@@ -102,11 +102,11 @@ draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = tr
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-single_muon_cut = "Single Muon"
-multiple_protons_cut = "Multiple Protons"
-no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
 
 ### True proton momentum ------------------------------------
 
@@ -124,11 +124,11 @@ draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = tr
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-single_muon_cut = "Single Muon"
-multiple_protons_cut = "Multiple Protons"
-no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
 
 ### True proton momentum (threshold zoom) ------------------
 
@@ -146,11 +146,11 @@ draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = tr
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-single_muon_cut = "Single Muon"
-multiple_protons_cut = "Multiple Protons"
-no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
 
 ### True dphiT momentum ------------------------------------
 
@@ -168,11 +168,11 @@ draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = tr
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-single_muon_cut = "Single Muon"
-multiple_protons_cut = "Multiple Protons"
-no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
 
 ### True muon KE ------------------------------------
 
@@ -190,9 +190,9 @@ draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = tr
 
 [figure.artists.cuts]
 reco_fiducial_cut = "Fiducial"
-single_muon_cut = "Single Muon"
-multiple_protons_cut = "Multiple Protons"
-no_pions_cut = "No Charged Pions"
 no_photons_cut = "No Photons"
 no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
 

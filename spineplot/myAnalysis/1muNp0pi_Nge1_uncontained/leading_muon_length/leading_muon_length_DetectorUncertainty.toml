@@ -9,6 +9,7 @@ file = '../../../configurations/common/styles.toml'
 [samples.mc]
 key = "full"
 exposure_type = "pot"
+override_exposure = 7.178e20 # CORRECTED POT
 trees = ['selected']
 print_sys = true
 systematics = ['selected_variationTree']
@@ -16,6 +17,7 @@ systematics = ['selected_variationTree']
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
+override_exposure = 7.178e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 # DATA SAMPLE
@@ -29,6 +31,14 @@ trees = ['selected']
 [samples.offbeam]
 key = "offbeam"
 exposure_type = "livetime"
+override_category = 10
+trees = ['selected']
+
+
+# ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
+[samples.rock]
+key = "rock"
+exposure_type = "pot"
 override_category = 10
 trees = ['selected']
 
@@ -84,7 +94,7 @@ pattern = '\bvar09\b'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
-category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic', 'Data']
+category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Others', 'Data']
 category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
 

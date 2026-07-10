@@ -26,7 +26,7 @@ xlabel = 'True $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 
 [variables.reco_leading_muon_momentum]
 key = "reco_leading_muon_momentum"
-range = [0.226, 3.0]
+range = [0.0, 3.0]
 nbins = 25
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
@@ -63,8 +63,8 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_leading_muon_momentum_contained]
 key = "reco_leading_muon_momentum"
-range = [0.226, 3.0]
-nbins = 25
+range = [0.0, 2.0]
+nbins = 18
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -101,7 +101,7 @@ mask = 'reco_leading_muon_containment == 0'
 
 [variables.reco_leading_muon_momentum_exiting]
 key = "reco_leading_muon_momentum"
-range = [0.226, 3.0]
+range = [0.0, 3.0]
 nbins = 25
 xlabel = 'Reco $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
