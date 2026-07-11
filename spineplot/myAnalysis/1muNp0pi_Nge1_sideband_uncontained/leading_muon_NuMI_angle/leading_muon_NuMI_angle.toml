@@ -27,6 +27,31 @@ xlabel = '$\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}$ 
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'
 
+# Angle residual in degrees (reviewer request: theta rather than
+# cos(theta), un-normalized difference rather than fractional)
+[variables.theta_mu_residual_deg]
+key = "theta_mu_residual_deg"
+range = [-10.0, 10.0]
+nbins = 50
+xlabel = '$\theta_\mu^{\mathrm{reco}} - \theta_\mu^{\mathrm{true}}$ [deg] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.theta_mu_residual_deg_contained]
+key = "theta_mu_residual_deg"
+range = [-10.0, 10.0]
+nbins = 50
+xlabel = '$\theta_\mu^{\mathrm{reco}} - \theta_\mu^{\mathrm{true}}$ [deg] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.theta_mu_residual_deg_exiting]
+key = "theta_mu_residual_deg"
+range = [-10.0, 10.0]
+nbins = 50
+xlabel = '$\theta_\mu^{\mathrm{reco}} - \theta_\mu^{\mathrm{true}}$ [deg] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
@@ -39,6 +64,7 @@ systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_Nu
 
 [samples.mc.precompute]
 abs_leading_muon_NuMI_angle_residual = "reco_leading_muon_cos_theta_mu - true_leading_muon_cos_theta_mu"
+theta_mu_residual_deg = "arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232 - arccos(true_leading_muon_cos_theta_mu)*57.29577951308232"
 
 [samples.mc_nonmatched]
 key = "full"
@@ -48,6 +74,7 @@ trees = ['sideband_nonmatched']
 
 [samples.mc_nonmatched.precompute]
 abs_leading_muon_NuMI_angle_residual = "reco_leading_muon_cos_theta_mu - true_leading_muon_cos_theta_mu"
+theta_mu_residual_deg = "arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232 - arccos(true_leading_muon_cos_theta_mu)*57.29577951308232"
 
 # DATA SAMPLE
 [samples.onbeam]
@@ -59,6 +86,7 @@ trees = ['sideband']
 
 [samples.onbeam.precompute]
 abs_leading_muon_NuMI_angle_residual = "reco_leading_muon_cos_theta_mu - reco_leading_muon_cos_theta_mu"
+theta_mu_residual_deg = "arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232 - arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232"
 
 [samples.offbeam]
 key = "offbeam"
@@ -68,6 +96,7 @@ trees = ['sideband']
 
 [samples.offbeam.precompute]
 abs_leading_muon_NuMI_angle_residual = "reco_leading_muon_cos_theta_mu - reco_leading_muon_cos_theta_mu"
+theta_mu_residual_deg = "arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232 - arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232"
 
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
@@ -79,6 +108,7 @@ trees = ['selected']
 
 [samples.rock.precompute]
 abs_leading_muon_NuMI_angle_residual = "reco_leading_muon_cos_theta_mu - true_leading_muon_cos_theta_mu"
+theta_mu_residual_deg = "arccos(reco_leading_muon_cos_theta_mu)*57.29577951308232 - arccos(true_leading_muon_cos_theta_mu)*57.29577951308232"
 
 [output]
 path = '.'
@@ -151,49 +181,36 @@ variable = 'reco_leading_muon_angle_exiting'
 yrange = 1.5
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
-# --- Fractional residual ---
-
 [[figure]]
-name = 'leading_muon_angle_fractional_residual'
+name = 'leading_muon_angle_theta_residual_deg'
 type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
+style = 'selected_icarus_mc'
 figsize = [5, 4]
 [[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_leading_muon_angle_residual'
-xvariable = 'true_leading_muon_angle_residual'
-xrange = [-2, 2]
-xtitle = '$\frac{\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}}{\cos(\theta_\mu)^{\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
+type = 'SpineSpectra1D'
+variable = 'theta_mu_residual_deg'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 [[figure]]
-name = 'leading_muon_angle_fractional_residual_contained'
+name = 'leading_muon_angle_theta_residual_deg_contained'
 type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
+style = 'selected_icarus_mc'
 figsize = [5, 4]
 [[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_leading_muon_angle_residual_contained'
-xvariable = 'true_leading_muon_angle_residual_contained'
-xrange = [-2, 2]
-xtitle = '$\frac{\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}}{\cos(\theta_\mu)^{\mathrm{true}}}$ (Contained $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
+type = 'SpineSpectra1D'
+variable = 'theta_mu_residual_deg_contained'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 [[figure]]
-name = 'leading_muon_angle_fractional_residual_exiting'
+name = 'leading_muon_angle_theta_residual_deg_exiting'
 type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
+style = 'selected_icarus_mc'
 figsize = [5, 4]
 [[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_leading_muon_angle_residual_exiting'
-xvariable = 'true_leading_muon_angle_residual_exiting'
-xrange = [-2, 2]
-xtitle = '$\frac{\cos(\theta_\mu)^{\mathrm{reco}} - \cos(\theta_\mu)^{\mathrm{true}}}{\cos(\theta_\mu)^{\mathrm{true}}}$ (Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-# --- Smearing matrix ---
-
+type = 'SpineSpectra1D'
+variable = 'theta_mu_residual_deg_exiting'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 [[figure]]
 name = 'leading_muon_angle_smearing_matrix_normalized'
 type = 'SimpleFigure'

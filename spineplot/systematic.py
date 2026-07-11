@@ -134,8 +134,18 @@ class Systematic:
             weights_array = np.stack(self._handle.array(library='np'))[mask, :]
             weights_array_shape = weights_array.shape[1]
             if weights_array_shape == 6 or weights_array_shape == 7:
-                # Set the "sigma" levels corresponding to each weight in the array.
-                sigma_levels = np.array([-1, 1, -2, 2, -3, 3]) if weights_array_shape == 6 else np.linspace(-3, 3, 7)
+                # Set the "sigma" levels corresponding to each weight in the
+                # array. GENIE multisigma weights (shape 6) are stored in the
+                # order [-1, +1, -2, +2, -3, +3]; np.interp requires ascending
+                # x-points, so both the sigma levels and the weight columns
+                # are sorted (same as the upstream medulla repository).
+                if weights_array_shape == 6:
+                    sigma_levels_raw = np.array([-1, 1, -2, 2, -3, 3], dtype=float)
+                    order = np.argsort(sigma_levels_raw)
+                    sigma_levels = sigma_levels_raw[order]
+                    weights_array = np.asarray(weights_array, dtype=float)[:, order]
+                else:
+                    sigma_levels = np.linspace(-3, 3, 7)
 
                 # A set of `nuniv` random values is drawn from a normal
                 # distribution with mean 0 and standard deviation 1. The

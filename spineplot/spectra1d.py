@@ -328,6 +328,21 @@ class SpineSpectra1D(SpineSpectra):
             if draw_error:
                 systs = [s[draw_error] for s in self._systematics.values() if draw_error in s]
                 cov = np.sum(s.get_covariance(self._variable._name) for s in systs)
+
+                # Data-MC chi2 with the full covariance: the 'draw_error'
+                # Systematic (e.g. MC_total = flux + xsec + MC stat + detsys)
+                # plus a Poisson data-stat diagonal, diag(max(n_i, 1)).
+                # Only meaningful for un-normalized stacked spectra with a
+                # data (scatter) category.
+                self._chi2_result = None
+                if not normalize and not show_fraction and len(scatter_mask):
+                    y_data_chi2 = data[scatter_mask[0]]
+                    y_pred_chi2 = np.sum(reduce(data), axis=0)
+                    diff = y_data_chi2 - y_pred_chi2
+                    cov_chi2 = cov + np.diag(np.maximum(y_data_chi2, 1.0))
+                    chi2_val = float(diff @ np.linalg.solve(cov_chi2, diff))
+                    self._chi2_result = (chi2_val, len(diff))
+
                 x = reduce(bincenters)[0]
                 y = scale * np.sum(reduce(data), axis=0)
                 xerr = [x / 2 for x in binwidths[0]]
@@ -430,7 +445,7 @@ class SpineSpectra1D(SpineSpectra):
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
-                ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ppfx_text = ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -442,7 +457,7 @@ class SpineSpectra1D(SpineSpectra):
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
-                ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ppfx_text = ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -456,18 +471,31 @@ class SpineSpectra1D(SpineSpectra):
             l.append('')
             h.append(plt.Line2D([0], [0], color='none'))
             ax.legend(h, l, fontsize=8, ncol=2, loc='upper left')
-            ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+            ppfx_text = ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                     transform=ax.transAxes,
                     fontsize=7, color='black',
                     horizontalalignment='right',
                     verticalalignment='top')
+
+        # Annotate the data-MC chi2/ndf just below the PPFX text,
+        # left-aligned with the PPFX text's left edge. Anchoring to the
+        # Text artist's bbox (xycoords=ppfx_text) is resolved at draw
+        # time, so the alignment is exact.
+        if draw_error and draw_data and getattr(self, '_chi2_result', None) is not None:
+            chi2_val, ndf = self._chi2_result
+            ax.annotate(rf'$\chi^2/\mathrm{{ndf}} = {chi2_val:.1f}/{ndf}$',
+                        xy=(0, 0), xycoords=ppfx_text,
+                        xytext=(0, -2), textcoords='offset points',
+                        fontsize=9, color='black',
+                        horizontalalignment='left',
+                        verticalalignment='top')
 
         # Add borders to legend patches for 'QE' entries
         legend = ax.get_legend()
         for handle, label_text in zip(legend.legend_handles, legend.get_texts()):
             if 'QE' in label_text.get_text():
                 handle.set_edgecolor('darkred')
-                handle.set_linewidth(1)
+                handle.set_linewidth(2)
                 handle.set_facecolor('white')
 
         # Automatically extend y-axis by 35% to make room for legend

@@ -151,49 +151,6 @@ variable = 'reco_vertex_y_exiting'
 yrange = 1.5
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
-# --- Fractional residual ---
-
-[[figure]]
-name = 'vertex_y_fractional_residual'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_vertex_y_residual'
-xvariable = 'true_vertex_y_residual'
-xrange = [-200, 200]
-xtitle = 'True Vertex Y [cm] (Contained + Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-[[figure]]
-name = 'vertex_y_fractional_residual_contained'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_vertex_y_residual_contained'
-xvariable = 'true_vertex_y_residual_contained'
-xrange = [-200, 200]
-xtitle = 'True Vertex Y [cm] (Contained $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-[[figure]]
-name = 'vertex_y_fractional_residual_exiting'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_vertex_y_residual_exiting'
-xvariable = 'true_vertex_y_residual_exiting'
-xrange = [-200, 200]
-xtitle = 'True Vertex Y [cm] (Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-# --- Smearing matrix ---
-
 [[figure]]
 name = 'vertex_y_smearing_matrix_normalized'
 type = 'SimpleFigure'

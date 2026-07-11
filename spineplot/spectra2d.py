@@ -367,9 +367,15 @@ class SpineSpectra2D(SpineSpectra):
                 yerr = np.sqrt(y)
                 draw_error_boxes(ax, x, y, xerr, yerr, facecolor='gray', edgecolor='none', alpha=0.5, hatch='///')
 
+            # Drop legend entries for categories with no entries in the
+            # projection (e.g. the empty 'Data' category on MC-only plots)
+            empty_labels = {lab for lab, d in self._plotdata_diagonal.items()
+                            if np.sum(d) == 0}
+
             if invert_stack_order:
                 h, l = ax.get_legend_handles_labels()
-                filtered = [(h, l) for h, l in zip(h, l) if 'QE' not in l]
+                filtered = [(h, l) for h, l in zip(h, l)
+                            if 'QE' not in l and l not in empty_labels]
                 if filtered:
                     h, l = zip(*filtered)
                 h, l = list(h), list(l)
@@ -379,7 +385,8 @@ class SpineSpectra2D(SpineSpectra):
                 ax.legend(h[-2::-1] + h[-1:], l[-2::-1] + l[-1:], fontsize=10)
             else:
                 h, l = ax.get_legend_handles_labels()
-                filtered = [(hh, ll) for hh, ll in zip(h, l) if 'QE' not in ll]
+                filtered = [(hh, ll) for hh, ll in zip(h, l)
+                            if 'QE' not in ll and ll not in empty_labels]
                 if filtered:
                     h, l = zip(*filtered)
                 h, l = list(h), list(l)

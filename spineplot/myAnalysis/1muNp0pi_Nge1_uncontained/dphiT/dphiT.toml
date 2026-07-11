@@ -156,45 +156,6 @@ yrange = 1.5
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]
-name = 'dphiT_fractional_residual'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_dphiT_residual'
-xvariable = 'true_dphiT_residual'
-xrange = [-2,2]
-xtitle = '$\frac{\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}}{\delta_{\phi T,\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-[[figure]]
-name = 'dphiT_fractional_residual_contained'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_dphiT_residual_contained'
-xvariable = 'true_dphiT_residual_contained'
-xrange = [-2,2]
-xtitle = '$\frac{\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}}{\delta_{\phi T,\mathrm{true}}}$ (Contained $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-[[figure]]
-name = 'dphiT_fractional_residual_exiting'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_dphiT_residual_exiting'
-xvariable = 'true_dphiT_residual_exiting'
-xrange = [-2,2]
-xtitle = '$\frac{\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}}{\delta_{\phi T,\mathrm{true}}}$ (Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
-
-[[figure]]
 name = 'dphiT_smearing_matrix_normalized'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'

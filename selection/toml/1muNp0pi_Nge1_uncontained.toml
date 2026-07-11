@@ -93,32 +93,39 @@ cuts = [
     { name = "no_extra_particles_minerva",  type = "mctruth"            },
 ]
 
-[[category]] # 6 : Uncontained muon, fiducial
+[[category]] # 6 : numuCC Np1pi± (exactly one charged pion above threshold)
+cuts = [
+    { name = "neutrino"    },
+    { name = "iscc"        },
+    { name = "single_pion", parameters = [ "@pion_threshold" ] },
+]
+
+[[category]] # 7 : Uncontained muon, fiducial
 cuts = [
     { name = "neutrino"        },
     { name = "fiducial_cut"    },
     { name = "single_muon",             parameters = [ "@muon_threshold" ] },
 ]
 
-[[category]] # 7 : Uncontained muon
+[[category]] # 8 : Uncontained muon
 cuts = [
     { name = "neutrino" },
     { name = "single_muon", parameters = [ "@muon_threshold" ] },
 ]
 
-[[category]] # 8 : Neutrino, charged current
+[[category]] # 9 : Neutrino, charged current
 cuts = [
     { name = "neutrino" },
     { name = "iscc"     },
 ]
 
-[[category]] # 9 : Neutrino, neutral current
+[[category]] # 10 : Neutrino, neutral current
 cuts = [
     { name = "neutrino" },
     { name = "!iscc"    },
 ]
 
-[[category]] # 10 : Cosmic
+[[category]] # 11 : Cosmic
 cuts = [
     { name = "!neutrino" },
 ]
