@@ -256,7 +256,7 @@ class SpineSpectra1D(SpineSpectra):
                 signal_idx = None
                 signal_qe_idx = None
                 for li, label in enumerate(labels):
-                    if label == 'Signal':
+                    if 'CC0' in label:
                         signal_idx = li
                     elif label == 'Signal QE':
                         signal_qe_idx = li
@@ -271,7 +271,7 @@ class SpineSpectra1D(SpineSpectra):
                 new_labels = []
                 for li, (label, d) in enumerate(zip(labels, counts)):
                     if li in histogram_mask:
-                        if label == 'Signal' and signal_idx is not None and signal_qe_idx is not None:
+                        if 'CC0' in label and signal_idx is not None and signal_qe_idx is not None:
                             # Signal: show combined total
                             new_labels.append(f'{label} ({combined_signal:.1f}, {combined_signal / denominator:.2%})')
                         elif label == 'Signal QE' and signal_idx is not None and signal_qe_idx is not None:

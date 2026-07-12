@@ -40,7 +40,7 @@ abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
 [samples.offbeam]
 key = "offbeam"
 exposure_type = "livetime"
-override_category = 10
+override_category = 11
 trees = ['selected']
 
 [samples.offbeam.precompute]
@@ -51,7 +51,7 @@ abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
 [samples.rock]
 key = "rock"
 exposure_type = "pot"
-override_category = 10
+override_category = 11
 trees = ['selected']
 
 [samples.rock.precompute]
@@ -93,10 +93,10 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCCOH|NormNCCOH|AhtBY|BhtBY|CV
 [analysis]
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
-category_assignment = [[0,3], [1,4], [6,7,8], [9], [2,5], [10], [-100]]
-category_labels = ['Signal', 'Signal QE', 'Other CC', '$\nu$ NC', 'OOFV', 'Others', 'Data']
-category_colors = ['#003087', '#003087', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
-category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'histogram', 'scatter']
+category_assignment = [[0,3], [1,4], [6], [7,8,9], [10], [2,5], [11], [-100]]
+category_labels = ['Signal $\nu_\mu$CC0$\pi^\pm$', 'Signal QE', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$NC', 'OOFV', 'Others', 'Data']
+category_colors = ['#003087', '#003087', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'scatter']
 
 [[figure]]
 name = "dalphaT_xSecUncertainty"

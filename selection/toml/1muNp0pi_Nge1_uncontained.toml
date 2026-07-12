@@ -403,6 +403,7 @@ branch = [
     { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
     { name = "nuisance_is_signal",      type = "mctruth" },
     { name = "low_q2_weight",           type = "true"    },
+    { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
@@ -527,6 +528,7 @@ branch = [
     { name = "visible_energy_calosub", type = "true"    },
     { name = "nuisance_is_signal",     type = "mctruth" },
     { name = "low_q2_weight",          type = "true"    },
+    { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
     # Interaction-level selection variables
     { name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
@@ -659,6 +661,7 @@ branch = [
     { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
     { name = "nuisance_is_signal",      type = "mctruth" },
     { name = "low_q2_weight",           type = "true"    },
+    { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
