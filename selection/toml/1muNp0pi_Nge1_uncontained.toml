@@ -295,6 +295,7 @@ branch = [
     { name = "proton_multiplicity",  type = "reco", parameters = [ "@proton_threshold"   ] },
 
     # Leading MUON softmax scores and kinematics
+    { name = "momentum",           type = "both_particle", selector = "leading_muon"},
     { name = "muon_softmax",      type = "reco_particle", selector = "leading_muon" },
     { name = "proton_softmax",    type = "reco_particle", selector = "leading_muon" },
     { name = "pion_softmax",      type = "reco_particle", selector = "leading_muon" },
