@@ -32,7 +32,7 @@ mask = 'reco_leading_muon_containment == 0'
 [samples.mc]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband']
 print_sys = true
 systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
@@ -43,7 +43,7 @@ abs_leading_muon_momentum_residual = "reco_leading_muon_momentum - true_leading_
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband_nonmatched']
 
 [samples.mc_nonmatched.precompute]
@@ -126,7 +126,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 [[figure]]
@@ -137,7 +137,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_contained'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 [[figure]]
@@ -148,7 +148,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_exiting'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 # --- Fractional residual ---

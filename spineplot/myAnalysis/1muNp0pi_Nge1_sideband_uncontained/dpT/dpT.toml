@@ -34,7 +34,7 @@ mask = 'reco_leading_muon_containment == 0'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
@@ -46,7 +46,7 @@ abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband_nonmatched']
 
 [samples.mc_nonmatched.precompute]
@@ -131,7 +131,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]
@@ -142,7 +142,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_contained'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]
@@ -153,7 +153,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_exiting'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
 
 [[figure]]

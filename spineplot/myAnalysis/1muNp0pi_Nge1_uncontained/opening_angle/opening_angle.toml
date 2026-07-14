@@ -57,7 +57,7 @@ mask = 'reco_leading_muon_containment == 0'
 [samples.mc]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected']
 print_sys = true
 #systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
@@ -69,7 +69,7 @@ theta_mup_residual_deg = "reco_opening_angle_deg - true_opening_angle_deg"
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 [samples.mc_nonmatched.precompute]
@@ -156,7 +156,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 [[figure]]
@@ -167,7 +167,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_contained'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 [[figure]]
@@ -178,7 +178,7 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_exiting'
-yrange = 1.5
+yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 # --- Angle residual in degrees ---

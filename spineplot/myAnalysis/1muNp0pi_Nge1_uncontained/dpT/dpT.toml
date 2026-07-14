@@ -34,7 +34,7 @@ mask = 'reco_leading_muon_containment == 0'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20
+override_exposure = 7.178390e20
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
@@ -46,7 +46,7 @@ abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 [samples.mc_nonmatched.precompute]

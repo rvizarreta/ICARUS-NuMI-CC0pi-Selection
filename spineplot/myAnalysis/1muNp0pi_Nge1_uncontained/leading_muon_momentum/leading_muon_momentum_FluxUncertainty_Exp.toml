@@ -9,7 +9,7 @@ file = '../../../configurations/common/styles.toml'
 [samples.mc]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected']
 print_sys = true
 systematics = ['selected_NuMIfluxsimTree']
@@ -17,7 +17,7 @@ systematics = ['selected_NuMIfluxsimTree']
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 # DATA SAMPLE

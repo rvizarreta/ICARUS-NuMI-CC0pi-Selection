@@ -10,7 +10,7 @@ file = '../configurations/common/styles.toml'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178e20 # CORRECTED POT
+override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband']
 #print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
