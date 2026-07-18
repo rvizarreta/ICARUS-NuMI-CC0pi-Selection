@@ -60,7 +60,7 @@ exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected']
 print_sys = true
-#systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 [samples.mc.precompute]
 abs_opening_angle_residual = "reco_opening_angle_cos - true_opening_angle_cos"

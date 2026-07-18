@@ -4,6 +4,8 @@
 key = "reco_leading_pion_length"
 range = [0, 100]
 nbins = 40
+#range = [0, 10]
+#nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained + Exiting $\pi^\pm$)'
 xlabel_fontsize = 10
 
@@ -13,6 +15,8 @@ xlabel_fontsize = 10
 key = "reco_leading_pion_length"
 range = [0, 100]
 nbins = 40
+#range = [0, 10]
+#nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained $\pi^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_pion_containment == 1'
@@ -23,6 +27,8 @@ mask = 'reco_leading_pion_containment == 1'
 key = "reco_leading_pion_length"
 range = [0, 100]
 nbins = 40
+#range = [0, 10]
+#nbins = 10
 xlabel = '$L_\pi$ [cm] (Exiting $\pi^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_pion_containment == 0'
