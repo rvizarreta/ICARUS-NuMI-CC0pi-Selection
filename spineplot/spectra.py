@@ -107,6 +107,7 @@ class SpineSpectra(SpineArtist):
         self._binedges = None
         self._onebincount = None
         self._systematics = dict()
+        self._ordinate_name = None
 
     def add_sample(self, sample, is_ordinate) -> None:
         """
@@ -127,6 +128,8 @@ class SpineSpectra(SpineArtist):
         """
         super().add_sample(sample, is_ordinate)
         self._systematics[sample._name] = sample._systematics
+        if is_ordinate:
+            self._ordinate_name = sample._name
 
     def fit_with_function(self, ax, bin_centers, data, bin_edges, fit_type, range=(-1,1)) -> None:
         """

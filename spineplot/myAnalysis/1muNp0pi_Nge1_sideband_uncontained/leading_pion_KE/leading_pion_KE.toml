@@ -14,7 +14,7 @@ override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband']
 #print_sys = false
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['multisimTree','multisigmaTree','selected_NuMIfluxsimTree']
+systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
 #[samples.mc.precompute]
 #pions_cut = "reco_pion_multiplicity > 0"
@@ -34,6 +34,7 @@ category_types = ['histogram']
 name = 'leading_pion_KE_true'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
+figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'true_leading_pion_ke'

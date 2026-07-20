@@ -252,38 +252,14 @@ class SpineSpectra1D(SpineSpectra):
                 super().fit_with_function(ax, bincenters[0], np.sum(data, axis=0), self._binedges[labels[0]], fit_type, range=xr)
 
             if show_component_number and show_component_percentage:
-                # Find Signal and Signal QE indices
-                signal_idx = None
-                signal_qe_idx = None
-                for li, label in enumerate(labels):
-                    if 'CC0' in label:
-                        signal_idx = li
-                    elif label == 'Signal QE':
-                        signal_qe_idx = li
-
-                # Calculate combined signal
-                if signal_idx is not None and signal_qe_idx is not None:
-                    signal_events = np.sum(counts[signal_idx])
-                    signal_qe_events = np.sum(counts[signal_qe_idx])
-                    combined_signal = signal_events + signal_qe_events
-
-                # Build labels with custom logic
+                # Histogram (MC) components: percentage only.
+                # Scatter (data) components: event count.
                 new_labels = []
                 for li, (label, d) in enumerate(zip(labels, counts)):
                     if li in histogram_mask:
-                        if 'CC0' in label and signal_idx is not None and signal_qe_idx is not None:
-                            # Signal: show combined total
-                            new_labels.append(f'{label} ({combined_signal:.1f}, {combined_signal / denominator:.2%})')
-                        elif label == 'Signal QE' and signal_idx is not None and signal_qe_idx is not None:
-                            # Signal QE: show what fraction of combined signal is QE
-                            new_labels.append(
-                                f'{label} ({signal_qe_events / combined_signal:.2%} of signal)')
-                        else:
-                            # All other histogram components
-                            new_labels.append(f'{label} ({np.sum(d):.1f}, {np.sum(d) / denominator:.2%})')
+                        new_labels.append(f'{label} ({np.sum(d) / denominator:.2%})')
                     else:
-                        # Scatter components
-                        new_labels.append(f'{label} ({np.sum(d):.1f})')
+                        new_labels.append(f'{label} ({np.sum(d):.0f} events)')
 
                 labels = new_labels
 
@@ -380,24 +356,6 @@ class SpineSpectra1D(SpineSpectra):
                         range=xr if self._variable._binning_scheme != 'custom_bins' else None,
                         label=reduce(labels), color=reduce(colors), alpha=0.75, **style.plot_kwargs)
 
-            # Draw top border line for components with 'QE' in label (only for stacked plots)
-            if not show_fraction:
-                cumulative_heights = np.zeros(self._variable._nbins)
-                for i, (label, d, orig_label) in enumerate(zip(reduce(labels), reduce(data), reduce(original_labels))):
-                    cumulative_heights += scale * d
-
-                    # Check if this component has 'QE' in label
-                    if 'QE' in label:
-                        # Use the ORIGINAL label to access binedges
-                        bin_edges = self._binedges[orig_label]  # <-- Use orig_label instead
-                        ax.step(bin_edges,
-                                np.append(cumulative_heights, cumulative_heights[-1]),
-                                where='post',
-                                color='darkred',
-                                linewidth=2,
-                                zorder=10)
-                        break
-
             # Add prediction line (sum of all MC components) - skip for fraction plots
             if not show_fraction:
                 total_prediction = scale * np.sum(reduce(data), axis=0)
@@ -444,8 +402,8 @@ class SpineSpectra1D(SpineSpectra):
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
-                ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
-                ppfx_text = ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ax.legend(h_reversed, l_reversed, fontsize=9, ncol=2, loc='upper left', labelspacing=0.3)
+                ppfx_text = ax.text(0.95, 0.65, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -456,8 +414,8 @@ class SpineSpectra1D(SpineSpectra):
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
-                ax.legend(h_reversed, l_reversed, fontsize=8, ncol=2, loc='upper left')
-                ppfx_text = ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ax.legend(h_reversed, l_reversed, fontsize=9, ncol=2, loc='upper left', labelspacing=0.3)
+                ppfx_text = ax.text(0.95, 0.65, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -470,8 +428,8 @@ class SpineSpectra1D(SpineSpectra):
             h.append(plt.Line2D([0], [0], color='none'))
             l.append('')
             h.append(plt.Line2D([0], [0], color='none'))
-            ax.legend(h, l, fontsize=8, ncol=2, loc='upper left')
-            ppfx_text = ax.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+            ax.legend(h, l, fontsize=9, ncol=2, loc='upper left', labelspacing=0.3)
+            ppfx_text = ax.text(0.95, 0.65, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                     transform=ax.transAxes,
                     fontsize=7, color='black',
                     horizontalalignment='right',
@@ -489,14 +447,6 @@ class SpineSpectra1D(SpineSpectra):
                         fontsize=9, color='black',
                         horizontalalignment='left',
                         verticalalignment='top')
-
-        # Add borders to legend patches for 'QE' entries
-        legend = ax.get_legend()
-        for handle, label_text in zip(legend.legend_handles, legend.get_texts()):
-            if 'QE' in label_text.get_text():
-                handle.set_edgecolor('darkred')
-                handle.set_linewidth(2)
-                handle.set_facecolor('white')
 
         # Automatically extend y-axis by 35% to make room for legend
         #if self._yrange is None:
@@ -516,28 +466,46 @@ class SpineSpectra1D(SpineSpectra):
 
             # Use saved MC prediction
             mc_prediction_ratio = mc_sum_for_ratio
-            mc_stat_err = np.sqrt(mc_prediction_ratio)
+
+            # MC statistical uncertainty on the prediction. Every sample
+            # registers a '<name>_statistical' Systematic (including the
+            # data/ordinate sample), so restrict the sum to the samples
+            # that carry the 'draw_error' Systematic (i.e. those that
+            # contribute to the drawn total band) to guarantee the stat
+            # band is a subset of the stat+syst band. Within a sample,
+            # prefer the 'stats' recipe over the raw statistical entry
+            # to avoid double counting. Fall back to sqrt(N) of the
+            # prediction only if nothing is found.
+            stat_cov_ratio = None
+            for sample_name, sample_systs in self._systematics.items():
+                if sample_name == self._ordinate_name:
+                    continue
+                if draw_error and draw_error not in sample_systs:
+                    continue
+                stat_keys = [k for k in sample_systs.keys() if 'stat' in k.lower()]
+                if not stat_keys:
+                    continue
+                chosen = 'stats' if 'stats' in stat_keys else stat_keys[0]
+                c = sample_systs[chosen].get_covariance(self._variable._name)
+                stat_cov_ratio = c.copy() if stat_cov_ratio is None else stat_cov_ratio + c
+            if stat_cov_ratio is not None:
+                mc_stat_err = np.sqrt(np.diag(stat_cov_ratio))
+            else:
+                mc_stat_err = np.sqrt(mc_prediction_ratio)
 
             # Calculate data/mc ratio
             with np.errstate(divide='ignore', invalid='ignore'):
                 ratio = np.where(data_values > 0, data_values / mc_prediction_ratio, 0)
 
-            # Calculate uncertainties
-            mc_err = np.zeros_like(mc_prediction_ratio)
+            # Total (stat+syst) uncertainty. The 'draw_error' Systematic
+            # (e.g. MC_total) already includes the MC statistical
+            # component, so its covariance is used directly.
+            mc_total_err = mc_stat_err
             if draw_error:
                 systs_ratio = [s[draw_error] for s in self._systematics.values() if draw_error in s]
                 if systs_ratio:
                     cov_ratio = np.sum(s.get_covariance(self._variable._name) for s in systs_ratio)
-                    scov_ratio = Systematic.transform_as(cov_ratio, 1.0)
-                    mc_syst_err = np.sqrt(np.diag(scov_ratio))
-                    # Add MC statistical and systematic errors in quadrature
-                    mc_err = np.sqrt(mc_stat_err ** 2 + mc_syst_err ** 2)
-                else:
-                    # If no systematics, just use MC statistical error
-                    mc_err = mc_stat_err
-            else:
-                # If draw_error is False, still include MC statistical error in band
-                mc_err = mc_stat_err
+                    mc_total_err = np.sqrt(np.diag(cov_ratio))
 
             data_err = np.sqrt(data_values)
 
@@ -546,18 +514,35 @@ class SpineSpectra1D(SpineSpectra):
                                      data_err / mc_prediction_ratio, 0)
 
             # Draw ratio plot
-            ax_ratio.axhline(y=1.0, color='black', linestyle='--', linewidth=1, alpha=0.5)
+            ax_ratio.axhline(y=1.0, color='black', linestyle='--', linewidth=1)
 
-            if draw_error and np.any(mc_err > 0):
-                with np.errstate(divide='ignore', invalid='ignore'):
-                    rel_mc_err = np.where(mc_prediction_ratio > 0, mc_err / mc_prediction_ratio, 0)
-                # Only draw error boxes where data exists
-                if np.any(data_mask):
-                    xerr_ratio = np.array(binwidths[scatter_mask[0]])[data_mask] / 2
-                    draw_error_boxes(ax_ratio, data_centers[data_mask], np.ones(np.sum(data_mask)),
-                                     xerr_ratio, rel_mc_err[data_mask],
-                                     facecolor='lightgray', edgecolor='gray', alpha=0.4,
-                                     hatch='xxx', linewidth=0.6)
+            # Draw the two bands around 1: Stat.+Syst. (cyan) underneath,
+            # Stat. (magenta) on top, spanning all bins.
+            with np.errstate(divide='ignore', invalid='ignore'):
+                rel_stat_err = np.where(mc_prediction_ratio > 0, mc_stat_err / mc_prediction_ratio, 0)
+                rel_total_err = np.where(mc_prediction_ratio > 0, mc_total_err / mc_prediction_ratio, 0)
+            xerr_ratio_all = np.array(binwidths[scatter_mask[0]]) / 2
+            if draw_error and np.any(rel_total_err > 0):
+                draw_error_boxes(ax_ratio, data_centers, np.ones(len(data_centers)),
+                                 xerr_ratio_all, rel_total_err,
+                                 facecolor='lightgray', edgecolor='gray', alpha=1.0,
+                                 hatch='xxx', linewidth=0.0)
+            if np.any(rel_stat_err > 0):
+                draw_error_boxes(ax_ratio, data_centers, np.ones(len(data_centers)),
+                                 xerr_ratio_all, rel_stat_err,
+                                 facecolor='dimgray', edgecolor='none', alpha=0.6,
+                                 linewidth=0.0)
+
+            # Legend for the ratio bands
+            ratio_handles = [plt.Rectangle((0, 0), 1, 1, fc='dimgray', ec='none', alpha=0.6)]
+            ratio_labels = ['Stat.']
+            if draw_error:
+                ratio_handles.append(plt.Rectangle((0, 0), 1, 1, fc='lightgray', ec='gray',
+                                                   alpha=0.6, hatch='xxx', linewidth=0.8))
+                ratio_labels.append('Stat.+Syst.')
+            ax_ratio.legend(ratio_handles, ratio_labels, fontsize=8, ncol=2,
+                            loc='upper right', frameon=False,
+                            columnspacing=0.8, handletextpad=0.4)
 
             # Only plot data points where data exists
             if np.any(data_mask):
@@ -569,12 +554,14 @@ class SpineSpectra1D(SpineSpectra):
                                   markerfacecolor='black', markeredgecolor='black',
                                   color='black', capsize=2, elinewidth=1)
 
-            ax_ratio.set_ylabel('Data/MC', fontsize=10, weight='bold')
+            ax_ratio.set_ylabel('Data/MC', fontsize=12, weight='bold')
             ax_ratio.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle,
                                 fontsize=self._variable._xlabel_fontsize, weight='bold')
             ax_ratio.set_ylim(*(ratio_yrange if ratio_yrange is not None else (0.0, 2.0)))
-            ax_ratio.grid(True, alpha=0.3, axis='y')
-            ax_ratio.tick_params(axis='both', which='major', labelsize=10)
+            # Match the main panel tick style so the two panels read as
+            # one figure, with bold tick labels on the bottom axis only.
+            ax_ratio.tick_params(axis='both', which='major',
+                                 labelsize=12, size=8, width=2)
             ax_ratio.set_xlim(*self._variable._range if self._xrange is None else self._xrange)
 
             ax.set_xlabel('')

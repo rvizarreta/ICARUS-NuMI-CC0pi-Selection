@@ -27,8 +27,8 @@ multiple_protons_cut = "reco_proton_multiplicity > 0"
 [analysis]
 ordinate_sample = "signal"
 category_branch = "true_category"
-category_assignment = [[0.0, 1.0, 3.0, 4.0], [6.0, 7.0, 8.0], [9.0], [2.0, 5.0], [10.0]]
-category_labels = ['1$\mu$Np0$\pi$', 'Other CC', 'NC', 'OOFV', 'Cosmic']
+category_assignment = [[0.0, 1.0, 2.0], [4.0, 5.0, 6.0, 7.0], [8.0], [3.0], [9.0]]
+category_labels = ['1$\mu$Np0$\pi$', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic']
 category_colors = ['darkgreen','C1', 'C3', 'C5', 'C4']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram']
 
