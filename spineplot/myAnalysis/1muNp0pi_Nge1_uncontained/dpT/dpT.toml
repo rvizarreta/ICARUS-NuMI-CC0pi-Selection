@@ -132,7 +132,8 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'
 yrange = 1.7
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'dpT_reco_contained'
@@ -143,7 +144,8 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_contained'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'dpT_reco_exiting'
@@ -154,7 +156,23 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_exiting'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
+
+# MC-only version of the combined reco distribution: no data points, no Data/MC
+# ratio panel. Uses the 'selected_icarus_mc' style so the header reads
+# "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
+[[figure]]
+name = 'dpT_reco_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpT'
+yrange = 1.7
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
 
 [[figure]]
 name = 'dpT_smearing_matrix_normalized'
@@ -164,6 +182,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_dpT_smearing'
 yvariable = 'reco_dpT_smearing'
+xrange = [0.0, 800.0]
+yrange = [0.0, 800.0]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
@@ -174,6 +194,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_dpT_smearing_contained'
 yvariable = 'reco_dpT_smearing_contained'
+xrange = [0.0, 800.0]
+yrange = [0.0, 800.0]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
@@ -184,6 +206,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_dpT_smearing_exiting'
 yvariable = 'reco_dpT_smearing_exiting'
+xrange = [0.0, 800.0]
+yrange = [0.0, 800.0]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]

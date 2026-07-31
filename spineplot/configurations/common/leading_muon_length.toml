@@ -1,9 +1,24 @@
+# Leading muon track length binning (2026-07-31). RECO HISTOGRAMS ONLY.
+#
+# RANGE CHANGED: [50, 500] -> [0, 800] cm. The old range held only 89.0% of selected
+# events; p99 is 772 cm and the longest track is 1721 cm, so 11% of the sample was
+# off the axis entirely. The old lower edge at 50 cm also clipped the exiting-muon
+# low tail, which runs down to 5.5 cm (p1 = 34 cm for exiting) - i.e. short exiting
+# tracks were being silently dropped from the plot. [0, 800] retains ~99%.
+#
+# CRITERION: EQUAL-POPULATION, 24 bins, sized at full POT 2.36124e20.
+# Per-bin counts at full POT: 1274-1275 (combined), 378-379 (contained),
+# 895-896 (exiting); occupancy ratio 1.00 in all three.
+# Widths span 5.7-249 cm, so per_bin_width = true is required.
+
 ### leading_muon_length - Combined ------------------------------------
 
 [variables.reco_leading_muon_length]
 key = "reco_leading_muon_length"
-range = [50, 500]
-nbins = 25
+range = [0.0, 800.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 52.1889, 61.2804, 70.1222, 79.4003, 88.8321, 98.9007, 109.5566, 120.9326, 132.8716, 146.0182, 160.6746, 175.7348, 192.2491, 210.0055, 230.4251, 251.8994, 275.3291, 302.6064, 333.8099, 370.9569, 415.7392, 476.8497, 570.6498, 800.0]
 xlabel = '$L_\mu$ [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -11,8 +26,10 @@ xlabel_fontsize = 10
 
 [variables.reco_leading_muon_length_contained]
 key = "reco_leading_muon_length"
-range = [50, 500]
-nbins = 25
+range = [0.0, 800.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 55.0837, 60.7548, 66.6555, 72.7042, 79.4252, 86.4428, 94.0547, 102.6067, 111.8314, 121.4341, 132.4783, 145.3131, 159.9699, 175.8954, 194.8201, 217.0381, 244.1404, 276.1156, 319.2189, 367.1311, 427.7833, 510.7541, 616.0398, 800.0]
 xlabel = '$L_\mu$ [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -21,8 +38,10 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_leading_muon_length_exiting]
 key = "reco_leading_muon_length"
-range = [50, 500]
-nbins = 25
+range = [0.0, 800.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 49.0234, 61.7076, 72.8932, 84.1485, 95.4527, 106.8246, 118.4885, 131.1176, 144.2283, 158.3463, 172.9666, 188.9563, 205.328, 223.4253, 242.3726, 262.7817, 284.5211, 309.7682, 337.8349, 371.8501, 412.0607, 465.682, 551.3046, 800.0]
 xlabel = '$L_\mu$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

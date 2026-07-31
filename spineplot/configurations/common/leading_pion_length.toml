@@ -1,9 +1,33 @@
+# Leading pion track length binning (2026-07-31). RECO HISTOGRAMS ONLY.
+#
+# RANGE CHANGED: [0, 100] -> [0, 250] cm, and the edges are derived from the
+# SIDEBAND, not the signal region. Reason: this file is shared by both analysis
+# directories, but the two samples populate it very differently.
+#     signal region (selected tree): only 5.9% of events have a leading pion at all
+#                                    - 5842 entries, median 3.1 cm, p99 58 cm
+#     sideband      (sideband tree): every event has one - 34420 entries,
+#                                    median 33 cm, p99 212 cm, max 514 cm
+# The old [0, 100] range was fine for the signal region (99.9% inside) but cut 11.4%
+# of the sideband off the axis. Since the sideband is the sample this variable is
+# actually used to study, and it is the one with statistics, the binning is optimised
+# for it; [0, 250] covers 99% of the sideband and still contains the signal region.
+#
+# CONSEQUENCE FOR THE SIGNAL REGION: its pion-length histogram is sparse in this
+# binning - about 1833 events at full POT spread over 24 bins, and only ~183 events
+# total at the 10% exposure. Read it as a cross-check, not a measurement.
+#
+# CRITERION: EQUAL-POPULATION, 24 bins on the sideband, sized at full POT.
+# Per-bin counts at full POT: 449-452 (occupancy ratio 1.01).
+# Widths span 2.0-109 cm, so per_bin_width = true is required.
+
 # --- Combined (Contained + Exiting) ---
 
 [variables.reco_leading_pion_length]
 key = "reco_leading_pion_length"
-range = [0, 100]
-nbins = 40
+range = [0.0, 250.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.6829, 23.1999, 26.3482, 29.4682, 32.9971, 36.7541, 40.9215, 45.4557, 50.7697, 56.6052, 63.4947, 71.9971, 81.8334, 94.469, 111.3103, 141.2853, 250.0]
 #range = [0, 10]
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained + Exiting $\pi^\pm$)'
@@ -13,8 +37,10 @@ xlabel_fontsize = 10
 
 [variables.reco_leading_pion_length_contained]
 key = "reco_leading_pion_length"
-range = [0, 100]
-nbins = 40
+range = [0.0, 250.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.6829, 23.1999, 26.3482, 29.4682, 32.9971, 36.7541, 40.9215, 45.4557, 50.7697, 56.6052, 63.4947, 71.9971, 81.8334, 94.469, 111.3103, 141.2853, 250.0]
 #range = [0, 10]
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained $\pi^\pm$)'
@@ -25,8 +51,10 @@ mask = 'reco_leading_pion_containment == 1'
 
 [variables.reco_leading_pion_length_exiting]
 key = "reco_leading_pion_length"
-range = [0, 100]
-nbins = 40
+range = [0.0, 250.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.6829, 23.1999, 26.3482, 29.4682, 32.9971, 36.7541, 40.9215, 45.4557, 50.7697, 56.6052, 63.4947, 71.9971, 81.8334, 94.469, 111.3103, 141.2853, 250.0]
 #range = [0, 10]
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Exiting $\pi^\pm$)'

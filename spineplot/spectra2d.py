@@ -190,7 +190,8 @@ class SpineSpectra2D(SpineSpectra):
     def draw(self, ax, style, show_option='2d', draw_identity=True,
              draw_colorbar=True, invert_stack_order=False,
              fit_type=None, logx=False, logy=False, logz=False,
-             draw_stat_error=False) -> None:
+             draw_stat_error=False, annotate_threshold=0.1,
+             annotate_min_cell=0.022) -> None:
         """
         Plots the data for the SpineSpectra2D object.
 
@@ -232,7 +233,20 @@ class SpineSpectra2D(SpineSpectra):
         draw_stat_error : bool
             A flag to indicate if the statistical error should be drawn
             on the plot. The default is False.
-        
+        annotate_threshold : float
+            Only used by show_option='smearing'. Cells whose column
+            normalized value (in percent) is at or below this are left
+            unlabelled, so that the near-empty off-diagonal cells do not
+            crowd the informative ones. The colour scale still shows
+            them. Set to 0 to label every cell. The default is 0.1.
+        annotate_min_cell : float
+            Only used by show_option='smearing'. Cells whose width or
+            height is below this fraction of the corresponding axis span
+            are left unlabelled, because there is no room for the text.
+            Needed for variable-width binnings where some bins are a
+            small percentage of the axis. Set to 0 to disable. The
+            default is 0.03.
+
         Returns
         -------
         None.
@@ -305,20 +319,64 @@ class SpineSpectra2D(SpineSpectra):
             im = ax.pcolormesh(x_edges, y_edges, normalized_values.T,
                                cmap='Reds', vmin=0, vmax=0.25)
 
+            # Annotate each cell, subject to two suppressions. Both exist because a
+            # label that cannot be read is worse than no label: it overlaps its
+            # neighbours and obscures the colour underneath.
+            #   1. VALUE: cells at or below annotate_threshold (percent) carry no
+            #      information worth a number. With fine binning these near-empty
+            #      off-diagonal cells vastly outnumber the informative ones.
+            #      NOTE this can blank an ENTIRE row or column, not just scattered
+            #      cells: the 2:1 median split routinely produces one reco bin much
+            #      narrower than its neighbours (contained dpT reco bin [52.7, 76.0] is
+            #      2.91% of the axis against 3.6-8.3% for the rest), and if the cutoff
+            #      sits above it that whole row loses its labels and reads as empty.
+            #      The default is set below the narrowest bin any current binning
+            #      produces; raise it only after checking the reco widths.
+            #   2. CELL SIZE: cells narrower/shorter than annotate_min_cell (as a
+            #      fraction of the axis span) have no room for text at all. This is what
+            #      happens where the binning is necessarily narrow - e.g. the
+            #      equal-population bins packed into a sharp forward peak, which can be
+            #      1-2% of the axis wide while still holding a large diagonal fraction.
+            # In both cases the colour scale still represents the cell faithfully.
+            # Set either to 0 to disable that suppression.
+            # The visible window may be narrower than the binning: an overflow bin
+            # (e.g. truth [p_max, inf)) belongs in the response matrix used by the fit,
+            # but plotting it would compress the physical range into a sliver of the
+            # axis. Setting xrange/yrange on the artist crops the view to the physical
+            # region while the column normalisation - and hence every displayed
+            # fraction - still accounts for the overflow.
+            vis_x = (float(x_edges[0]), float(x_edges[-1])) if self._xrange is None \
+                else (float(self._xrange[0]), float(self._xrange[1]))
+            vis_y = (float(y_edges[0]), float(y_edges[-1])) if self._yrange is None \
+                else (float(self._yrange[0]), float(self._yrange[1]))
+            x_span = vis_x[1] - vis_x[0]
+            y_span = vis_y[1] - vis_y[0]
             for i in range(ny):
                 for j in range(nx):
                     percentage = normalized_values.T[i, j] * 100
-                    x_pos = (x_edges[j] + x_edges[j + 1]) / 2
-                    y_pos = (y_edges[i] + y_edges[i + 1]) / 2
-                    if percentage >= 0.01:
-                        text_color = 'white' if percentage > 12.5 else 'black'
-                        ax.text(x_pos, y_pos, f'{percentage:.1f}%',
-                                ha='center', va='center',
-                                color=text_color, fontsize=6, weight='bold')
-                    elif percentage == 0.0:
-                        ax.text(x_pos, y_pos, '0.0%',
-                                ha='center', va='center',
-                                color='black', fontsize=6, weight='bold')
+                    if percentage <= annotate_threshold:
+                        continue
+                    # skip cells lying wholly outside the visible window
+                    if x_edges[j + 1] <= vis_x[0] or x_edges[j] >= vis_x[1]:
+                        continue
+                    if y_edges[i + 1] <= vis_y[0] or y_edges[i] >= vis_y[1]:
+                        continue
+                    if annotate_min_cell > 0:
+                        # clip to the visible window so a bin that merely extends past
+                        # the edge is judged on the part actually drawn
+                        w = min(x_edges[j + 1], vis_x[1]) - max(x_edges[j], vis_x[0])
+                        h = min(y_edges[i + 1], vis_y[1]) - max(y_edges[i], vis_y[0])
+                        if w / x_span < annotate_min_cell or h / y_span < annotate_min_cell:
+                            continue
+                    x_pos = (min(x_edges[j + 1], vis_x[1]) + max(x_edges[j], vis_x[0])) / 2
+                    y_pos = (min(y_edges[i + 1], vis_y[1]) + max(y_edges[i], vis_y[0])) / 2
+                    text_color = 'white' if percentage > 12.5 else 'black'
+                    ax.text(x_pos, y_pos, f'{percentage:.1f}%',
+                            ha='center', va='center',
+                            color=text_color, fontsize=6, weight='bold')
+
+            ax.set_xlim(*vis_x)
+            ax.set_ylim(*vis_y)
 
             # Set labels and formatting
             ax.set_xlabel(self._variables[0]._xlabel if self._xtitle is None else self._xtitle, fontsize=12,
@@ -331,8 +389,18 @@ class SpineSpectra2D(SpineSpectra):
                            size=8,
                            width=2)
 
-            ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
-            ax.yaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
+            # Automatic locators pick round intervals that need not land on
+            # the end of the range (an angular axis on [0, 180] stops
+            # labelling at 150), so an explicit xticks list on the Variable
+            # overrides them per axis.
+            if getattr(self._variables[0], '_xticks', None):
+                ax.set_xticks(self._variables[0]._xticks)
+            else:
+                ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
+            if getattr(self._variables[1], '_xticks', None):
+                ax.set_yticks(self._variables[1]._xticks)
+            else:
+                ax.yaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
 
             # Add colorbar
             if draw_colorbar:

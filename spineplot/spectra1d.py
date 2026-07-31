@@ -156,7 +156,8 @@ class SpineSpectra1D(SpineSpectra):
     def draw(self, ax, style, show_component_number=False,
              show_component_percentage=False, invert_stack_order=False,
              fit_type=None, logx=False, logy=False, normalize=False,
-             draw_error=None, draw_ratio=False, ratio_yrange=None, prediction=True, show_fraction=False, draw_data=True) -> None:
+             draw_error=None, draw_ratio=False, ratio_yrange=None, prediction=True, show_fraction=False, draw_data=True,
+             per_bin_width=False) -> None:
         """
         Plots the data for the SpineSpectra1D object.
 
@@ -204,6 +205,14 @@ class SpineSpectra1D(SpineSpectra):
             If True, shows the per-bin fraction of each component
             (each bin sums to 1.0). The y-axis becomes 'Fraction'
             instead of 'Candidates'. The default is False.
+        per_bin_width : bool, optional
+            If True, plotted bin contents (and their uncertainties) are
+            divided by the bin width, so the y-axis reads as a density
+            (e.g. 'Candidates / MeV/c'). Intended for variable-width
+            binnings, where raw counts distort the visual shape. The
+            chi2, legend counts and Data/MC ratio panel still use raw
+            counts, so they are unchanged by this option. Ignored when
+            show_fraction or normalize is set. The default is False.
 
         Returns
         -------
@@ -222,9 +231,15 @@ class SpineSpectra1D(SpineSpectra):
             ax_ratio = None
 
         ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
+        # per_bin_width only makes sense for un-normalized spectra.
+        per_bin_width = per_bin_width and not show_fraction and not normalize
         ylabel = 'Fraction' if show_fraction else 'Candidates'
+        if per_bin_width:
+            ylabel = self._ytitle if self._ytitle is not None else 'Candidates / bin width'
         ax.set_ylabel(ylabel, fontsize=12, weight='bold')
         ax.set_xlim(*self._variable._range if self._xrange is None else self._xrange)
+        if getattr(self._variable, '_xticks', None):
+            ax.set_xticks(self._variable._xticks)
         ax.set_title(self._title)
 
         # Set tick mark size and tick label font size
@@ -241,6 +256,12 @@ class SpineSpectra1D(SpineSpectra):
             bincenters = [self._binedges[l][:-1] + np.diff(self._binedges[l]) / 2 for l in labels]
             binwidths = [np.diff(self._binedges[l]) for l in labels]
             xr = self._variable._range if self._xrange is None else self._xrange
+
+            # Keep the raw counts around: chi2, the ratio panel and the
+            # Poisson error bars are defined on counts, not densities.
+            raw_data = data
+            if per_bin_width:
+                data = tuple(np.asarray(d) / binwidths[i] for i, d in enumerate(data))
 
             histogram_mask = [li for li, label in enumerate(labels) if self._category_types[label] == 'histogram']
             scatter_mask = [li for li, label in enumerate(labels) if self._category_types[label] == 'scatter']
@@ -276,8 +297,10 @@ class SpineSpectra1D(SpineSpectra):
 
             scale = 1.0 if not normalize else 1.0 / np.sum(reduce(data))
 
-            # SAVE MC prediction for ratio plot BEFORE any modifications
-            mc_sum_for_ratio = np.sum(reduce(data), axis=0)
+            # SAVE MC prediction for ratio plot BEFORE any modifications.
+            # Raw counts: the ratio panel divides data by this, so both
+            # sides must stay in the same (count) units.
+            mc_sum_for_ratio = np.sum([raw_data[i] for i in histogram_mask], axis=0)
 
             # Apply per-bin normalization AFTER reduce() if show_fraction is True
             if show_fraction:
@@ -312,8 +335,8 @@ class SpineSpectra1D(SpineSpectra):
                 # data (scatter) category.
                 self._chi2_result = None
                 if not normalize and not show_fraction and len(scatter_mask):
-                    y_data_chi2 = data[scatter_mask[0]]
-                    y_pred_chi2 = np.sum(reduce(data), axis=0)
+                    y_data_chi2 = raw_data[scatter_mask[0]]
+                    y_pred_chi2 = np.sum([raw_data[i] for i in histogram_mask], axis=0)
                     diff = y_data_chi2 - y_pred_chi2
                     cov_chi2 = cov + np.diag(np.maximum(y_data_chi2, 1.0))
                     chi2_val = float(diff @ np.linalg.solve(cov_chi2, diff))
@@ -325,6 +348,8 @@ class SpineSpectra1D(SpineSpectra):
                 #scov = Systematic.transform_as(cov, scale if not normalize else np.sum(reduce(data), axis=0))
                 scov = Systematic.transform_as(cov, scale)
                 yerr = np.sqrt(np.diag(scov))
+                if per_bin_width:
+                    yerr = yerr / binwidths[0]
 
                 draw_error_boxes(ax, x, y, xerr, yerr, facecolor='lightgray', edgecolor='gray', alpha=1.0, hatch='xxx', linewidth=0.0)
 
@@ -359,7 +384,9 @@ class SpineSpectra1D(SpineSpectra):
             # Add prediction line (sum of all MC components) - skip for fraction plots
             if not show_fraction:
                 total_prediction = scale * np.sum(reduce(data), axis=0)
-                total_events = np.sum(reduce(data))  # Sum all events in histogram categories
+                # The legend quotes an EVENT COUNT, so it must come from the raw
+                # counts even when the curve itself is drawn per unit bin width.
+                total_events = np.sum([raw_data[i] for i in histogram_mask])
                 first_hist_category = list(self._plotdata.keys())[histogram_mask[0]]
                 bin_edges = self._binedges[first_hist_category]
                 label = f'Prediction ({total_events:.1f} events)' if prediction else None
@@ -379,10 +406,15 @@ class SpineSpectra1D(SpineSpectra):
                         continue
 
                     xerr_data = [x / 2 for x in binwidths[idx]]  # Get bin widths for this category
+                    # Poisson errors come from the raw counts; when plotting
+                    # per bin width, both value and error are divided by it.
+                    yerr_data = np.sqrt(raw_data[scatter_mask[i]][data_mask])
+                    if per_bin_width:
+                        yerr_data = yerr_data / binwidths[idx][data_mask]
                     ax.errorbar(bincenters[scatter_mask[i]][data_mask],
                                 scale * data[scatter_mask[i]][data_mask],
                                 xerr=[xerr_data[j] for j in range(len(xerr_data)) if data_mask[j]],
-                                yerr=scale * np.sqrt(data[scatter_mask[i]][data_mask]),
+                                yerr=scale * yerr_data,
                                 fmt='o',
                                 markersize=6,
                                 markerfacecolor='black',
@@ -563,6 +595,8 @@ class SpineSpectra1D(SpineSpectra):
             ax_ratio.tick_params(axis='both', which='major',
                                  labelsize=12, size=8, width=2)
             ax_ratio.set_xlim(*self._variable._range if self._xrange is None else self._xrange)
+            if getattr(self._variable, '_xticks', None):
+                ax_ratio.set_xticks(self._variable._xticks)
 
             ax.set_xlabel('')
             ax.tick_params(labelbottom=False)

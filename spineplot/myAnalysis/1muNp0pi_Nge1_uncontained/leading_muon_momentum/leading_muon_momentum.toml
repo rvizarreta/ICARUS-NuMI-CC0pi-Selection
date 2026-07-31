@@ -125,9 +125,24 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum'
+ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'ratio_yrange' = [0.0, 3.0]}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'ratio_yrange' = [0.0, 3.0], 'per_bin_width' = true}
 
+# MC-only version of the combined reco distribution: no data points, no Data/MC
+# ratio panel. Uses the 'selected_icarus_mc' style so the header reads
+# "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
+[[figure]]
+name = 'leading_muon_momentum_reco_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_momentum'
+ytitle = 'Candidates / (GeV/c)'
+yrange = 1.6
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'ratio_yrange' = [0.0, 3.0], 'per_bin_width' = true, 'draw_data' = false}
 [[figure]]
 name = 'leading_muon_momentum_reco_contained'
 type = 'SimpleFigure'
@@ -136,8 +151,9 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_contained'
+ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'ratio_yrange' = [0.0, 4.0]}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'ratio_yrange' = [0.0, 4.0], 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_muon_momentum_reco_exiting'
@@ -147,8 +163,9 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_exiting'
+ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'ratio_yrange' = [0.0, 3.0]}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'ratio_yrange' = [0.0, 3.0], 'per_bin_width' = true}
 
 # --- Fractional residual ---
 
@@ -201,6 +218,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_leading_muon_momentum_smearing'
 yvariable = 'reco_leading_muon_momentum_smearing'
+xrange = [0.226, 3.0]
+yrange = [0.226, 3.0]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
@@ -211,6 +230,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_leading_muon_momentum_smearing_contained'
 yvariable = 'reco_leading_muon_momentum_smearing_contained'
+xrange = [0.226, 1.5]
+yrange = [0.226, 1.5]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
@@ -221,6 +242,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_leading_muon_momentum_smearing_exiting'
 yvariable = 'reco_leading_muon_momentum_smearing_exiting'
+xrange = [0.226, 3.0]
+yrange = [0.226, 3.0]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 # --- Absolute residual ---

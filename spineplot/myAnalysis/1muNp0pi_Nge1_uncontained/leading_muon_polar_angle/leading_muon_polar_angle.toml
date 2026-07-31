@@ -156,9 +156,24 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_polar_angle'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+yrange = 1.7
+ytitle = 'Candidates / unit cos'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
+# MC-only version of the combined reco distribution: no data points, no Data/MC
+# ratio panel. Uses the 'selected_icarus_mc' style so the header reads
+# "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
+[[figure]]
+name = 'leading_muon_polar_angle_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_polar_angle'
+yrange = 1.7
+ytitle = 'Candidates / unit cos'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 [[figure]]
 name = 'leading_muon_polar_angle_contained'
 type = 'SimpleFigure'
@@ -167,8 +182,9 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_polar_angle_contained'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+yrange = 1.7
+ytitle = 'Candidates / unit cos'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_muon_polar_angle_exiting'
@@ -178,8 +194,9 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_polar_angle_exiting'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+yrange = 1.7
+ytitle = 'Candidates / unit cos'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_muon_polar_angle_theta_residual_deg'

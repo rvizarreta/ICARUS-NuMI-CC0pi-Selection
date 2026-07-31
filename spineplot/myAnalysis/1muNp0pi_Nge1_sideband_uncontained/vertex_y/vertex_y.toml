@@ -126,9 +126,24 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_y'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
+# MC-only version of the combined reco distribution: no data points, no Data/MC
+# ratio panel. Uses the 'selected_icarus_mc' style so the header reads
+# "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
+[[figure]]
+name = 'vertex_y_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_y'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 [[figure]]
 name = 'vertex_y_contained'
 type = 'SimpleFigure'
@@ -137,8 +152,9 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_y_contained'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'vertex_y_exiting'
@@ -148,8 +164,9 @@ figsize = [5, 6]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_y_exiting'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'vertex_y_smearing_matrix_normalized'

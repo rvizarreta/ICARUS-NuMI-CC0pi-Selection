@@ -1,9 +1,21 @@
+# Reconstructed vertex z binning (2026-07-31). RECO HISTOGRAMS ONLY.
+#
+# RANGE CHANGED: [-1000, 1000] -> [-880, 860]. The data span only [-865, 845], so the
+# old range left 14% of the axis blank at the two ends.
+#
+# CRITERION: EQUAL-POPULATION, 24 bins, sized at full POT 2.36124e20.
+# The distribution is flat along the beam axis, so this comes out near-uniform -
+# widths span 67.8-91.1 cm (ratio 1.3). Per-bin counts at full POT: 1281-1289,
+# occupancy ratio 1.01.
+
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_z]
 key = "reco_vertex_z"
-range = [-1000, 1000]
-nbins = 50
+range = [-880.0, 860.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-880.0, -788.901, -715.8352, -644.301, -573.9509, -501.801, -431.301, -361.2864, -292.551, -222.2969, -152.1246, -81.2009, -10.2754, 59.1991, 126.9991, 197.4991, 268.449, 340.449, 414.5491, 484.801, 555.5523, 626.4991, 697.7491, 773.1991, 860.0]
 xlabel = 'Reco Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -37,8 +49,10 @@ xlabel_fontsize = 10
 
 [variables.reco_vertex_z_contained]
 key = "reco_vertex_z"
-range = [-1000, 1000]
-nbins = 50
+range = [-880.0, 860.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-880.0, -788.901, -715.8352, -644.301, -573.9509, -501.801, -431.301, -361.2864, -292.551, -222.2969, -152.1246, -81.2009, -10.2754, 59.1991, 126.9991, 197.4991, 268.449, 340.449, 414.5491, 484.801, 555.5523, 626.4991, 697.7491, 773.1991, 860.0]
 xlabel = 'Reco Vertex Z [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -77,8 +91,10 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_vertex_z_exiting]
 key = "reco_vertex_z"
-range = [-1000, 1000]
-nbins = 50
+range = [-880.0, 860.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-880.0, -788.901, -715.8352, -644.301, -573.9509, -501.801, -431.301, -361.2864, -292.551, -222.2969, -152.1246, -81.2009, -10.2754, 59.1991, 126.9991, 197.4991, 268.449, 340.449, 414.5491, 484.801, 555.5523, 626.4991, 697.7491, 773.1991, 860.0]
 xlabel = 'Reco Vertex Z [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

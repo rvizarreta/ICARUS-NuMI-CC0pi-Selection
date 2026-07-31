@@ -37,7 +37,7 @@ class Variable:
     def __init__(self, name, key, range, nbins,
                  binning_scheme='equal_width', xlabel=None,
                  xlabel_fontsize=12,
-                 mask=None, custom_bins = None) -> None:
+                 mask=None, custom_bins = None, xticks=None) -> None:
         """
         Initializes the Variable object with the given kwargs.
 
@@ -66,6 +66,14 @@ class Variable:
         custom_bins : tuple
             The customized bin edges (required if binning_scheme is
             'custom_bins').
+        xticks : list, optional
+            Explicit x-axis tick positions. Matplotlib's automatic tick
+            locator chooses round intervals that need not land on the
+            end of the axis range, so e.g. an angular variable on
+            [0, 180] can end up with its last label at 150 even though
+            the axis and the data do extend to 180. Setting this forces
+            the ticks (and therefore the end-of-range label). The
+            default is None, which keeps the automatic locator.
 
         Returns
         -------
@@ -80,6 +88,7 @@ class Variable:
         self._xlabel_fontsize = xlabel_fontsize
         self._mask = mask
         self._custom_bins = custom_bins
+        self._xticks = xticks
         self._validity_check = {}
         self._bin_edges = {}
         self._bin_centers = {}

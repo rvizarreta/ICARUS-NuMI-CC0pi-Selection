@@ -1,3 +1,59 @@
+# Leading proton momentum binning (2026-07-28). CONTAINED protons only.
+#
+# Exiting protons are 3.3% of the selected sample and are not re-binned here; their
+# variables keep the previous configuration.
+#
+# TRUTH BINNING: EQUAL-POPULATION, 8 bins over [0.31, 1.2] GeV/c, i.e. edges placed so
+# each truth bin holds a similar number of selected signal events (0.31 is the
+# reconstruction threshold - no events fall below it). This is Howard's recipe.
+#   contained N=8: min/mean f_diag 0.478/0.753, worst Cramer-Rao unc 3.0% at 2.36124e20 POT
+#   events per bin 2322-4237 (ratio 1.8); widths 0.064-0.302 GeV/c
+# Reco binning is 2:1 (median split of each truth bin, clamped to 15-85%), as elsewhere.
+#
+# WHY NOT RESOLUTION-FOLLOWING, as used for dpT / dalphaT / opening angle: the residual
+# here is not a symmetric smearing but a one-sided low bias (see the caveat below), so the
+# (q84-q16)/2 width it keys on is inflated by a tail rather than measuring a resolution.
+# Applied to this variable it produced 12 narrow bins inside [0.31, 0.66] and a single bin
+# covering [0.66, 1.2] - a 25x spread in width, one truth column occupying 60% of the axis,
+# and 7.6% worst uncertainty. That wide bin also scored a misleadingly good f_diag (78%),
+# because a wide bin retains events by being wide, not by being well measured.
+# Equal-population gives 5x width spread, a third of the uncertainty, the same mean
+# diagonality, and - importantly - reports the high-momentum quality honestly: the top bin
+# reads 48%, which is what the reconstruction there actually delivers.
+#
+# OVERFLOW BIN [1.2, 1e7] on the SMEARING variables. 4.77% of contained-proton signal has
+# true p_p above 1.2 GeV/c and 82% of those reconstruct back INSIDE the range, so without
+# an overflow truth bin that 3.9% of signal is neither signal nor background - it vanishes
+# from the truth axis while still filling reco bins, and contaminates the top in-range bin
+# by 7.8%. The overflow bin absorbs it. Its own f_diag is only 18% (most of its events
+# reconstruct below 1.2), so it is not a measurable bin - it exists for bookkeeping, and
+# should be excluded from comparisons, as Howard does. The display variables keep the
+# [0.31, 1.2] axis; the smearing FIGURES set xrange/yrange to crop the overflow out of
+# view while the column normalisation still accounts for it.
+#
+# ---------------------------------------------------------------------------------
+# CAVEAT - READ BEFORE USING THE HIGH-MOMENTUM BINS.
+# The reconstruction is not symmetrically smeared at high p_p, it is BIASED LOW. The
+# residual quantiles (q16/q50/q84 of reco-true, GeV/c) for contained protons are:
+#     true p_p 0.31-0.40 : -0.016 / -0.005 / +0.004     98.7% within 50 MeV
+#     true p_p 0.50-0.60 : -0.024 / -0.003 / +0.002     89.5%
+#     true p_p 0.70-0.80 : -0.138 / -0.005 / +0.002     71.0%
+#     true p_p 0.90-1.00 : -0.290 / -0.062 / +0.001     48.4%
+#     true p_p 1.00-1.20 : -0.413 / -0.192 / -0.001     31.9%   32.6% off by >300 MeV
+# q84 stays pinned near zero at every momentum while q16 runs away negative: the
+# reconstruction only ever UNDER-measures. 20.7% of protons with true p_p >= 0.8 GeV/c
+# reconstruct below 0.7. This is the signature of range truncation - protons flagged
+# contained whose track is incomplete (genuinely exiting, or split) - i.e. the containment
+# flag is unreliable at high momentum, and is the proton analogue of the broken-MCS tail in
+# exiting muons.
+# Consequences: (a) the (q84-q16)/2 "resolution" used to place these edges is not a width
+# but partly a bias, which is why the bins are narrow below 0.66 and one bin covers
+# 0.66-1.2; (b) the response matrix, not the binning, is carrying that bias. The bins above
+# ~0.8 GeV/c should not be treated as a clean measurement until the containment flag or a
+# track-quality cut is investigated.
+# ---------------------------------------------------------------------------------
+
+
 # --- Combined (Contained + Exiting protons) ---
 
 [variables.reco_leading_proton_momentum]
@@ -40,7 +96,9 @@ xlabel_fontsize = 10
 [variables.reco_leading_proton_momentum_contained]
 key = "reco_leading_proton_momentum"
 range = [0.31, 1.2]
-nbins = 25
+nbins = 16
+binning_scheme = 'custom_bins'
+custom_bins = [0.31, 0.3528, 0.3925, 0.4244, 0.4564, 0.4907, 0.5234, 0.558, 0.593, 0.629, 0.6678, 0.7097, 0.7595, 0.816, 0.8981, 0.9828, 1.2]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained $p$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_proton_containment == 1'
@@ -61,16 +119,30 @@ mask = 'reco_leading_proton_containment == 1'
 
 [variables.reco_leading_proton_momentum_smearing_contained]
 key = "reco_leading_proton_momentum"
-range = [0.31, 1.2]
-nbins = 10
+range = [0.31, 10000000.0]
+nbins = 18
+binning_scheme = 'custom_bins'
+custom_bins = [0.31, 0.3528, 0.3925, 0.4244, 0.4564, 0.4907, 0.5234, 0.558, 0.593, 0.629, 0.6678, 0.7097, 0.7595, 0.816, 0.8981, 0.9828, 1.2, 1.2012, 1e+07]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained $p$)'
 mask = 'reco_leading_proton_containment == 1'
 
 [variables.true_leading_proton_momentum_smearing_contained]
 key = "true_leading_proton_momentum"
+range = [0.31, 10000000.0]
+nbins = 9
+binning_scheme = 'custom_bins'
+custom_bins = [0.31, 0.3925, 0.4564, 0.5234, 0.593, 0.6678, 0.7595, 0.8981, 1.2, 1e+07]
+xlabel = 'True $p_p$ [GeV/c] (Contained $p$)'
+mask = 'reco_leading_proton_containment == 1'
+
+[variables.true_leading_proton_momentum_contained]
+key = "true_leading_proton_momentum"
 range = [0.31, 1.2]
 nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [0.31, 0.3925, 0.4564, 0.5234, 0.593, 0.6678, 0.7595, 0.8981, 1.2]
 xlabel = 'True $p_p$ [GeV/c] (Contained $p$)'
+xlabel_fontsize = 10
 mask = 'reco_leading_proton_containment == 1'
 
 # --- Exiting proton ---

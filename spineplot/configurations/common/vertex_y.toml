@@ -1,9 +1,23 @@
+# Reconstructed vertex y binning (2026-07-31). RECO HISTOGRAMS ONLY.
+#
+# RANGE CHANGED: [-200, 200] -> [-160, 115]. The data span only [-156.8, 110.0] and
+# the distribution is ASYMMETRIC about zero, so the old symmetric range left a third
+# of the axis blank, most of it above y = 110.
+#
+# CRITERION: EQUAL-POPULATION, 24 bins, sized at full POT 2.36124e20.
+# The distribution is flat, so this comes out close to uniform anyway - widths span
+# only 10.2-16.9 cm (ratio 1.7), which is the check that equal-population is harmless
+# here (unlike vertex_x, where a detector gap makes it actively wrong).
+# Per-bin counts at full POT: 1274-1299, occupancy ratio 1.02.
+
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_y]
 key = "reco_vertex_y"
-range = [-200, 200]
-nbins = 50
+range = [-160.0, 115.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-160.0, -146.31, -135.51, -125.31, -114.51, -103.26, -92.31, -81.5101, -70.71, -59.61, -48.66, -37.26, -26.01, -14.91, -4.11, 7.1431, 18.29, 29.79, 40.89, 52.2968, 63.69, 75.09, 86.69, 98.09, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -37,8 +51,10 @@ xlabel_fontsize = 10
 
 [variables.reco_vertex_y_contained]
 key = "reco_vertex_y"
-range = [-200, 200]
-nbins = 50
+range = [-160.0, 115.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-160.0, -146.31, -135.51, -125.31, -114.51, -103.26, -92.31, -81.5101, -70.71, -59.61, -48.66, -37.26, -26.01, -14.91, -4.11, 7.1431, 18.29, 29.79, 40.89, 52.2968, 63.69, 75.09, 86.69, 98.09, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -77,8 +93,10 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_vertex_y_exiting]
 key = "reco_vertex_y"
-range = [-200, 200]
-nbins = 50
+range = [-160.0, 115.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-160.0, -146.31, -135.51, -125.31, -114.51, -103.26, -92.31, -81.5101, -70.71, -59.61, -48.66, -37.26, -26.01, -14.91, -4.11, 7.1431, 18.29, 29.79, 40.89, 52.2968, 63.69, 75.09, 86.69, 98.09, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

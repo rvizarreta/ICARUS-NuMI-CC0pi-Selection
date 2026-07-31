@@ -1,3 +1,23 @@
+### dphiT binning (2026-07-31). RECO HISTOGRAMS ONLY - no cross section is
+### extracted in this variable, so the smearing variables below are left untouched
+### and are diagnostics only.
+###
+### CRITERION: EQUAL-POPULATION, 24 bins over [0, 180] degrees - edges placed so each
+### bin holds a similar PREDICTED event count at the full-dataset exposure 2.36124e20.
+### dphiT falls steeply (15.3% of events in the first 5 degrees, 0.5% in the last 5),
+### so uniform bins put almost all the statistical power in the first two bins and
+### leave the tail noisy. Equal-population flattens that: every bin carries the same
+### Poisson weight, so the Data/MC ratio panel has uniform error bars across the axis
+### and chi2 is not dominated by the peak.
+###
+### N=24 is the cap adopted for readability, not a statistical limit: every bin holds
+### >= 380 events at full POT in the sparsest sample (contained), i.e. <= 5% Poisson,
+### far inside the ~23% systematic band. At the 10% exposure currently plotted the
+### per-bin counts are 128 (combined), 38 (contained), 90 (exiting).
+###
+### Bin widths span 1.3-39 degrees (combined), so these histograms MUST be drawn with
+### per_bin_width = true or the shape is meaningless.
+
 ### dphiT - Combined ------------------------------------
 
 [variables.reco_dphiT_residual]
@@ -30,14 +50,18 @@ xlabel = 'True $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 
 [variables.true_dphiT]
 key = "true_dphiT_deg"
-range = [0,180]
-nbins = 20
+range = [0.0, 180.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 1.324, 2.6536, 4.0437, 5.5003, 6.9906, 8.6006, 10.2577, 12.1009, 14.1205, 16.3172, 18.8639, 21.671, 25.0209, 28.6129, 32.9641, 38.118, 44.2291, 51.9464, 61.5806, 73.7877, 89.8742, 111.4827, 141.1526, 180.0]
 xlabel = 'True $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 
 [variables.reco_dphiT]
 key = "reco_dphiT_deg"
-range = [0,180]
-nbins = 20
+range = [0.0, 180.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 1.324, 2.6536, 4.0437, 5.5003, 6.9906, 8.6006, 10.2577, 12.1009, 14.1205, 16.3172, 18.8639, 21.671, 25.0209, 28.6129, 32.9641, 38.118, 44.2291, 51.9464, 61.5806, 73.7877, 89.8742, 111.4827, 141.1526, 180.0]
 xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 
 ### dphiT - Contained ------------------------------------
@@ -72,15 +96,19 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_dphiT_contained]
 key = "reco_dphiT_deg"
-range = [0,180]
-nbins = 20
+range = [0.0, 180.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 1.7195, 3.4804, 5.2406, 7.1449, 9.0116, 10.9873, 13.034, 15.3594, 17.8055, 20.5931, 23.5075, 26.8042, 30.122, 34.2791, 39.0625, 44.8258, 51.8775, 60.6497, 70.9164, 84.0561, 99.9018, 121.3301, 149.188, 180.0]
 xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.true_dphiT_contained]
 key = "true_dphiT_deg"
-range = [0,180]
-nbins = 20
+range = [0.0, 180.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 1.7195, 3.4804, 5.2406, 7.1449, 9.0116, 10.9873, 13.034, 15.3594, 17.8055, 20.5931, 23.5075, 26.8042, 30.122, 34.2791, 39.0625, 44.8258, 51.8775, 60.6497, 70.9164, 84.0561, 99.9018, 121.3301, 149.188, 180.0]
 xlabel = 'True $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 1'
 
@@ -116,14 +144,18 @@ mask = 'reco_leading_muon_containment == 0'
 
 [variables.reco_dphiT_exiting]
 key = "reco_dphiT_deg"
-range = [0,180]
-nbins = 20
+range = [0.0, 180.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 1.2043, 2.4094, 3.6846, 4.9748, 6.3497, 7.7894, 9.3471, 10.9534, 12.7845, 14.8302, 17.0748, 19.6632, 22.6977, 26.2107, 30.2922, 35.2281, 41.174, 48.2588, 57.45, 69.3014, 85.1499, 106.5747, 136.6806, 180.0]
 xlabel = 'Reco $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.true_dphiT_exiting]
 key = "true_dphiT_deg"
-range = [0,180]
-nbins = 20
+range = [0.0, 180.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 1.2043, 2.4094, 3.6846, 4.9748, 6.3497, 7.7894, 9.3471, 10.9534, 12.7845, 14.8302, 17.0748, 19.6632, 22.6977, 26.2107, 30.2922, 35.2281, 41.174, 48.2588, 57.45, 69.3014, 85.1499, 106.5747, 136.6806, 180.0]
 xlabel = 'True $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'

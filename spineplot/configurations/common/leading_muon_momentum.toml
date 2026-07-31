@@ -1,4 +1,59 @@
-### leading_muon_momentum - Combined ------------------------------------
+# Leading muon momentum binning (2026-07-28). ALL THREE SAMPLES.
+#
+# The exiting-muon sample is binned here as a measurement in its own right. Extending the
+# analysis to exiting muons is the substantive addition of this work relative to Howard's,
+# which restricts the muon-momentum cross section to contained muons because it "relies
+# solely on the more accurate range-based method ... but this requires full containment".
+# We keep that measurement (contained) and add the MCS-based one (exiting), plus combined.
+#
+# TRUTH BINNING: EQUAL-POPULATION in every sample - edges placed so each truth bin holds a
+# similar number of selected signal events, over [0.226, 3.0] GeV/c.
+#   contained N=10 over [0.226, 1.5]: min/mean f_diag 0.827/0.877, worst in-range unc 4.6%
+#   exiting   N= 4 over [0.226, 3.0]: min/mean f_diag 0.277/0.506, worst in-range unc 14.6%
+#   combined  N= 6 over [0.226, 3.0]: min/mean f_diag 0.289/0.587, worst in-range unc 10.7%
+# all three with an overflow bin above the range top (see below).
+# (Cramer-Rao, at 2.36124e20 POT.) Reco binning is 2:1 (median split of each truth bin,
+# clamped to 15-85%), as for the other variables.
+#
+# WHY EQUAL-POPULATION rather than the resolution-following rule used for dpT / dalphaT /
+# opening angle: for contained muons the residual is symmetric and very narrow (sigma 0.006
+# GeV/c at 0.3 rising to 0.10 at 2-3, median bias below 11 MeV), so resolution never limits
+# the binning - statistics do, and the spectrum falls steeply. At matched N=10 the
+# resolution-following rule left 76 events in the sparsest bin (ratio 20, worst unc 14.6%)
+# against 867 events (ratio 1.14, worst unc 4.4%) here, and was worse on diagonality too.
+#
+# THE EXITING SAMPLE IS INTRINSICALLY POORLY RESOLVED, and its binning reflects that rather
+# than hiding it. MCS momentum resolution runs from 0.075 GeV/c at 0.3 GeV/c to 1.09 GeV/c
+# at 2-3 GeV/c - i.e. 35-50% of the momentum at the top - and is biased low there (median
+# offset -0.64 GeV/c for true p_mu in 2-3). Consequences, all visible in the numbers above:
+#   * f_diag falls monotonically with momentum, 85 / 57 / 33 / 28 %. Only the lowest bin is
+#     well measured. This is a property of MCS, not of the binning.
+#   * Statistics cap the sample at 5 bins under the 23% integrated systematic (N=6 reaches
+#     27%); 4 bins is used so that no bin sits below the ~30% diagonality floor adopted for
+#     exiting dalphaT.
+#   * The response matrix, not the binning, carries the bias. Unfolding this sample leans
+#     harder on the simulation than the contained one does, and that should be stated
+#     wherever the exiting result is quoted.
+#
+# RANGE. Contained is measured over [0.226, 1.5] GeV/c rather than the full [0.226, 3.0]:
+# 94.1% of contained signal lies below 1.5, and extending to 3.0 forced a top bin spanning
+# 1.26-3.0 - 63% of the axis - which dominated the plot and pushed the width spread to a
+# factor 48. Capping brings that to 14x at a cost of 1.5 points of diagonality (0.842 ->
+# 0.827) and 0.2 points of uncertainty. Exiting and combined keep [0.226, 3.0], where the
+# spectrum is much harder and no single bin dominates.
+#
+# OVERFLOW BINS on the smearing variables, [range top, 1e7]:
+#   contained [1.5, 1e7]: 5.94% of signal. NOTE this one is a genuine measured point, not
+#     just bookkeeping - f_diag 91%, unc 5.0% - because range-based momentum is accurate
+#     enough that 90.5% of muons above 1.5 GeV/c also reconstruct above 1.5. It can be
+#     quoted as a "p_mu > 1.5 GeV/c" bin.
+#   exiting [3.0, 1e7]: 5.79% of signal, f_diag 24%, unc 35% - bookkeeping only.
+#   combined [3.0, 1e7]: 4.05% of signal, f_diag 24%, unc 28% - bookkeeping only.
+# Without these bins the above-range events fill reco bins while vanishing from the truth
+# axis. Adding them costs in-range precision where they compete for the same reco events:
+# exiting worst in-range unc 9.7% -> 14.6%, combined 7.0% -> 10.7%.
+# The display variables keep the physical range; the smearing FIGURES set xrange/yrange to
+# crop the overflow out of view while the column normalisation still accounts for it.
 
 [variables.reco_leading_muon_momentum_residual]
 key = "reco_leading_muon_momentum"
@@ -12,22 +67,37 @@ range = [0.226, 3.0]
 nbins = 200
 xlabel = 'True $p_\mu$ [GeV/c]'
 
+[variables.true_leading_muon_momentum]
+key = "true_leading_muon_momentum"
+range = [0.226, 3.0]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.3971, 0.6402, 0.9714, 1.3589, 1.7897, 3.0]
+xlabel = 'True $p_\\mu$ [GeV/c] (Contained + Exiting $\\mu^\\pm$)'
+xlabel_fontsize = 10
+
 [variables.reco_leading_muon_momentum_smearing]
 key = "reco_leading_muon_momentum"
-range = [0.226, 3.0]
-nbins = 10
+range = [0.226, 10000000.0]
+nbins = 14
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.3082, 0.3971, 0.5124, 0.6402, 0.7997, 0.9714, 1.1422, 1.3589, 1.5416, 1.7897, 2.1122, 3.0, 3.003, 1e+07]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 
 [variables.true_leading_muon_momentum_smearing]
 key = "true_leading_muon_momentum"
-range = [0.226, 3.0]
-nbins = 10
+range = [0.226, 10000000.0]
+nbins = 7
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.3971, 0.6402, 0.9714, 1.3589, 1.7897, 3.0, 1e+07]
 xlabel = 'True $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 
 [variables.reco_leading_muon_momentum]
 key = "reco_leading_muon_momentum"
-range = [0.0, 3.0]
-nbins = 25
+range = [0.226, 3.0]
+nbins = 12
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.3082, 0.3971, 0.5124, 0.6402, 0.7997, 0.9714, 1.1422, 1.3589, 1.5416, 1.7897, 2.1122, 3.0]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -47,24 +117,40 @@ nbins = 200
 xlabel = 'True $p_\mu$ [GeV/c]'
 mask = 'reco_leading_muon_containment == 1'
 
+[variables.true_leading_muon_momentum_contained]
+key = "true_leading_muon_momentum"
+range = [0.226, 1.5]
+nbins = 10
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.2604, 0.293, 0.3298, 0.3739, 0.4284, 0.5011, 0.6012, 0.7629, 1.0272, 1.5]
+xlabel = 'True $p_\\mu$ [GeV/c] (Contained $\\mu^\\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
 [variables.reco_leading_muon_momentum_smearing_contained]
 key = "reco_leading_muon_momentum"
-range = [0.226, 3.0]
-nbins = 10
+range = [0.226, 10000000.0]
+nbins = 22
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.2437, 0.2604, 0.276, 0.293, 0.3107, 0.3298, 0.3505, 0.3739, 0.3998, 0.4284, 0.4627, 0.5011, 0.5467, 0.6012, 0.672, 0.7629, 0.8831, 1.0272, 1.2283, 1.5, 1.7224, 1e+07]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.true_leading_muon_momentum_smearing_contained]
 key = "true_leading_muon_momentum"
-range = [0.226, 3.0]
-nbins = 10
+range = [0.226, 10000000.0]
+nbins = 11
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.2604, 0.293, 0.3298, 0.3739, 0.4284, 0.5011, 0.6012, 0.7629, 1.0272, 1.5, 1e+07]
 xlabel = 'True $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_leading_muon_momentum_contained]
 key = "reco_leading_muon_momentum"
-range = [0.0, 2.0]
-nbins = 18
+range = [0.226, 1.5]
+nbins = 20
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.2437, 0.2604, 0.276, 0.293, 0.3107, 0.3298, 0.3505, 0.3739, 0.3998, 0.4284, 0.4627, 0.5011, 0.5467, 0.6012, 0.672, 0.7629, 0.8831, 1.0272, 1.2283, 1.5]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -85,24 +171,40 @@ nbins = 200
 xlabel = 'True $p_\mu$ [GeV/c]'
 mask = 'reco_leading_muon_containment == 0'
 
+[variables.true_leading_muon_momentum_exiting]
+key = "true_leading_muon_momentum"
+range = [0.226, 3.0]
+nbins = 4
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.7849, 1.2585, 1.7495, 3.0]
+xlabel = 'True $p_\\mu$ [GeV/c] (Exiting $\\mu^\\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
 [variables.reco_leading_muon_momentum_smearing_exiting]
 key = "reco_leading_muon_momentum"
-range = [0.226, 3.0]
+range = [0.226, 10000000.0]
 nbins = 10
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.5707, 0.7849, 0.9972, 1.2585, 1.46, 1.7495, 2.0908, 3.0, 3.003, 1e+07]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.true_leading_muon_momentum_smearing_exiting]
 key = "true_leading_muon_momentum"
-range = [0.226, 3.0]
-nbins = 10
+range = [0.226, 10000000.0]
+nbins = 5
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.7849, 1.2585, 1.7495, 3.0, 1e+07]
 xlabel = 'True $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.reco_leading_muon_momentum_exiting]
 key = "reco_leading_muon_momentum"
-range = [0.0, 3.0]
-nbins = 25
+range = [0.226, 3.0]
+nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [0.226, 0.5707, 0.7849, 0.9972, 1.2585, 1.46, 1.7495, 2.0908, 3.0]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

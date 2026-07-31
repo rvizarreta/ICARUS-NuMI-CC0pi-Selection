@@ -1,9 +1,31 @@
+# cos(theta_mu) polar-angle binning (2026-07-31), w.r.t. the detector z axis.
+# RECO HISTOGRAMS ONLY - no cross section is extracted here.
+#
+# CRITERION: EQUAL-POPULATION, 24 bins over [-1, 1], sized at the full-dataset
+# exposure 2.36124e20. The distribution is strongly forward-peaked (13.9% of events
+# in the top 0.05 of cos, 0.24% in the bottom 0.05), so uniform bins waste most of
+# the axis on the backward hemisphere and under-resolve the forward peak where the
+# events actually are.
+#
+# NOTE - deliberately NOT the hybrid treatment used for the NuMI angle. There, a
+# single fixed bin covers [-1, 0] because the backward hemisphere is genuinely
+# sparse. Here it is not: 10.0% of combined and 20.5% of CONTAINED events are
+# backward, so a single [-1, 0] bin would be the most populated bin in the plot
+# (1889 events against 316 in the forward bins) - the opposite of the intent.
+# Pure equal-population gives a max/min occupancy ratio of 1.01-1.02.
+#
+# Per-bin counts at full POT: 1276-1295 (combined), 381-387 (contained),
+# 898-905 (exiting). At the 10% exposure currently plotted, divide by ten.
+# Widths span 0.008-0.86, so per_bin_width = true is required.
+
 # --- Combined (Contained + Exiting) ---
 
 [variables.reco_leading_muon_polar_angle]
 key = "reco_leading_muon_polar_angle_cos"
-range = [-1, 1]
-nbins = 25
+range = [-1.0, 1.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-1.0, -0.4499, -0.1052, 0.1233, 0.2845, 0.4052, 0.4976, 0.5715, 0.6292, 0.6772, 0.7171, 0.7503, 0.7802, 0.806, 0.8295, 0.8509, 0.8704, 0.8886, 0.9061, 0.9236, 0.94, 0.9551, 0.97, 0.9848, 1.0]
 xlabel = '$\cos(\theta_z)$ (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -37,8 +59,10 @@ xlabel_fontsize = 10
 
 [variables.reco_leading_muon_polar_angle_contained]
 key = "reco_leading_muon_polar_angle_cos"
-range = [-1, 1]
-nbins = 25
+range = [-1.0, 1.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-1.0, -0.6957, -0.4735, -0.2842, -0.1254, 0.0085, 0.1331, 0.2395, 0.3397, 0.4265, 0.5067, 0.5838, 0.651, 0.7129, 0.7669, 0.8137, 0.8542, 0.8892, 0.9164, 0.9387, 0.9569, 0.9716, 0.983, 0.9922, 1.0]
 xlabel = '$\cos(\theta_z)$ (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -75,8 +99,10 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_leading_muon_polar_angle_exiting]
 key = "reco_leading_muon_polar_angle_cos"
-range = [-1, 1]
-nbins = 25
+range = [-1.0, 1.0]
+nbins = 24
+binning_scheme = 'custom_bins'
+custom_bins = [-1.0, -0.1414, 0.181, 0.3538, 0.4668, 0.5468, 0.6066, 0.6553, 0.6938, 0.7268, 0.7543, 0.7795, 0.8011, 0.8212, 0.8402, 0.8574, 0.8733, 0.8884, 0.9035, 0.9189, 0.9339, 0.9482, 0.9628, 0.9786, 1.0]
 xlabel = '$\cos(\theta_z)$ (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'

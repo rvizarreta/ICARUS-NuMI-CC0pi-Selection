@@ -1,5 +1,21 @@
 [variables]
 
+### dalphaT binning (2026-07-28). TRUTH binning: finest with min f_diag above a
+### per-sample threshold in every truth bin - 0.5 contained, 0.4 combined, 0.3 exiting.
+### Range [0, 180] degrees, no overflow.
+### Reco binning is 2:1: each truth bin is split at the median reco value of the events
+### inside it (clamped to 15-85% of the bin). This is the binning GUNDAM fits, and matches
+### Howard's technote Fig. 25 (smearing matrices in the extraction binning). The square /
+### uniform matrices earlier in that note are explicitly "arbitrary, uniform binning"
+### placeholders and are not a precedent for 1:1. A truth column therefore spans TWO reco
+### rows: the diagonal is the SUM of the two on-diagonal cells, and the f_diag values
+### quoted below are those sums.
+### Study: min/mean f_diag = 0.521/0.575 (contained, N=7), 0.300/0.450 (exiting, N=5),
+### 0.455/0.577 (combined, N=4). Worst Cramer-Rao unc at 2.36124e20 POT: 8.9% / 9.0% / 3.1%.
+### NOTE exiting: the three central bins sit at 30-37% diagonality - the MCS-driven angular
+### resolution (68% half-width 39 deg) does not support finer structure there. The two edge
+### bins are strong (63%, 65%) because migration near 0 and 180 deg is one-sided.
+
 ### dalphaT - Combined ------------------------------------
 
 [variables.reco_dalphaT_residual]
@@ -7,40 +23,50 @@ key = "reco_dalphaT_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'Reco $\delta \alpha_T$ [degrees]'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 
 [variables.true_dalphaT_residual]
 key = "true_dalphaT_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'True $\delta \alpha_T$ [degrees]'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 
 [variables.reco_dalphaT_smearing]
 key = "reco_dalphaT_deg"
 range = [0,180]
-nbins = 12
+nbins = 8
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 12.5, 25.0, 42.5, 60.0, 80.0, 100.0, 115.0, 130.0, 145.0, 160.0, 170.0, 180.0]
+custom_bins = [0.0, 27.9489, 65.0, 91.0685, 114.0, 134.48, 151.0, 168.579, 180.0]
 xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 
 [variables.true_dalphaT_smearing]
 key = "true_dalphaT_deg"
 range = [0,180]
-nbins = 6
+nbins = 4
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 25.0, 60.0, 100.0, 130.0, 160.0, 180.0]
+custom_bins = [0.0, 65.0, 114.0, 151.0, 180.0]
 xlabel = 'True $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 
 [variables.reco_dalphaT]
 key = "reco_dalphaT_deg"
 range = [0,180]
-nbins = 20
+nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 27.9489, 65.0, 91.0685, 114.0, 134.48, 151.0, 168.579, 180.0]
 xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 
 [variables.true_dalphaT]
 key = "true_dalphaT_deg"
 range = [0,180]
-nbins = 20
+nbins = 4
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 65.0, 114.0, 151.0, 180.0]
 xlabel = 'True $\delta \alpha_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 
 ### dalphaT - Contained ------------------------------------
 
@@ -49,6 +75,7 @@ key = "reco_dalphaT_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'Reco $\delta \alpha_T$ [degrees]'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.true_dalphaT_residual_contained]
@@ -56,34 +83,47 @@ key = "true_dalphaT_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'True $\delta \alpha_T$ [degrees]'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_dalphaT_smearing_contained]
 key = "reco_dalphaT_deg"
 range = [0,180]
-nbins = 10
+nbins = 14
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 20.0371, 39.0, 58.3714, 75.0, 89.2002, 102.0, 113.539, 124.0, 133.799, 143.0, 151.476, 160.0, 170.003, 180.0]
 xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.true_dalphaT_smearing_contained]
 key = "true_dalphaT_deg"
 range = [0,180]
-nbins = 10
+nbins = 7
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 39.0, 75.0, 102.0, 124.0, 143.0, 160.0, 180.0]
 xlabel = 'True $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_dalphaT_contained]
 key = "reco_dalphaT_deg"
 range = [0,180]
-nbins = 20
+nbins = 14
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 20.0371, 39.0, 58.3714, 75.0, 89.2002, 102.0, 113.539, 124.0, 133.799, 143.0, 151.476, 160.0, 170.003, 180.0]
 xlabel = 'Reco $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 1'
 
 [variables.true_dalphaT_contained]
 key = "true_dalphaT_deg"
 range = [0,180]
-nbins = 20
+nbins = 7
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 39.0, 75.0, 102.0, 124.0, 143.0, 160.0, 180.0]
 xlabel = 'True $\delta \alpha_T$ [degrees] (Contained $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 1'
 
 ### dalphaT - Exiting ------------------------------------
@@ -93,6 +133,7 @@ key = "reco_dalphaT_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'Reco $\delta \alpha_T$ [degrees]'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.true_dalphaT_residual_exiting]
@@ -100,32 +141,45 @@ key = "true_dalphaT_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'True $\delta \alpha_T$ [degrees]'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.reco_dalphaT_smearing_exiting]
 key = "reco_dalphaT_deg"
 range = [0,180]
 nbins = 10
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 20.5065, 49.5, 69.3456, 89.3, 108.708, 124.9, 141.513, 154.6, 170.809, 180.0]
 xlabel = 'Reco $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.true_dalphaT_smearing_exiting]
 key = "true_dalphaT_deg"
 range = [0,180]
-nbins = 10
+nbins = 5
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 49.5, 89.3, 124.9, 154.6, 180.0]
 xlabel = 'True $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.reco_dalphaT_exiting]
 key = "reco_dalphaT_deg"
 range = [0,180]
-nbins = 20
+nbins = 10
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 20.5065, 49.5, 69.3456, 89.3, 108.708, 124.9, 141.513, 154.6, 170.809, 180.0]
 xlabel = 'Reco $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 0'
 
 [variables.true_dalphaT_exiting]
 key = "true_dalphaT_deg"
 range = [0,180]
-nbins = 20
+nbins = 5
+binning_scheme = 'custom_bins'
+custom_bins = [0.0, 49.5, 89.3, 124.9, 154.6, 180.0]
 xlabel = 'True $\delta \alpha_T$ [degrees] (Exiting $\mu^\pm$)'
+xticks = [0, 30, 60, 90, 120, 150, 180]
 mask = 'reco_leading_muon_containment == 0'

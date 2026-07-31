@@ -1,9 +1,28 @@
+# Reconstructed vertex x binning (2026-07-31). RECO HISTOGRAMS ONLY.
+#
+# UNIFORM, NOT equal-population - this is the one variable in this round where the
+# equal-population rule is the wrong tool. There is a hard 174 cm gap between the two
+# cryostats: the selected sample has zero events between x = -86.94 and x = +86.99.
+# Equal-population places edges by counting events, so it sees nothing in the gap and
+# spans it with a single enormous bin, erasing the two-cryostat structure that is the
+# whole point of looking at this distribution.
+#
+# Instead: 25 cm uniform bins, with edges placed exactly at +-87 so the gap is ONE
+# explicit empty bin rather than being smeared into its neighbours. That bin is not
+# quite empty - it holds ~11 events at full POT (0.04%), which are mis-reconstructed
+# vertices and are worth being able to see.
+#
+# RANGE CHANGED: [-400, 400] -> [-337, 337]. The data span only [-333.5, 333.5], so
+# the old range left 17% of the axis permanently blank at the edges.
+
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_x]
 key = "reco_vertex_x"
-range = [-400, 400]
-nbins = 50
+range = [-337.0, 337.0]
+nbins = 21
+binning_scheme = 'custom_bins'
+custom_bins = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
 xlabel = 'Reco Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -37,8 +56,10 @@ xlabel_fontsize = 10
 
 [variables.reco_vertex_x_contained]
 key = "reco_vertex_x"
-range = [-400, 400]
-nbins = 50
+range = [-337.0, 337.0]
+nbins = 21
+binning_scheme = 'custom_bins'
+custom_bins = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
 xlabel = 'Reco Vertex X [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 1'
@@ -77,8 +98,10 @@ mask = 'reco_leading_muon_containment == 1'
 
 [variables.reco_vertex_x_exiting]
 key = "reco_vertex_x"
-range = [-400, 400]
-nbins = 50
+range = [-337.0, 337.0]
+nbins = 21
+binning_scheme = 'custom_bins'
+custom_bins = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
 xlabel = 'Reco Vertex X [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 mask = 'reco_leading_muon_containment == 0'
