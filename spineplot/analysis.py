@@ -156,10 +156,19 @@ class Analysis:
                                 raise ConfigException(f"Variable '{x['xvariable']}' or '{x['yvariable']}' not found in all samples ({' '.join(missing_samples)}).")
                             
                             # Create the artist
+                            # Categories treated as signal. Follows the same
+                            # convention as SpinePurity: per-artist key, else the
+                            # [analysis] default. Used by show_option='smearing',
+                            # where the response matrix R_ji is a signal-only
+                            # quantity - backgrounds enter the fit through b_j and
+                            # have no signal truth bin to be unfolded to.
+                            signal_categories = x.get('signal_categories',
+                                                      self._config.get('analysis', {}).get('signal_categories', None))
                             art = SpineSpectra2D([self._variables[x['xvariable']], self._variables[x['yvariable']]],
                                                   restrict_categories, self._colors, self._category_types,
                                                   x.get('title', None), x.get('xrange', None), x.get('xtitle', None),
-                                                  x.get('yrange', None), x.get('ytitle', None))
+                                                  x.get('yrange', None), x.get('ytitle', None),
+                                                  signal_categories)
                             self._figures[fig['name']].register_spine_artist(art, draw_kwargs=x.get('draw_kwargs', {}))
                             self._artists.append(art)
                         elif x['type'] == 'SpineEfficiency':

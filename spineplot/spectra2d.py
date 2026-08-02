@@ -61,7 +61,7 @@ class SpineSpectra2D(SpineSpectra):
     """
     def __init__(self, variables, categories, colors, category_types,
                  title=None, xrange=None, xtitle=None, yrange=None,
-                 ytitle=None) -> None:
+                 ytitle=None, signal_categories=None) -> None:
         """
         Initializes the SpineSpectra2D object.
 
@@ -112,6 +112,16 @@ class SpineSpectra2D(SpineSpectra):
             will be determined by the Variable object assigned to the
             y-axis (show_option='2d') or set to 'Entries'
             (show_option='projection'). The default is None.
+        signal_categories : list, optional
+            The raw category values (as they appear in the category
+            branch) that are to be treated as signal. Only used by
+            show_option='smearing'. The response matrix in the forward
+            model mu_j = sum_i R_ji s_i + b_j maps a true SIGNAL rate to
+            reconstructed bins; backgrounds enter through b_j and have no
+            signal truth bin, so including them dilutes the diagonal and
+            the plotted matrix is then not the R the fit uses. If None,
+            every category is summed, which reproduces the previous
+            behaviour. The default is None.
 
         Returns
         -------
@@ -122,6 +132,7 @@ class SpineSpectra2D(SpineSpectra):
         self._category_types = category_types
         self._plotdata_diagonal = None
         self._binedges_diagonal = None
+        self._signal_categories = signal_categories
 
     def add_sample(self, sample, is_ordinate) -> None:
         """
@@ -293,8 +304,28 @@ class SpineSpectra2D(SpineSpectra):
                 cbar.ax.tick_params(labelsize=12, size=6, width=1.5)
 
         if show_option == 'smearing' and self._plotdata is not None:
-            values = np.sum([v for v in self._plotdata.values()], axis=0)
-            binedges = self._binedges[list(self._plotdata.keys())[0]]
+            # The smearing matrix is the response matrix R_ji of the forward model
+            # mu_j = sum_i R_ji s_i + b_j, which is defined for SIGNAL only: a
+            # background event has no signal truth bin to be unfolded to, and enters
+            # the prediction through b_j instead. Summing every category dilutes the
+            # diagonal and produces something that is not the R the fit uses.
+            if self._signal_categories is not None:
+                wanted = {lab for cat, lab in self._categories.items()
+                          if any(float(cat) == float(s) for s in self._signal_categories)}
+                if not wanted:
+                    raise ValueError(
+                        f'signal_categories={self._signal_categories} matched no entry '
+                        f'in the category table {sorted(self._categories)}.')
+                keys = [k for k in self._plotdata if k in wanted]
+                if not keys:
+                    raise ValueError(
+                        f'signal_categories={self._signal_categories} resolved to labels '
+                        f'{sorted(wanted)}, none of which are present in this figure.')
+                values = np.sum([self._plotdata[k] for k in keys], axis=0)
+                binedges = self._binedges[keys[0]]
+            else:
+                values = np.sum([v for v in self._plotdata.values()], axis=0)
+                binedges = self._binedges[list(self._plotdata.keys())[0]]
 
             # Handle different binedges structures
             if isinstance(binedges, (list, tuple)) and len(binedges) == 2:

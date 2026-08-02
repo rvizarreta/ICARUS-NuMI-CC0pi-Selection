@@ -104,6 +104,30 @@ type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity'
 yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false}
+
+# MC-only, contained muons.
+[[figure]]
+name = 'proton_multiplicity_contained_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_proton_multiplicity_contained'
+yrange = 1.6
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false}
+
+# MC-only, exiting muons.
+[[figure]]
+name = 'proton_multiplicity_exiting_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_proton_multiplicity_exiting'
+yrange = 1.6
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false}
 [[figure]]
 name = 'proton_multiplicity_contained'
 type = 'SimpleFigure'

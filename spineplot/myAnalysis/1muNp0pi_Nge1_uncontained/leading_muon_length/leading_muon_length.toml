@@ -104,6 +104,32 @@ variable = 'reco_leading_muon_length'
 yrange = 1.7
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+
+# MC-only, contained muons.
+[[figure]]
+name = 'leading_muon_length_reco_contained_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_length_contained'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+
+# MC-only, exiting muons.
+[[figure]]
+name = 'leading_muon_length_reco_exiting_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_length_exiting'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 [[figure]]
 name = 'leading_muon_length_reco_contained'
 type = 'SimpleFigure'

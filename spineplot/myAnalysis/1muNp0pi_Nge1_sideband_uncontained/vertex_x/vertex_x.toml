@@ -111,6 +111,13 @@ pattern = '^(flux|xsec|stats|detsys)$'
 [analysis]
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
+# Categories treated as signal. The smearing figures below plot the response
+# matrix R_ji of the forward model mu_j = sum_i R_ji s_i + b_j, which is a
+# SIGNAL-ONLY quantity: a background event has no signal truth bin to be
+# unfolded to and enters through b_j instead. Confirmed against Howard's
+# convention. Without this key every category is summed and the plotted
+# diagonal is diluted relative to the R the fit actually uses.
+signal_categories = [0, 1, 2]
 category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [11], [-100]]
 category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$ NC', '$\nu_\mu$CC0$\pi$ OOFV', 'Others', 'Data']
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
@@ -141,6 +148,32 @@ figsize = [5, 5]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_x'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+
+# MC-only, contained muons.
+[[figure]]
+name = 'vertex_x_contained_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_x_contained'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+
+# MC-only, exiting muons.
+[[figure]]
+name = 'vertex_x_exiting_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_vertex_x_exiting'
 yrange = 1.7
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
