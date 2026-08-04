@@ -300,12 +300,13 @@ void copy_with_syst(cfg::ConfigurationTable config, cfg::ConfigurationTable tabl
           }
     }
 
-    // Create a TGraph for every event
-    TGraph graph(nsigmas.size(), &nsigmas[0], &weights[0]);
-    graph.Sort();
+	    // Create a TGraph for every event
+	    TGraph graph(nsigmas.size(), &nsigmas[0], &weights[0]);
+	    graph.Sort();
 
-    new( (*arrSyst[sys_idxs[name]])[0]) TGraph(graph.GetN(), graph.GetX(), graph.GetY());
-  } // end systematic parameter loop
+	    arrSyst[sys_idxs[name]]->Clear("C");   // destruct the previous TGraph before overwriting the slot
+	    new( (*arrSyst[sys_idxs[name]])[0]) TGraph(graph.GetN(), graph.GetX(), graph.GetY());
+	  } // end systematic parameter loop
 
     // This is needed in order to not fill with output TTree with duplicates
     // (only fill specified systematic branches)
