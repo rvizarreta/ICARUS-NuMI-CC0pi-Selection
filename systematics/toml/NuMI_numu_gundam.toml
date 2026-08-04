@@ -78,6 +78,24 @@ gundam_store_syst = false
 is_nu = true
 is_data = true
 
+[[tree]]
+origin = 'events/offbeam/selected'
+destination = 'events/offbeam/'
+name = 'selected'
+action = 'copy'
+gundam_store_syst = false
+is_nu = false
+is_data = true
+
+[[tree]]
+origin = 'events/offbeam/sideband'
+destination = 'events/offbeam/'
+name = 'sideband'
+action = 'copy'
+gundam_store_syst = false
+is_nu = false
+is_data = true
+
 #
 #[[sys]]
 #name = 'var00'
