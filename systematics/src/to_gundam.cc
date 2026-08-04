@@ -64,6 +64,7 @@ int main(int argc, char * argv[])
       directory->WriteObject(pot, "POT");
       directory->WriteObject(livetime, "Livetime");
       TTree* out_tree = new TTree(table.get_string_field("name").c_str(), table.get_string_field("name").c_str());
+      out_tree->SetAutoFlush(1000);
       copy_no_syst(table, out_tree, in_tree);
       if(table.get_bool_field("gundam_store_syst") == true)
         {
