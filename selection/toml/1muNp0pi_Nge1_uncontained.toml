@@ -369,6 +369,7 @@ branch = [
     { name = "proton_multiplicity",     type = "reco", parameters = [ "@proton_threshold"   ]},
     { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
     { name = "nuisance_is_signal",      type = "mctruth" },
+    { name = "generator_q2",            type = "mctruth" },
     { name = "low_q2_weight",           type = "true"    },
     { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
@@ -494,6 +495,7 @@ branch = [
     { name = "visible_energy",         type = "both"    },
     { name = "visible_energy_calosub", type = "true"    },
     { name = "nuisance_is_signal",     type = "mctruth" },
+    { name = "generator_q2",           type = "mctruth" },
     { name = "low_q2_weight",          type = "true"    },
     { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
@@ -628,6 +630,7 @@ branch = [
     { name = "no_charged_pions",        type = "true", parameters = [ "@pion_threshold"     ]},
     { name = "nuisance_is_signal",      type = "mctruth" },
     { name = "low_q2_weight",           type = "true"    },
+    { name = "generator_q2",            type = "mctruth" },
     { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
     # Kinematic imbalance & angles

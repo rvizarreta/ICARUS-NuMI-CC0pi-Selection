@@ -412,6 +412,29 @@ namespace mctruth
     REGISTER_CUT_SCOPE(RegistrationScope::MCTruth, no_electrons_srtruth, no_electrons_srtruth);
 
     /**
+     * @brief Variable for the generator-level four-momentum transfer Q**2.
+     * @details Returns the four-momentum transfer squared as computed by the
+     * event generator (GENIE) and stored directly on the truth interaction
+     * object, rather than reconstructing it from final-state kinematics as
+     * Q2() does. This is the quantity the Stowell et al. (arXiv:1903.01558)
+     * low-Q2 suppression parameterization was derived against, and should be
+     * used in place of Q2() whenever the suppression weight is computed at
+     * truth level. Returns a placeholder if the stored value is non-positive
+     * or non-finite.
+     * @tparam T the type of interaction (true only).
+     * @param obj the interaction to apply the variable on.
+     * @return the generator-level four-momentum transfer Q**2.
+     */
+    template<class T>
+    double generator_q2(const T & obj)
+    {
+        if(obj.Q2 <= 0.0 || !std::isfinite(obj.Q2))
+            return PLACEHOLDERVALUE;
+        return obj.Q2;
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, generator_q2, generator_q2);
+
+    /**
      * @brief Replicates NUISANCE ICARUS_1muNp0pi_IsSignal definition exactly.
      * @details This variable is implemented using GENIE truth variables (obj.prim)
      * to match the NUISANCE FlatTree signal definition for ICARUS_1muNp0pi.
