@@ -1,0 +1,247 @@
+[general]
+output = "/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+
+[parameters]
+photon_threshold = 10.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+flash_low_t = 0.0
+flash_high_t = 9.6
+QE_parameter = 0.0
+MEC_parameter = 10.0
+
+[[category]] # 0 : Signal, QE
+cuts = [
+    { name = "neutrino"        },
+    { name = "is_interaction_mode",     parameters = [ "@QE_parameter"       ] },
+    { name = "fiducial_cut"    },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 1 : Signal, MEC (2p2h)
+cuts = [
+    { name = "neutrino"        },
+    { name = "is_interaction_mode",     parameters = [ "@MEC_parameter"      ] },
+    { name = "fiducial_cut"    },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 2 : Signal, pion absorption (RES/DIS/other; catches signal not matched by 0 or 1)
+cuts = [
+    { name = "neutrino"        },
+    { name = "fiducial_cut"    },
+    { name = "no_charged_pions",        parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",             parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",             parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"                   },
+    { name = "no_extra_particles_minerva",  type = "mctruth"                   },
+]
+
+[[category]] # 3 : OOFV (signal-like, no fiducial requirement)
+cuts = [
+    { name = "neutrino" },
+    { name = "no_charged_pions", parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",      parameters = [ "@muon_threshold"     ] },
+    { name = "!no_protons",      parameters = [ "@proton_threshold"   ] },
+    { name = "no_neutral_pions",            type = "mctruth"            },
+    { name = "no_extra_particles_minerva",  type = "mctruth"            },
+]
+
+[[category]] # 4 : numuCC Np1pi± (exactly one charged pion above threshold)
+cuts = [
+    { name = "neutrino"    },
+    { name = "iscc"        },
+    { name = "single_pion", parameters = [ "@pion_threshold" ] },
+]
+
+[[category]] # 5 : Uncontained muon, fiducial
+cuts = [
+    { name = "neutrino"        },
+    { name = "fiducial_cut"    },
+    { name = "single_muon",             parameters = [ "@muon_threshold" ] },
+]
+
+[[category]] # 6 : Uncontained muon
+cuts = [
+    { name = "neutrino" },
+    { name = "single_muon", parameters = [ "@muon_threshold" ] },
+]
+
+[[category]] # 7 : Neutrino, charged current
+cuts = [
+    { name = "neutrino" },
+    { name = "iscc"     },
+]
+
+[[category]] # 8 : Neutrino, neutral current
+cuts = [
+    { name = "neutrino" },
+    { name = "!iscc"    },
+]
+
+[[category]] # 9 : Cosmic
+cuts = [
+    { name = "!neutrino" },
+]
+
+# SIMULATION ONLY
+[[sample]]
+name = "nominal"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_07.root"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "rock"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/FHCv09_89_01_02p02_Rock_muons/*.root"
+ismc = true
+disable = false
+
+# INCLUDE DATA
+[[sample]]
+name = "onbeam"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_data_flat_cafs_2/*.root"
+ismc = false
+disable = false
+
+[[sample]]
+name = "offbeam"
+path = "/pnfs/icarus/persistent/users/spine/NuMI/offbeam/*.root"
+ismc = false
+disable = false
+
+
+# PRE-SELECTION TREE
+[[tree]]
+name = "preselection"
+sim_only = false
+add_systematics = false
+add_exposure = true
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco" },
+    { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
+    { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
+]
+branch = [
+    # Interaction-level
+    { name = "is_nu",              type = "both"    },
+    { name = "is_data",            type = "both"    },
+    { name = "category",           type = "true"    },
+    { name = "nuisance_is_signal", type = "mctruth" },
+    { name = "interaction_mode",   type = "mctruth" },
+    { name = "cut_type",           type = "both"    },
+    { name = "vertex_x",           type = "both"    },
+    { name = "vertex_y",           type = "both"    },
+    { name = "vertex_z",           type = "both"    },
+    { name = "fiducial",           type = "reco"    },
+    { name = "neutrino_energy",    type = "mctruth" },
+    { name = "pdg",                type = "mctruth" },
+    { name = "parent_pdg",         type = "mctruth" },
+
+    # Flash variables (as branches, not cuts)
+    { name = "flash_time",         type = "reco"    },
+    { name = "flash_total_pe",     type = "reco"    },
+    { name = "flash_hypothesis",   type = "reco"    },
+
+    # Trigger-time branches -- Howard's trigger-time preselection plot and
+    # Roy's Fig. 13a flash-closest-to-trigger variable. Both are registered
+    # Event-scope variables in selection/include/event_variables.h;
+    # trigger_within_gate was already present (commented out) in the main
+    # 1muNp0pi_Nge1_uncontained.toml at the equivalent line.
+    { name = "trigger_within_gate",              type = "event" },
+    { name = "time_of_flash_closest_to_trigger",  type = "event" },
+
+    # Selection cuts as branch variables
+    { name = "flash_cut",            type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "no_photons",           type = "reco", parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",         type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "single_muon",          type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_charged_pions",     type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_protons",           type = "reco", parameters = [ "@proton_threshold"   ] },
+    { name = "photon_multiplicity",  type = "reco", parameters = [ "@photon_threshold"   ] },
+    { name = "electron_multiplicity",type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "muon_multiplicity",    type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "pion_multiplicity",    type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "proton_multiplicity",  type = "reco", parameters = [ "@proton_threshold"   ] },
+
+    # Leading MUON softmax scores and kinematics
+    { name = "momentum",          type = "both_particle", selector = "leading_muon"},
+    { name = "muon_softmax",      type = "reco_particle", selector = "leading_muon" },
+    { name = "proton_softmax",    type = "reco_particle", selector = "leading_muon" },
+    { name = "pion_softmax",      type = "reco_particle", selector = "leading_muon" },
+    { name = "photon_softmax",    type = "reco_particle", selector = "leading_muon" },
+    { name = "electron_softmax",  type = "reco_particle", selector = "leading_muon" },
+    { name = "primary_softmax",   type = "reco_particle", selector = "leading_muon" },
+    { name = "secondary_softmax", type = "reco_particle", selector = "leading_muon" },
+    { name = "length",            type = "reco_particle", selector = "leading_muon" },
+    { name = "ke",                type = "reco_particle", selector = "leading_muon" },
+    { name = "containment",       type = "reco_particle", selector = "leading_muon" },
+    { name = "pid",               type = "reco_particle", selector = "leading_muon" },
+
+    # Leading PROTON softmax scores and kinematics
+    { name = "muon_softmax",      type = "reco_particle", selector = "leading_proton" },
+    { name = "proton_softmax",    type = "reco_particle", selector = "leading_proton" },
+    { name = "pion_softmax",      type = "reco_particle", selector = "leading_proton" },
+    { name = "photon_softmax",    type = "reco_particle", selector = "leading_proton" },
+    { name = "electron_softmax",  type = "reco_particle", selector = "leading_proton" },
+    { name = "primary_softmax",   type = "reco_particle", selector = "leading_proton" },
+    { name = "secondary_softmax", type = "reco_particle", selector = "leading_proton" },
+    { name = "length",            type = "reco_particle", selector = "leading_proton" },
+    { name = "ke",                type = "reco_particle", selector = "leading_proton" },
+    { name = "containment",       type = "reco_particle", selector = "leading_proton" },
+    { name = "pid",               type = "reco_particle", selector = "leading_proton" },
+
+    # Leading PION softmax scores and kinematics
+    { name = "muon_softmax",      type = "reco_particle", selector = "leading_pion" },
+    { name = "proton_softmax",    type = "reco_particle", selector = "leading_pion" },
+    { name = "pion_softmax",      type = "reco_particle", selector = "leading_pion" },
+    { name = "photon_softmax",    type = "reco_particle", selector = "leading_pion" },
+    { name = "electron_softmax",  type = "reco_particle", selector = "leading_pion" },
+    { name = "primary_softmax",   type = "reco_particle", selector = "leading_pion" },
+    { name = "secondary_softmax", type = "reco_particle", selector = "leading_pion" },
+    { name = "length",            type = "reco_particle", selector = "leading_pion" },
+    { name = "ke",                type = "reco_particle", selector = "leading_pion" },
+    { name = "containment",       type = "reco_particle", selector = "leading_pion" },
+    { name = "pid",               type = "reco_particle", selector = "leading_pion" },
+
+    # Leading ELECTRON softmax scores and kinematics
+    { name = "muon_softmax",      type = "reco_particle", selector = "leading_electron" },
+    { name = "proton_softmax",    type = "reco_particle", selector = "leading_electron" },
+    { name = "pion_softmax",      type = "reco_particle", selector = "leading_electron" },
+    { name = "photon_softmax",    type = "reco_particle", selector = "leading_electron" },
+    { name = "electron_softmax",  type = "reco_particle", selector = "leading_electron" },
+    { name = "primary_softmax",   type = "reco_particle", selector = "leading_electron" },
+    { name = "secondary_softmax", type = "reco_particle", selector = "leading_electron" },
+    { name = "length",            type = "reco_particle", selector = "leading_electron" },
+    { name = "ke",                type = "reco_particle", selector = "leading_electron" },
+    { name = "containment",       type = "reco_particle", selector = "leading_electron" },
+    { name = "pid",               type = "reco_particle", selector = "leading_electron" },
+
+    # Leading PHOTON softmax scores and kinematics
+    { name = "muon_softmax",      type = "reco_particle", selector = "leading_photon" },
+    { name = "proton_softmax",    type = "reco_particle", selector = "leading_photon" },
+    { name = "pion_softmax",      type = "reco_particle", selector = "leading_photon" },
+    { name = "photon_softmax",    type = "reco_particle", selector = "leading_photon" },
+    { name = "electron_softmax",  type = "reco_particle", selector = "leading_photon" },
+    { name = "primary_softmax",   type = "reco_particle", selector = "leading_photon" },
+    { name = "secondary_softmax", type = "reco_particle", selector = "leading_photon" },
+    { name = "length",            type = "reco_particle", selector = "leading_photon" },
+    { name = "ke",                type = "reco_particle", selector = "leading_photon" },
+    { name = "containment",       type = "reco_particle", selector = "leading_photon" },
+    { name = "pid",               type = "reco_particle", selector = "leading_photon" },
+]
