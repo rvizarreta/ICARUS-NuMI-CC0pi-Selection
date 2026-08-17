@@ -282,5 +282,10 @@ cut = [
 ]
 branch = [
     { name = "trigger_within_gate",             type = "event" },
-    { name = "time_of_flash_closest_to_trigger", type = "event" },
+    # time_of_flash_closest_to_trigger requires an explicit "offset" parameter
+    # (selection/include/event_variables.h line ~326-338) -- the toml layer
+    # always passes whatever is in `parameters`, so the C++ default argument
+    # (params={0.0}) never applies unless it's spelled out here. 0.0 is that
+    # same documented default: "the offset to subtract ... 0.0 means no offset".
+    { name = "time_of_flash_closest_to_trigger", type = "event", parameters = [ 0.0 ] },
 ]
