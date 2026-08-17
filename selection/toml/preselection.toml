@@ -158,14 +158,6 @@ branch = [
     { name = "flash_total_pe",     type = "reco"    },
     { name = "flash_hypothesis",   type = "reco"    },
 
-    # Trigger-time branches -- Howard's trigger-time preselection plot and
-    # Roy's Fig. 13a flash-closest-to-trigger variable. Both are registered
-    # Event-scope variables in selection/include/event_variables.h;
-    # trigger_within_gate was already present (commented out) in the main
-    # 1muNp0pi_Nge1_uncontained.toml at the equivalent line.
-    { name = "trigger_within_gate",              type = "event" },
-    { name = "time_of_flash_closest_to_trigger",  type = "event" },
-
     # Selection cuts as branch variables
     { name = "flash_cut",            type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
     { name = "no_photons",           type = "reco", parameters = [ "@photon_threshold"   ] },
@@ -244,4 +236,51 @@ branch = [
     { name = "ke",                type = "reco_particle", selector = "leading_photon" },
     { name = "containment",       type = "reco_particle", selector = "leading_photon" },
     { name = "pid",               type = "reco_particle", selector = "leading_photon" },
+]
+
+# ============================================================================
+# TRIGGER-TIME TREE (separate from "preselection" -- see below for why)
+#
+# selection/src/framework.cc dispatches branch construction on the tree's
+# "mode" field. A branch with type = "event" is only legal when mode =
+# "event" (framework.cc line ~596); the Mode::Reco and Mode::True branches
+# of construct() (lines ~423, ~263) have no "event" case at all, which is
+# exactly why trigger_within_gate could not be added to the "preselection"
+# tree above (mode = "reco"). This tree isolates the event-scope variables
+# in their own mode = "event" tree so the build succeeds.
+#
+# Consequence: mode = "event" trees emit ONE ROW PER TRIGGERED EVENT, not
+# one row per reconstructed interaction, and the Mode::Event branch of
+# construct() (framework.cc line ~582) only ever applies event-type cuts --
+# a reco-type cut like fiducial_cut would be parsed but silently never
+# evaluated in this mode, so it is deliberately left out here rather than
+# included and have it do nothing.
+#
+# This is not a problem for the plot itself: Howard's Fig. 7/8 trigger-time
+# plot (main text, Sec. 3.2) is exactly this -- one entry per event, stacked
+# by SAMPLE identity (nu+cosmic MC / offbeam in-time cosmic / onbeam data,
+# with rock muons as an additional component in Fig. 8), not split by
+# interaction-level true_category. So this tree's row-per-event structure
+# is the correct unit for that plot, not a limitation relative to it.
+#
+# Cuts: trigger_emulation_cut + data_quality_cut, matching the cuts already
+# used for the "preselection" tree above and matching Howard's more complete
+# Fig. 8 version (Fig. 7 uses only the emulated-trigger cut; Fig. 8 adds the
+# data-quality cut on beam/offbeam data). crtpmt_veto is deliberately NOT
+# applied -- that is Roy's cut, not Howard's, and conflating the two was
+# already flagged as a mistake to avoid in this analysis.
+# ============================================================================
+[[tree]]
+name = "trigger_time"
+sim_only = false
+add_systematics = false
+add_exposure = true
+mode = "event"
+cut = [
+    { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
+    { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
+]
+branch = [
+    { name = "trigger_within_gate",             type = "event" },
+    { name = "time_of_flash_closest_to_trigger", type = "event" },
 ]
