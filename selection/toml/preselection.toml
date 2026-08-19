@@ -282,10 +282,19 @@ cut = [
 ]
 branch = [
     { name = "trigger_within_gate",             type = "event" },
-    # time_of_flash_closest_to_trigger requires an explicit "offset" parameter
-    # (selection/include/event_variables.h line ~326-338) -- the toml layer
-    # always passes whatever is in `parameters`, so the C++ default argument
-    # (params={0.0}) never applies unless it's spelled out here. 0.0 is that
-    # same documented default: "the offset to subtract ... 0.0 means no offset".
     { name = "time_of_flash_closest_to_trigger", type = "event", parameters = [ 0.0 ] },
+    { name = "n_true_nu",                        type = "event" },
 ]
+
+# n_true_nu (added for the Howard-style rock-muon double-counting check, see
+# selection/include/event_variables.h): the raw count of GENIE-generated
+# neutrinos in the event (sr.mc.nu.size()), independent of whether SPINE's
+# reconstruction managed to truth-match any candidate to it. Unlike
+# true_category / nu_id (used elsewhere in this toml and in the notebook),
+# this does NOT require a successful reconstruction-level match -- it only
+# asks whether a neutrino was generated in this event at all. For the rock
+# sample this distinguishes "this trigger came from a spill where a rock
+# neutrino was actually generated" from "this trigger came from a spill with
+# no generated neutrino at all (purely simulated ambient cosmic)" -- the
+# distinction Howard's technote (Sec. 6.8.7) uses to separate genuinely
+# double-counted-with-offbeam rock/cosmic slices from ones that aren't.

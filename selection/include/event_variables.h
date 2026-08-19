@@ -85,6 +85,29 @@ namespace evar
     REGISTER_VAR_SCOPE(RegistrationScope::Event, nnu, nnu);
 
     /**
+     * @brief Variable for the multiplicity of GENIE-generated neutrinos in
+     * the event, independent of reconstruction/truth-matching.
+     * @details Unlike evar::nnu above (which only counts RECONSTRUCTED SPINE
+     * interactions that were successfully truth-matched to a neutrino, i.e.
+     * interaction.nu_id > -1), this counts sr.mc.nu directly -- the raw
+     * GENIE truth record for the event. A neutrino can be present in
+     * sr.mc.nu (this variable > 0) while every reconstructed interaction in
+     * the event fails truth-matching (evar::nnu == 0), e.g. because the true
+     * vertex is far from any reconstructed candidate (as is expected for a
+     * rock/dirt sample, where the neutrino interacts outside the TPC). This
+     * variable is what's needed to distinguish "this event had a genuine
+     * generated neutrino at all" from "reconstruction managed to link a
+     * candidate to it" -- the two are conflated by true_category/nu_id-based
+     * cuts alone.
+     * @tparam T the top-level record.
+     * @param sr the StandardRecord to apply the variable on.
+     * @return double the number of GENIE-generated neutrinos in the event.
+     */
+    template<typename T>
+    double n_true_nu(const T & sr) { return sr.mc.nu.size(); }
+    REGISTER_VAR_SCOPE(RegistrationScope::Event, n_true_nu, n_true_nu);
+
+    /**
      * @brief Variable for the multiplicity of in-time interactions in the
      * event.
      * @details This variable counts the number of in-time interactions in the
