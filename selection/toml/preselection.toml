@@ -126,6 +126,31 @@ disable = false
 
 
 # PRE-SELECTION TREE
+#
+# crtpmt_veto added 2026-08-20: the vertex_x/y/z and flash_time data/MC
+# comparison plots built from this tree showed a large discrepancy (data/MC
+# ~1.17-1.26) at the plain fiducial_cut + trigger_emulation_cut +
+# data_quality_cut stage. Comparing against Roy's technote
+# (NuMu_CC_Inclusive_Technote, Fig. 6/7/9/10), her analogous vertex/
+# kinematic comparison plots are made with fiducial volume + clear-cosmic +
+# CRT-PMT spill cut, not just fiducial volume alone. crtpmt_veto
+# (event_cuts.h) is added here to close that gap for THIS tree specifically.
+#
+# This is a deliberate, scoped exception to the standing decision recorded
+# below on the `trigger_time` tree (crtpmt_veto is "Roy's cut, not Howard's,
+# and conflating the two was already flagged as a mistake to avoid"): that
+# decision was about keeping trigger_time's Howard-style trigger-time plot
+# uncontaminated by Roy's cuts. `preselection`'s vertex/kinematic plots are
+# a different context, and Roy's fuller cut chain is the relevant point of
+# comparison for them specifically -- trigger_time is intentionally left
+# unchanged.
+#
+# A true reconstruction-level "clear cosmic" slice-tag rejection (the other
+# cut in Roy's/Howard's baseline pre-selection, per their technotes) is NOT
+# added here: no such cut is currently registered in cuts.h/event_cuts.h in
+# this repo (only cuts::cosmic exists, which is a TRUTH-level cut, not the
+# same thing) -- adding it would need new C++ against a StandardRecord field
+# not confirmed from this checkout. Flagged separately for Justin.
 [[tree]]
 name = "preselection"
 sim_only = false
@@ -136,6 +161,7 @@ cut = [
     { name = "fiducial_cut",          type = "reco" },
     { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
     { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
+    { name = "crtpmt_veto",           type = "event", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 ]
 branch = [
     # Interaction-level
@@ -236,11 +262,6 @@ branch = [
     { name = "ke",                type = "reco_particle", selector = "leading_photon" },
     { name = "containment",       type = "reco_particle", selector = "leading_photon" },
     { name = "pid",               type = "reco_particle", selector = "leading_photon" },
-
-    { name = "start_dir_x", type = "both_particle", selector = "longest_track" },
-    { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
-    { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
-    { name = "length",      type = "both_particle", selector = "longest_track" },
 ]
 
 # ============================================================================
