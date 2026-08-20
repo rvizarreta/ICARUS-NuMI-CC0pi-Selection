@@ -161,7 +161,7 @@ cut = [
     { name = "fiducial_cut",          type = "reco" },
     { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
     { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
-    { name = "crtpmt_veto",           type = "event", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    #{ name = "crtpmt_veto",           type = "event", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 ]
 branch = [
     # Interaction-level
@@ -189,6 +189,7 @@ branch = [
     { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
     { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
     { name = "length",      type = "both_particle", selector = "longest_track" },
+    { name = "crtpmt_veto",           type = "event", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
     # Flash variables (as branches, not cuts)
     { name = "flash_time",         type = "reco"    },
