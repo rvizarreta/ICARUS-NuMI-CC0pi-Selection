@@ -179,6 +179,17 @@ branch = [
     { name = "pdg",                type = "mctruth" },
     { name = "parent_pdg",         type = "mctruth" },
 
+    # Longest track direction/length (rock-vs-cosmic angular separation,
+    # Cos(theta_LTYD) -- see the rock-angular-separation notebook cell).
+    # Re-added 2026-08-20: this block was dropped when crtpmt_veto was
+    # added above; without it, events/rock/preselection has no
+    # reco_longest_track_* columns and the notebook's rock angular cut
+    # fails with a KeyInFileError. Needs a rebuild to take effect.
+    { name = "start_dir_x", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
+    { name = "length",      type = "both_particle", selector = "longest_track" },
+
     # Flash variables (as branches, not cuts)
     { name = "flash_time",         type = "reco"    },
     { name = "flash_total_pe",     type = "reco"    },
