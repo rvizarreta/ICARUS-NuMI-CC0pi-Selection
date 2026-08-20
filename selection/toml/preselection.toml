@@ -189,7 +189,6 @@ branch = [
     { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
     { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
     { name = "length",      type = "both_particle", selector = "longest_track" },
-    { name = "crtpmt_veto",           type = "event", parameters = [ "@flash_low_t", "@flash_high_t" ] },
 
     # Flash variables (as branches, not cuts)
     { name = "flash_time",         type = "reco"    },
