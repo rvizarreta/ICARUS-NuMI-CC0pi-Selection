@@ -236,6 +236,11 @@ branch = [
     { name = "ke",                type = "reco_particle", selector = "leading_photon" },
     { name = "containment",       type = "reco_particle", selector = "leading_photon" },
     { name = "pid",               type = "reco_particle", selector = "leading_photon" },
+
+    { name = "start_dir_x", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
+    { name = "length",      type = "both_particle", selector = "longest_track" },
 ]
 
 # ============================================================================
