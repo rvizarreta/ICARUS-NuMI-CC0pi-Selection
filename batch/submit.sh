@@ -101,12 +101,12 @@ for p in $full_paths; do
     success=0
     for attempt in 1 2 3 4 5; do
         rm -f "data/$b"
-        if ifdh cp --cp_maxretries=0 --web_timeout=300 "$p" data/ && [ -s "data/$b" ]; then
+        if ifdh cp --cp_maxretries=0 --web_timeout=60 "$p" data/ && [ -s "data/$b" ]; then
             success=1
             break
         fi
         echo "Copy attempt $attempt failed for $p" >&2
-        sleep $((attempt * 15))
+        sleep $((attempt * 5))
     done
     if [ "$success" -ne 1 ]; then
         rm -f "data/$b"
