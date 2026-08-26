@@ -917,3 +917,41 @@ index = 126
 name = 'piplus_Flux'
 type = 'multisim'
 index = 127
+
+[[sys]]
+name = "GENIEReWeight_SBNNuSyst_LQCDZExpFit_correction_ZExpAVariationResponse"
+type = "multisim"
+index = 128
+
+[[sys]]
+name = "GENIEReWeight_SBNNuSyst_MINERvAZExpFit_correction_ZExpAVariationResponse"
+type = "multisim"
+index = 129
+
+[[sys]]
+name = "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
+name_short = 'ZExpPCAB1CCQE'
+type = "multisigma"
+nsigma = [-3,-2,-1,0,1,2,3]
+index = 130
+
+[[sys]]
+name = "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
+name_short = 'ZExpPCAB2CCQE'
+type = "multisigma"
+nsigma = [-3,-2,-1,0,1,2,3]
+index = 131
+
+[[sys]]
+name = "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
+name_short = 'ZExpPCAB3CCQE'
+type = "multisigma"
+nsigma = [-3,-2,-1,0,1,2,3]
+index = 132
+
+[[sys]]
+name = "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
+name_short = 'ZExpPCAB4CCQE'
+type = "multisigma"
+nsigma = [-3,-2,-1,0,1,2,3]
+index = 133

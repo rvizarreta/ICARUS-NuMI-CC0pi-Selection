@@ -9,6 +9,7 @@ electron_threshold = 25.0
 muon_threshold = 143.425
 pion_threshold = 25.0
 proton_threshold = 50.0
+muon_mcs_ke_max = 4000.0
 flash_low_t = 0.0
 flash_high_t = 9.6
 QE_parameter = 0.0
@@ -101,7 +102,8 @@ cuts = [
 name = "nominal"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_07.root"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root"
+path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/*.root"
 ismc = true
 disable = false
 
@@ -342,6 +344,8 @@ cut = [
     { name = "single_muon",               type = "reco",  parameters = [ "@muon_threshold"               ] },
     { name = "no_charged_pions",          type = "reco",  parameters = [ "@pion_threshold"               ] },
     { name = "!no_protons",               type = "reco",  parameters = [ "@proton_threshold"             ] },
+    { name = "contained_protons_only",    type = "reco",  parameters = [ "@proton_threshold"             ] },
+    { name = "exiting_muon_energy_cut",   type = "reco",  parameters = [ "@muon_mcs_ke_max", "@muon_threshold" ] },
     { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
     { name = "data_quality_cut",          type = "event", decrements_exposure = true  },
 ]
@@ -602,6 +606,8 @@ cut = [
     { name = "single_muon",               type = "reco",  parameters = [ "@muon_threshold"               ] },
     { name = "!no_charged_pions",         type = "reco",  parameters = [ "@pion_threshold"               ] },
     { name = "!no_protons",               type = "reco",  parameters = [ "@proton_threshold"             ] },
+    { name = "contained_protons_only",    type = "reco",  parameters = [ "@proton_threshold"             ] },
+    { name = "exiting_muon_energy_cut",   type = "reco",  parameters = [ "@muon_mcs_ke_max", "@muon_threshold" ] },
     { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
     { name = "data_quality_cut",          type = "event", decrements_exposure = true },
 ]

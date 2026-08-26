@@ -38,7 +38,8 @@ class Sample:
     """
     def __init__(self, name, rf, category_branch, key, exposure_type,
                  trees, systematics=None, override_exposure=None, precompute=None,
-                 presel=None, override_category=None, print_sys=False) -> None:
+                 presel=None, override_category=None, print_sys=False,
+                 interaction_method=None) -> None:
         """
         Initializes the Sample object with the given name and key.
 
@@ -131,6 +132,45 @@ class Sample:
         # sample, because it is not dependent on some external source
         # of weights.
         self._systematics.update({f'{self._name}_statistical': Systematic('statistical', None)})
+
+        # Optionally put the interaction dials on the varied-response
+        # ("Method 2") treatment, in which a signal event's dial weight is
+        # divided by the change in the population of its true bin. This
+        # removes the component of the variation that a free template
+        # parameter in the cross-section fit already absorbs. Flux and
+        # detector dials are deliberately left on the default treatment:
+        # flux normalisation enters the cross section through the flux
+        # integral, and detector variations do not change the true
+        # distribution to begin with. See interaction_response.py.
+        self._response_normalizer = None
+        if interaction_method is not None:
+            method = interaction_method.get('method', 'truth')
+            if method not in ('truth', 'response'):
+                raise ValueError(
+                    f"Unknown interaction_method.method `{method}` in sample "
+                    f"`{self._name}`; expected 'truth' or 'response'.")
+            if method == 'response':
+                from interaction_response import ResponseNormalizer
+                self._response_normalizer = ResponseNormalizer(
+                    self._file_handle,
+                    truth_tree=interaction_method['truth_tree'],
+                    truth_systematics_tree=interaction_method['truth_systematics_tree'],
+                    truth_variable=interaction_method['truth_variable'],
+                    truth_bin_edges=interaction_method['truth_bin_edges'],
+                    signal_mask=interaction_method['signal_mask'],
+                    nuniv=interaction_method.get('nuniv', 1000),
+                    seed=interaction_method.get('seed', 0),
+                )
+                pattern = re.compile(interaction_method.get('pattern', 'GENIEReWeight'))
+                matched = 0
+                for sname, syst in self._systematics.items():
+                    if sname.endswith('_sigma') or sname.endswith('_nsigma'):
+                        continue
+                    if pattern.search(sname):
+                        syst.set_method('response', self._response_normalizer)
+                        matched += 1
+                print(f"[{self._name}] varied-response method applied to "
+                      f"{matched} interaction dial(s).")
 
     def override_exposure(self, exposure, exposure_type='pot') -> None:
         """

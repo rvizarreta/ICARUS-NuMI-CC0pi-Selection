@@ -3,6 +3,7 @@ import pandas as pd
 import uproot
 
 from variable import Variable
+from interaction_response import interpolate, universe_sigmas
 
 class Systematic:
     """
@@ -24,6 +25,24 @@ class Systematic:
         interpolates the weights at the desired sigma level to generate
         a set of universe weights.
 
+    Two methods are available for turning a dial variation into a set of
+    universes, selectable per-dial through the `method` attribute:
+    - 'truth' (default): the dial reweights the selected events directly,
+        so the universe carries both the change in the true signal rate
+        and the change in efficiency/migration. This is the appropriate
+        treatment for a data/MC comparison band, where the prediction
+        genuinely depends on the generator's rate.
+    - 'response': the dial weight of each signal event is divided by the
+        change in the population of its true bin, so a pure normalisation
+        change cancels and only the effect on efficiency and migration
+        survives. This is the appropriate treatment for a cross-section
+        extraction, where the signal rate in each true bin is a free
+        template parameter and is therefore measured rather than assumed.
+        Backgrounds are left on the 'truth' method regardless, since their
+        rate is taken from the simulation.
+    See `interaction_response.py` for the definition and rationale. The
+    'response' method is intended for interaction dials only.
+
     The Systematic object is designed to be used in conjunction with the
     Sample object. The Sample object contains the data for the analysis
     and critically the exposure information. All systematic
@@ -42,6 +61,10 @@ class Systematic:
     _handle : uproot.models.TBranch.Model_TBranchElement
         The handle to the branch containing the weights for the
         systematic parameter.
+    _method : str
+        Either 'truth' (default) or 'response'. See above.
+    _normalizer : ResponseNormalizer or None
+        Supplies the rho_j(z) factors used by the 'response' method.
     _variables : dict
         The Variable objects to be used for the calculation of the
         impact of the systematic uncertainty. The keys are the names of
@@ -68,6 +91,8 @@ class Systematic:
     -------
     register_variable(variable)
         Register a Variable object with the Systematic object.
+    set_method(method, normalizer)
+        Select the universe-construction method for this dial.
     process(sample, nuniv=1000)
         Processes the systematic uncertainty for the given sample for
         all configured Variables.
@@ -79,7 +104,8 @@ class Systematic:
         Combine a list of Systematic objects into a single Systematic
         object.
     """
-    def __init__(self, name, handle, label=None):
+    def __init__(self, name, handle, label=None, method='truth',
+                 normalizer=None):
         """
         Initializes the Systematic object with the given name and Variable.
 
@@ -90,11 +116,44 @@ class Systematic:
         handle : uproot.models.TBranch.Model_TBranchElement
             The handle to the branch containing the weights for the
             systematic parameter.
+        label : str, optional
+            The label of the systematic uncertainty.
+        method : str, optional
+            Either 'truth' (default) or 'response'.
+        normalizer : ResponseNormalizer, optional
+            Required when `method` is 'response'.
         """
         self._name = name
         self._label = label
         self._handle = handle
         self._variables = dict()
+        self._method = method
+        self._normalizer = normalizer
+
+    def set_method(self, method, normalizer=None):
+        """
+        Select the universe-construction method for this dial.
+
+        Parameters
+        ----------
+        method : str
+            Either 'truth' or 'response'.
+        normalizer : ResponseNormalizer, optional
+            Required when `method` is 'response'.
+
+        Returns
+        -------
+        None.
+        """
+        if method not in ('truth', 'response'):
+            raise ValueError(
+                f"Unknown systematic method `{method}`; expected 'truth' or "
+                "'response'.")
+        if method == 'response' and normalizer is None:
+            raise ValueError(
+                "The 'response' method requires a ResponseNormalizer.")
+        self._method = method
+        self._normalizer = normalizer
 
     def register_variable(self, variable):
         """
@@ -134,32 +193,50 @@ class Systematic:
             weights_array = np.stack(self._handle.array(library='np'))[mask, :]
             weights_array_shape = weights_array.shape[1]
             if weights_array_shape == 6 or weights_array_shape == 7:
-                # Set the "sigma" levels corresponding to each weight in the
-                # array. GENIE multisigma weights (shape 6) are stored in the
-                # order [-1, +1, -2, +2, -3, +3]; np.interp requires ascending
-                # x-points, so both the sigma levels and the weight columns
-                # are sorted (same as the upstream medulla repository).
-                if weights_array_shape == 6:
-                    sigma_levels_raw = np.array([-1, 1, -2, 2, -3, 3], dtype=float)
-                    order = np.argsort(sigma_levels_raw)
-                    sigma_levels = sigma_levels_raw[order]
-                    weights_array = np.asarray(weights_array, dtype=float)[:, order]
+                if self._normalizer is not None:
+                    # Deterministic per-dial throws, shared with the truth
+                    # sample so that the numerator (selected events) and the
+                    # denominator (rho, from the full truth sample) are
+                    # evaluated in the same universe.
+                    sigmas = universe_sigmas(self._name, nuniv,
+                                             self._normalizer.seed)
+                    self._universe_weights = interpolate(weights_array, sigmas)
                 else:
-                    sigma_levels = np.linspace(-3, 3, 7)
+                    # Set the "sigma" levels corresponding to each weight in the
+                    # array. GENIE multisigma weights (shape 6) are stored in the
+                    # order [-1, +1, -2, +2, -3, +3]; np.interp requires ascending
+                    # x-points, so both the sigma levels and the weight columns
+                    # are sorted (same as the upstream medulla repository).
+                    if weights_array_shape == 6:
+                        sigma_levels_raw = np.array([-1, 1, -2, 2, -3, 3], dtype=float)
+                        order = np.argsort(sigma_levels_raw)
+                        sigma_levels = sigma_levels_raw[order]
+                        weights_array = np.asarray(weights_array, dtype=float)[:, order]
+                    else:
+                        sigma_levels = np.linspace(-3, 3, 7)
 
-                # A set of `nuniv` random values is drawn from a normal
-                # distribution with mean 0 and standard deviation 1. The
-                # weights retrieved above are then interpolated at these
-                # values to generate the universe weights.
-                random_sigmas = np.random.normal(0, 1, (weights_array.shape[0], nuniv))
-                self._universe_weights = np.apply_along_axis(
-                    lambda w: np.interp(random_sigmas[0], sigma_levels, w),
-                    axis=1,
-                    arr=weights_array
-                )
+                    # A set of `nuniv` random values is drawn from a normal
+                    # distribution with mean 0 and standard deviation 1. The
+                    # weights retrieved above are then interpolated at these
+                    # values to generate the universe weights.
+                    random_sigmas = np.random.normal(0, 1, (weights_array.shape[0], nuniv))
+                    self._universe_weights = np.apply_along_axis(
+                        lambda w: np.interp(random_sigmas[0], sigma_levels, w),
+                        axis=1,
+                        arr=weights_array
+                    )
             else:
                 self._universe_weights = weights_array
 
+            # Varied-response ("Method 2") treatment. The universe weights of
+            # signal events are divided by the change in the population of
+            # their true bin, removing the component of the variation that a
+            # free template parameter already absorbs. Backgrounds are left
+            # untouched. Only applied to dials that were explicitly put on
+            # this method, which is intended to be the interaction dials.
+            if self._method == 'response' and self._normalizer is not None:
+                self._universe_weights = self._normalizer.apply(
+                    self._universe_weights, sample, self._name)
 
             # The universe weights are used to characterize the systematic
             # uncertainty for each of the Variables by method of covariance
@@ -307,7 +384,7 @@ class Systematic:
                 axis=0
             )
             new_systematic._std = np.sqrt(np.sum([sys._std**2 for sys in systematics]))
-        
+
         return new_systematic
 
     @staticmethod
@@ -332,7 +409,7 @@ class Systematic:
             scale correction, this is a float. For a "normalized" scale
             correction, this is a numpy array with the same shape as
             `cov` and containing the bin contents of the histogram.
-        
+
         Returns
         -------
         numpy.ndarray
@@ -350,16 +427,22 @@ class Systematic:
 
     def __repr__(self):
         s = f'--Systematic({self._name}, {self._label})--'
+        if self._method != 'truth':
+            s += f' [method={self._method}]'
         s += f'\n\tFractional uncertainty: {self._std:.2%}'
         return s
 
     @property
     def name(self):
         return self._name
-    
+
     @property
     def label(self):
         return self._label
+
+    @property
+    def method(self):
+        return self._method
 
     @property
     def std(self):

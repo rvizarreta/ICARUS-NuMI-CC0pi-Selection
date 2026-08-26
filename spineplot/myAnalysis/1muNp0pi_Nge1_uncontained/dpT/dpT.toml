@@ -43,6 +43,29 @@ systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_Nu
 [samples.mc.precompute]
 abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 
+# --- Interaction-dial systematic method -------------------------------
+# 'truth'    : dial reweights selected events directly (original behaviour).
+#              This is the defensible band for a data/MC comparison, since
+#              the prediction really does depend on GENIE's rate.
+# 'response' : each SIGNAL event's dial weight is divided by the change in
+#              the population of its true bin, so a pure normalisation
+#              change cancels and only shape / efficiency / migration
+#              effects survive. Matches what the cross-section fit
+#              actually absorbs via the free template parameters.
+# Only dials matching `pattern` are affected: flux (hysyst_*) and detector
+# (var0*) dials keep the original treatment either way.
+# truth_bin_edges MUST be the template binning (binning_true_dpT.txt).
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dpT_lp_genie'
+truth_bin_edges = [0.0, 80.0, 160.0, 240.0, 320.0, 520.0, 800.0, 99999.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"

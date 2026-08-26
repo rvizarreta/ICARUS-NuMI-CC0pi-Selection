@@ -600,6 +600,95 @@ namespace cuts
     REGISTER_CUT_SCOPE(RegistrationScope::Both, contained_muons_only, contained_muons_only);
 
     /**
+     * @brief Cut to select interactions with contained protons only.
+     * @details This function applies a cut to select interactions where all
+     * primary protons above the kinetic energy threshold are contained
+     * within the detector volume. A proton is considered contained if its
+     * containment flag is set. This cut mirrors @ref contained_muons_only,
+     * but for protons: since proton momentum in this analysis is
+     * reconstructed from range (CSDA), the reconstruction is only reliable
+     * when the full trajectory, from the interaction vertex to the stopping
+     * point, is contained within the active volume. Requiring containment
+     * therefore removes events where the leading proton candidate exits the
+     * detector, which would otherwise bias its reconstructed momentum.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to select on.
+     * @param params the parameters for the cut. In this case, this sets the
+     * kinetic energy threshold for a proton to be considered in the
+     * selection. Defaults to 50 MeV, matching the proton threshold used
+     * elsewhere in the selection.
+     * @return true if all primary protons above threshold in the
+     * interaction are contained.
+     */
+    template<class T>
+    bool contained_protons_only(const T & obj, std::vector<double> params={50.0,})
+    {
+        for(const auto & p : obj.particles)
+        {
+            // Check if particle is a proton above threshold and primary
+            if(pvars::pid(p) == 4 &&
+               pvars::primary_classification(p) &&
+               pvars::ke(p) >= params[0])
+            {
+                // If we find a proton above threshold, check if it's contained
+                if(p.is_contained != 1)
+                {
+                    return false; // Found an uncontained proton, fail the cut
+                }
+            }
+        }
+        return true; // All protons above threshold are contained (or no protons found)
+    }
+    REGISTER_CUT_SCOPE(RegistrationScope::Both, contained_protons_only, contained_protons_only);
+
+    /**
+     * @brief Cut to reject events whose leading muon is exiting and has an
+     * unreliable MCS energy estimate.
+     * @details When the leading muon is not contained, its kinetic energy is
+     * taken from the MCS (multiple Coulomb scattering) fit, @ref
+     * pvars::mcs_ke, rather than from range (CSDA). The MCS fit is bounded
+     * to a maximum kinetic energy of 100 GeV in SPINE, and a sizable
+     * fraction of exiting muons in this selection pile up at that bound,
+     * indicating the fit failed to converge on a physical value. Even below
+     * that hard bound, the MCS bias and resolution both degrade rapidly as
+     * a function of the reported kinetic energy (checked against truth in a
+     * dedicated study), which biases kinematic imbalance variables built
+     * from the muon momentum (e.g. dpT). This cut removes events in which
+     * an exiting primary muon's MCS kinetic energy exceeds a configurable
+     * ceiling, above which the estimate is no longer considered reliable.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to select on.
+     * @param params the parameters for the cut. params[0] sets the maximum
+     * allowed MCS kinetic energy (MeV) for an exiting primary muon, and
+     * defaults to 4000 MeV (4 GeV). params[1] sets the kinetic energy
+     * threshold (MeV) for a muon to be considered in the selection, and
+     * defaults to 143.425 MeV, matching the muon threshold used elsewhere
+     * in the selection.
+     * @return true unless a primary muon above threshold is exiting and its
+     * MCS kinetic energy exceeds the configured ceiling.
+     */
+    template<class T>
+    bool exiting_muon_energy_cut(const T & obj, std::vector<double> params={4000.0, 143.425,})
+    {
+        for(const auto & p : obj.particles)
+        {
+            // Check if particle is a muon above threshold and primary
+            if(pvars::pid(p) == 2 &&
+               pvars::primary_classification(p) &&
+               pvars::ke(p) >= params[1])
+            {
+                // Only exiting muons rely on the MCS energy estimate.
+                if(p.is_contained != 1 && pvars::mcs_ke(p) > params[0])
+                {
+                    return false; // Exiting muon with unreliable MCS energy, fail the cut
+                }
+            }
+        }
+        return true; // No exiting muon exceeded the MCS energy ceiling (or no muons found)
+    }
+    REGISTER_CUT_SCOPE(RegistrationScope::Both, exiting_muon_energy_cut, exiting_muon_energy_cut);
+
+    /**
      * @brief Apply a cut on the pion group code.
      * @details This function applies a cut to select interactions based on
      * the fate of the leading pion. The pion group code classifies what happened
