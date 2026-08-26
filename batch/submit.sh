@@ -97,15 +97,20 @@ echo "Found $(echo "$full_paths" | wc -l) input files to copy."
 # Copy input files
 mkdir -p data
 for p in $full_paths; do
-    echo "Copying input file: $p"
     b=$(basename "$p")
-    rm -f "data/$b"   # remove any partial file so retries don't fail with "File exists"
-    if ! ifdh cp --cp_maxretries=5 --web_timeout=300 "$p" data/; then
-        echo "FATAL: ifdh cp failed for $p after retries" >&2
-        exit 1
-    fi
-    if [ ! -s "data/$b" ]; then
-        echo "FATAL: data/$b is empty after copy" >&2
+    success=0
+    for attempt in 1 2 3 4 5; do
+        rm -f "data/$b"
+        if ifdh cp --cp_maxretries=0 --web_timeout=300 "$p" data/ && [ -s "data/$b" ]; then
+            success=1
+            break
+        fi
+        echo "Copy attempt $attempt failed for $p" >&2
+        sleep $((attempt * 15))
+    done
+    if [ "$success" -ne 1 ]; then
+        rm -f "data/$b"
+        echo "FATAL: ifdh cp failed for $p after 5 attempts" >&2
         exit 1
     fi
 done
