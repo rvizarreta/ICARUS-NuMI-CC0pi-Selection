@@ -104,7 +104,7 @@ name = "nominal"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root" # 75060 root files
 #path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/*.root" # 74150 root files = 7.095833928884415e+20 POT After correction, Before it reports: 7.690646e+20
-path = "larcv_mc_20250721_210223_831560-47486f9f-81f6-44f0-beea-516f8e06502e.flat.root"
+path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/larcv_mc_20250721_210223_831560-47486f9f-81f6-44f0-beea-516f8e06502e.flat.root"
 ismc = true
 disable = false
 #
