@@ -98,7 +98,15 @@ echo "Found $(echo "$full_paths" | wc -l) input files to copy."
 mkdir -p data
 for p in $full_paths; do
     echo "Copying input file: $p"
-    ifdh cp --cp_maxretries=0 --web_timeout=100 "$p" data/
+    if ! ifdh cp --cp_maxretries=3 --web_timeout=300 "$p" data/; then
+        echo "FATAL: ifdh cp failed for $p after retries" >&2
+        exit 1
+    fi
+    b=$(basename "$p")
+    if [ ! -s "data/$b" ]; then
+        echo "FATAL: data/$b is empty after copy" >&2
+        exit 1
+    fi
 done
 ls -lrth data/
 
@@ -119,11 +127,19 @@ ls -lrth data/
 
 # Run medulla (selection)
 ./selection/medulla job_config.toml
+medulla_status=$?
+if [ $medulla_status -ne 0 ]; then
+    echo "FATAL: medulla failed with exit code $medulla_status" >&2
+    exit $medulla_status
+fi
 ls -lrth
 
 # Copy output file to the output directory
 printf -v RAWNAME "output_jobid%04d.root" "$JOBID"
-ifdh cp --cp_maxretries=0 --web_timeout=100 output.root $PROJECT/output/$RAWNAME
+if ! ifdh cp --cp_maxretries=3 --web_timeout=300 output.root $PROJECT/output/$RAWNAME; then
+    echo "FATAL: failed to copy output.root to $PROJECT/output/$RAWNAME" >&2
+    exit 1
+fi
 
 # Run medulla (systematics)
 ./systematics/run_systematics systematics.toml
@@ -131,4 +147,7 @@ ls -lrth
 
 # Copy output file to the output directory
 printf -v SYSTNAME "output_systematics_jobid%04d.root" "$JOBID"
-ifdh cp --cp_maxretries=0 --web_timeout=100 output_sys.root $PROJECT/output/$SYSTNAME
+if ! ifdh cp --cp_maxretries=3 --web_timeout=300 output_sys.root $PROJECT/output/$SYSTNAME; then
+    echo "FATAL: failed to copy output_sys.root to $PROJECT/output/$SYSTNAME" >&2
+    exit 1
+fi
