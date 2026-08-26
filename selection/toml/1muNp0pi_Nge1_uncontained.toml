@@ -102,8 +102,8 @@ cuts = [
 name = "nominal"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_07.root"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root"
-path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/*.root"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root" # 75060 root files
+path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/larcv_mc_20250721_205747_468329-88a9b48a-0d1e-4c3a-a4a4-1d8e9c3f2a26.flat.root" # 74150 root files = 7.095833928884415e+20 POT After correction, Before it reports: 7.690646e+20
 ismc = true
 disable = false
 
