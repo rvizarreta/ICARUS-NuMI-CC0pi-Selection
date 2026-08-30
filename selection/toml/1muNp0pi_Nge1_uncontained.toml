@@ -105,118 +105,119 @@ name = "nominal"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root" # 75060 root files
 #path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/*.root" # 74150 root files = 7.095833928884415e+20 POT After correction, Before it reports: 7.690646e+20
 #path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/larcv_mc_20250721_210223_831560-47486f9f-81f6-44f0-beea-516f8e06502e.flat.root"
-path = "/pnfs/icarus/persistent/users/rvizarr/spine/NuMI_CV_ext_wPCAsyst/*.root" # Renzo's CV ext sample. 7.930630e+20 POT
+#path = "/pnfs/icarus/persistent/users/rvizarr/spine/NuMI_CV_ext_wPCAsyst/*.root" # Renzo's CV ext sample. 7.930630e+20 POT
+path = "/pnfs/icarus/persistent/users/rvizarr/spine/NuMI_CV_ext_wPCAsyst/chunk_0710_reweighted.caf.root"
 ismc = true
 disable = false
 
-[[sample]]
-name = "rock"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/FHCv09_89_01_02p02_Rock_muons/*.root"
-ismc = true
-disable = false
-
-[[sample]]
-name = "cv"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/CV/*.root"
-ismc = true
-disable = false
-
-# INCLUDE DATA
-[[sample]]
-name = "onbeam"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_data_flat_cafs_2/*.root"
-ismc = false
-disable = false
-
-[[sample]]
-name = "offbeam"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/offbeam/*.root"
-ismc = false
-disable = false
-#
 #[[sample]]
-#name = "var00"
-#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Null/*.root"
+#name = "rock"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/FHCv09_89_01_02p02_Rock_muons/*.root"
 #ismc = true
 #disable = false
 #
-[[sample]]
-name = "var01p"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Gain/*.root"
-ismc = true
-disable = false
-#
-[[sample]]
-name = "var01m"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Gain/*.root"
-ismc = true
-disable = false
-#
-[[sample]]
-name = "var02p"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Coh/*.root"
-ismc = true
-disable = false
-#
-[[sample]]
-name = "var02m"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Coh/*.root"
-ismc = true
-disable = false
+#[[sample]]
+#name = "cv"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/CV/*.root"
+#ismc = true
+#disable = false
 
-[[sample]]
-name = "var03p"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Int_high/*.root"
-ismc = true
-disable = false
-
-[[sample]]
-name = "var03m"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Int_low/*.root"
-ismc = true
-disable = false
-
-[[sample]]
-name = "var04p"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Lifetime/*.root"
-ismc = true
-disable = false
+## INCLUDE DATA
+#[[sample]]
+#name = "onbeam"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_data_flat_cafs_2/*.root"
+#ismc = false
+#disable = false
 #
-[[sample]]
-name = "var04m"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Lifetime/*.root"
-ismc = true
-disable = false
+#[[sample]]
+#name = "offbeam"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/offbeam/*.root"
+#ismc = false
+#disable = false
+##
+##[[sample]]
+##name = "var00"
+##path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Null/*.root"
+##ismc = true
+##disable = false
+##
+#[[sample]]
+#name = "var01p"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Gain/*.root"
+#ismc = true
+#disable = false
+##
+#[[sample]]
+#name = "var01m"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Gain/*.root"
+#ismc = true
+#disable = false
+##
+#[[sample]]
+#name = "var02p"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Coh/*.root"
+#ismc = true
+#disable = false
+##
+#[[sample]]
+#name = "var02m"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Coh/*.root"
+#ismc = true
+#disable = false
 #
-[[sample]]
-name = "var05"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Scint_Var/*.root"
-ismc = true
-disable = false
+#[[sample]]
+#name = "var03p"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Int_high/*.root"
+#ismc = true
+#disable = false
 #
-[[sample]]
-name = "var06"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/WireGap/*.root"
-ismc = true
-disable = false
-
-[[sample]]
-name = "var07"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/YZ_unif/*.root"
-ismc = true
-disable = false
-
-[[sample]]
-name = "var08"
-path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Recomb/*.root"
-ismc = true
-disable = false
-
-[[sample]]
-name = "var09"
-path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Cath_bend/*.root"
-ismc = true
-disable = false
+#[[sample]]
+#name = "var03m"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Int_low/*.root"
+#ismc = true
+#disable = false
+#
+#[[sample]]
+#name = "var04p"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/High_Lifetime/*.root"
+#ismc = true
+#disable = false
+##
+#[[sample]]
+#name = "var04m"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Low_Lifetime/*.root"
+#ismc = true
+#disable = false
+##
+#[[sample]]
+#name = "var05"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Scint_Var/*.root"
+#ismc = true
+#disable = false
+##
+#[[sample]]
+#name = "var06"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/WireGap/*.root"
+#ismc = true
+#disable = false
+#
+#[[sample]]
+#name = "var07"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/YZ_unif/*.root"
+#ismc = true
+#disable = false
+#
+#[[sample]]
+#name = "var08"
+#path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_Nu_det_sys_flat_cafs/Recomb/*.root"
+#ismc = true
+#disable = false
+#
+#[[sample]]
+#name = "var09"
+#path = "/pnfs/icarus/persistent/users/spine/NuMI/Nu_det_sys/Cath_bend/*.root"
+#ismc = true
+#disable = false
 
 # PRE-SELECTION TREE
 [[tree]]
