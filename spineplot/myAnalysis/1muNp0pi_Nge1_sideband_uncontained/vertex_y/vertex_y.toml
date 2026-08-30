@@ -1,5 +1,6 @@
 [[this_includes]]
-file = '../../../configurations/common/vertex_y.toml'
+#file = '../../../configurations/common/vertex_y.toml'
+file = '../../../configurations/common/vertex_y_sideband.toml'
 
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'

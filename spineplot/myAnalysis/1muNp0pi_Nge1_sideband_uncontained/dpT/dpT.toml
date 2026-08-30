@@ -1,6 +1,7 @@
 [[this_includes]]
 #file = '../configurations/common/variables_uncontained.toml'
-file = '../../../configurations/common/dpT.toml'
+#file = '../../../configurations/common/dpT.toml'
+file = '../../../configurations/common/dpT_sideband.toml'
 
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
@@ -38,7 +39,7 @@ override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+#systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
 [samples.mc.precompute]
 abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
@@ -139,7 +140,7 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'dpT_reco_contained'
@@ -150,7 +151,7 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_contained'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'dpT_reco_exiting'
@@ -161,7 +162,7 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_exiting'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads

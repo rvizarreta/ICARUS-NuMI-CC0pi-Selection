@@ -1,5 +1,6 @@
 [[this_includes]]
-file = '../../../configurations/common/leading_muon_momentum.toml'
+#file = '../../../configurations/common/leading_muon_momentum.toml'
+file = '../../../configurations/common/leading_muon_momentum_sideband.toml'
 
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
@@ -134,7 +135,7 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
@@ -148,7 +149,7 @@ figsize = [5, 5]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
 
 # MC-only, contained muons.
 [[figure]]
@@ -160,7 +161,7 @@ figsize = [5, 5]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_contained'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
 
 # MC-only, exiting muons.
 [[figure]]
@@ -172,7 +173,7 @@ figsize = [5, 5]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_exiting'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
 [[figure]]
 name = 'leading_muon_momentum_reco_contained'
 type = 'SimpleFigure'
@@ -182,7 +183,7 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_contained'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_muon_momentum_reco_exiting'
@@ -193,7 +194,7 @@ figsize = [5, 6]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_momentum_exiting'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # --- Fractional residual ---
 

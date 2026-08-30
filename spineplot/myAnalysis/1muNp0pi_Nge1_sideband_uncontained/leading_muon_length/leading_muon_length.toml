@@ -1,5 +1,6 @@
 [[this_includes]]
-file = '../../../configurations/common/leading_muon_length.toml'
+#file = '../../../configurations/common/leading_muon_length.toml'
+file = '../../../configurations/common/leading_muon_length_sideband.toml'
 
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
