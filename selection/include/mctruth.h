@@ -691,8 +691,8 @@ namespace mctruth
     }
     REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, dpT_lp_genie, dpT_lp_genie);
 
-     /**
-     * @brief Cut for the true "single pion production" (SPP) topology.
+    /**
+     * @brief Variable for the true "single pion production" (SPP) tag.
      * @details Replicates Howard's IsSPP definition (sbnana NuMIXSecSysts.cxx,
      * jedori0228 feature branch) on the primary final-state particle list:
      * exactly one exiting pi+, no other mesons (pi-, pi0, K+-, K*+-, K0,
@@ -701,23 +701,25 @@ namespace mctruth
      * backgrounds a CC0pi selection when the pion is missed, below
      * threshold, or absorbed after this primary-level tag is formed.
      * Restricted to obj.prim entries with start_process==0 (primary,
-     * post-FSI), matching Howard's definition -- NOTE: this repo's other
-     * *_srtruth cuts (no_charged_pions_srtruth, no_photons_srtruth) do not
-     * apply this filter; confirm whether obj.prim is already primary-only
-     * here before assuming the two disagree.
-     * @param obj the SRTrueInteraction to apply the cut on.
-     * @return true if the interaction is true single-pion-production.
+     * post-FSI), matching both Howard's definition and this file's own
+     * no_extra_particles_minerva(). Registered as a Var (not a Cut) so it
+     * can be pulled into a branch with type="mctruth": RegistrationScope::
+     * MCTruth uses different registry prefixes for REGISTER_CUT_SCOPE
+     * ("mctruth_") vs REGISTER_VAR_SCOPE ("true_"), and branch entries
+     * resolve through the latter, same path as generator_q2.
+     * @param obj the SRTrueInteraction to apply the variable on.
+     * @return 1.0 if the interaction is true single-pion-production, 0.0 otherwise.
      */
     template<typename T>
-    bool is_spp_srtruth(const T & obj)
+    double is_spp_srtruth(const T & obj)
     {
         int n_piplus(0), n_mesons(0), n_hard_photons(0);
         for(const auto & p : obj.prim)
         {
-            if(p.start_process != 0) continue; // primary (post-FSI) only, matches Howard
+            if(p.start_process != 0) continue; // primary (post-FSI) only
 
             int pdg = p.pdg;
-            double energy_MeV = 1000. * p.genE;
+            double energy_MeV = 1000. * p.genE; // generation-point energy, GeV->MeV
 
             if(pdg == 22 && energy_MeV > 10.0)
                 ++n_hard_photons;
@@ -749,21 +751,21 @@ namespace mctruth
 
         return true;
     }
-    REGISTER_CUT_SCOPE(RegistrationScope::MCTruth, is_spp_srtruth, is_spp_srtruth);
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, is_spp_srtruth, is_spp_srtruth);
 
     /**
      * @brief Variable for the kinetic energy of the SPP-tagged pi+.
-     * @details Only meaningful when is_spp_srtruth(obj) is true, in which
-     * case exactly one primary pi+ exists and this returns its kinetic
-     * energy in GeV (genE - m_pi+). Returns a placeholder otherwise, same
-     * convention as generator_q2().
+     * @details Only meaningful when is_spp_srtruth(obj)==1, in which case
+     * exactly one primary pi+ exists and this returns its kinetic energy in
+     * GeV (genE - m_pi+). Returns a placeholder otherwise, same convention
+     * as generator_q2().
      * @param obj the SRTrueInteraction to apply the variable on.
      * @return the SPP pi+ kinetic energy in GeV, or a placeholder.
      */
     template<typename T>
     double spp_pion_ke_srtruth(const T & obj)
     {
-        if(!is_spp_srtruth(obj)) return PLACEHOLDERVALUE;
+        if(is_spp_srtruth(obj) < 0.5) return PLACEHOLDERVALUE;
         for(const auto & p : obj.prim)
         {
             if(p.start_process != 0) continue;
@@ -847,7 +849,7 @@ namespace mctruth
     template<typename T>
     double spp_pi_cv_correction(const T & obj)
     {
-        if(!is_spp_srtruth(obj)) return 1.0;
+        if(is_spp_srtruth(obj) < 0.5) return 1.0;
         double q2 = generator_q2(obj);
         double tpi = spp_pion_ke_srtruth(obj);
         if(q2 == PLACEHOLDERVALUE || tpi == PLACEHOLDERVALUE) return 1.0;
@@ -864,7 +866,11 @@ namespace mctruth
      * CV correction (returns to uncorrected GENIE) and sigma=-1 moves the
      * same distance further corrected. This scalar is what a downstream
      * macro (mirroring AddPCAZExpWeightsToGundamInput.C) tabulates into the
-     * per-event TGraph/TSpline3 branch GUNDAM's Spline dial reads.
+     * per-event TGraph/TSpline3 branch GUNDAM's Spline dial reads --
+     * remember to clamp/set minDialResponse:0 there, since this value is
+     * unbounded and can drive weight(sigma) negative within +-1sigma for
+     * low-CVCorr events (verified: Q2RW=1.048, TpiRW=0.323 -> CVCorr=0.339,
+     * oneSigUnc=1.951, weight(-1)=-0.951).
      * @param obj the SRTrueInteraction to apply the variable on.
      * @return the one-sigma uncertainty size; 0 for non-SPP events.
      */
