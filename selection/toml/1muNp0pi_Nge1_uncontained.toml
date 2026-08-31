@@ -104,9 +104,9 @@ name = "nominal"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_0*.root"
 #path = "/pnfs/icarus/persistent/users/dcarber/spine/NuMI_CV_ext/v09_89_01_02p02_2/*.root" # 75060 root files
 #path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/*.root" # 74150 root files = 7.095833928884415e+20 POT After correction, Before it reports: 7.690646e+20
-#path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/larcv_mc_20250721_210223_831560-47486f9f-81f6-44f0-beea-516f8e06502e.flat.root"
+path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/larcv_mc_20250721_210223_831560-47486f9f-81f6-44f0-beea-516f8e06502e.flat.root"
 #path = "/pnfs/icarus/persistent/users/rvizarr/spine/NuMI_CV_ext_wPCAsyst/*.root" # Renzo's CV ext sample. 7.930630e+20 POT
-path = "/pnfs/icarus/persistent/users/rvizarr/spine/NuMI_CV_ext_wPCAsyst/chunk_0710_reweighted.caf.root"
+#path = "/pnfs/icarus/persistent/users/rvizarr/spine/NuMI_CV_ext_wPCAsyst/chunk_0710_reweighted.caf.root"
 ismc = true
 disable = false
 
@@ -379,6 +379,10 @@ branch = [
     { name = "generator_q2",            type = "mctruth" },
     { name = "low_q2_weight",           type = "true"    },
     { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "is_spp_srtruth",          type = "mctruth" },
+    { name = "spp_pion_ke_srtruth",     type = "mctruth" },
+    { name = "spp_pi_cv_correction",    type = "mctruth" },
+    { name = "spp_pi_one_sigma_unc",    type = "mctruth" },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
@@ -505,6 +509,10 @@ branch = [
     { name = "generator_q2",           type = "mctruth" },
     { name = "low_q2_weight",          type = "true"    },
     { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "is_spp_srtruth",          type = "mctruth" },
+    { name = "spp_pion_ke_srtruth",     type = "mctruth" },
+    { name = "spp_pi_cv_correction",    type = "mctruth" },
+    { name = "spp_pi_one_sigma_unc",    type = "mctruth" },
 
     # Interaction-level selection variables
     { name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
@@ -641,6 +649,10 @@ branch = [
     { name = "low_q2_weight",           type = "true"    },
     { name = "generator_q2",            type = "mctruth" },
     { name = "flash_cut",               type = "reco", parameters = [ "@flash_low_t", "@flash_high_t" ] },
+    { name = "is_spp_srtruth",          type = "mctruth" },
+    { name = "spp_pion_ke_srtruth",     type = "mctruth" },
+    { name = "spp_pi_cv_correction",    type = "mctruth" },
+    { name = "spp_pi_one_sigma_unc",    type = "mctruth" },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },

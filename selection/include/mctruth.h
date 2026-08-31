@@ -691,5 +691,191 @@ namespace mctruth
     }
     REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, dpT_lp_genie, dpT_lp_genie);
 
+     /**
+     * @brief Cut for the true "single pion production" (SPP) topology.
+     * @details Replicates Howard's IsSPP definition (sbnana NuMIXSecSysts.cxx,
+     * jedori0228 feature branch) on the primary final-state particle list:
+     * exactly one exiting pi+, no other mesons (pi-, pi0, K+-, K*+-, K0,
+     * KS0/KL0, K*0, eta, eta'), no photon above 10 MeV, and a nuclear
+     * (non-hydrogen) target. This is the true CC1pi+ topology that
+     * backgrounds a CC0pi selection when the pion is missed, below
+     * threshold, or absorbed after this primary-level tag is formed.
+     * Restricted to obj.prim entries with start_process==0 (primary,
+     * post-FSI), matching Howard's definition -- NOTE: this repo's other
+     * *_srtruth cuts (no_charged_pions_srtruth, no_photons_srtruth) do not
+     * apply this filter; confirm whether obj.prim is already primary-only
+     * here before assuming the two disagree.
+     * @param obj the SRTrueInteraction to apply the cut on.
+     * @return true if the interaction is true single-pion-production.
+     */
+    template<typename T>
+    bool is_spp_srtruth(const T & obj)
+    {
+        int n_piplus(0), n_mesons(0), n_hard_photons(0);
+        for(const auto & p : obj.prim)
+        {
+            if(p.start_process != 0) continue; // primary (post-FSI) only, matches Howard
+
+            int pdg = p.pdg;
+            double energy_MeV = 1000. * p.genE;
+
+            if(pdg == 22 && energy_MeV > 10.0)
+                ++n_hard_photons;
+
+            bool is_meson = (abs(pdg) == 211  || // pi+-
+                              pdg == 111       || // pi0
+                              abs(pdg) == 321  || // K+-
+                              abs(pdg) == 323  || // K*+-
+                              pdg == 130       || // KL0
+                              pdg == 310       || // KS0
+                              pdg == 311       || // K0
+                              pdg == 313       || // K*0
+                              abs(pdg) == 221  || // eta
+                              abs(pdg) == 331);   // eta'(958)
+            if(is_meson)
+                ++n_mesons;
+
+            if(pdg == 211)
+                ++n_piplus;
+        }
+
+        if(n_piplus != 1 || n_mesons != 1) return false;
+        if(n_hard_photons != 0) return false;
+
+        // Target A > 1 (non-hydrogen); a no-op for an all-argon sample, kept
+        // for fidelity to Howard's definition.
+        int target_A = (abs(obj.targetPDG) % 10000) / 10;
+        if(target_A == 1) return false;
+
+        return true;
+    }
+    REGISTER_CUT_SCOPE(RegistrationScope::MCTruth, is_spp_srtruth, is_spp_srtruth);
+
+    /**
+     * @brief Variable for the kinetic energy of the SPP-tagged pi+.
+     * @details Only meaningful when is_spp_srtruth(obj) is true, in which
+     * case exactly one primary pi+ exists and this returns its kinetic
+     * energy in GeV (genE - m_pi+). Returns a placeholder otherwise, same
+     * convention as generator_q2().
+     * @param obj the SRTrueInteraction to apply the variable on.
+     * @return the SPP pi+ kinetic energy in GeV, or a placeholder.
+     */
+    template<typename T>
+    double spp_pion_ke_srtruth(const T & obj)
+    {
+        if(!is_spp_srtruth(obj)) return PLACEHOLDERVALUE;
+        for(const auto & p : obj.prim)
+        {
+            if(p.start_process != 0) continue;
+            if(p.pdg == 211)
+                return p.genE - (PION_MASS / 1000.); // GeV
+        }
+        return PLACEHOLDERVALUE; // should not happen if is_spp_srtruth is true
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, spp_pion_ke_srtruth, spp_pion_ke_srtruth);
+
+    /**
+     * @brief Q2 bin-by-bin reweight table for SPP events (MINERvA CH data).
+     * @details Verbatim port of Howard's GetSPPQ2Reweight (sbnana
+     * NuMIXSecSysts.cxx L94-118), external/data-derived and independent of
+     * MC production. Not registered as a Var directly -- used as a building
+     * block by spp_pi_cv_correction() and spp_pi_one_sigma_unc().
+     * @param Q2_GeV2 true four-momentum transfer squared, in GeV^2.
+     * @return the bin-by-bin correction factor.
+     */
+    inline double spp_q2_reweight_table(double Q2_GeV2)
+    {
+        double x = Q2_GeV2;
+        if(x >= 3.0) x = 2.5;
+
+        if(x < 0.025)                    return 1.253255;
+        else if(x < 0.050)               return 1.589738;
+        else if(x < 0.100)               return 1.733869;
+        else if(x < 0.200)               return 1.651728;
+        else if(x < 0.300)               return 1.659705;
+        else if(x < 0.400)               return 1.584229;
+        else if(x < 0.500)               return 1.703793;
+        else if(x < 0.700)               return 1.475510;
+        else if(x < 1.000)               return 1.456727;
+        else if(x < 1.300)               return 1.252215;
+        else if(x < 2.000)               return 1.048199;
+        else                              return 1.650489; // covers [2.0,3.0) and the x=2.5 clamp above
+    }
+
+    /**
+     * @brief Tpi reweight table for SPP events (MINERvA "fitted" result).
+     * @details Verbatim port of Howard's GetSPPTpiMINERvAFittedReweight
+     * (sbnana NuMIXSecSysts.cxx L241-265): a Landau fit below 225 MeV, a
+     * binned template above. Requires TMath::Landau (ROOT). Not registered
+     * as a Var directly -- see spp_pi_cv_correction()/spp_pi_one_sigma_unc().
+     * @param Tpi_GeV true pi+ kinetic energy, in GeV.
+     * @return the Tpi reweight factor.
+     */
+    inline double spp_tpi_reweight_table(double Tpi_GeV)
+    {
+        static const double landau_cutoff = 0.225;
+
+        if(Tpi_GeV < landau_cutoff)
+        {
+            static const double norm = 6.70797696;
+            static const double mpv  = 0.12235454;
+            static const double width= 0.05731087;
+            return norm * TMath::Landau(Tpi_GeV, mpv, width);
+        }
+        else if(Tpi_GeV < 0.250) return 0.755932;
+        else if(Tpi_GeV < 0.275) return 0.638574;
+        else if(Tpi_GeV < 0.300) return 0.493987;
+        else if(Tpi_GeV < 0.325) return 0.391947;
+        else if(Tpi_GeV < 0.350) return 0.323265;
+        else if(Tpi_GeV < 0.400) return 0.452765;
+        else if(Tpi_GeV < 0.500) return 0.594541;
+        else if(Tpi_GeV < 0.700) return 0.768459;
+        else if(Tpi_GeV < 1.000) return 0.658024;
+        else                      return 0.873622; // covers [1.0, 2.0) and beyond
+    }
+
+    /**
+     * @brief Combined Q2xTpi central-value correction for SPP background events.
+     * @details Q2 reweight times Tpi reweight, applied only to is_spp_srtruth
+     * events; 1.0 otherwise. Intended to be baked into the nominal SPP
+     * background weight, mirroring how the PPFX flux CV correction is
+     * already applied in this analysis (see main.pdf Sec 7.3.2) -- a
+     * two-layer CV-correction-plus-systematic-dial pattern, not a new one.
+     * @param obj the SRTrueInteraction to apply the variable on.
+     * @return the CV correction factor.
+     */
+    template<typename T>
+    double spp_pi_cv_correction(const T & obj)
+    {
+        if(!is_spp_srtruth(obj)) return 1.0;
+        double q2 = generator_q2(obj);
+        double tpi = spp_pion_ke_srtruth(obj);
+        if(q2 == PLACEHOLDERVALUE || tpi == PLACEHOLDERVALUE) return 1.0;
+        return spp_q2_reweight_table(q2) * spp_tpi_reweight_table(tpi);
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, spp_pi_cv_correction, spp_pi_cv_correction);
+
+    /**
+     * @brief One-sigma uncertainty size for the SPP Q2xTpi systematic dial.
+     * @details oneSigUnc = 1/CVCorr - 1, i.e. the size of the CV correction
+     * itself, per Howard's convention (sbnana NuMIXSecSysts.cxx
+     * NuMIXSecPiSyst::Shift). The full response is linear in sigma:
+     * weight(sigma) = 1 + sigma * oneSigUnc, so sigma=+1 exactly undoes the
+     * CV correction (returns to uncorrected GENIE) and sigma=-1 moves the
+     * same distance further corrected. This scalar is what a downstream
+     * macro (mirroring AddPCAZExpWeightsToGundamInput.C) tabulates into the
+     * per-event TGraph/TSpline3 branch GUNDAM's Spline dial reads.
+     * @param obj the SRTrueInteraction to apply the variable on.
+     * @return the one-sigma uncertainty size; 0 for non-SPP events.
+     */
+    template<typename T>
+    double spp_pi_one_sigma_unc(const T & obj)
+    {
+        double cv_corr = spp_pi_cv_correction(obj);
+        if(cv_corr <= 0.0) return 0.0; // guard, should not happen
+        return (1.0 / cv_corr) - 1.0;
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, spp_pi_one_sigma_unc, spp_pi_one_sigma_unc);
+
 } // namespace mctruth
 #endif
