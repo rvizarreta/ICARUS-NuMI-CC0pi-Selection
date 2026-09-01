@@ -30,12 +30,10 @@ int main(int argc, char * argv[])
     input_filename = config.get_string_field("output.path");
   TFile *input = TFile::Open(input_filename.c_str(), "READ");
 
-  /// Syst trees
-  /// To-do: Automate this
-  TTree* multisigma_tree = (TTree*)input->Get("events/full/selected_multisigmaTree");
-  TTree* variation_tree = (TTree*)input->Get("events/full/selected_variationTree");
-  //TTree* multisim_tree = (TTree*)input->Get("events/full/selected_multisimTree"); // TEST...delete if anything breaks
-  TTree* NuMIflux_tree = (TTree*)input->Get("events/full/selected_NuMIfluxsimTree");
+  /// Syst trees are fetched per-table inside the loop below, from each
+  /// table's OWN origin. They must not be hoisted back out to here: a single
+  /// hardcoded fetch pins every output table to one origin's systematic
+  /// trees. See the comment at the fetch site for what that costs.
 
   /////////////////////////////////////////////////////////////
   /// Output
@@ -68,6 +66,61 @@ int main(int argc, char * argv[])
       copy_no_syst(table, out_tree, in_tree);
       if(table.get_bool_field("gundam_store_syst") == true)
         {
+          /// Syst trees, fetched per-table from THIS table's own origin.
+          ///
+          /// Every origin carries its own set of systematic trees, named
+          /// "<origin>_<type>Tree", each with exactly as many entries as the
+          /// origin tree itself (selected 98983, sideband 34420, signal
+          /// 113768, each matching its own _multisigmaTree, _variationTree
+          /// and _NuMIfluxsimTree). copy_with_syst pairs row i of the syst
+          /// tree with row i of the output tree, so the syst tree must come
+          /// from the same origin as in_tree.
+          ///
+          /// These used to be fetched once above the loop, hardcoded to
+          /// "events/full/selected_*", and reused for every table. That is
+          /// correct for `selected` only by coincidence; for `sideband` and
+          /// `signal` it put one event's kinematics and a different event's
+          /// dial response on the same output row, and ran the entry loop
+          /// over the wrong length. It was silent because copy_with_syst
+          /// writes via TBranch::Fill(), which advances only that branch's
+          /// entry count and leaves the tree's own count alone -- so the
+          /// tree still reported the right number of entries.
+          std::string origin = table.get_string_field("origin");
+          TTree* multisigma_tree = (TTree*)input->Get((origin + "_multisigmaTree").c_str());
+          TTree* variation_tree  = (TTree*)input->Get((origin + "_variationTree").c_str());
+          //TTree* multisim_tree = (TTree*)input->Get((origin + "_multisimTree").c_str()); // TEST...delete if anything breaks
+          TTree* NuMIflux_tree   = (TTree*)input->Get((origin + "_NuMIfluxsimTree").c_str());
+
+          if(multisigma_tree == nullptr || variation_tree == nullptr || NuMIflux_tree == nullptr)
+            {
+              std::cerr << "FATAL: missing systematic tree(s) for origin '" << origin << "': "
+                        << (multisigma_tree == nullptr ? "_multisigmaTree " : "")
+                        << (variation_tree  == nullptr ? "_variationTree "  : "")
+                        << (NuMIflux_tree   == nullptr ? "_NuMIfluxsimTree" : "")
+                        << " -- refusing to write splines for table '"
+                        << table.get_string_field("name") << "'. Output is incomplete."
+                        << std::endl;
+              return 1;
+            }
+
+          /// Row i of the syst tree must be the same event as row i of the
+          /// origin tree, so their lengths have to agree. This is the check
+          /// that turns the failure above into an immediate, readable error
+          /// instead of a silently mispaired output file.
+          if(multisigma_tree->GetEntries() != in_tree->GetEntries() ||
+             variation_tree->GetEntries()  != in_tree->GetEntries() ||
+             NuMIflux_tree->GetEntries()   != in_tree->GetEntries())
+            {
+              std::cerr << "FATAL: systematic tree length mismatch for origin '" << origin
+                        << "': origin=" << in_tree->GetEntries()
+                        << " multisigma=" << multisigma_tree->GetEntries()
+                        << " variation=" << variation_tree->GetEntries()
+                        << " NuMIfluxsim=" << NuMIflux_tree->GetEntries()
+                        << ". Rows would not correspond to the same events."
+                        << std::endl;
+              return 1;
+            }
+
           copy_with_syst(config, table, out_tree, in_tree, multisigma_tree, "multisigma");
           std::cout<<"10"<<std::endl;
           copy_with_syst(config, table, out_tree, in_tree, variation_tree, "variation");
