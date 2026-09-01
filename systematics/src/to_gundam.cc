@@ -343,14 +343,24 @@ void copy_with_syst(cfg::ConfigurationTable config, cfg::ConfigurationTable tabl
 	      weights.push_back(val);
           }
 
-        // weight = 1 for nsigma = 0
+        // weight = 1 for nsigma = 0 -- only if the raw table doesn't already
+        // have a nominal point. ZExpPCA dials do; most GENIEReWeight
+        // multisigma dials don't. A duplicate x=0 point breaks the spline
+        // for the ones that do.
         if(!strcmp(syst_type.c_str(), "multisigma"))
           {
-            nsigmas.push_back(0);
-            if(table.get_bool_field("is_nu") == false)
-              weights.push_back(-5);
-            else
-              weights.push_back(1);
+            bool has_nominal = false;
+            for(Float_t val : nsigmas)
+              if(val > -1e-6 && val < 1e-6) { has_nominal = true; break; }
+
+            if(!has_nominal)
+              {
+                nsigmas.push_back(0);
+                if(table.get_bool_field("is_nu") == false)
+                  weights.push_back(-5);
+                else
+                  weights.push_back(1);
+              }
           }
     }
 
