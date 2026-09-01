@@ -62,24 +62,24 @@ path = '.'
 
 # --- CCQE Dials ---
 [[systematic_recipe]]
-name = 'xsec_ZExpA1CCQE'
-label = 'ZExpA1CCQE'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE\b'
+name = 'xsec_ZExpPCAB1CCQE'
+label = 'ZExpPCAB1CCQE'
+pattern = '\bZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1\b'
 
 [[systematic_recipe]]
-name = 'xsec_ZExpA2CCQE'
-label = 'ZExpA2CCQE'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE\b'
+name = 'xsec_ZExpPCAB2CCQE'
+label = 'ZExpPCAB2CCQE'
+pattern = '\bZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2\b'
 
 [[systematic_recipe]]
-name = 'xsec_ZExpA3CCQE'
-label = 'ZExpA3CCQE'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE\b'
+name = 'xsec_ZExpPCAB3CCQE'
+label = 'ZExpPCAB3CCQE'
+pattern = '\bZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3\b'
 
 [[systematic_recipe]]
-name = 'xsec_ZExpA4CCQE'
-label = 'ZExpA4CCQE'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE\b'
+name = 'xsec_ZExpPCAB4CCQE'
+label = 'ZExpPCAB4CCQE'
+pattern = '\bZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4\b'
 
 [[systematic_recipe]]
 name = 'xsec_RPA_CCQE'
@@ -355,7 +355,7 @@ variable = "reco_dpT"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [
-    "xsec_ZExpA1CCQE", "xsec_ZExpA2CCQE", "xsec_ZExpA3CCQE", "xsec_ZExpA4CCQE",
+    "xsec_ZExpPCAB1CCQE", "xsec_ZExpPCAB2CCQE", "xsec_ZExpPCAB3CCQE", "xsec_ZExpPCAB4CCQE",
     "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
@@ -384,7 +384,7 @@ variable = "reco_dpT_contained"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [
-    "xsec_ZExpA1CCQE", "xsec_ZExpA2CCQE", "xsec_ZExpA3CCQE", "xsec_ZExpA4CCQE",
+    "xsec_ZExpPCAB1CCQE", "xsec_ZExpPCAB2CCQE", "xsec_ZExpPCAB3CCQE", "xsec_ZExpPCAB4CCQE",
     "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
@@ -413,7 +413,7 @@ variable = "reco_dpT_exiting"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
 systematic_names = [
-    "xsec_ZExpA1CCQE", "xsec_ZExpA2CCQE", "xsec_ZExpA3CCQE", "xsec_ZExpA4CCQE",
+    "xsec_ZExpPCAB1CCQE", "xsec_ZExpPCAB2CCQE", "xsec_ZExpPCAB3CCQE", "xsec_ZExpPCAB4CCQE",
     "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
