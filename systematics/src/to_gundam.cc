@@ -3,11 +3,29 @@
 #include <TTreeReaderValue.h>
 #include <TGraph.h>
 #include <vector>
+#include <cmath>
 #include "configuration.h"
 #include "trees.h"
 
 void copy_no_syst(cfg::ConfigurationTable table, TTree * out_tree, TTree * in_tree);
 void copy_with_syst(cfg::ConfigurationTable config, cfg::ConfigurationTable table, TTree * out_tree, TTree * in_tree, TTree* syst_in_tree, std::string syst_type);
+void copy_single_weight_syst(cfg::ConfigurationTable config, cfg::ConfigurationTable table, TTree * out_tree, TTree * syst_in_tree, Long64_t n_entries);
+
+// Some "multisim"-type GENIEReWeight dials have exactly one meaningful
+// universe (they don't vary the interaction model event-by-event the way
+// the other multisim dials do), so rather than storing a full TGraph
+// response for GUNDAM to interpolate, to_gundam.cc exports just that one
+// weight (universe 0) as a flat double branch. This mirrors the convention
+// established in Kiyoung's medulla fork (systematics/src/to_gundam.cc):
+// https://github.com/kyjung123/medulla/blob/f62fefff00b3c2e80fc9a623afa9f7f63a6d8305/systematics/src/to_gundam.cc#L218-L227
+// Both dials are already registered as "multisim" [[sys]] entries in
+// NuMI_numu_gundam.toml (index 128/129) -- this map is what tells
+// copy_single_weight_syst to give them the single-weight treatment instead
+// of the usual TGraph-per-event export.
+static const std::map<std::string, std::string> single_weight_names = {
+  {"GENIEReWeight_SBNNuSyst_LQCDZExpFit_correction_ZExpAVariationResponse",    "LQCDZExpFitCorrection_weight"},
+  {"GENIEReWeight_SBNNuSyst_MINERvAZExpFit_correction_ZExpAVariationResponse", "MINERvAZExpFitCorrection_weight"}
+};
 
 int main(int argc, char * argv[])
 {
@@ -127,6 +145,36 @@ int main(int argc, char * argv[])
           std::cout<<"11"<<std::endl;
 	  copy_with_syst(config, table, out_tree, in_tree, NuMIflux_tree, "NuMIfluxsim");
           std::cout<<"12"<<std::endl;
+
+          /// LQCD/MINERvA Z-expansion axial form factor correction dials
+          /// (single_weight_names, declared above): a "multisim"-type
+          /// GENIEReWeight dial with a single meaningful universe, exported
+          /// as a flat weight branch. Deliberately NOT added to the
+          /// FATAL-if-missing check above (lines ~94-122) -- this is new
+          /// and less exercised than the other three syst types, so a
+          /// missing/mismatched "_multisimTree" here defaults every event's
+          /// weight to 1.0 (WARN only) instead of aborting the whole run
+          /// and losing the multisigma/variation/NuMIfluxsim output that
+          /// already succeeded for this table.
+          std::string multisim_tree_name = origin + "_multisimTree";
+          TTree* multisim_tree = (TTree*)input->Get(multisim_tree_name.c_str());
+          if(multisim_tree == nullptr)
+            {
+              std::cout << "WARN: missing '" << multisim_tree_name << "' for origin '"
+                        << origin << "' -- LQCD/MINERvA correction weight(s) will "
+                        << "default to 1.0 for this table." << std::endl;
+            }
+          else if(multisim_tree->GetEntries() != in_tree->GetEntries())
+            {
+              std::cout << "WARN: '" << multisim_tree_name << "' entry count ("
+                        << multisim_tree->GetEntries() << ") does not match origin '"
+                        << origin << "' (" << in_tree->GetEntries() << ") -- LQCD/MINERvA "
+                        << "correction weight(s) will default to 1.0 for this table."
+                        << std::endl;
+              multisim_tree = nullptr;
+            }
+          copy_single_weight_syst(config, table, out_tree, multisim_tree, in_tree->GetEntries());
+          std::cout<<"13"<<std::endl;
 	}
       out_tree->Write();
     }
@@ -387,3 +435,115 @@ void copy_with_syst(cfg::ConfigurationTable config, cfg::ConfigurationTable tabl
   } // end entry loop
 
 } // end function
+
+// See the single_weight_names comment near the top of this file for what
+// this is and why. syst_in_tree is the origin's "_multisimTree" and may be
+// nullptr (missing or length-mismatched, per the WARN in main() above) --
+// in that case every event just gets the neutral default weight (1.0), and
+// the branch is still created so the output schema stays uniform.
+//
+// n_entries must equal in_tree->GetEntries() for this origin (same
+// requirement as copy_with_syst above): branch->Fill() is called exactly
+// that many times so this branch's entry count lines up with the rest of
+// out_tree, which copy_no_syst already filled via the full-tree Fill().
+void copy_single_weight_syst(cfg::ConfigurationTable config, cfg::ConfigurationTable table, TTree * out_tree, TTree * syst_in_tree, Long64_t n_entries)
+{
+  bool is_nu = table.get_bool_field("is_nu");
+
+  // Which single-weight dials are actually registered as "multisim"
+  // entries in this run's TOML sys list.
+  struct Entry { std::string full_name; std::string out_name; double value; };
+  std::vector<Entry> entries;
+  for(cfg::ConfigurationTable & t : config.get_subtables("sys"))
+    {
+      if(strcmp(t.get_string_field("type").c_str(), "multisim")) continue;
+      std::string full_name = t.get_string_field("name");
+      auto it = single_weight_names.find(full_name);
+      if(it == single_weight_names.end()) continue;
+      Entry e;
+      e.full_name = full_name;
+      e.out_name  = it->second;
+      e.value     = 1.0;
+      entries.push_back(e);
+    }
+  if(entries.empty()) return;
+
+  // Book one flat double output branch per dial.
+  std::vector<TBranch*> out_branches;
+  out_branches.reserve(entries.size());
+  for(Entry & e : entries)
+    out_branches.push_back(out_tree->Branch(e.out_name.c_str(), &e.value, (e.out_name + "/D").c_str()));
+
+  // Bind input branches, if the syst tree is present and actually has
+  // them. GENIEReWeight stores these as a per-event vector of universe
+  // weights (double or float); the dial has exactly one meaningful
+  // universe, so weights.front() is the correction weight.
+  std::vector<std::vector<Double_t>*> vD(entries.size(), nullptr);
+  std::vector<std::vector<Float_t>*>  vF(entries.size(), nullptr);
+  std::vector<std::string> wtype(entries.size());
+
+  if(syst_in_tree != nullptr)
+    {
+      for(size_t i = 0; i < entries.size(); ++i)
+        {
+          TBranch* bw = syst_in_tree->GetBranch(entries[i].full_name.c_str());
+          if(bw == nullptr)
+            {
+              std::cout << "WARN: multisim branch '" << entries[i].full_name
+                        << "' not found -- " << entries[i].out_name
+                        << " will default to 1.0." << std::endl;
+              continue;
+            }
+
+          std::string cls = bw->GetClassName();
+          if(cls.find("vector<double>") != std::string::npos)
+            {
+              syst_in_tree->SetBranchAddress(entries[i].full_name.c_str(), &vD[i]);
+              wtype[i] = "double";
+            }
+          else if(cls.find("vector<float>") != std::string::npos)
+            {
+              syst_in_tree->SetBranchAddress(entries[i].full_name.c_str(), &vF[i]);
+              wtype[i] = "float";
+            }
+          else
+            {
+              std::cout << "WARN: unexpected type for multisim branch '"
+                        << entries[i].full_name << "': " << cls
+                        << " -- " << entries[i].out_name << " will default to 1.0."
+                        << std::endl;
+            }
+        }
+    }
+
+  for(Long64_t i = 0; i < n_entries; ++i)
+    {
+      if(syst_in_tree != nullptr) syst_in_tree->GetEntry(i);
+
+      for(size_t j = 0; j < entries.size(); ++j)
+        {
+          double val = 1.0;
+          if(wtype[j] == "double" && vD[j] != nullptr && !vD[j]->empty())
+            val = vD[j]->front();
+          else if(wtype[j] == "float" && vF[j] != nullptr && !vF[j]->empty())
+            val = (double)vF[j]->front();
+
+          if(!std::isfinite(val)) val = 1.0;
+
+          // Sentinel matching the convention already used in copy_with_syst
+          // above (see its "is_nu == false" checks): the dial doesn't
+          // apply to a non-neutrino table at all. Not currently exercised
+          // by NuMI_numu_gundam.toml (only is_nu=true tables ever set
+          // gundam_store_syst=true), kept here for consistency and in case
+          // that ever changes -- dataSetListConfig nominalWeightFormula
+          // must guard with "WEIGHT < 0 ? 1 : WEIGHT" regardless, matching
+          // Kiyoung's own dataSetListConfig convention for this dial.
+          if(!is_nu) val = -5.0;
+
+          entries[j].value = val;
+        }
+
+      for(TBranch * b : out_branches)
+        b->Fill();
+    }
+}
