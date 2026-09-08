@@ -452,9 +452,9 @@ namespace mctruth
     template<class T>
     double generator_w(const T & obj)
     {
-        if(obj.W <= 0.0 || !std::isfinite(obj.W))
+        if(obj.w <= 0.0 || !std::isfinite(obj.w))
             return PLACEHOLDERVALUE;
-        return obj.W;
+        return obj.w;
     }
     REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, generator_w, generator_w);
 
