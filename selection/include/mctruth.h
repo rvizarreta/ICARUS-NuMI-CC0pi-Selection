@@ -435,6 +435,30 @@ namespace mctruth
     REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, generator_q2, generator_q2);
 
     /**
+     * @brief Variable for the generator-level invariant hadronic mass W.
+     * @details Returns the invariant hadronic mass W as computed by the event
+     * generator (GENIE) and stored directly on the truth interaction object,
+     * rather than reconstructing it from final-state kinematics. Used to build
+     * the generator-level (W, Q**2) phase space needed to check whether GENIE's
+     * RES/DIS reweight dials -- which are themselves parameterized on this same
+     * (W, Q**2) space -- can plausibly account for CC-other background
+     * mismodeling, and to bin the BackgroundFit true_generator_q2 template in
+     * two dimensions rather than one. Returns a placeholder if the stored value
+     * is non-positive or non-finite.
+     * @tparam T the type of interaction (true only).
+     * @param obj the interaction to apply the variable on.
+     * @return the generator-level invariant hadronic mass W.
+     */
+    template<class T>
+    double generator_w(const T & obj)
+    {
+        if(obj.W <= 0.0 || !std::isfinite(obj.W))
+            return PLACEHOLDERVALUE;
+        return obj.W;
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, generator_w, generator_w);
+
+    /**
      * @brief Replicates NUISANCE ICARUS_1muNp0pi_IsSignal definition exactly.
      * @details This variable is implemented using GENIE truth variables (obj.prim)
      * to match the NUISANCE FlatTree signal definition for ICARUS_1muNp0pi.

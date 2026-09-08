@@ -1,0 +1,101 @@
+
+[input]
+path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained.root'
+weights = '/pnfs/icarus/persistent/users/kyjung/G4Reweight/NuMI/icaruspro_production_v09_89_01_02p02_2025A_NuMI_nuCos_CV_detsys_nu_cos_CV_scrub/*.flat.root'
+
+use_additional_hash = true
+
+[output]
+path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_systematics_G4.root'
+histogram_destination = 'variations/'
+
+[[sysvar]]
+name = 'reco_leading_muon_ke'
+bins = [25, 0, 5000]
+
+[[tree]]
+origin = 'events/nominal/selected'
+destination = 'events/full/'
+name = 'selected'
+action = 'add_weights'
+table_types = ['multisim', 'multisigma', 'variation']
+
+[[tree]]
+origin = 'events/nominal/sideband'
+destination = 'events/full/'
+name = 'sideband'
+action = 'add_weights'
+table_types = ['multisim', 'multisigma', 'variation']
+
+[[tree]]
+origin = 'events/nominal/signal'
+destination = 'events/full/'
+name = 'signal'
+action = 'add_weights'
+table_types = ['multisim', 'multisigma', 'variation']
+
+[[tree]]
+origin = 'events/rock/selected'
+destination = 'events/rock/'
+name = 'selected'
+action = 'copy'
+
+[[tree]]
+origin = 'events/rock/sideband'
+destination = 'events/rock/'
+name = 'sideband'
+action = 'copy'
+
+[[tree]]
+origin = 'events/onbeam/selected'
+destination = 'events/onbeam/'
+name = 'selected'
+action = 'copy'
+
+[[tree]]
+origin = 'events/onbeam/sideband'
+destination = 'events/onbeam/'
+name = 'sideband'
+action = 'copy'
+
+[[tree]]
+origin = 'events/offbeam/selected'
+destination = 'events/offbeam/'
+name = 'selected'
+action = 'copy'
+
+[[tree]]
+origin = 'events/offbeam/sideband'
+destination = 'events/offbeam/'
+name = 'sideband'
+action = 'copy'
+#
+[[sys]]
+name = "reinteractions_kminus_Geant4"
+type = "multisim"
+index = 115
+
+[[sys]]
+name = "reinteractions_kplus_Geant4"
+type = "multisim"
+index = 116
+
+[[sys]]
+name = "reinteractions_neutron_Geant4"
+type = "multisim"
+index = 117
+
+[[sys]]
+name = "reinteractions_piminus_Geant4"
+type = "multisim"
+index = 118
+
+[[sys]]
+name = "reinteractions_piplus_Geant4"
+type = "multisim"
+index = 119
+
+[[sys]]
+name = "reinteractions_proton_Geant4"
+type = "multisim"
+index = 120
