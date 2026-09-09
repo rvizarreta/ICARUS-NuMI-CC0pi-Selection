@@ -1,5 +1,5 @@
 [input]
-path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_systematics_G4.root'
+path = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx_G4.root'
 weights = '/exp/icarus/data/users/rvizarr/medulla/NuMI_nuCos_CV_weights.txt'
 
 use_additional_hash = true
