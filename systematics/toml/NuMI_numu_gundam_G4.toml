@@ -1,0 +1,74 @@
+[input]
+path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_systematics_G4.root'
+weights = '/exp/icarus/data/users/rvizarr/medulla/NuMI_nuCos_CV_weights.txt'
+
+use_additional_hash = true
+
+[output]
+path = '/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_G4.root'
+
+histogram_destination = 'variations/'
+
+[[sysvar]]
+name = 'reco_leading_muon_ke'
+bins = [25, 0, 3000]
+
+[[tree]]
+origin = 'events/full/selected'
+destination = 'events/full/'
+name = 'selected'
+action = 'add_weights'
+table_types = ['multisim']
+gundam_store_syst = true
+is_nu = true
+is_data = false
+
+[[tree]]
+origin = 'events/full/sideband'
+destination = 'events/full/'
+name = 'sideband'
+action = 'add_weights'
+table_types = ['multisim']
+gundam_store_syst = true
+is_nu = true
+is_data = false
+
+[[tree]]
+origin = 'events/full/signal'
+destination = 'events/full/'
+name = 'signal'
+action = 'add_weights'
+table_types = ['multisim']
+gundam_store_syst = true
+is_nu = true
+is_data = false
+
+[[sys]]
+name = "reinteractions_kminus_Geant4"
+type = "multisim"
+index = 115
+
+[[sys]]
+name = "reinteractions_kplus_Geant4"
+type = "multisim"
+index = 116
+
+[[sys]]
+name = "reinteractions_neutron_Geant4"
+type = "multisim"
+index = 117
+
+[[sys]]
+name = "reinteractions_piminus_Geant4"
+type = "multisim"
+index = 118
+
+[[sys]]
+name = "reinteractions_piplus_Geant4"
+type = "multisim"
+index = 119
+
+[[sys]]
+name = "reinteractions_proton_Geant4"
+type = "multisim"
+index = 120
