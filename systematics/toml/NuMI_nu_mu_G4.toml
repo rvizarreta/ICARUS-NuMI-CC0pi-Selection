@@ -1,6 +1,6 @@
 
 [input]
-path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained.root'
+path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_G4.root'
 weights = '/pnfs/icarus/persistent/users/kyjung/G4Reweight/NuMI/icaruspro_production_v09_89_01_02p02_2025A_NuMI_nuCos_CV_detsys_nu_cos_CV_scrub/*.flat.root'
 
 use_additional_hash = true
