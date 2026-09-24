@@ -78,10 +78,12 @@ LOCAL_G4=$_CONDOR_SCRATCH_DIR/g4
 mkdir -p "$LOCAL_G4"
 
 mark 05a_g4_stage_start
-for f in /pnfs/icarus/persistent/users/rvizarr/plots/G4/*.root; do
-    ifdh cp --cp_maxretries=0 --web_timeout=100 "$f" "$LOCAL_G4/$(basename "$f")"
+G4_SRC=/pnfs/icarus/persistent/users/rvizarr/plots/G4
+for f in $(ifdh ls "$G4_SRC" | grep '\.root$'); do
+    ifdh cp --cp_maxretries=0 --web_timeout=100 "$f" "$LOCAL_G4/$(basename "$f")" \
+        || echo "cp FAILED: $f"
 done
-G4_COUNT=$(ls -1 "$LOCAL_G4" 2>/dev/null | wc -l)
+G4_COUNT=$(ls -1 "$LOCAL_G4"/*.root 2>/dev/null | wc -l)
 echo "staged $G4_COUNT G4 root files"
 [ "$G4_COUNT" -eq 30 ] || { echo "expected 30 G4 root files, got $G4_COUNT"; mark 99_g4_stage_failed; exit 1; }
 
