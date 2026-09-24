@@ -8,24 +8,24 @@ file = '../../../configurations/common/styles.toml'
 key = "abs_leading_proton_momentum_residual"
 range = [-0.5, 0.5]
 nbins = 50
-xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained + Exiting $p$)'
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.abs_leading_proton_momentum_residual_contained]
 key = "abs_leading_proton_momentum_residual"
 range = [-0.5, 0.5]
 nbins = 50
-xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained $p$)'
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_proton_containment == 1'
+mask = 'reco_leading_muon_containment == 1'
 
 [variables.abs_leading_proton_momentum_residual_exiting]
 key = "abs_leading_proton_momentum_residual"
 range = [-0.5, 0.5]
 nbins = 50
-xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Exiting $p$)'
+xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_proton_containment == 0'
+mask = 'reco_leading_muon_containment == 0'
 
 # SIMULATION SAMPLE
 [samples]
@@ -39,6 +39,65 @@ systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_Nu
 
 [samples.mc.precompute]
 abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - true_leading_proton_momentum"
+
+# --- Interaction-dial systematic method -------------------------------
+# 'truth'    : dial reweights selected events directly (original behaviour).
+#              This is the defensible band for a data/MC comparison, since
+#              the prediction really does depend on GENIE's rate.
+# 'response' : each SIGNAL event's dial weight is divided by the change in
+#              the population of its true bin, so a pure normalisation
+#              change cancels and only shape / efficiency / migration
+#              effects survive. Matches what the cross-section fit
+#              actually absorbs via the free template parameters.
+# Only dials matching `pattern` are affected: flux (hysyst_*) and detector
+# (var0*) dials keep the original treatment either way.
+# truth_bin_edges is the combined equal-population truth binning derived by
+# technote/proton_momentum_combined_binning.py (overflow bin included, since
+# [0.31, 1.2] is a reconstruction cut, not a physical bound - same reasoning
+# as dpT).
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_leading_proton_momentum'
+truth_bin_edges = [0.31, 0.3927, 0.4571, 0.5239, 0.5934, 0.6689, 0.762, 0.9018, 1.2, 10000000.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
+# GEANT4 hadron-reinteraction (fate) systematics: fractional covariances from the GUNDAM
+# G4 ParameterSets, applied to this sample's bin contents. Contained and exiting only;
+# the combined variable has no G4 matrix and gets zero contribution.
+[[samples.mc.external_covariances]]
+name = 'G4_proton'
+label = 'G4 proton'
+[samples.mc.external_covariances.files]
+reco_leading_proton_momentum_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_leading_proton_momentum_contained.root'
+reco_leading_proton_momentum_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_leading_proton_momentum_exiting.root'
+[samples.mc.external_covariances.binning_files]
+reco_leading_proton_momentum_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_leading_proton_momentum_contained.txt'
+reco_leading_proton_momentum_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_leading_proton_momentum_exiting.txt'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piplus'
+label = 'G4 $\pi^+$'
+[samples.mc.external_covariances.files]
+reco_leading_proton_momentum_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_leading_proton_momentum_contained.root'
+reco_leading_proton_momentum_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_leading_proton_momentum_exiting.root'
+[samples.mc.external_covariances.binning_files]
+reco_leading_proton_momentum_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_leading_proton_momentum_contained.txt'
+reco_leading_proton_momentum_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_leading_proton_momentum_exiting.txt'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piminus'
+label = 'G4 $\pi^-$'
+[samples.mc.external_covariances.files]
+reco_leading_proton_momentum_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_leading_proton_momentum_contained.root'
+reco_leading_proton_momentum_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_leading_proton_momentum_exiting.root'
+[samples.mc.external_covariances.binning_files]
+reco_leading_proton_momentum_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_leading_proton_momentum_contained.txt'
+reco_leading_proton_momentum_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_leading_proton_momentum_exiting.txt'
 
 [samples.mc_nonmatched]
 key = "full"
@@ -108,6 +167,16 @@ name = 'MC_total'
 label = 'All Systematics (No G4)'
 pattern = '^(flux|xsec|stats|detsys)$'
 
+[[systematic_recipe]]
+name = 'g4'
+label = 'Geant4 reinteraction'
+pattern = '^G4_(proton|piplus|piminus)$'
+
+[[systematic_recipe]]
+name = 'MC_total_G4'
+label = 'All Systematics'
+pattern = '^(flux|xsec|stats|detsys|g4)$'
+
 [analysis]
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
@@ -125,32 +194,33 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 
 # --- Reco distribution ---
 
-[[figure]]
-name = 'leading_proton_momentum'
-type = 'SimpleFigure'
-style = 'selected_icarus_data'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum'
-ytitle = 'Candidates / (GeV/c)'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# [[figure]]
+# name = 'leading_proton_momentum'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_proton_momentum'
+# ytitle = 'Candidates / (GeV/c)'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
 # "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
-[[figure]]
-name = 'leading_proton_momentum_mc_only'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 5]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum'
-ytitle = 'Candidates / (GeV/c)'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# --- combined sample plot: disabled, only contained/exiting are used ---
+# [[figure]]
+# name = 'leading_proton_momentum_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_proton_momentum'
+# ytitle = 'Candidates / (GeV/c)'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 [[figure]]
@@ -163,7 +233,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_proton_momentum_contained'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, exiting muons.
 [[figure]]
@@ -176,7 +246,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_proton_momentum_exiting'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 [[figure]]
 name = 'leading_proton_momentum_contained'
 type = 'SimpleFigure'
@@ -187,7 +257,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_proton_momentum_contained'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_proton_momentum_exiting'
@@ -199,22 +269,22 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_proton_momentum_exiting'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # --- Fractional residual ---
 
-[[figure]]
-name = 'leading_proton_momentum_fractional_residual'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_leading_proton_momentum_residual'
-xvariable = 'true_leading_proton_momentum_residual'
-xrange = [-1, 1]
-xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Contained + Exiting $p$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+# [[figure]]
+# name = 'leading_proton_momentum_fractional_residual'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# yvariable = 'reco_leading_proton_momentum_residual'
+# xvariable = 'true_leading_proton_momentum_residual'
+# xrange = [-1, 1]
+# xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
+# draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
 
 [[figure]]
 name = 'leading_proton_momentum_fractional_residual_contained'
@@ -226,7 +296,7 @@ type = 'SpineSpectra2D'
 yvariable = 'reco_leading_proton_momentum_residual_contained'
 xvariable = 'true_leading_proton_momentum_residual_contained'
 xrange = [-1, 1]
-xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Contained $p$)'
+xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Contained $\mu^\pm$)'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
 
 [[figure]]
@@ -239,20 +309,20 @@ type = 'SpineSpectra2D'
 yvariable = 'reco_leading_proton_momentum_residual_exiting'
 xvariable = 'true_leading_proton_momentum_residual_exiting'
 xrange = [-1, 1]
-xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Exiting $p$)'
+xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Exiting $\mu^\pm$)'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
 
 # --- Smearing matrix ---
 
-[[figure]]
-name = 'leading_proton_momentum_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_leading_proton_momentum_smearing'
-yvariable = 'reco_leading_proton_momentum_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+# [[figure]]
+# name = 'leading_proton_momentum_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_leading_proton_momentum_smearing'
+# yvariable = 'reco_leading_proton_momentum_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
 name = 'leading_proton_momentum_smearing_matrix_normalized_contained'
@@ -274,20 +344,22 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_leading_proton_momentum_smearing_exiting'
 yvariable = 'reco_leading_proton_momentum_smearing_exiting'
+xrange = [0.31, 1.2]
+yrange = [0.31, 1.2]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 # --- Absolute residual ---
 
-[[figure]]
-name = 'leading_proton_momentum_absolute_residual'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'abs_leading_proton_momentum_residual'
-yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+# [[figure]]
+# name = 'leading_proton_momentum_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_leading_proton_momentum_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
 [[figure]]
 name = 'leading_proton_momentum_absolute_residual_contained'
@@ -313,21 +385,21 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 
 # --- Systematics ---
 
-[[figure]]
-name = 'systematics_leading_proton_momentum'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum'
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'systematics_leading_proton_momentum'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_proton_momentum'
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'systematics_leading_proton_momentum_contained'
@@ -340,7 +412,7 @@ variable = 'reco_leading_proton_momentum_contained'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 fractional = true
 show_total = true
 show_individual = true
@@ -356,7 +428,7 @@ variable = 'reco_leading_proton_momentum_exiting'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 fractional = true
 show_total = true
 show_individual = true

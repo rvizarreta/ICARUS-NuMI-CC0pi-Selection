@@ -13,6 +13,17 @@ trees = ['sideband']
 print_sys = true
 systematics = ['sideband_multisigmaTree']
 
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_vertex_z'
+truth_bin_edges = [-880.0, -645.4001, -434.7086, -226.6074, -15.8377, 191.4239, 406.9494, 618.6341, 860.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -81,21 +92,21 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = 'vertex_z_xSecUncertainty'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_z'
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['xsec_ccqe', 'xsec_mec', 'xsec_res', 'xsec_nonres', 'xsec_fsi', 'xsec_other']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'vertex_z_xSecUncertainty'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_z'
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['xsec_ccqe', 'xsec_mec', 'xsec_res', 'xsec_nonres', 'xsec_fsi', 'xsec_other']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'vertex_z_xSecUncertainty_contained'

@@ -13,6 +13,17 @@ trees = ['sideband']
 print_sys = true
 systematics = ['sideband_multisigmaTree']
 
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_vertex_x'
+truth_bin_edges = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -321,21 +332,21 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = 'vertex_x_xSecUncertainty_Exp'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_x'
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['ZExpA1CCQE', 'ZExpA2CCQE', 'ZExpA3CCQE', 'ZExpA4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'LowQ2Suppression', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'vertex_x_xSecUncertainty_Exp'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_x'
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['ZExpA1CCQE', 'ZExpA2CCQE', 'ZExpA3CCQE', 'ZExpA4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'LowQ2Suppression', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'vertex_x_xSecUncertainty_Exp_contained'

@@ -41,6 +41,17 @@ systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_Nu
 [samples.mc.precompute]
 abs_vertex_y_residual = "reco_vertex_y - true_vertex_y"
 
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_vertex_y'
+truth_bin_edges = [-160.0, -124.1926, -91.3267, -59.132, -26.009, 6.5121, 39.6411, 73.6207, 115.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -126,32 +137,32 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 
 # --- Reco distribution ---
 
-[[figure]]
-name = 'vertex_y'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_y'
-yrange = 1.7
-ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# [[figure]]
+# name = 'vertex_y'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_y'
+# yrange = 1.7
+# ytitle = 'Candidates / cm'
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
 # "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
-[[figure]]
-name = 'vertex_y_mc_only'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 5]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_y'
-yrange = 1.7
-ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# [[figure]]
+# name = 'vertex_y_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_y'
+# yrange = 1.7
+# ytitle = 'Candidates / cm'
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 [[figure]]
@@ -202,15 +213,15 @@ yrange = 1.7
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
-[[figure]]
-name = 'vertex_y_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_vertex_y_smearing'
-yvariable = 'reco_vertex_y_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+# [[figure]]
+# name = 'vertex_y_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_vertex_y_smearing'
+# yvariable = 'reco_vertex_y_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
 name = 'vertex_y_smearing_matrix_normalized_contained'
@@ -234,16 +245,16 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 # --- Absolute residual ---
 
-[[figure]]
-name = 'vertex_y_absolute_residual'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'abs_vertex_y_residual'
-yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+# [[figure]]
+# name = 'vertex_y_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_vertex_y_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
 [[figure]]
 name = 'vertex_y_absolute_residual_contained'
@@ -269,21 +280,21 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 
 # --- Systematics ---
 
-[[figure]]
-name = 'systematics_vertex_y'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_y'
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'systematics_vertex_y'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_y'
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'systematics_vertex_y_contained'

@@ -40,6 +40,25 @@ systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_Nu
 [samples.mc.precompute]
 abs_vertex_x_residual = "reco_vertex_x - true_vertex_x"
 
+# --- Interaction-dial systematic method -------------------------------
+# truth_bin_edges uses the SAME uniform+gap scheme as the reco display
+# binning (technote/truth_binning_batch.py), not equal-population: vertex_x
+# has a real physical cryostat gap at x in [-87,87] cm (no argon there), so
+# equal-population would smear it into one giant bin. The gap is ~0.92% non-
+# empty in truth (vs ~0.04% in reco) - likely truth-generation volume
+# imperfectly matching the real geometry - but the uniform+gap scheme is
+# still the right choice.
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_vertex_x'
+truth_bin_edges = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -125,32 +144,33 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 
 # --- Reco distribution ---
 
-[[figure]]
-name = 'vertex_x'
-type = 'SimpleFigure'
-style = 'selected_icarus_data'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_x'
-yrange = 1.7
-ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# [[figure]]
+# name = 'vertex_x'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_x'
+# yrange = 1.7
+# ytitle = 'Candidates / cm'
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
 # "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
-[[figure]]
-name = 'vertex_x_mc_only'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 5]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_x'
-yrange = 1.7
-ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# --- combined sample plot: disabled, only contained/exiting are used ---
+# [[figure]]
+# name = 'vertex_x_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_x'
+# yrange = 1.7
+# ytitle = 'Candidates / cm'
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 [[figure]]
@@ -201,15 +221,15 @@ yrange = 1.7
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
-[[figure]]
-name = 'vertex_x_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_vertex_x_smearing'
-yvariable = 'reco_vertex_x_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+# [[figure]]
+# name = 'vertex_x_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_vertex_x_smearing'
+# yvariable = 'reco_vertex_x_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
 name = 'vertex_x_smearing_matrix_normalized_contained'
@@ -233,16 +253,16 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 # --- Absolute residual ---
 
-[[figure]]
-name = 'vertex_x_absolute_residual'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'abs_vertex_x_residual'
-yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+# [[figure]]
+# name = 'vertex_x_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_vertex_x_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
 [[figure]]
 name = 'vertex_x_absolute_residual_contained'
@@ -268,21 +288,21 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 
 # --- Systematics ---
 
-[[figure]]
-name = 'systematics_vertex_x'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_vertex_x'
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'systematics_vertex_x'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_vertex_x'
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'systematics_vertex_x_contained'

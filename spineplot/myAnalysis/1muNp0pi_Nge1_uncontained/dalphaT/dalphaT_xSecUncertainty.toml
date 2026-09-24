@@ -14,6 +14,25 @@ trees = ['selected']
 print_sys = true
 systematics = ['selected_multisigmaTree']
 
+# --- Interaction-dial systematic method -------------------------------
+# 'truth'    : dial reweights selected events directly (original behaviour)
+# 'response' : each SIGNAL event's dial weight is divided by the change in
+#              the population of its true bin, so a pure normalisation
+#              change cancels. Only efficiency/migration effects survive.
+#              Backgrounds and non-GENIE dials are unaffected.
+# truth_bin_edges is the current combined true_dalphaT binning (no overflow
+# needed: [0,180] degrees is a closed physical range, not a reconstruction cut).
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dalphaT_deg'
+truth_bin_edges = [0.0, 65.0, 114.0, 151.0, 180.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc.precompute]
 abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
@@ -98,21 +117,21 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = "dalphaT_xSecUncertainty"
-type = "SimpleFigure"
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = "SpineSpectra1D"
-variable = "reco_dalphaT"
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = "draw_systematics"
-systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = "dalphaT_xSecUncertainty"
+# type = "SimpleFigure"
+# style = 'selected_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dalphaT"
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = "dalphaT_xSecUncertainty_contained"

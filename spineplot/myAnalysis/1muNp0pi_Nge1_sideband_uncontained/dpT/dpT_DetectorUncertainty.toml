@@ -113,20 +113,20 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = "dpT_detSysUncertainty"
-type = "SimpleFigure"
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = "SpineSpectra1D"
-variable = "reco_dpT"
-[figure.artists.draw_kwargs]
-method = "draw_systematics"
-systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = "dpT_detSysUncertainty"
+# type = "SimpleFigure"
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dpT"
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = "dpT_detSysUncertainty_contained"

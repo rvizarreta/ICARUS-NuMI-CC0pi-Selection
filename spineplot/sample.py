@@ -4,6 +4,7 @@ import re
 import uproot
 
 from systematic import Systematic
+from external_covariance import ExternalFractionalCovariance
 
 class Sample:
     """
@@ -39,7 +40,7 @@ class Sample:
     def __init__(self, name, rf, category_branch, key, exposure_type,
                  trees, systematics=None, override_exposure=None, precompute=None,
                  presel=None, override_category=None, print_sys=False,
-                 interaction_method=None) -> None:
+                 interaction_method=None, external_covariances=None) -> None:
         """
         Initializes the Sample object with the given name and key.
 
@@ -128,6 +129,16 @@ class Sample:
                 systs = [k for k in self._file_handle[sys].keys() if k not in ['Run', 'Subrun', 'Evt']]
                 self._systematics.update({syst: Systematic(syst, self._file_handle[sys][syst]) for syst in systs})
         
+        # Systematics whose covariance is precomputed and supplied as a
+        # fractional matrix per variable (e.g. the Geant4 reinteraction
+        # covariances made for GUNDAM), see external_covariance.py.
+        if external_covariances is not None:
+            for ext in external_covariances:
+                self._systematics[ext['name']] = ExternalFractionalCovariance(
+                    ext['name'], ext['files'],
+                    binning_files=ext.get('binning_files'),
+                    label=ext.get('label'))
+
         # Add statistical uncertainty. This can always be added to the
         # sample, because it is not dependent on some external source
         # of weights.

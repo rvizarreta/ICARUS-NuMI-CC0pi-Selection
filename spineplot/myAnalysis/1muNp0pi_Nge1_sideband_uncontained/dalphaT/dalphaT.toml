@@ -43,6 +43,18 @@ systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_Nu
 [samples.mc.precompute]
 abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
+# --- Interaction-dial systematic method -------------------------------
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dalphaT_deg'
+truth_bin_edges = [0.0, 65.0, 114.0, 151.0, 180.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -130,30 +142,31 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = 'dalphaT_reco'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_dalphaT'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
+# [[figure]]
+# name = 'dalphaT_reco'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_dalphaT'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
 # "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
-[[figure]]
-name = 'dalphaT_reco_mc_only'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 5]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_dalphaT'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
+# --- combined sample plot: disabled, only contained/exiting are used ---
+# [[figure]]
+# name = 'dalphaT_reco_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_dalphaT'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
 
 # MC-only, contained muons.
 [[figure]]
@@ -200,15 +213,15 @@ variable = 'reco_dalphaT_exiting'
 yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
-[[figure]]
-name = 'dalphaT_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_dalphaT_smearing'
-yvariable = 'reco_dalphaT_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+# [[figure]]
+# name = 'dalphaT_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_dalphaT_smearing'
+# yvariable = 'reco_dalphaT_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
 name = 'dalphaT_smearing_matrix_normalized_contained'
@@ -260,31 +273,31 @@ fractional = true
 show_total = true
 show_individual = true
 
-[[figure]]
-name = "systematics_dalphaT"
-type = "SimpleFigure"
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = "SpineSpectra1D"
-variable = "reco_dalphaT"
-[figure.artists.draw_kwargs]
-method = "draw_systematics"
-systematic_names = ["detsys", "flux", "xsec", "stats"]
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = "systematics_dalphaT"
+# type = "SimpleFigure"
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dalphaT"
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["detsys", "flux", "xsec", "stats"]
+# fractional = true
+# show_total = true
+# show_individual = true
 
-[[figure]]
-name = 'dalphaT_absolute_residual'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'abs_dalphaT_residual'
-yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+# [[figure]]
+# name = 'dalphaT_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_dalphaT_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
 [[figure]]
 name = 'dalphaT_absolute_residual_contained'

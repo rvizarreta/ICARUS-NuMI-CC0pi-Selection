@@ -41,6 +41,18 @@ systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_Nu
 [samples.mc.precompute]
 abs_leading_muon_momentum_residual = "reco_leading_muon_momentum - true_leading_muon_momentum"
 
+# --- Interaction-dial systematic method -------------------------------
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_leading_muon_momentum'
+truth_bin_edges = [0.226, 0.3971, 0.6402, 0.9714, 1.3589, 1.7897, 3.0, 10000000.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -126,30 +138,31 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 
 # --- Reco distribution ---
 
-[[figure]]
-name = 'leading_muon_momentum_reco'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# [[figure]]
+# name = 'leading_muon_momentum_reco'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_muon_momentum'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
 # "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
-[[figure]]
-name = 'leading_muon_momentum_reco_mc_only'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 5]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
+# --- combined sample plot: disabled, only contained/exiting are used ---
+# [[figure]]
+# name = 'leading_muon_momentum_reco_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_muon_momentum'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_data' = false, 'per_bin_width' = true}
 
 # MC-only, contained muons.
 [[figure]]
@@ -198,18 +211,18 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 
 # --- Fractional residual ---
 
-[[figure]]
-name = 'leading_muon_momentum_fractional_residual'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra2D'
-yvariable = 'reco_leading_muon_momentum_residual'
-xvariable = 'true_leading_muon_momentum_residual'
-xrange = [-1, 1]
-xtitle = '$\frac{p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}}{p_{\mu,\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
-draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
+# [[figure]]
+# name = 'leading_muon_momentum_fractional_residual'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# yvariable = 'reco_leading_muon_momentum_residual'
+# xvariable = 'true_leading_muon_momentum_residual'
+# xrange = [-1, 1]
+# xtitle = '$\frac{p_{\mu,\mathrm{reco}} - p_{\mu,\mathrm{true}}}{p_{\mu,\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
+# draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
 
 [[figure]]
 name = 'leading_muon_momentum_fractional_residual_contained'
@@ -239,15 +252,15 @@ draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_color
 
 # --- Smearing matrix ---
 
-[[figure]]
-name = 'leading_muon_momentum_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_leading_muon_momentum_smearing'
-yvariable = 'reco_leading_muon_momentum_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+# [[figure]]
+# name = 'leading_muon_momentum_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_leading_muon_momentum_smearing'
+# yvariable = 'reco_leading_muon_momentum_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
 name = 'leading_muon_momentum_smearing_matrix_normalized_contained'
@@ -271,16 +284,16 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 # --- Absolute residual ---
 
-[[figure]]
-name = 'leading_muon_momentum_absolute_residual'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'abs_leading_muon_momentum_residual'
-yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+# [[figure]]
+# name = 'leading_muon_momentum_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_leading_muon_momentum_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
 [[figure]]
 name = 'leading_muon_momentum_absolute_residual_contained'
@@ -306,21 +319,21 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 
 # --- Systematics ---
 
-[[figure]]
-name = 'systematics_leading_muon_momentum'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum'
-yrange = [0.0, 0.45]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'systematics_leading_muon_momentum'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_muon_momentum'
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'systematics_leading_muon_momentum_contained'

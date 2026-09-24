@@ -63,21 +63,21 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = 'leading_muon_momentum_FluxUncertainty'
-type = 'SimpleFigure'
-style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum'
-yrange = [0.0, 0.25]
-[figure.artists.draw_kwargs]
-method = 'draw_systematics'
-systematic_names = ['flux_beam_focusing', 'flux_hadron_prod']
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = 'leading_muon_momentum_FluxUncertainty'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_leading_muon_momentum'
+# yrange = [0.0, 0.25]
+# [figure.artists.draw_kwargs]
+# method = 'draw_systematics'
+# systematic_names = ['flux_beam_focusing', 'flux_hadron_prod']
+# fractional = true
+# show_total = true
+# show_individual = true
 
 [[figure]]
 name = 'leading_muon_momentum_FluxUncertainty_contained'

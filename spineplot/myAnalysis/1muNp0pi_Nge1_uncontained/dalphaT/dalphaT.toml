@@ -42,6 +42,63 @@ systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_Nu
 [samples.mc.precompute]
 abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
+# --- Interaction-dial systematic method -------------------------------
+# 'truth'    : dial reweights selected events directly (original behaviour).
+#              This is the defensible band for a data/MC comparison, since
+#              the prediction really does depend on GENIE's rate.
+# 'response' : each SIGNAL event's dial weight is divided by the change in
+#              the population of its true bin, so a pure normalisation
+#              change cancels and only shape / efficiency / migration
+#              effects survive. Matches what the cross-section fit
+#              actually absorbs via the free template parameters.
+# Only dials matching `pattern` are affected: flux (hysyst_*) and detector
+# (var0*) dials keep the original treatment either way.
+# truth_bin_edges is the current combined true_dalphaT binning (no overflow
+# needed: [0,180] degrees is a closed physical range, not a reconstruction cut).
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dalphaT_deg'
+truth_bin_edges = [0.0, 65.0, 114.0, 151.0, 180.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
+# GEANT4 hadron-reinteraction (fate) systematics: fractional covariances from the GUNDAM
+# G4 ParameterSets, applied to this sample's bin contents. Contained and exiting only;
+# the combined variable has no G4 matrix and gets zero contribution.
+[[samples.mc.external_covariances]]
+name = 'G4_proton'
+label = 'G4 proton'
+[samples.mc.external_covariances.files]
+reco_dalphaT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_dalphaT_contained.root'
+reco_dalphaT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_dalphaT_exiting.root'
+[samples.mc.external_covariances.binning_files]
+reco_dalphaT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dalphaT_deg_contained.txt'
+reco_dalphaT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dalphaT_deg_exiting.txt'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piplus'
+label = 'G4 $\pi^+$'
+[samples.mc.external_covariances.files]
+reco_dalphaT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_dalphaT_contained.root'
+reco_dalphaT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_dalphaT_exiting.root'
+[samples.mc.external_covariances.binning_files]
+reco_dalphaT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dalphaT_deg_contained.txt'
+reco_dalphaT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dalphaT_deg_exiting.txt'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piminus'
+label = 'G4 $\pi^-$'
+[samples.mc.external_covariances.files]
+reco_dalphaT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_dalphaT_contained.root'
+reco_dalphaT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_dalphaT_exiting.root'
+[samples.mc.external_covariances.binning_files]
+reco_dalphaT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dalphaT_deg_contained.txt'
+reco_dalphaT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dalphaT_deg_exiting.txt'
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
@@ -112,6 +169,16 @@ name = 'MC_total'
 label = 'All Systematics (No G4)'
 pattern = '^(flux|xsec|stats|detsys)$'
 
+[[systematic_recipe]]
+name = 'g4'
+label = 'Geant4 reinteraction'
+pattern = '^G4_(proton|piplus|piminus)$'
+
+[[systematic_recipe]]
+name = 'MC_total_G4'
+label = 'All Systematics'
+pattern = '^(flux|xsec|stats|detsys|g4)$'
+
 [analysis]
 #ordinate_sample = 'mc'
 ordinate_sample = 'onbeam'
@@ -129,32 +196,33 @@ category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$C
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
 
-[[figure]]
-name = 'dalphaT_reco'
-type = 'SimpleFigure'
-style = 'selected_icarus_data'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_dalphaT'
-ytitle = 'Candidates / degree'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
+# [[figure]]
+# name = 'dalphaT_reco'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_dalphaT'
+# ytitle = 'Candidates / degree'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
 # "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
-[[figure]]
-name = 'dalphaT_reco_mc_only'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 5]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'reco_dalphaT'
-ytitle = 'Candidates / degree'
-yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# --- combined sample plot: disabled, only contained/exiting are used ---
+# [[figure]]
+# name = 'dalphaT_reco_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_dalphaT'
+# ytitle = 'Candidates / degree'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 [[figure]]
@@ -167,7 +235,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_dalphaT_contained'
 ytitle = 'Candidates / degree'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, exiting muons.
 [[figure]]
@@ -180,7 +248,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_dalphaT_exiting'
 ytitle = 'Candidates / degree'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 [[figure]]
 name = 'dalphaT_reco_contained'
 type = 'SimpleFigure'
@@ -191,7 +259,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_dalphaT_contained'
 ytitle = 'Candidates / degree'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'dalphaT_reco_exiting'
@@ -203,17 +271,17 @@ type = 'SpineSpectra1D'
 variable = 'reco_dalphaT_exiting'
 ytitle = 'Candidates / degree'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio'='True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
-[[figure]]
-name = 'dalphaT_smearing_matrix_normalized'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-[[figure.artists]]
-type = 'SpineSpectra2D'
-xvariable = 'true_dalphaT_smearing'
-yvariable = 'reco_dalphaT_smearing'
-draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+# [[figure]]
+# name = 'dalphaT_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_dalphaT_smearing'
+# yvariable = 'reco_dalphaT_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
 name = 'dalphaT_smearing_matrix_normalized_contained'
@@ -245,7 +313,7 @@ type = "SpineSpectra1D"
 variable = "reco_dalphaT_contained"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
-systematic_names = ["detsys", "flux", "xsec", "stats"]
+systematic_names = ["detsys", "flux", "xsec", "g4", "stats"]
 fractional = true
 show_total = true
 show_individual = true
@@ -260,36 +328,36 @@ type = "SpineSpectra1D"
 variable = "reco_dalphaT_exiting"
 [figure.artists.draw_kwargs]
 method = "draw_systematics"
-systematic_names = ["detsys", "flux", "xsec", "stats"]
+systematic_names = ["detsys", "flux", "xsec", "g4", "stats"]
 fractional = true
 show_total = true
 show_individual = true
 
-[[figure]]
-name = "systematics_dalphaT"
-type = "SimpleFigure"
-style = 'selected_icarus_mc'
-figsize = [5, 4]
-[[figure.artists]]
-type = "SpineSpectra1D"
-variable = "reco_dalphaT"
-[figure.artists.draw_kwargs]
-method = "draw_systematics"
-systematic_names = ["detsys", "flux", "xsec", "stats"]
-fractional = true
-show_total = true
-show_individual = true
+# [[figure]]
+# name = "systematics_dalphaT"
+# type = "SimpleFigure"
+# style = 'selected_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dalphaT"
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["detsys", "flux", "xsec", "stats"]
+# fractional = true
+# show_total = true
+# show_individual = true
 
-[[figure]]
-name = 'dalphaT_absolute_residual'
-type = 'SimpleFigure'
-style = 'selected_icarus_mc'
-figsize = [5, 6]
-[[figure.artists]]
-type = 'SpineSpectra1D'
-variable = 'abs_dalphaT_residual'
-yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+# [[figure]]
+# name = 'dalphaT_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_dalphaT_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
 [[figure]]
 name = 'dalphaT_absolute_residual_contained'
