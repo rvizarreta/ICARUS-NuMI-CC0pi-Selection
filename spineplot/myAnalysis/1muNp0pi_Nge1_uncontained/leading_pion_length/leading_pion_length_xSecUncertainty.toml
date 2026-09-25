@@ -46,7 +46,7 @@ path = '.'
 [[systematic_recipe]]
 name = 'xsec_ccqe'
 label = 'CCQE'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_(ZExpA[1-4]CCQE|RPA_CCQE|CoulombCCQE|VecFFCCQEshape|LowQ2Suppression)\b'
+pattern = '\b(GENIEReWeight_SBN_v1_multisigma_(RPA_CCQE|CoulombCCQE|VecFFCCQEshape|LowQ2Suppression)|ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b[1-4])\b'
 
 [[systematic_recipe]]
 name = 'xsec_mec'
