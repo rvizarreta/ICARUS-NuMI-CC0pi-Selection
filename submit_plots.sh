@@ -92,6 +92,24 @@ find "$ANA_DIR" -name '*.toml' -exec sed -i \
     {} +
 mark 05b_g4_stage_done
 
+LOCAL_BIN=$_CONDOR_SCRATCH_DIR/binnings
+mkdir -p "$LOCAL_BIN"
+
+mark 05c_bin_stage_start
+BIN_SRC=/pnfs/icarus/persistent/users/rvizarr/plots/binnings
+for f in $(ifdh ls "$BIN_SRC" | grep '\.txt$'); do
+    ifdh cp --cp_maxretries=0 --web_timeout=100 "$f" "$LOCAL_BIN/$(basename "$f")" \
+        || echo "cp FAILED: $f"
+done
+BIN_COUNT=$(ls -1 "$LOCAL_BIN"/*.txt 2>/dev/null | wc -l)
+echo "staged $BIN_COUNT binning files"
+[ "$BIN_COUNT" -eq 26 ] || { echo "expected 26 binning files, got $BIN_COUNT"; mark 99_bin_stage_failed; exit 1; }
+
+find "$ANA_DIR" -name '*.toml' -exec sed -i \
+    "s|/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings|$LOCAL_BIN|g" \
+    {} +
+mark 05d_bin_stage_done
+
 cd "$ANA_DIR/$OBS" || { mark 99_cd_failed; exit 1; }
 touch /tmp/before_plot.$$
 mark 06_plot_start
