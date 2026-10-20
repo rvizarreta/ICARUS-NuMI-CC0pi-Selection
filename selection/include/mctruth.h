@@ -907,5 +907,63 @@ namespace mctruth
     }
     REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, spp_pi_one_sigma_unc, spp_pi_one_sigma_unc);
 
+    /**
+     * @brief Number of true protons in the primary particle list.
+     * @details Counts every entry of obj.prim with PDG 2212, with no kinetic
+     * energy threshold and no process condition. Same definition as the
+     * nproton_G4 variable used by K. Jung to bin the GEANT4 reinteraction
+     * covariance.
+     * @tparam T the type of the object to apply the variable on.
+     * @param obj the interaction to look at.
+     * @return number of protons in obj.prim.
+     */
+    template<typename T>
+        double nproton_G4(const T & obj)
+        {
+            size_t count(0);
+            for(const auto & p : obj.prim)
+            {
+                if(p.pdg == 2212) ++count;
+            }
+            return count;
+        }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, nproton_G4, nproton_G4);
+
+    /**
+     * @brief Number of true pi+ in the primary particle list (PDG 211).
+     * @tparam T the type of the object to apply the variable on.
+     * @param obj the interaction to look at.
+     * @return number of pi+ in obj.prim.
+     */
+    template<typename T>
+        double npiplus_G4(const T & obj)
+        {
+            size_t count(0);
+            for(const auto & p : obj.prim)
+            {
+                if(p.pdg == 211) ++count;
+            }
+            return count;
+        }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, npiplus_G4, npiplus_G4);
+
+    /**
+     * @brief Number of true pi- in the primary particle list (PDG -211).
+     * @tparam T the type of the object to apply the variable on.
+     * @param obj the interaction to look at.
+     * @return number of pi- in obj.prim.
+     */
+    template<typename T>
+        double npiminus_G4(const T & obj)
+        {
+            size_t count(0);
+            for(const auto & p : obj.prim)
+            {
+                if(p.pdg == -211) ++count;
+            }
+            return count;
+        }
+    REGISTER_VAR_SCOPE(RegistrationScope::MCTruth, npiminus_G4, npiminus_G4);
+
 } // namespace mctruth
 #endif

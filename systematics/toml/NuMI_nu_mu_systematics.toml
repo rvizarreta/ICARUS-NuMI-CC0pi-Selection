@@ -26,6 +26,12 @@ variable = 'reco_leading_muon_ke'
 bins = [0.0, 100.0, 200.0, 400.0, 600.0, 800.0, 1000.0, 1500.0, 2000.0, 3000.0, 4000.0, 5000.0]
 nuniverses = 1000
 variable_length = true
+# Corrected POT (failed SPINE subruns removed), raw POT. Computed with
+# compute_pot_var09.C; POT_eff / POT_tot = 0.9206 for var09.
+# CV and the other variations are not listed yet, so they keep the POT from the
+# exposure tree. The CV must be added once its corrected POT is known.
+pot_override_keys = ['var09']
+pot_override = [1.908296197838628e20]
 
 [[tree]]
 origin = 'events/nominal/selected'

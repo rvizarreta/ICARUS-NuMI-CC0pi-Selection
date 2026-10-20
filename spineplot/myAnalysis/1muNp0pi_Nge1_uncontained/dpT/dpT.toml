@@ -57,7 +57,7 @@ abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 # truth_bin_edges MUST be the template binning (binning_true_dpT.txt).
 [samples.mc.interaction_method]
 method = 'response'
-pattern = 'GENIEReWeight'
+pattern = 'GENIEReWeight|ZExpPCAWeighter'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
 truth_variable = 'true_dpT_lp_genie'
@@ -73,31 +73,31 @@ seed = 0
 name = 'G4_proton'
 label = 'G4 proton'
 [samples.mc.external_covariances.files]
-reco_dpT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_contained.root'
-reco_dpT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_exiting.root'
+reco_dpT_contained = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_contained.root'
+reco_dpT_exiting = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_exiting.root'
 [samples.mc.external_covariances.binning_files]
-reco_dpT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt'
-reco_dpT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt'
+reco_dpT_contained = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt'
+reco_dpT_exiting = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt'
 
 [[samples.mc.external_covariances]]
 name = 'G4_piplus'
 label = 'G4 $\pi^+$'
 [samples.mc.external_covariances.files]
-reco_dpT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_contained.root'
-reco_dpT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_exiting.root'
+reco_dpT_contained = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_contained.root'
+reco_dpT_exiting = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_exiting.root'
 [samples.mc.external_covariances.binning_files]
-reco_dpT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt'
-reco_dpT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt'
+reco_dpT_contained = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt'
+reco_dpT_exiting = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt'
 
 [[samples.mc.external_covariances]]
 name = 'G4_piminus'
 label = 'G4 $\pi^-$'
 [samples.mc.external_covariances.files]
-reco_dpT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_contained.root'
-reco_dpT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_exiting.root'
+reco_dpT_contained = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_contained.root'
+reco_dpT_exiting = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_exiting.root'
 [samples.mc.external_covariances.binning_files]
-reco_dpT_contained = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt'
-reco_dpT_exiting = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt'
+reco_dpT_contained = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt'
+reco_dpT_exiting = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt'
 
 [samples.mc_nonmatched]
 key = "full"

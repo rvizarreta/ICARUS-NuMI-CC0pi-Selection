@@ -108,11 +108,6 @@ name = 'xsec_VecFFCCQEshape'
 label = 'VecFFCCQEshape'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape\b'
 
-[[systematic_recipe]]
-name = 'xsec_LowQ2Suppression'
-label = 'LowQ2Suppression'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_LowQ2Suppression\b'
-
 # --- MEC Dials ---
 [[systematic_recipe]]
 name = 'xsec_NormCCMEC'

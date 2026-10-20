@@ -12,6 +12,9 @@
 #include <map>
 #include <vector>
 #include <random>
+#include <string>
+#include <stdexcept>
+#include <iostream>
 
 #include "detsys.h"
 #include "configuration.h"
@@ -41,6 +44,23 @@ sys::detsys::DetsysCalculator::DetsysCalculator(cfg::ConfigurationTable & table,
     variations = table.get_string_vector("variations.keys");
     variable = table.get_string_field("variations.variable");
 
+    // Optional corrected-POT override, one entry per variation key. SPINE
+    // processing fails for some subruns; their POT is still counted by the
+    // exposure tree/histogram even though they contribute no events. The
+    // corrected POT (failed-subrun POT removed) is given here in raw POT
+    // (not 1e18) and replaces the POT read from the input file for the
+    // listed variations. Variations not listed keep the POT from the input.
+    std::map<std::string, double> pot_override;
+    if(table.has_field("variations.pot_override_keys"))
+    {
+        std::vector<std::string> override_keys = table.get_string_vector("variations.pot_override_keys");
+        std::vector<double> override_values = table.get_double_vector("variations.pot_override");
+        if(override_keys.size() != override_values.size())
+            throw std::runtime_error("variations.pot_override_keys and variations.pot_override must have the same length.");
+        for(size_t i(0); i < override_keys.size(); ++i)
+            pot_override[override_keys[i]] = override_values[i];
+    }
+
     // Loop over the variations and create the histograms. A "variation" is a
     // single sample that implements some change w.r.t. the nominal sample in
     // the detector model.
@@ -69,6 +89,13 @@ sys::detsys::DetsysCalculator::DetsysCalculator(cfg::ConfigurationTable & table,
             std::string pot_name = table.get_string_field("variations.origin") + variation + '/' + "POT";
             TH1D * h = (TH1D *) input->Get(pot_name.c_str());
             pot = h->GetBinContent(1) / 1e18; // Convert to 1e18 POT
+        }
+        auto override_it = pot_override.find(variation);
+        if(override_it != pot_override.end())
+        {
+            std::cout << "Variation " << variation << ": overriding POT " << pot << "e18 -> "
+                      << override_it->second / 1e18 << "e18 (failed-subrun correction)." << std::endl;
+            pot = override_it->second / 1e18;
         }
         std::cout << "Variation " << variation << " has " << pot << "e18 POT." << std::endl;
 

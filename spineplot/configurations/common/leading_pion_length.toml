@@ -40,26 +40,26 @@ xlabel_fontsize = 10
 
 [variables.reco_leading_pion_length_contained]
 key = "reco_leading_pion_length"
-range = [0.0, 250.0]
+range = [0.0, 10.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.6829, 23.1999, 26.3482, 29.4682, 32.9971, 36.7541, 40.9215, 45.4557, 50.7697, 56.6052, 63.4947, 71.9971, 81.8334, 94.469, 111.3103, 141.2853, 250.0]
 #range = [0, 10]
 #nbins = 10
-xlabel = '$L_\pi$ [cm] (Contained $\pi^\pm$)'
+xlabel = '$L_\pi$ [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_pion_containment == 1'
+mask = 'reco_leading_muon_containment == 1'
 
 # --- Exiting ---
 
 [variables.reco_leading_pion_length_exiting]
 key = "reco_leading_pion_length"
-range = [0.0, 250.0]
+range = [0.0, 10.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.6829, 23.1999, 26.3482, 29.4682, 32.9971, 36.7541, 40.9215, 45.4557, 50.7697, 56.6052, 63.4947, 71.9971, 81.8334, 94.469, 111.3103, 141.2853, 250.0]
 #range = [0, 10]
 #nbins = 10
-xlabel = '$L_\pi$ [cm] (Exiting $\pi^\pm$)'
+xlabel = '$L_\pi$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_pion_containment == 0'
+mask = 'reco_leading_muon_containment == 0'

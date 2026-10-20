@@ -26,7 +26,7 @@ abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 # truth_bin_edges MUST be the template binning (binning_true_dpT.txt).
 [samples.mc.interaction_method]
 method = 'response'
-pattern = 'GENIEReWeight'
+pattern = 'GENIEReWeight|ZExpPCAWeighter'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
 truth_variable = 'true_dpT_lp_genie'

@@ -85,7 +85,12 @@ class Systematic:
         The one-bin fractional uncertainty for the systematic parameter.
         This intuitively can be thought of as the uncertainty on a simple
         count of selected candidates due to the influence of the
-        systematic parameter.
+        systematic parameter. It is the RMS of the universe yields about
+        the CV yield.
+    _spread, _shift : float or None
+        Centered standard deviation of the universe yields and the shift
+        of their mean from the CV yield, as fractions of the CV yield, so
+        that _std**2 = _spread**2 + _shift**2. None when not computed.
 
     Methods
     -------
@@ -129,6 +134,15 @@ class Systematic:
         self._variables = dict()
         self._method = method
         self._normalizer = normalizer
+        # Centered spread and mean shift of the one-bin universe yields,
+        # both as a fraction of the CV yield. Only set by the universe
+        # branch of `process`.
+        self._spread = None
+        self._shift = None
+        # Per-variable one-bin numbers {var_name: (rms, spread, shift)},
+        # each normalised to the CV yield of that variable (its own mask
+        # and range).
+        self._onebin = dict()
 
     def set_method(self, method, normalizer=None):
         """
@@ -274,8 +288,29 @@ class Systematic:
 
                 # One-bin uncertainty
                 diff = np.sum(diff, axis=0)
+                # Normalise to the CV yield of THIS variable (events that
+                # pass its mask and fall inside its range). Dividing by the
+                # number of all events in the sample would shrink the result
+                # for masked variables (e.g. exiting-only) by the fraction of
+                # events outside the mask.
+                n_cv = cv_histogram.sum()
+                if n_cv <= 0:
+                    continue
                 self._std = np.sqrt((diff @ diff.T) / (self._universe_weights.shape[1]))
-                self._std /= self._universe_weights.shape[0]
+                self._std /= n_cv
+
+                # Decompose the one-bin uncertainty above (RMS about the CV)
+                # into the centered spread of the universe yields and the
+                # shift of their mean from the CV, so that
+                # _std**2 = _spread**2 + _shift**2.
+                self._spread = np.std(diff) / n_cv
+                self._shift = np.mean(diff) / n_cv
+                self._onebin[var_name] = (self._std, self._spread, self._shift)
+
+            # Headline numbers: the sample-wide variable if there is one,
+            # otherwise the last variable processed.
+            if 'reco_dpT' in self._onebin:
+                self._std, self._spread, self._shift = self._onebin['reco_dpT']
 
             self._universe_weights = None
         # The handle is None, which is taken to be the case where we
@@ -384,6 +419,15 @@ class Systematic:
                 axis=0
             )
             new_systematic._std = np.sqrt(np.sum([sys._std**2 for sys in systematics]))
+            if all(kvar in sys._onebin for sys in systematics):
+                new_systematic._onebin[kvar] = (
+                    np.sqrt(np.sum([sys._onebin[kvar][0]**2 for sys in systematics])),
+                    np.sqrt(np.sum([sys._onebin[kvar][1]**2 for sys in systematics])),
+                    np.sum([sys._onebin[kvar][2] for sys in systematics]),
+                )
+            if all(sys._spread is not None for sys in systematics):
+                new_systematic._spread = np.sqrt(np.sum([sys._spread**2 for sys in systematics]))
+                new_systematic._shift = np.sum([sys._shift for sys in systematics])
 
         return new_systematic
 
@@ -430,6 +474,12 @@ class Systematic:
         if self._method != 'truth':
             s += f' [method={self._method}]'
         s += f'\n\tFractional uncertainty: {self._std:.2%}'
+        if getattr(self, '_spread', None) is not None:
+            s += f'\n\tSpread: {self._spread:.2%}, CV shift: {self._shift:+.2%}'
+        for _k in ('reco_dpT_contained', 'reco_dpT_exiting'):
+            if _k in getattr(self, '_onebin', {}):
+                _t, _sp, _sh = self._onebin[_k]
+                s += f'\n\t  [{_k}] total: {_t:.2%}, spread: {_sp:.2%}, CV shift: {_sh:+.2%}'
         return s
 
     @property

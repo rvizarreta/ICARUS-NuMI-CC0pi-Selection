@@ -384,6 +384,9 @@ branch = [
     { name = "spp_pion_ke_srtruth",     type = "mctruth" },
     { name = "spp_pi_cv_correction",    type = "mctruth" },
     { name = "spp_pi_one_sigma_unc",    type = "mctruth" },
+    { name = "nproton_G4",              type = "mctruth" },
+    { name = "npiplus_G4",              type = "mctruth" },
+    { name = "npiminus_G4",             type = "mctruth" },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },
@@ -515,6 +518,9 @@ branch = [
     { name = "spp_pion_ke_srtruth",     type = "mctruth" },
     { name = "spp_pi_cv_correction",    type = "mctruth" },
     { name = "spp_pi_one_sigma_unc",    type = "mctruth" },
+    { name = "nproton_G4",              type = "mctruth" },
+    { name = "npiplus_G4",              type = "mctruth" },
+    { name = "npiminus_G4",             type = "mctruth" },
 
     # Interaction-level selection variables
     { name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
@@ -656,6 +662,9 @@ branch = [
     { name = "spp_pion_ke_srtruth",     type = "mctruth" },
     { name = "spp_pi_cv_correction",    type = "mctruth" },
     { name = "spp_pi_one_sigma_unc",    type = "mctruth" },
+    { name = "nproton_G4",              type = "mctruth" },
+    { name = "npiplus_G4",              type = "mctruth" },
+    { name = "npiminus_G4",             type = "mctruth" },
 
     # Kinematic imbalance & angles
     { name = "opening_angle_deg", type = "both" },

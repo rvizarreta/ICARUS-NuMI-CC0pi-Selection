@@ -17,6 +17,26 @@ systematics = ['selected_multisigmaTree']
 [samples.mc.precompute]
 abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 
+# --- Interaction-dial systematic method -------------------------------
+# 'truth'    : dial reweights selected events directly (original behaviour).
+# 'response' : each SIGNAL event's dial weight is divided by the change in
+#              the population of its true bin, so a pure normalisation
+#              change cancels and only shape / efficiency / migration
+#              effects survive (McFarland/Giannessi approach).
+# Only dials matching `pattern` are affected: flux (hysyst_*) and detector
+# (var0*) dials keep the original treatment either way.
+# truth_bin_edges MUST be the template binning (binning_true_dpT.txt).
+[samples.mc.interaction_method]
+method = 'response'
+pattern = 'GENIEReWeight|ZExpPCAWeighter'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dpT_lp_genie'
+truth_bin_edges = [0.0, 135.0, 246.0, 352.0, 465.0, 598.0, 800.0, 10000000.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"

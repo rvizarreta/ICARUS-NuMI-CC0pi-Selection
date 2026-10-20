@@ -16,6 +16,7 @@ ANALYSES = [
     'dpT_FluxUncertainty.toml',
     'dpT_FluxUncertainty_Exp.toml',
     'dpT_DetectorUncertainty.toml',
+    'dpT_G4Uncertainty_Exp.toml',
 ]
 
 def run_one(toml_name, close_figs=True):

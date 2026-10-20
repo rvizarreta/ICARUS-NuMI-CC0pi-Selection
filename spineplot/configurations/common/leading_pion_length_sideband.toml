@@ -72,9 +72,9 @@ binning_scheme = 'custom_bins'
 custom_bins = [0.0, 4.6185, 6.5072, 8.3169, 10.4402, 12.3441, 14.4225, 16.768, 19.1111, 21.6954, 24.4391, 27.4482, 30.7871, 34.159, 38.1603, 42.3809, 47.5171, 53.2552, 59.7811, 68.1142, 78.1178, 90.7617, 108.1051, 137.0202, 250.0]
 #range = [0, 10]
 #nbins = 10
-xlabel = '$L_\pi$ [cm] (Contained $\pi^\pm$)'
+xlabel = '$L_\pi$ [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_pion_containment == 1'
+mask = 'reco_leading_muon_containment == 1'
 
 # --- Exiting ---
 
@@ -86,6 +86,6 @@ binning_scheme = 'custom_bins'
 custom_bins = [0.0, 20.3509, 26.1391, 30.2156, 34.0166, 37.4823, 41.1156, 44.396, 47.3523, 50.967, 54.7861, 58.917, 62.9228, 68.3159, 73.2925, 77.5728, 82.9475, 88.3828, 94.3261, 102.2551, 111.4455, 123.5343, 143.0916, 170.3475, 250.0]
 #range = [0, 10]
 #nbins = 10
-xlabel = '$L_\pi$ [cm] (Exiting $\pi^\pm$)'
+xlabel = '$L_\pi$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_pion_containment == 0'
+mask = 'reco_leading_muon_containment == 0'
