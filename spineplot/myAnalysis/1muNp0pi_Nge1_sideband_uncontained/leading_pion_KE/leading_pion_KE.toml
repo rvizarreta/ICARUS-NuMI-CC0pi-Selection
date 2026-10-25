@@ -1,8 +1,8 @@
 [[this_includes]]
-file = '../configurations/common/variables_uncontained.toml'
+file = '../../../configurations/common/variables_uncontained.toml'
 
 [[this_includes]]
-file = '../configurations/common/styles.toml'
+file = '../../../configurations/common/styles.toml'
 
 # SIMULATION SAMPLE
 [samples]

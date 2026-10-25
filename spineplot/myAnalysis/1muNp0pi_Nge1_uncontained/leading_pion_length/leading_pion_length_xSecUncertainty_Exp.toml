@@ -79,11 +79,6 @@ name = 'xsec_VecFFCCQEshape'
 label = 'VecFFCCQEshape'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape\b'
 
-[[systematic_recipe]]
-name = 'xsec_LowQ2Suppression'
-label = 'LowQ2Suppression'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_LowQ2Suppression\b'
-
 # --- MEC Dials ---
 [[systematic_recipe]]
 name = 'xsec_NormCCMEC'
@@ -339,8 +334,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # method = 'draw_systematics'
 # systematic_names = [
 #     'xsec_ZExpPCAB1CCQE', 'xsec_ZExpPCAB2CCQE', 'xsec_ZExpPCAB3CCQE', 'xsec_ZExpPCAB4CCQE',
-#     'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', 'xsec_LowQ2Suppression',
-#     'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+#     'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', #     'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
 #     'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
 #     'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
 #     'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',
@@ -356,6 +350,35 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # show_total = true
 # show_individual = true
 
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'leading_pion_length_xSecUncertainty_expanded'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length'
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = [
+    'xsec_ZExpPCAB1CCQE', 'xsec_ZExpPCAB2CCQE', 'xsec_ZExpPCAB3CCQE', 'xsec_ZExpPCAB4CCQE',
+    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape',     'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+    'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
+    'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
+    'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',
+    'xsec_NonRESBGvpCC1pi', 'xsec_NonRESBGvpCC2pi', 'xsec_NonRESBGvpNC1pi', 'xsec_NonRESBGvpNC2pi',
+    'xsec_NonRESBGvnCC1pi', 'xsec_NonRESBGvnCC2pi', 'xsec_NonRESBGvnNC1pi', 'xsec_NonRESBGvnNC2pi',
+    'xsec_NonRESBGvbarpCC1pi', 'xsec_NonRESBGvbarpCC2pi', 'xsec_NonRESBGvbarpNC1pi', 'xsec_NonRESBGvbarpNC2pi',
+    'xsec_NonRESBGvbarnCC1pi', 'xsec_NonRESBGvbarnCC2pi', 'xsec_NonRESBGvbarnNC1pi', 'xsec_NonRESBGvbarnNC2pi',
+    'xsec_MFP_pi', 'xsec_MFP_N', 'xsec_FrCEx_pi', 'xsec_FrCEx_N', 'xsec_FrInel_pi',
+    'xsec_FrInel_N', 'xsec_FrAbs_pi', 'xsec_FrAbs_N', 'xsec_FrPiProd_pi', 'xsec_FrPiProd_N',
+    'xsec_NormCCCOH', 'xsec_NormNCCOH', 'xsec_AhtBY', 'xsec_BhtBY', 'xsec_CV1uBY', 'xsec_CV2uBY'
+]
+fractional = true
+show_total = true
+show_individual = true
+
 [[figure]]
 name = 'leading_pion_length_xSecUncertainty_expanded_contained'
 type = 'SimpleFigure'
@@ -368,8 +391,7 @@ variable = 'reco_leading_pion_length_contained'
 method = 'draw_systematics'
 systematic_names = [
     'xsec_ZExpPCAB1CCQE', 'xsec_ZExpPCAB2CCQE', 'xsec_ZExpPCAB3CCQE', 'xsec_ZExpPCAB4CCQE',
-    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', 'xsec_LowQ2Suppression',
-    'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape',     'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
     'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
     'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
     'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',
@@ -397,8 +419,7 @@ variable = 'reco_leading_pion_length_exiting'
 method = 'draw_systematics'
 systematic_names = [
     'xsec_ZExpPCAB1CCQE', 'xsec_ZExpPCAB2CCQE', 'xsec_ZExpPCAB3CCQE', 'xsec_ZExpPCAB4CCQE',
-    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape', 'xsec_LowQ2Suppression',
-    'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
+    'xsec_RPA_CCQE', 'xsec_CoulombCCQE', 'xsec_VecFFCCQEshape',     'xsec_NormCCMEC', 'xsec_NormNCMEC', 'xsec_DecayAngMEC',
     'xsec_MaNCEL', 'xsec_EtaNCEL', 'xsec_MaCCRES', 'xsec_MvCCRES', 'xsec_MaNCRES',
     'xsec_MvNCRES', 'xsec_CC1piTPi', 'xsec_RDecBR1gamma', 'xsec_RDecBR1eta',
     'xsec_Theta_Delta2Npi', 'xsec_ThetaDelta2NRad',

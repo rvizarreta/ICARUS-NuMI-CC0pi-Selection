@@ -1,0 +1,144 @@
+[[this_includes]]
+file = '../../../configurations/common/dpT.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['selected']
+print_sys = true
+
+[samples.mc.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+# GEANT4 hadron-reinteraction (fate) systematics: one fractional covariance per particle from the
+# GUNDAM G4 ParameterSets, binned in the true leading-proton momentum or leading-pion KE
+# (binning_file). Each event is assigned to a parameter bin and the covariance is propagated
+# to every plotted variable, as the fit does (external_covariance.py, parameter-space mode).
+[[samples.mc.external_covariances]]
+name = 'G4_proton'
+label = 'G4 proton'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+condition = 'true_category != 9'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piplus'
+label = 'G4 $\pi^+$'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+condition = 'true_category != 9'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piminus'
+label = 'G4 $\pi^-$'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+condition = 'true_category != 9'
+
+[samples.mc_nonmatched]
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['selected_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+# DATA SAMPLE
+[samples.onbeam]
+key = "onbeam"
+exposure_type = "pot"
+override_exposure = 2.36124e19
+override_category = -100
+trees = ['selected']
+
+[samples.onbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
+[samples.offbeam]
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 11
+trees = ['selected']
+
+[samples.offbeam.precompute]
+abs_dpT_residual = "reco_dpT_lp - reco_dpT_lp"
+
+
+# ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
+[samples.rock]
+key = "rock"
+exposure_type = "pot"
+override_category = 11
+trees = ['selected']
+
+[samples.rock.precompute]
+abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'g4'
+label = 'Geant4 reinteraction'
+pattern = '^G4_(proton|piplus|piminus)$'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [11], [-100]]
+category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$ NC', '$\nu_\mu$CC0$\pi$ OOFV', 'Others', 'Data']
+category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = "dpT_G4Uncertainty_expanded"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["G4_proton", "G4_piplus", "G4_piminus"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_G4Uncertainty_expanded_contained"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_contained"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["G4_proton", "G4_piplus", "G4_piminus"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpT_G4Uncertainty_expanded_exiting"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpT_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["G4_proton", "G4_piplus", "G4_piminus"]
+fractional = true
+show_total = true
+show_individual = true

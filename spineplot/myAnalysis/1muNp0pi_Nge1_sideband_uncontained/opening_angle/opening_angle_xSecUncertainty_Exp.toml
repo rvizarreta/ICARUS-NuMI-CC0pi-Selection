@@ -15,7 +15,7 @@ systematics = ['sideband_multisigmaTree']
 
 # --- Interaction-dial systematic method -------------------------------
 [samples.mc.interaction_method]
-method = 'response'
+method = 'truth'  # McFarland 'response' method disabled 2026-10-25
 pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
@@ -89,11 +89,6 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_CoulombCCQE\b'
 name = 'VecFFCCQEshape'
 label = 'VecFFCCQEshape'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape\b'
-
-[[systematic_recipe]]
-name = 'LowQ2Suppression'
-label = 'LowQ2Suppression'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_LowQ2Suppression\b'
 
 [[systematic_recipe]]
 name = 'NormCCMEC'
@@ -344,10 +339,27 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # yrange = [0.0, 0.45]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
-# systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'LowQ2Suppression', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
+# systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
 # fractional = true
 # show_total = true
 # show_individual = true
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'opening_angle_xSecUncertainty_Exp'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_opening_angle'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
+fractional = true
+show_total = true
+show_individual = true
 
 [[figure]]
 name = 'opening_angle_xSecUncertainty_Exp_contained'
@@ -360,7 +372,7 @@ variable = 'reco_opening_angle_contained'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'LowQ2Suppression', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
+systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
 fractional = true
 show_total = true
 show_individual = true
@@ -376,7 +388,7 @@ variable = 'reco_opening_angle_exiting'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'LowQ2Suppression', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
+systematic_names = ['ZExpPCAB1CCQE', 'ZExpPCAB2CCQE', 'ZExpPCAB3CCQE', 'ZExpPCAB4CCQE', 'RPA_CCQE', 'CoulombCCQE', 'VecFFCCQEshape', 'NormCCMEC', 'NormNCMEC', 'DecayAngMEC', 'MaNCEL', 'EtaNCEL', 'MaCCRES', 'MvCCRES', 'MaNCRES', 'MvNCRES', 'CC1piTPi', 'RDecBR1gamma', 'RDecBR1eta', 'Theta_Delta2Npi', 'ThetaDelta2NRad', 'NonRESBGvpCC1pi', 'NonRESBGvpCC2pi', 'NonRESBGvpNC1pi', 'NonRESBGvpNC2pi', 'NonRESBGvnCC1pi', 'NonRESBGvnCC2pi', 'NonRESBGvnNC1pi', 'NonRESBGvnNC2pi', 'NonRESBGvbarpCC1pi', 'NonRESBGvbarpCC2pi', 'NonRESBGvbarpNC1pi', 'NonRESBGvbarpNC2pi', 'NonRESBGvbarnCC1pi', 'NonRESBGvbarnCC2pi', 'NonRESBGvbarnNC1pi', 'NonRESBGvbarnNC2pi', 'MFP_pi', 'MFP_N', 'FrCEx_pi', 'FrInel_pi', 'FrAbs_pi', 'FrPiProd_pi', 'FrCEx_N', 'FrInel_N', 'FrAbs_N', 'FrPiProd_N', 'NormCCCOH', 'NormNCCOH', 'AhtBY', 'BhtBY', 'CV1uBY', 'CV2uBY']
 fractional = true
 show_total = true
 show_individual = true

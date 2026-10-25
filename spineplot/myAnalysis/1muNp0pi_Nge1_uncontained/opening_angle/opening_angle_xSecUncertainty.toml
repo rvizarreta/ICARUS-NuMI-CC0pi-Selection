@@ -22,7 +22,7 @@ systematics = ['selected_multisigmaTree']
 # truth_bin_edges is the current combined true_opening_angle binning (no
 # overflow needed: [-1,1] is a closed physical range, not a reconstruction cut).
 [samples.mc.interaction_method]
-method = 'response'
+method = 'truth'  # McFarland 'response' method disabled 2026-10-25
 pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
@@ -65,7 +65,7 @@ path = '.'
 [[systematic_recipe]]
 name = 'xsec_ccqe'
 label = 'CCQE'
-pattern = '\b(GENIEReWeight_SBN_v1_multisigma_(RPA_CCQE|CoulombCCQE|VecFFCCQEshape|LowQ2Suppression)|ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b[1-4])\b'
+pattern = '\b(GENIEReWeight_SBN_v1_multisigma_(RPA_CCQE|CoulombCCQE|VecFFCCQEshape)|ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b[1-4])\b'
 
 [[systematic_recipe]]
 name = 'xsec_mec'
@@ -115,6 +115,23 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # fractional = true
 # show_total = true
 # show_individual = true
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'opening_angle_xSecUncertainty'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_opening_angle'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['xsec_ccqe', 'xsec_mec', 'xsec_res', 'xsec_nonres', 'xsec_fsi', 'xsec_other']
+fractional = true
+show_total = true
+show_individual = true
 
 [[figure]]
 name = 'opening_angle_xSecUncertainty_contained'

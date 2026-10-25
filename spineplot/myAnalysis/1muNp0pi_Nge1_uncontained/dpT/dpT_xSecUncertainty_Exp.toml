@@ -27,7 +27,7 @@ abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 # (var0*) dials keep the original treatment either way.
 # truth_bin_edges MUST be the template binning (binning_true_dpT.txt).
 [samples.mc.interaction_method]
-method = 'response'
+method = 'truth'  # McFarland 'response' method disabled 2026-10-25
 pattern = 'GENIEReWeight|ZExpPCAWeighter'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
@@ -115,11 +115,6 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_CoulombCCQE\b'
 name = 'xsec_VecFFCCQEshape'
 label = 'VecFFCCQEshape'
 pattern = '\bGENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape\b'
-
-[[systematic_recipe]]
-name = 'xsec_LowQ2Suppression'
-label = 'LowQ2Suppression'
-pattern = '\bGENIEReWeight_SBN_v1_multisigma_LowQ2Suppression\b'
 
 # --- MEC Dials ---
 [[systematic_recipe]]
@@ -376,8 +371,7 @@ variable = "reco_dpT"
 method = "draw_systematics"
 systematic_names = [
     "xsec_ZExpPCAB1CCQE", "xsec_ZExpPCAB2CCQE", "xsec_ZExpPCAB3CCQE", "xsec_ZExpPCAB4CCQE",
-    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
-    "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
+    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape",     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
     "xsec_MvNCRES", "xsec_CC1piTPi", "xsec_RDecBR1gamma", "xsec_RDecBR1eta",
     "xsec_Theta_Delta2Npi", "xsec_ThetaDelta2NRad",
@@ -405,8 +399,7 @@ variable = "reco_dpT_contained"
 method = "draw_systematics"
 systematic_names = [
     "xsec_ZExpPCAB1CCQE", "xsec_ZExpPCAB2CCQE", "xsec_ZExpPCAB3CCQE", "xsec_ZExpPCAB4CCQE",
-    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
-    "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
+    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape",     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
     "xsec_MvNCRES", "xsec_CC1piTPi", "xsec_RDecBR1gamma", "xsec_RDecBR1eta",
     "xsec_Theta_Delta2Npi", "xsec_ThetaDelta2NRad",
@@ -434,8 +427,7 @@ variable = "reco_dpT_exiting"
 method = "draw_systematics"
 systematic_names = [
     "xsec_ZExpPCAB1CCQE", "xsec_ZExpPCAB2CCQE", "xsec_ZExpPCAB3CCQE", "xsec_ZExpPCAB4CCQE",
-    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape", "xsec_LowQ2Suppression",
-    "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
+    "xsec_RPA_CCQE", "xsec_CoulombCCQE", "xsec_VecFFCCQEshape",     "xsec_NormCCMEC", "xsec_NormNCMEC", "xsec_DecayAngMEC",
     "xsec_MaNCEL", "xsec_EtaNCEL", "xsec_MaCCRES", "xsec_MvCCRES", "xsec_MaNCRES",
     "xsec_MvNCRES", "xsec_CC1piTPi", "xsec_RDecBR1gamma", "xsec_RDecBR1eta",
     "xsec_Theta_Delta2Npi", "xsec_ThetaDelta2NRad",

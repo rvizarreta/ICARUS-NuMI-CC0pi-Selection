@@ -68,7 +68,7 @@ pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'All Systematics (No G4)'
+label = 'All Systematics'
 pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]
@@ -109,6 +109,19 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'leading_pion_length_mc_only'
+type = 'SimpleFigure'
+style = 'selected_icarus_mc'
+figsize = [5, 5]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+
 [[figure]]
 name = 'leading_pion_length_contained_mc_only'
 type = 'SimpleFigure'
@@ -133,6 +146,19 @@ variable = 'reco_leading_pion_length_exiting'
 yrange = 1.7
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'leading_pion_length'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_data'
+figsize = [5, 6]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length'
+yrange = 1.7
+ytitle = 'Candidates / cm'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+
 [[figure]]
 name = 'leading_pion_length_contained'
 type = 'SimpleFigure'
@@ -174,6 +200,23 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 # fractional = true
 # show_total = true
 # show_individual = true
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'systematics_leading_pion_length'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_pion_length'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+fractional = true
+show_total = true
+show_individual = true
 
 [[figure]]
 name = 'systematics_leading_pion_length_contained'

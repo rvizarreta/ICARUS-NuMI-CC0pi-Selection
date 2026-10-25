@@ -114,6 +114,23 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # show_total = true
 # show_individual = true
 
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'leading_muon_momentum_detSysUncertainty'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_leading_muon_momentum'
+yrange = [0.0, 0.25]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['det_induction_gain', 'det_coherent_noise', 'det_intrinsic_noise', 'det_lifetime', 'det_scintillation', 'det_induction_gap', 'det_yz_uniformity', 'det_recombination', 'cat_bending']
+fractional = true
+show_total = true
+show_individual = true
+
 [[figure]]
 name = 'leading_muon_momentum_detSysUncertainty_contained'
 type = 'SimpleFigure'

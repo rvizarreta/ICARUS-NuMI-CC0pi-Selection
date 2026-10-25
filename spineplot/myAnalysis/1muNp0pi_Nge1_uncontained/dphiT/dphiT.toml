@@ -109,7 +109,7 @@ pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
 name = 'MC_total'
-label = 'All Systematics (No G4)'
+label = 'All Systematics'
 pattern = '^(flux|xsec|stats|detsys)$'
 
 [analysis]

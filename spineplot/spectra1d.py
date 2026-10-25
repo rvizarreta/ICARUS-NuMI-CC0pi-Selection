@@ -684,6 +684,11 @@ class SpineSpectra1D(SpineSpectra):
 
         labels = list(self._plotdata.keys())
         bincenters = self._binedges[labels[0]][:-1] + np.diff(self._binedges[labels[0]]) / 2
+        edges = self._binedges[labels[0]]
+
+        def _step(y, **kw):
+            # Draw over full bin widths (edges), not bin centers
+            ax.step(edges, np.append(y, y[-1]), where='post', **kw)
 
         # Get the prediction (central value) for normalization
         histogram_mask = [li for li, label in enumerate(labels)
@@ -772,11 +777,11 @@ class SpineSpectra1D(SpineSpectra):
 
                 if is_stat:
                     # Plot statistical as black dots
-                    ax.step(bincenters, uncertainty, where='mid', label=label, linestyle=':',
+                    _step(uncertainty, label=label, linestyle=':',
                             color='black', linewidth=1)
                 else:
                     # Plot systematic as colored line
-                    ax.step(bincenters, uncertainty, where='mid', label=label,
+                    _step(uncertainty, label=label,
                             color=colors[idx], linewidth=1.5, alpha=0.7)
 
                 # Add to total
@@ -804,17 +809,17 @@ class SpineSpectra1D(SpineSpectra):
                         syst_only_uncertainty = np.where(y_pred > 0, syst_only_uncertainty / y_pred, 0)
 
                 syst_mean = np.mean(syst_only_uncertainty)
-                ax.step(bincenters, syst_only_uncertainty, where='mid', label=f'Syst. ({syst_mean:.1%})',
+                _step(syst_only_uncertainty, label=f'Syst. ({syst_mean:.1%})',
                         color='black', linewidth=1.5, linestyle='--')
 
                 # Total includes stat, so plot as solid line
                 total_mean = np.mean(total_uncertainty)
-                ax.step(bincenters, total_uncertainty, where='mid', label=f'Total Uncertainty ({total_mean:.1%})',
+                _step(total_uncertainty, label=f'Total Uncertainty ({total_mean:.1%})',
                         color='black', linewidth=1.5, linestyle='-')
             else:
                 # No stat component, just plot total as dashed
                 total_mean = np.mean(total_uncertainty)
-                ax.step(bincenters, total_uncertainty, where='mid', label=f'Total Systematic ({total_mean:.1%})',
+                _step(total_uncertainty, label=f'Total Systematic ({total_mean:.1%})',
                         color='black', linewidth=1.5, linestyle='--')
 
         # Legend: inside for small legends, outside-right for large ones

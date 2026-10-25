@@ -77,6 +77,23 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # show_total = true
 # show_individual = true
 
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'opening_angle_FluxUncertainty'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5, 4]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_opening_angle'
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = 'draw_systematics'
+systematic_names = ['beam_focusing', 'hadron_prod']
+fractional = true
+show_total = true
+show_individual = true
+
 [[figure]]
 name = 'opening_angle_FluxUncertainty_contained'
 type = 'SimpleFigure'

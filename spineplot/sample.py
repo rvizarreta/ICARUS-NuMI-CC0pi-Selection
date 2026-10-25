@@ -135,9 +135,12 @@ class Sample:
         if external_covariances is not None:
             for ext in external_covariances:
                 self._systematics[ext['name']] = ExternalFractionalCovariance(
-                    ext['name'], ext['files'],
+                    ext['name'], ext.get('files'),
                     binning_files=ext.get('binning_files'),
-                    label=ext.get('label'))
+                    label=ext.get('label'),
+                    file=ext.get('file'),
+                    binning_file=ext.get('binning_file'),
+                    condition=ext.get('condition'))
 
         # Add statistical uncertainty. This can always be added to the
         # sample, because it is not dependent on some external source
