@@ -104,7 +104,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'leading_muon_length_xSecUncertainty'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length'
@@ -120,7 +120,7 @@ show_individual = true
 name = 'leading_muon_length_xSecUncertainty_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_contained'
@@ -136,7 +136,7 @@ show_individual = true
 name = 'leading_muon_length_xSecUncertainty_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_exiting'

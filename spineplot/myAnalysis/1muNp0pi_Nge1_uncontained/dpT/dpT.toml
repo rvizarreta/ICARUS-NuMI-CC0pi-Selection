@@ -38,7 +38,7 @@ override_exposure = 7.178390e20
 trees = ['selected']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
-systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+#systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 [samples.mc.precompute]
 abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
@@ -70,26 +70,32 @@ seed = 0
 # GUNDAM G4 ParameterSets, binned in the true leading-proton momentum or leading-pion KE
 # (binning_file). Each event is assigned to a parameter bin and the covariance is propagated
 # to every plotted variable, as the fit does (external_covariance.py, parameter-space mode).
-[[samples.mc.external_covariances]]
-name = 'G4_proton'
-label = 'G4 proton'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
-condition = 'true_category != 9'
-
-[[samples.mc.external_covariances]]
-name = 'G4_piplus'
-label = 'G4 $\pi^+$'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
-condition = 'true_category != 9'
-
-[[samples.mc.external_covariances]]
-name = 'G4_piminus'
-label = 'G4 $\pi^-$'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
-condition = 'true_category != 9'
+#[[samples.mc.external_covariances]]
+#name = 'G4_proton'
+#label = 'G4 proton'
+##file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+#file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+##binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+#binning_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+#condition = 'true_category != 9'
+#
+#[[samples.mc.external_covariances]]
+#name = 'G4_piplus'
+#label = 'G4 $\pi^+$'
+##file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+#file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+##binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+#binning_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+#condition = 'true_category != 9'
+#
+#[[samples.mc.external_covariances]]
+#name = 'G4_piminus'
+#label = 'G4 $\pi^-$'
+##file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+#file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+##binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+#binning_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+#condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
 key = "full"
@@ -152,7 +158,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 #pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
@@ -163,7 +169,7 @@ pattern = '^(flux|xsec|stats|detsys)$'
 
 [[systematic_recipe]]
 name = 'g4'
-label = 'Geant4 reinteraction'
+label = 'Geant4'
 pattern = '^G4_(proton|piplus|piminus)$'
 
 [[systematic_recipe]]
@@ -205,11 +211,11 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'dpT_reco'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'
-yrange = 1.6
+yrange = 1.8
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
@@ -217,11 +223,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_reco_contained'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_contained'
-yrange = 1.6
+yrange = 1.8
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
@@ -229,11 +235,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_reco_exiting'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_exiting'
-yrange = 1.6
+yrange = 1.8
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
@@ -259,7 +265,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_reco_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'
@@ -271,7 +277,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_reco_contained_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_contained'
@@ -284,7 +290,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_reco_exiting_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT_exiting'
@@ -345,7 +351,7 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 name = "systematics_dpT"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
@@ -360,7 +366,7 @@ show_individual = true
 name = "systematics_dpT_contained"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT_contained"
@@ -375,7 +381,7 @@ show_individual = true
 name = "systematics_dpT_exiting"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT_exiting"
@@ -417,7 +423,7 @@ show_individual = true
 name = 'dpT_absolute_residual'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_dpT_residual'
@@ -428,7 +434,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_absolute_residual_contained'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_dpT_residual_contained'
@@ -439,7 +445,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'dpT_absolute_residual_exiting'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_dpT_residual_exiting'

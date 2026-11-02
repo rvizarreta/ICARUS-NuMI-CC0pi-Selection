@@ -1,12 +1,17 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
+from matplotlib.colors import LogNorm, LinearSegmentedColormap
+
+# Smearing-matrix colormap taken from the slide palette: white for empty
+# cells, then bright blue -> royal blue -> navy for the largest fractions.
+SLIDES_CMAP = LinearSegmentedColormap.from_list(
+    'slides_blue', ['#FFFFFF', '#2A64F4', '#081ABB', '#081E5B'])
 
 from spectra import SpineSpectra
 from style import Style
 from variable import Variable
-from utilities import mark_pot, mark_preliminary, draw_error_boxes
+from utilities import mark_pot, mark_preliminary, mark_containment, draw_error_boxes
 
 class SpineSpectra2D(SpineSpectra):
     """
@@ -348,7 +353,7 @@ class SpineSpectra2D(SpineSpectra):
 
             # Create the plot using pcolormesh for correct variable-width bin handling
             im = ax.pcolormesh(x_edges, y_edges, normalized_values.T,
-                               cmap='Reds', vmin=0, vmax=0.25)
+                               cmap=SLIDES_CMAP, vmin=0, vmax=0.25)
 
             # Annotate each cell, subject to two suppressions. Both exist because a
             # label that cannot be read is worse than no label: it overlaps its
@@ -401,7 +406,10 @@ class SpineSpectra2D(SpineSpectra):
                             continue
                     x_pos = (min(x_edges[j + 1], vis_x[1]) + max(x_edges[j], vis_x[0])) / 2
                     y_pos = (min(y_edges[i + 1], vis_y[1]) + max(y_edges[i], vis_y[0])) / 2
-                    text_color = 'white' if percentage > 12.5 else 'black'
+                    # White text on dark cells, black on light ones, judged
+                    # from the luminance of the cell color actually drawn.
+                    r, g, b, _ = im.cmap(im.norm(percentage / 100.0))
+                    text_color = 'white' if (0.299 * r + 0.587 * g + 0.114 * b) < 0.5 else 'black'
                     ax.text(x_pos, y_pos, f'{percentage:.1f}%',
                             ha='center', va='center',
                             color=text_color, fontsize=6, weight='bold')
@@ -410,9 +418,9 @@ class SpineSpectra2D(SpineSpectra):
             ax.set_ylim(*vis_y)
 
             # Set labels and formatting
-            ax.set_xlabel(self._variables[0]._xlabel if self._xtitle is None else self._xtitle, fontsize=12,
+            ax.set_xlabel(self._variables[0].hist_xlabel if self._xtitle is None else self._xtitle, fontsize=12,
                           weight='bold')
-            ax.set_ylabel(self._variables[1]._xlabel if self._ytitle is None else self._ytitle, fontsize=12,
+            ax.set_ylabel(self._variables[1].hist_xlabel if self._ytitle is None else self._ytitle, fontsize=12,
                           weight='bold')
 
             ax.tick_params(axis='both', which='major',
@@ -499,7 +507,16 @@ class SpineSpectra2D(SpineSpectra):
         if style.mark_pot and (show_option not in ['smearing', '2d']):
             mark_pot(ax, self._exposure, style.mark_pot_horizontal)
         if style.mark_preliminary is not None:
-            mark_preliminary(ax, style.mark_preliminary, hadj=0.035 if (style.scilimits and not logy) is not None else 0)
+            # Same title format as the 1D data/MC plots: bold black ICARUS,
+            # bold colored Data/MC, 16 pt.
+            mark_preliminary(ax, style.mark_preliminary,
+                             hadj=0.035 if (style.scilimits and not logy) is not None else 0,
+                             fontsize=10, va='baseline', black_prefix=True)
+        # The containment selection is not part of the axis labels any more;
+        # for the smearing matrices it goes where the POT goes on the 1D plots.
+        if show_option == 'smearing' and self._variables[0].containment_label is not None:
+            # vadj lifts the box so its bottom edge clears the top of the axes.
+            mark_containment(ax, self._variables[0].containment_label, vadj=0.012)
 
         # Set the axis to be logarithmic if requested.
         if logx:

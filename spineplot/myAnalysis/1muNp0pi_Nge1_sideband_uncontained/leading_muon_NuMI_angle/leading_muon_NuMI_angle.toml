@@ -143,7 +143,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
@@ -200,7 +200,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'leading_muon_angle_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle'
@@ -211,7 +211,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_contained_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle_contained'
@@ -223,7 +223,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_exiting_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle_exiting'
@@ -234,33 +234,33 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle'
-yrange = 1.6
+yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_muon_angle_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle_contained'
-yrange = 1.6
+yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_muon_angle_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle_exiting'
-yrange = 1.6
+yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # [[figure]]
@@ -278,7 +278,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_theta_residual_deg'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'theta_mu_residual_deg'
@@ -289,7 +289,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_theta_residual_deg_contained'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'theta_mu_residual_deg_contained'
@@ -299,7 +299,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_theta_residual_deg_exiting'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'theta_mu_residual_deg_exiting'
@@ -364,7 +364,7 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 name = 'leading_muon_angle_absolute_residual'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_leading_muon_NuMI_angle_residual'
@@ -375,7 +375,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_absolute_residual_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_leading_muon_NuMI_angle_residual_contained'
@@ -386,7 +386,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_angle_absolute_residual_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_leading_muon_NuMI_angle_residual_exiting'
@@ -416,7 +416,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'systematics_leading_muon_NuMI_angle'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle'
@@ -432,7 +432,7 @@ show_individual = true
 name = 'systematics_leading_muon_NuMI_angle_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle_contained'
@@ -448,7 +448,7 @@ show_individual = true
 name = 'systematics_leading_muon_NuMI_angle_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_angle_exiting'

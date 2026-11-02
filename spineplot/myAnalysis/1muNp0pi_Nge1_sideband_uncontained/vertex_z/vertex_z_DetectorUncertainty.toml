@@ -117,7 +117,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'vertex_z_DetectorUncertainty'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z'
@@ -133,7 +133,7 @@ show_individual = true
 name = 'vertex_z_DetectorUncertainty_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_contained'
@@ -149,7 +149,7 @@ show_individual = true
 name = 'vertex_z_DetectorUncertainty_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_exiting'

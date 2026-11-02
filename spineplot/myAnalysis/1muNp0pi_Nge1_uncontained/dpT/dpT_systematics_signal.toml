@@ -59,7 +59,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
@@ -71,7 +71,7 @@ pattern = '^(flux|xsec|stats|detsys)$'
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
 category_assignment = [[0], [1], [2]]
-category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.']
+category_labels = ['CC0$\pi$ QE', 'CC0$\pi$ 2p2h', 'CC0$\pi$ $\pi$ abs.']
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7']
 category_types = ['histogram', 'histogram', 'histogram']
 
@@ -96,7 +96,7 @@ category_types = ['histogram', 'histogram', 'histogram']
 name = "systematics_dpT_signal"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT"
@@ -112,7 +112,7 @@ show_individual = true
 name = "systematics_dpT_signal_contained"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT_contained"
@@ -128,7 +128,7 @@ show_individual = true
 name = "systematics_dpT_signal_exiting"
 type = "SimpleFigure"
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dpT_exiting"

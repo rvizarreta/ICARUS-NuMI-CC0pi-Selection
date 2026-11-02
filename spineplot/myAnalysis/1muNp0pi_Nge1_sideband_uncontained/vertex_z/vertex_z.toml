@@ -112,7 +112,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
@@ -170,7 +170,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'vertex_z_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z'
@@ -182,7 +182,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z_contained_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_contained'
@@ -195,7 +195,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z_exiting_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_exiting'
@@ -207,11 +207,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z'
-yrange = 1.7
+yrange = 1.8
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
@@ -219,11 +219,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_contained'
-yrange = 1.7
+yrange = 1.8
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
@@ -231,11 +231,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_exiting'
-yrange = 1.7
+yrange = 1.8
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
@@ -298,7 +298,7 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 name = 'vertex_z_absolute_residual'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_vertex_z_residual'
@@ -309,7 +309,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z_absolute_residual_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_vertex_z_residual_contained'
@@ -320,7 +320,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'vertex_z_absolute_residual_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'abs_vertex_z_residual_exiting'
@@ -350,7 +350,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'systematics_vertex_z'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z'
@@ -366,7 +366,7 @@ show_individual = true
 name = 'systematics_vertex_z_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_contained'
@@ -382,7 +382,7 @@ show_individual = true
 name = 'systematics_vertex_z_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_vertex_z_exiting'

@@ -5,8 +5,7 @@ markers = ['o', '^', 's', 'P', 'D']
 default_figsize = [6.4,4.8]
 title = '' #'$\bf{ICARUS}$ $CC 1\mu Np 0\pi$'
 mark_pot = true
-mark_preliminary = """$\\bf{ICARUS\\cdot NuMI}$ Simulation
-Work-in-Progress"""
+mark_preliminary = "$\\bf{ICARUS}$ MC\n$\\nu_\\mu$CC0$\\pi$ Signal Selection"
 plot_kwargs = {'histtype' = 'barstacked', 'stacked' = true}
 
 [[style]]
@@ -16,8 +15,7 @@ markers = ['o', '^', 's', 'P', 'D']
 default_figsize = [6.4,4.8]
 title = '' #'$\bf{ICARUS}$ $CC 1\mu Np 0\pi$ $(N\geq2)$'
 mark_pot = true
-mark_preliminary = """$\\bf{ICARUS\\cdot NuMI}$ Data (10% Run 2)
-Work-in-Progress"""
+mark_preliminary = "$\\bf{ICARUS}$ DATA\n$\\nu_\\mu$CC0$\\pi$ Signal Selection"
 plot_kwargs = {'histtype' = 'barstacked', 'stacked' = true}
 
 [[style]]
@@ -27,8 +25,7 @@ markers = ['o', '^', 's', 'P', 'D']
 default_figsize = [6.4,4.8]
 title = '' #'$\bf{ICARUS}$ $CC 1\mu Np 0\pi$'
 mark_pot = true
-mark_preliminary = """$\\bf{ICARUS\\cdot NuMI}$ Simulation
-Work-in-Progress | $\\pi^\\pm$ Sideband"""
+mark_preliminary = "$\\bf{ICARUS}$ MC\n$\\nu_\\mu$CC0$\\pi$ $\\pi^\\pm$ Sideband"
 plot_kwargs = {'histtype' = 'barstacked', 'stacked' = true}
 
 [[style]]
@@ -38,6 +35,5 @@ markers = ['o', '^', 's', 'P', 'D']
 default_figsize = [6.4,4.8]
 title = '' #'$\bf{ICARUS}$ $CC 1\mu Np 0\pi$ $(N\geq2)$'
 mark_pot = true
-mark_preliminary = """$\\bf{ICARUS\\cdot NuMI}$ Data (10% Run 2)
-Work-in-Progress | $\\pi^\\pm$ Sideband"""
+mark_preliminary = "$\\bf{ICARUS}$ DATA\n$\\nu_\\mu$CC0$\\pi$ $\\pi^\\pm$ Sideband"
 plot_kwargs = {'histtype' = 'barstacked', 'stacked' = true}

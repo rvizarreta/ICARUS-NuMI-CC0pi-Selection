@@ -12,7 +12,7 @@ exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected']
 print_sys = true
-systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
+#systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 [samples.mc_nonmatched]
 key = "full"
@@ -62,7 +62,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
@@ -84,11 +84,11 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'proton_multiplicity'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity'
-yrange = 1.6
+yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
@@ -98,7 +98,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'proton_multiplicity_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity'
@@ -110,7 +110,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'proton_multiplicity_contained_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity_contained'
@@ -122,7 +122,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'proton_multiplicity_exiting_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity_exiting'
@@ -132,20 +132,20 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'proton_multiplicity_contained'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity_contained'
-yrange = 1.6
+yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}
 
 [[figure]]
 name = 'proton_multiplicity_exiting'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_proton_multiplicity_exiting'
-yrange = 1.6
+yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True'}

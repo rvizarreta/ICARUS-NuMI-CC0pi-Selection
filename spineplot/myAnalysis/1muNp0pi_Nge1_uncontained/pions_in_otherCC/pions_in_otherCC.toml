@@ -39,7 +39,7 @@ category_types = ['histogram', 'scatter']
 name = 'no_charged_pions'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'no_charged_pions'

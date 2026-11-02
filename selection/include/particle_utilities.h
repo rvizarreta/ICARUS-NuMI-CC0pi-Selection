@@ -139,6 +139,26 @@ namespace utilities
     }
 
     /**
+     * @brief Returns the unit vector of the assumed neutrino direction.
+     * @details For BNB this is the z-axis. For NuMI it is the unit vector
+     * pointing from the NuMI target to the interaction vertex, using the same
+     * target position (in cm, detector coordinates) as transverse_momentum.
+     * A preprocessor macro (BEAM_IS_NUMI) selects the beam.
+     * @param vtx the position of the interaction vertex as a tuple (three-vector).
+     * @return the unit vector of the neutrino direction.
+     */
+    three_vector beam_direction(const three_vector & vtx)
+    {
+        if constexpr(!BEAM_IS_NUMI)
+            return std::make_tuple(0.0, 0.0, 1.0);
+        else
+        {
+            three_vector beam = std::make_tuple(31512.0380 + std::get<0>(vtx), 3364.4912 + std::get<1>(vtx), 73363.2532 + std::get<2>(vtx));
+            return normalize(beam);
+        }
+    }
+
+    /**
      * @brief Calculates the transverse component of the particle's momentum.
      * @details The transverse component of the momentum is calculated with
      * respect to either the BNB beam direction or the NuMI beam direction. In

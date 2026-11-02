@@ -215,7 +215,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'leading_pion_length_FluxUncertainty_expanded'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length'
@@ -237,7 +237,7 @@ show_individual = true
 name = 'leading_pion_length_FluxUncertainty_expanded_contained'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length_contained'
@@ -259,7 +259,7 @@ show_individual = true
 name = 'leading_pion_length_FluxUncertainty_expanded_exiting'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length_exiting'

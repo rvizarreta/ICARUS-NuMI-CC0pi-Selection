@@ -447,6 +447,68 @@ namespace vars
     REGISTER_VAR_SCOPE(RegistrationScope::Both, dpT_lp, dpT_lp);
 
     /**
+     * @brief Variable for the delta p_TT component of the transverse
+     * kinematic imbalance, using the leading charged lepton and proton.
+     * @details The imbalance vector is dpT = pT(lepton) + pT(proton), the
+     * same vector whose magnitude is dpT_lp. This variable is its (signed)
+     * projection on the axis perpendicular to the lepton in the transverse
+     * plane, t = (nu x p_lepton) / |nu x p_lepton|, where nu is the neutrino
+     * direction (z-axis for BNB, target-to-vertex direction for NuMI; see
+     * @ref utilities::beam_direction). The component along the lepton
+     * transverse direction (dpT_TL) is the remainder, so that
+     * dpTT^2 + dpTL^2 = dpT_lp^2.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to apply the variable on.
+     * @return the signed dpTT of the interaction, or PLACEHOLDERVALUE if
+     * there is no lepton or no proton.
+     * @note The sign depends on the orientation of t, fixed here by
+     * nu x p_lepton.
+     */
+    template<class T>
+    double dpTT_lp(const T & obj)
+    {
+        utilities::three_vector l_pt = {0, 0, 0};
+        utilities::three_vector p_pt = {0, 0, 0};
+        utilities::three_vector l_mom = {0, 0, 0};
+        utilities::three_vector l_vtx = {0, 0, 0};
+        double l_ke(0), p_ke(0);
+        for(const auto & p : obj.particles)
+        {
+            if(pcuts::final_state_signal(p))
+            {
+                // Same leading lepton / leading proton choice as dpT_lp
+                if((pvars::pid(p) == pvars::kElectron || pvars::pid(p) == pvars::kMuon) && pvars::ke(p) > l_ke)
+                {
+                    l_ke = pvars::ke(p);
+                    utilities::three_vector momentum = {pvars::px(p), pvars::py(p), pvars::pz(p)};
+                    utilities::three_vector vtx = {pvars::start_x(p), pvars::start_y(p), pvars::start_z(p)};
+                    l_mom = momentum;
+                    l_vtx = vtx;
+                    l_pt = utilities::transverse_momentum(momentum, vtx);
+                }
+                else if(pvars::pid(p) == pvars::kProton && pvars::ke(p) > p_ke)
+                {
+                    p_ke = pvars::ke(p);
+                    utilities::three_vector momentum = {pvars::px(p), pvars::py(p), pvars::pz(p)};
+                    utilities::three_vector vtx = {pvars::start_x(p), pvars::start_y(p), pvars::start_z(p)};
+                    p_pt = utilities::transverse_momentum(momentum, vtx);
+                }
+            }
+        }
+        if(l_ke == 0 || p_ke == 0)
+            return PLACEHOLDERVALUE;
+
+        // Axis perpendicular to the lepton in the transverse plane
+        utilities::three_vector axis = utilities::cross_product(utilities::beam_direction(l_vtx), l_mom);
+        if(utilities::magnitude(axis) == 0)
+            return PLACEHOLDERVALUE;
+        axis = utilities::normalize(axis);
+
+        return utilities::dot_product(utilities::add(l_pt, p_pt), axis);
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::Both, dpTT_lp, dpTT_lp);
+
+    /**
      * @brief Variable for dphi_T of the interaction.
      * @details dphi_T is a transverse kinematic imbalance variable defined
      * using the transverse momentum of the leading muon and the total hadronic

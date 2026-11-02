@@ -131,7 +131,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = "dalphaT_xSecUncertainty"
 type = "SimpleFigure"
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dalphaT"
@@ -147,7 +147,7 @@ show_individual = true
 name = "dalphaT_xSecUncertainty_contained"
 type = "SimpleFigure"
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dalphaT_contained"
@@ -163,7 +163,7 @@ show_individual = true
 name = "dalphaT_xSecUncertainty_exiting"
 type = "SimpleFigure"
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = "SpineSpectra1D"
 variable = "reco_dalphaT_exiting"

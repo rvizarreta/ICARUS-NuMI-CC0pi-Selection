@@ -64,7 +64,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 #pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
@@ -86,7 +86,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'dpT_reco'
 type = 'SimpleFigure'
 style = 'selected_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpT'

@@ -63,7 +63,7 @@ pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
 
 [[systematic_recipe]]
 name = 'detsys'
-label = 'Detector Systematics'
+label = 'Detector'
 pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
 
 [[systematic_recipe]]
@@ -112,7 +112,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'leading_muon_length_reco_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length'
@@ -124,7 +124,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_length_reco_contained_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_contained'
@@ -137,7 +137,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_length_reco_exiting_mc_only'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 5]
+figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_exiting'
@@ -149,11 +149,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_length_reco'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length'
-yrange = 1.7
+yrange = 1.8
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
@@ -161,11 +161,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_length_reco_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_contained'
-yrange = 1.7
+yrange = 1.8
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
@@ -173,11 +173,11 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'leading_muon_length_reco_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_data'
-figsize = [5, 6]
+figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_exiting'
-yrange = 1.7
+yrange = 1.8
 ytitle = 'Candidates / cm'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
@@ -202,7 +202,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 name = 'systematics_leading_muon_length'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length'
@@ -218,7 +218,7 @@ show_individual = true
 name = 'systematics_leading_muon_length_contained'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_contained'
@@ -234,7 +234,7 @@ show_individual = true
 name = 'systematics_leading_muon_length_exiting'
 type = 'SimpleFigure'
 style = 'selected_sideband_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_muon_length_exiting'

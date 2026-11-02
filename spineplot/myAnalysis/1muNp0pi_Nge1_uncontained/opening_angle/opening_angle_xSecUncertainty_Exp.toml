@@ -356,7 +356,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 name = 'opening_angle_xSecUncertainty_Exp'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle'
@@ -372,7 +372,7 @@ show_individual = true
 name = 'opening_angle_xSecUncertainty_Exp_contained'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_contained'
@@ -388,7 +388,7 @@ show_individual = true
 name = 'opening_angle_xSecUncertainty_Exp_exiting'
 type = 'SimpleFigure'
 style = 'selected_icarus_mc'
-figsize = [5, 4]
+figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_exiting'

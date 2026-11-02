@@ -110,6 +110,14 @@ path = "/pnfs/icarus/persistent/users/kyjung/nuSyst/nuSyst_ZEXPPCA/*.root" # 741
 ismc = true
 disable = false
 #
+
+# INCLUDE 100% UNBLINDED DATA
+[[sample]]
+name = "onbeam_unblinded_full"
+path = "/pnfs/sbn/persistent/users/dihans/Run2_onbeam_v09_89_01_02p02/Unblind_flatcafs/*.root"
+ismc = false
+disable = false
+
 [[sample]]
 name = "rock"
 path = "/pnfs/icarus/persistent/users/spine/NuMI/FHCv09_89_01_02p02_Rock_muons/*.root"
@@ -393,6 +401,7 @@ branch = [
     { name = "opening_angle_cos", type = "both" },
     { name = "dpT",               type = "both" },
     { name = "dpT_lp",            type = "both" },
+    { name = "dpTT_lp",           type = "both" },
     { name = "dphiT_deg",         type = "both" },
     { name = "dalphaT_deg",       type = "both" },
     { name = "dphiT",             type = "both" },
@@ -535,6 +544,7 @@ branch = [
     { name = "opening_angle_cos", type = "both" },
     { name = "dpT",               type = "both" },
     { name = "dpT_lp",            type = "both" },
+    { name = "dpTT_lp",           type = "both" },
     { name = "dphiT_deg",         type = "both" },
     { name = "dalphaT_deg",       type = "both" },
     { name = "dpL",               type = "both" },
@@ -671,6 +681,7 @@ branch = [
     { name = "opening_angle_cos",   type = "both" },
     { name = "dpT",               type = "both" },
     { name = "dpT_lp",            type = "both" },
+    { name = "dpTT_lp",           type = "both" },
     { name = "dphiT_deg",         type = "both" },
     { name = "dalphaT_deg",       type = "both" },
     { name = "dphiT",             type = "both" },

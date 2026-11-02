@@ -1,3 +1,5 @@
+import re
+
 import numpy as np
 import pandas as pd
 
@@ -149,6 +151,62 @@ class Variable:
                     self._bin_edges[g] = np.linspace(self._range[0], self._range[1], self._nbins+1)
                     self._bin_centers[g] = 0.5*(self._bin_edges[g][1:] + self._bin_edges[g][:-1])
                     self._bin_widths[g] = self._bin_edges[g][1:] - self._bin_edges[g][:-1]
+
+    # Trailing "(Contained + Exiting $\mu^\pm$)"-type suffix of an x label.
+    _CONTAINMENT_RE = re.compile(
+        r'\s*\(\s*(Contained \+ Exiting|Contained|Exiting)\s*\$[^$]*\$\s*\)\s*$')
+    # Leading "Reco $...$" / "True $...$" of an x label.
+    _RECO_TRUE_RE = re.compile(r'^(Reco|True)\s+(\$[^$]+\$)(.*)$')
+
+    @property
+    def hist_xlabel(self):
+        """
+        The x label used on 1D data/MC histograms. It is `xlabel` with
+        (i) the muon-containment suffix removed (it is drawn as a text
+        box on the plot instead, see `containment_label`) and (ii) a
+        leading "Reco $X$" / "True $X$" rewritten as "$X^{reco}$" /
+        "$X^{true}$". Labels that do not follow these patterns are
+        returned unchanged.
+        """
+        label = self._xlabel
+        if not isinstance(label, str):
+            return label
+        label = self._CONTAINMENT_RE.sub('', label)
+        m = self._RECO_TRUE_RE.match(label)
+        if m:
+            tag = m.group(1).lower()
+            math = m.group(2)[:-1] + r'^{\mathrm{' + tag + r'}}$'
+            label = math + m.group(3)
+        return label
+
+    @property
+    def containment_label(self):
+        """
+        The muon-containment selection quoted in `xlabel`, as a
+        mathtext string ready to be drawn on a plot, or None if the
+        label does not quote one.
+        """
+        if not isinstance(self._xlabel, str):
+            return None
+        m = self._CONTAINMENT_RE.search(self._xlabel)
+        if m is None:
+            return None
+        text = m.group(1).replace(' ', r'\ ')
+        return r'$\mathbf{' + text + r'\ \mu^{\pm}}$'
+
+    @property
+    def containment_text(self):
+        """
+        The muon-containment selection quoted in `xlabel` as plain text
+        with a mathtext mu^pm (e.g. 'Contained + Exiting $\\mu^{\\pm}$'),
+        or None if the label does not quote one.
+        """
+        if not isinstance(self._xlabel, str):
+            return None
+        m = self._CONTAINMENT_RE.search(self._xlabel)
+        if m is None:
+            return None
+        return m.group(1) + r' $\mu^{\pm}$'
 
     @property
     def mask(self):

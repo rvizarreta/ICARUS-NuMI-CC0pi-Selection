@@ -6,7 +6,11 @@ from spectra import SpineSpectra
 from style import Style
 from variable import Variable
 from systematic import Systematic
-from utilities import mark_pot, mark_preliminary, draw_error_boxes
+from utilities import mark_pot, mark_preliminary, mark_containment, draw_error_boxes
+
+# Generator configuration quoted on the plots (technote, MC sample section).
+GENIE_VERSION = 'GENIE v3.04.00'
+GENIE_TUNE = 'AR23_20i_00_000'
 
 class SpineSpectra1D(SpineSpectra):
     """
@@ -222,7 +226,7 @@ class SpineSpectra1D(SpineSpectra):
         if draw_ratio:
             # Split the current axes into two subplots
             fig = ax.figure
-            gs = fig.add_gridspec(2, 1, height_ratios=[3, 1], hspace=0.0)
+            gs = fig.add_gridspec(2, 1, height_ratios=[3, 0.825], hspace=0.0)
             ax.remove()  # Remove the original axis
             ax_main = fig.add_subplot(gs[0])
             ax_ratio = fig.add_subplot(gs[1], sharex=ax_main)
@@ -230,7 +234,7 @@ class SpineSpectra1D(SpineSpectra):
         else:
             ax_ratio = None
 
-        ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
+        ax.set_xlabel(self._variable.hist_xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
         # per_bin_width only makes sense for un-normalized spectra.
         per_bin_width = per_bin_width and not show_fraction and not normalize
         ylabel = 'Fraction' if show_fraction else 'Candidates'
@@ -342,6 +346,26 @@ class SpineSpectra1D(SpineSpectra):
                     chi2_val = float(diff @ np.linalg.solve(cov_chi2, diff))
                     self._chi2_result = (chi2_val, len(diff))
 
+                    # Shape-only chi2. The prediction m is rescaled to the
+                    # data total, m'_i = (D/T) m_i, with T = sum(m) and
+                    # D = sum(d). Propagating the covariance M of m through
+                    # this rescaling, dm'_i/dm_k = (D/T)(delta_ik - m_i/T),
+                    # gives M' = (D/T)^2 P M P^T, with P_ik = delta_ik - m_i/T.
+                    # The Poisson data term diag(max(d,1)) is added as in
+                    # the total chi2. One degree of freedom is lost to the
+                    # normalization, so ndf = n - 1.
+                    self._chi2_shape_result = None
+                    T_pred = float(np.sum(y_pred_chi2))
+                    D_data = float(np.sum(y_data_chi2))
+                    if T_pred > 0 and D_data > 0 and len(diff) > 1:
+                        n_bins = len(diff)
+                        f_norm = D_data / T_pred
+                        P = np.eye(n_bins) - np.outer(y_pred_chi2, np.ones(n_bins)) / T_pred
+                        cov_shape = f_norm**2 * (P @ cov @ P.T) + np.diag(np.maximum(y_data_chi2, 1.0))
+                        diff_shape = y_data_chi2 - f_norm * y_pred_chi2
+                        chi2_shape_val = float(diff_shape @ np.linalg.solve(cov_shape, diff_shape))
+                        self._chi2_shape_result = (chi2_shape_val, n_bins - 1)
+
                 x = reduce(bincenters)[0]
                 y = scale * np.sum(reduce(data), axis=0)
                 xerr = [x / 2 for x in binwidths[0]]
@@ -424,6 +448,12 @@ class SpineSpectra1D(SpineSpectra):
                                 capthick=1.5,
                                 elinewidth=1.5,
                                 label=label)
+        # Legend centered on the top of the axes. borderaxespad is the gap
+        # (in units of the legend font size) between the legend and the
+        # axes border it is anchored to.
+        legend_kw = dict(fontsize=10, ncol=2, loc='upper center',
+                         bbox_to_anchor=(0.5, 1.0), borderaxespad=1.2,
+                         labelspacing=0.3)
         if invert_stack_order:
             h, l = ax.get_legend_handles_labels()
             if draw_error:
@@ -434,8 +464,8 @@ class SpineSpectra1D(SpineSpectra):
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
-                ax.legend(h_reversed, l_reversed, fontsize=9, ncol=2, loc='upper left', labelspacing=0.3)
-                ppfx_text = ax.text(0.95, 0.65, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ax.legend(h_reversed, l_reversed, **legend_kw)
+                ppfx_text = ax.text(0.90, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -446,8 +476,8 @@ class SpineSpectra1D(SpineSpectra):
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
-                ax.legend(h_reversed, l_reversed, fontsize=9, ncol=2, loc='upper left', labelspacing=0.3)
-                ppfx_text = ax.text(0.95, 0.65, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ax.legend(h_reversed, l_reversed, **legend_kw)
+                ppfx_text = ax.text(0.90, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
                         horizontalalignment='right',
@@ -460,25 +490,57 @@ class SpineSpectra1D(SpineSpectra):
             h.append(plt.Line2D([0], [0], color='none'))
             l.append('')
             h.append(plt.Line2D([0], [0], color='none'))
-            ax.legend(h, l, fontsize=9, ncol=2, loc='upper left', labelspacing=0.3)
-            ppfx_text = ax.text(0.95, 0.65, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+            ax.legend(h, l, **legend_kw)
+            ppfx_text = ax.text(0.90, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                     transform=ax.transAxes,
                     fontsize=7, color='black',
                     horizontalalignment='right',
                     verticalalignment='top')
 
-        # Annotate the data-MC chi2/ndf just below the PPFX text,
-        # left-aligned with the PPFX text's left edge. Anchoring to the
-        # Text artist's bbox (xycoords=ppfx_text) is resolved at draw
-        # time, so the alignment is exact.
+        # Text block on the right-hand side, containment box, chi2, chi2_shape and GENIE are right-aligned to the
+        # right edge of the PPFX text. Each line is anchored to the bbox of the previous
+        # Text artist (xycoords=<artist>), which is resolved at draw time,
+        # so the alignment is exact:
+        #   containment (above PPFX)
+        #   PPFX
+        #   chi2/ndf
+        #   chi2_shape/ndf
+        #   GENIE version + tune
+        containment = self._variable.containment_label
+        if containment is not None:
+            ax.annotate(containment,
+                        xy=(1, 1), xycoords=ppfx_text,
+                        xytext=(0, 8), textcoords='offset points',
+                        fontsize=8, color='black',
+                        horizontalalignment='right',
+                        verticalalignment='bottom',
+                        bbox=dict(boxstyle='square,pad=0.35', fc='white',
+                                  ec='black', lw=0.8))
+
+        prev_text = ppfx_text
         if draw_error and draw_data and getattr(self, '_chi2_result', None) is not None:
             chi2_val, ndf = self._chi2_result
-            ax.annotate(rf'$\chi^2/\mathrm{{ndf}} = {chi2_val:.1f}/{ndf}$',
-                        xy=(0, 0), xycoords=ppfx_text,
-                        xytext=(0, -2), textcoords='offset points',
-                        fontsize=9, color='black',
-                        horizontalalignment='left',
-                        verticalalignment='top')
+            prev_text = ax.annotate(rf'$\chi^2/\mathrm{{ndf}} = {chi2_val:.1f}/{ndf}$',
+                                    xy=(1, 0), xycoords=prev_text,
+                                    xytext=(0, -2), textcoords='offset points',
+                                    fontsize=legend_kw['fontsize'], color='black',
+                                    horizontalalignment='right',
+                                    verticalalignment='top')
+            if getattr(self, '_chi2_shape_result', None) is not None:
+                chi2_shape_val, ndf_shape = self._chi2_shape_result
+                prev_text = ax.annotate(rf'$\chi^2_{{\mathrm{{shape}}}}/\mathrm{{ndf}} = {chi2_shape_val:.1f}/{ndf_shape}$',
+                                        xy=(1, 0), xycoords=prev_text,
+                                        xytext=(0, -1), textcoords='offset points',
+                                        fontsize=legend_kw['fontsize'], color='black',
+                                        horizontalalignment='right',
+                                        verticalalignment='top')
+
+        ax.annotate(f'{GENIE_VERSION}\n{GENIE_TUNE}',
+                    xy=(1, 0), xycoords=prev_text,
+                    xytext=(0, -3), textcoords='offset points',
+                    fontsize=legend_kw['fontsize'], color='gray',
+                    horizontalalignment='right',
+                    verticalalignment='top')
 
         # Automatically extend y-axis by 35% to make room for legend
         #if self._yrange is None:
@@ -554,27 +616,35 @@ class SpineSpectra1D(SpineSpectra):
                 rel_stat_err = np.where(mc_prediction_ratio > 0, mc_stat_err / mc_prediction_ratio, 0)
                 rel_total_err = np.where(mc_prediction_ratio > 0, mc_total_err / mc_prediction_ratio, 0)
             xerr_ratio_all = np.array(binwidths[scatter_mask[0]]) / 2
+            # Stat.: dim gray, semi-transparent (original style). Stat.+Syst.:
+            # identical to the uncertainty band of the main histogram (light
+            # gray, gray 'xxx' hatching).
+            stat_band_color = 'dimgray'
+            stat_band_alpha = 0.6
+            total_band_color = 'lightgray'   # same as the main histogram's band
             if draw_error and np.any(rel_total_err > 0):
                 draw_error_boxes(ax_ratio, data_centers, np.ones(len(data_centers)),
                                  xerr_ratio_all, rel_total_err,
-                                 facecolor='lightgray', edgecolor='gray', alpha=1.0,
-                                 hatch='xxx', linewidth=0.0)
+                                 facecolor=total_band_color, edgecolor='gray',
+                                 alpha=1.0, hatch='xxx', linewidth=0.0)
             if np.any(rel_stat_err > 0):
                 draw_error_boxes(ax_ratio, data_centers, np.ones(len(data_centers)),
                                  xerr_ratio_all, rel_stat_err,
-                                 facecolor='dimgray', edgecolor='none', alpha=0.6,
-                                 linewidth=0.0)
+                                 facecolor=stat_band_color, edgecolor='none',
+                                 alpha=stat_band_alpha, linewidth=0.0)
 
             # Legend for the ratio bands
-            ratio_handles = [plt.Rectangle((0, 0), 1, 1, fc='dimgray', ec='none', alpha=0.6)]
+            ratio_handles = [plt.Rectangle((0, 0), 1, 1, fc=stat_band_color, ec='none', alpha=stat_band_alpha)]
             ratio_labels = ['Stat.']
             if draw_error:
-                ratio_handles.append(plt.Rectangle((0, 0), 1, 1, fc='lightgray', ec='gray',
+                ratio_handles.append(plt.Rectangle((0, 0), 1, 1, fc=total_band_color, ec='gray',
                                                    alpha=0.6, hatch='xxx', linewidth=0.8))
                 ratio_labels.append('Stat.+Syst.')
+            # borderaxespad (in units of the font size) pushes the legend
+            # away from the top edge of the ratio panel.
             ax_ratio.legend(ratio_handles, ratio_labels, fontsize=8, ncol=2,
-                            loc='upper right', frameon=False,
-                            columnspacing=0.8, handletextpad=0.4)
+                            loc='upper left', frameon=False,
+                            columnspacing=0.8, handletextpad=0.4, borderaxespad=1.2)
 
             # Only plot data points where data exists
             if np.any(data_mask):
@@ -587,7 +657,7 @@ class SpineSpectra1D(SpineSpectra):
                                   color='black', capsize=2, elinewidth=1)
 
             ax_ratio.set_ylabel('Data/MC', fontsize=12, weight='bold')
-            ax_ratio.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle,
+            ax_ratio.set_xlabel(self._variable.hist_xlabel if self._xtitle is None else self._xtitle,
                                 fontsize=self._variable._xlabel_fontsize, weight='bold')
             ax_ratio.set_ylim(*(ratio_yrange if ratio_yrange is not None else (0.0, 2.0)))
             # Match the main panel tick style so the two panels read as
@@ -642,7 +712,11 @@ class SpineSpectra1D(SpineSpectra):
         if style.mark_pot:
             mark_pot(ax, self._exposure, style.mark_pot_horizontal, vadj=vadj)
         if style.mark_preliminary is not None:
-            mark_preliminary(ax, style.mark_preliminary, hadj=hadj, vadj=vadj)
+            # Experiment label at 10 pt, the same size as the POT label and the second title line. It is baseline-aligned
+            # (the POT label above is drawn with va='baseline' at the same y),
+            # so both labels sit at the same distance from the axes.
+            mark_preliminary(ax, style.mark_preliminary, hadj=hadj, vadj=vadj, fontsize=10, va='baseline',
+                             black_prefix=True)
 
     def draw_systematics(self, ax, style, systematic_names=None,
                          fractional=True, show_total=True,
@@ -670,7 +744,7 @@ class SpineSpectra1D(SpineSpectra):
             is True.
         """
         # Set axis labels
-        ax.set_xlabel(self._variable._xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
+        ax.set_xlabel(self._variable.hist_xlabel if self._xtitle is None else self._xtitle, fontsize=self._variable._xlabel_fontsize, weight='bold')
         if fractional:
             ax.set_ylabel('Fractional Uncertainty', fontsize=12, weight='bold')
         else:
@@ -828,7 +902,9 @@ class SpineSpectra1D(SpineSpectra):
         legend_threshold = 10
 
         if n_entries <= legend_threshold:
-            ax.legend(handles, labels_text, loc='upper left', fontsize=8, ncol=2)
+            # Same legend format and padding as the data/MC histograms.
+            ax.legend(handles, labels_text, fontsize=10, ncol=2, loc='upper center',
+                      bbox_to_anchor=(0.5, 1.0), borderaxespad=1.2, labelspacing=0.3)
         else:
             ncol = 1 if n_entries <= 20 else 2
             ax.legend(
@@ -884,8 +960,50 @@ class SpineSpectra1D(SpineSpectra):
             )
             ax.set_ylim(0, y_data_max * headroom)
 
+        # The containment selection is no longer part of the x label. The
+        # box goes inside the axes, right-aligned, just below the legend.
+        # The y range is then extended so that legend and box sit entirely
+        # above the highest curve. This is done before the title and POT are
+        # placed, because those are positioned in data coordinates.
+        cont_box = None
+        if self._variable.containment_label is not None:
+            fig = ax.figure
+            box_top = 0.97   # legend outside the axes: top-right corner
+            if n_entries <= legend_threshold:
+                fig.canvas.draw()
+                renderer = fig.canvas.get_renderer()
+                ax_px = ax.get_window_extent(renderer)
+                leg_px = ax.get_legend().get_window_extent(renderer)
+                # Legend bottom edge, in axes fraction; box starts 1.5% below.
+                box_top = (leg_px.y0 - ax_px.y0) / ax_px.height - 0.015
+            cont_box = mark_containment(ax, self._variable.containment_label, inside_y=box_top)
+
+        if not isinstance(self._yrange, (tuple, list)):
+            fig = ax.figure
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
+            ax_px = ax.get_window_extent(renderer)
+            if n_entries <= legend_threshold:
+                # Lowest point used by legend and box, in axes fraction.
+                lowest = ax.get_legend().get_window_extent(renderer).y0
+                if cont_box is not None:
+                    lowest = min(lowest, cont_box.get_bbox_patch().get_window_extent(renderer).y0)
+                free_frac = (lowest - ax_px.y0) / ax_px.height - 0.07   # 7% margin between curves and box
+                ylo, yhi = ax.get_ylim()
+                y_data_max = max(line.get_ydata().max() for line in ax.get_lines()
+                                 if len(line.get_ydata()) > 0)
+                # (y_data_max - ylo) / (top - ylo) = free_frac, solved for top.
+                if free_frac > 0.2:
+                    top = ylo + (y_data_max - ylo) / free_frac
+                    if top > yhi:
+                        ax.set_ylim(ylo, top)
+
         # Add POT and preliminary labels if needed
         if style.mark_pot:
             mark_pot(ax, self._exposure, style.mark_pot_horizontal)
         if style.mark_preliminary is not None:
-            mark_preliminary(ax, style.mark_preliminary)
+            # Same title format as draw(): bold black ICARUS, bold colored
+            # Data/MC, 16 pt, baseline-aligned with the POT label.
+            mark_preliminary(ax, style.mark_preliminary, fontsize=10, va='baseline',
+                             black_prefix=True)
+
