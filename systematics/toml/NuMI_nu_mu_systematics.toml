@@ -67,14 +67,14 @@ name = 'sideband'
 action = 'copy'
 
 [[tree]]
-origin = 'events/onbeam/selected'
-destination = 'events/onbeam/'
+origin = 'events/onbeam_unblinded_full/selected'
+destination = 'events/onbeam_unblinded_full/'
 name = 'selected'
 action = 'copy'
 
 [[tree]]
-origin = 'events/onbeam/sideband'
-destination = 'events/onbeam/'
+origin = 'events/onbeam_unblinded_full/sideband'
+destination = 'events/onbeam_unblinded_full/'
 name = 'sideband'
 action = 'copy'
 
