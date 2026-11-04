@@ -8,6 +8,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -15,7 +16,33 @@ trees = ['sideband']
 print_sys = true
 systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
+# GEANT4 hadron-reinteraction (fate) systematics: one fractional covariance per particle from the
+# GUNDAM G4 ParameterSets, binned in the true leading-proton momentum or leading-pion KE
+# (binning_file). Each event is assigned to a parameter bin and the covariance is propagated
+# to every plotted variable, as the fit does (external_covariance.py, parameter-space mode).
+[[samples.mc.external_covariances]]
+name = 'G4_proton'
+label = 'G4 proton'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+condition = 'true_category != 9'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piplus'
+label = 'G4 $\pi^+$'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+condition = 'true_category != 9'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piminus'
+label = 'G4 $\pi^-$'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+condition = 'true_category != 9'
+
 [samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -23,13 +50,15 @@ trees = ['sideband_nonmatched']
 
 # DATA SAMPLE
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.36124e19 # CORRECTED POT
+#override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 
 [samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -38,6 +67,7 @@ trees = ['sideband']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
@@ -71,6 +101,16 @@ name = 'MC_total'
 label = 'All Systematics'
 pattern = '^(flux|xsec|stats|detsys)$'
 
+[[systematic_recipe]]
+name = 'g4'
+label = 'Geant4'
+pattern = '^G4_(proton|piplus|piminus)$'
+
+[[systematic_recipe]]
+name = 'MC_total_G4'
+label = 'All Systematics'
+pattern = '^(flux|xsec|stats|detsys|g4)$'
+
 [analysis]
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
@@ -91,7 +131,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # variable = 'reco_leading_pion_length'
 # yrange = 1.7
 # ytitle = 'Candidates / cm'
-# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
@@ -106,46 +146,46 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # variable = 'reco_leading_pion_length'
 # yrange = 1.7
 # ytitle = 'Candidates / cm'
-# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 # Combined (contained + exiting muons).
 [[figure]]
 name = 'leading_pion_length_mc_only'
 type = 'SimpleFigure'
-style = 'selected_icarus_mc'
+style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length'
 yrange = 1.7
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 [[figure]]
 name = 'leading_pion_length_contained_mc_only'
 type = 'SimpleFigure'
-style = 'selected_icarus_mc'
+style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length_contained'
 yrange = 1.7
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, exiting muons.
 [[figure]]
 name = 'leading_pion_length_exiting_mc_only'
 type = 'SimpleFigure'
-style = 'selected_icarus_mc'
+style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length_exiting'
 yrange = 1.7
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 # Combined (contained + exiting muons).
 [[figure]]
 name = 'leading_pion_length'
@@ -157,7 +197,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length'
 yrange = 1.8
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_pion_length_contained'
@@ -169,7 +209,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length_contained'
 yrange = 1.8
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 [[figure]]
 name = 'leading_pion_length_exiting'
@@ -181,7 +221,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_pion_length_exiting'
 yrange = 1.8
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # --- Systematics ---
 
@@ -196,7 +236,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 # yrange = [0.0, 0.45]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
-# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 # fractional = true
 # show_total = true
 # show_individual = true
@@ -213,7 +253,7 @@ variable = 'reco_leading_pion_length'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 fractional = true
 show_total = true
 show_individual = true
@@ -229,7 +269,7 @@ variable = 'reco_leading_pion_length_contained'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 fractional = true
 show_total = true
 show_individual = true
@@ -245,7 +285,7 @@ variable = 'reco_leading_pion_length_exiting'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
-systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 fractional = true
 show_total = true
 show_individual = true

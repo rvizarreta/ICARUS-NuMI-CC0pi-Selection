@@ -1,0 +1,199 @@
+[output]
+path = "."
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[samples.signal]
+#key = "nominal"
+key = "full"
+exposure_type = "pot"
+override_exposure = 2.36124e19 # CORRECTED POT
+trees = ["signal"]
+presel = "true_leading_proton_momentum >= 0.35"   # new signal definition: leading proton p >= 0.35 GeV/c (was 0.31)
+
+[samples.signal.precompute]
+no_photons_cut = "reco_photon_multiplicity == 0"
+no_electrons_cut = "reco_electron_multiplicity == 0"
+no_pions_cut = "reco_pion_multiplicity == 0"
+single_muon_cut = "reco_muon_multiplicity == 1"
+multiple_protons_cut = "reco_proton_multiplicity > 0"
+
+[analysis]
+ordinate_sample = "signal"
+category_branch = "true_category"
+category_assignment = [[0.0, 1.0, 2.0], [4.0, 5.0, 6.0, 7.0], [8.0], [3.0], [9.0]]
+category_labels = ['1$\mu$Np0$\pi$', 'Other CC', '$\nu$ NC', 'OOFV', 'Cosmic']
+category_colors = ['darkgreen','C1', 'C3', 'C5', 'C4']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram']
+
+### Variables ------------------------------------
+
+[variables.true_neutrino_energy]
+key = "true_neutrino_energy"
+range = [0.4, 3.0]
+nbins = 15
+binning_scheme = "equal_width"
+xlabel = "True Neutrino Energy [GeV]"
+
+[variables.true_leading_muon_momentum]
+key = "true_leading_muon_momentum"
+range = [0.226, 3.0] # lower bound = KE threshold 143.425 MeV in momentum
+nbins = 15
+xlabel = 'True $p_\mu$ [GeV/c]'
+
+[variables.true_leading_proton_momentum]
+key = "true_leading_proton_momentum"
+range = [0.35, 1.2]
+nbins = 15
+xlabel = 'True $p_p$ [GeV/c]'
+
+[variables.true_leading_proton_momentum_zoom]
+key = "true_leading_proton_momentum"
+range = [0.35, 1.0]
+nbins = 22
+xlabel = 'True $p_p$ [GeV/c]'
+
+[variables.true_leading_muon_ke]
+key = "true_leading_muon_ke"
+range = [143.425, 2896.0] # KE equivalent of p_mu = 3 GeV/c
+nbins = 15
+xlabel = "True $KE_\\mu$ [MeV]"
+
+[variables.true_dphiT_deg]
+key = "true_dphiT_deg"
+range = [0,180]
+nbins = 25
+xlabel = 'True $\delta \phi_T$ [degrees]'
+
+### Efficiency table ------------------------------------
+[[figure]]
+name = "icarus_sig_1muNp0pi_efficiency_table_pp035"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 3.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_neutrino_energy"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "table", percentage = true, show_seqeff = true, show_unseqeff = true, npts = 50000}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
+
+### True muon momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_muon_momentum_pp035"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_muon_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
+
+### True proton momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_proton_momentum_pp035"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_proton_momentum"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
+
+### True proton momentum (threshold zoom) ------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_proton_momentum_zoom_pp035"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_proton_momentum_zoom"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
+
+### True dphiT momentum ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_dphiT_pp035"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_dphiT_deg"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
+
+### True muon KE ------------------------------------
+
+[[figure]]
+name = "efficiency_plot_true_leading_muon_ke_pp035"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.0, 4.0]
+
+[[figure.artists]]
+type = "SpineEfficiency"
+variable = "true_leading_muon_ke"
+groups = ['1$\mu$Np0$\pi$']
+draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
+
+[figure.artists.cuts]
+reco_fiducial_cut = "Fiducial"
+no_photons_cut = "No Photons"
+no_electrons_cut = "No Electrons"
+single_muon_cut = "Single Muon"
+no_pions_cut = "No Charged Pions"
+multiple_protons_cut = "At Least One Proton"
+

@@ -1,0 +1,180 @@
+[[this_includes]]
+file = '../../../configurations/common/dpTT_lp.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['sideband']
+print_sys = true
+systematics = ['sideband_variationTree']
+
+[samples.mc.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+[samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['sideband_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+# DATA SAMPLE
+[samples.onbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
+exposure_type = "pot"
+#override_exposure = 2.36124e19 # CORRECTED POT
+override_category = -100
+trees = ['sideband']
+
+[samples.onbeam.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
+
+[samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 11
+trees = ['sideband']
+
+[samples.offbeam.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
+
+
+# ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
+[samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "rock"
+exposure_type = "pot"
+override_category = 11
+trees = ['selected']
+
+[samples.rock.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'det_induction_gain'
+label = 'Induction Gain'
+pattern = '\bvar01\b'
+
+[[systematic_recipe]]
+name = 'det_coherent_noise'
+label = 'TPC Coherent Noise'
+pattern = '\bvar02\b'
+
+[[systematic_recipe]]
+name = 'det_intrinsic_noise'
+label = 'TPC Intrinsic Noise'
+pattern = '\bvar03\b'
+
+[[systematic_recipe]]
+name = 'det_lifetime'
+label = 'Lifetime'
+pattern = '\bvar04\b'
+
+[[systematic_recipe]]
+name = 'det_scintillation'
+label = 'Scintillation (PMT QE)'
+pattern = '\bvar05\b'
+
+[[systematic_recipe]]
+name = 'det_induction_gap'
+label = 'Induction Gap'
+pattern = '\bvar06\b'
+
+[[systematic_recipe]]
+name = 'det_yz_uniformity'
+label = 'YZ Uniformity'
+pattern = '\bvar07\b'
+
+[[systematic_recipe]]
+name = 'det_recombination'
+label = 'Recombination'
+pattern = '\bvar08\b'
+
+[[systematic_recipe]]
+name = 'cat_bending'
+label = 'Cathode Bending'
+pattern = '\bvar09\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [11], [-100]]
+category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$ NC', '$\nu_\mu$CC0$\pi$ OOFV', 'Others', 'Data']
+category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
+
+# [[figure]]
+# name = "dpTT_lp_detSysUncertainty"
+# type = "SimpleFigure"
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dpTT_lp"
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+# fractional = true
+# show_total = true
+# show_individual = true
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = "dpTT_lp_detSysUncertainty"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpTT_lp_detSysUncertainty_contained"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp_contained"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpTT_lp_detSysUncertainty_exiting"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["det_induction_gain", "det_coherent_noise", "det_intrinsic_noise", "det_lifetime", "det_scintillation", "det_induction_gap", "det_yz_uniformity", "det_recombination", "cat_bending"]
+fractional = true
+show_total = true
+show_individual = true

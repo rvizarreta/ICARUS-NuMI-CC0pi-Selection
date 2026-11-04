@@ -55,6 +55,7 @@ mask = 'reco_leading_muon_containment == 0'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -116,6 +117,7 @@ binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/bin
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -127,9 +129,10 @@ theta_mup_residual_deg = "reco_opening_angle_deg - true_opening_angle_deg"
 
 # DATA SAMPLE
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.36124e19 # CORRECTED POT
+#override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
@@ -138,6 +141,7 @@ abs_opening_angle_residual = "reco_opening_angle_cos - reco_opening_angle_cos"
 theta_mup_residual_deg = "reco_opening_angle_deg - reco_opening_angle_deg"
 
 [samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -150,6 +154,7 @@ theta_mup_residual_deg = "reco_opening_angle_deg - reco_opening_angle_deg"
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
@@ -224,7 +229,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # variable = 'reco_opening_angle'
 # ytitle = 'Candidates / unit cos'
 # yrange = 1.6
-# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
@@ -240,7 +245,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # variable = 'reco_opening_angle'
 # ytitle = 'Candidates / unit cos'
 # yrange = 1.6
-# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 # Combined (contained + exiting muons).
@@ -254,7 +259,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_opening_angle'
 ytitle = 'Candidates / unit cos'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_contained_mc_only'
@@ -266,7 +271,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_contained'
 ytitle = 'Candidates / unit cos'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false, 'text_side' = 'left'}
 
 # MC-only, exiting muons.
 [[figure]]
@@ -279,7 +284,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_exiting'
 ytitle = 'Candidates / unit cos'
 yrange = 1.6
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false, 'text_side' = 'left'}
 # Combined (contained + exiting muons).
 [[figure]]
 name = 'opening_angle'
@@ -291,7 +296,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_opening_angle'
 ytitle = 'Candidates / unit cos'
 yrange = 1.8
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_contained'
@@ -303,7 +308,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_contained'
 ytitle = 'Candidates / unit cos'
 yrange = 1.8
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_exiting'
@@ -315,7 +320,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_opening_angle_exiting'
 ytitle = 'Candidates / unit cos'
 yrange = 1.8
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true, 'text_side' = 'left'}
 
 # --- Angle residual in degrees ---
 
@@ -340,7 +345,7 @@ figsize = [5.5, 6.0]
 type = 'SpineSpectra1D'
 variable = 'theta_mup_residual_deg'
 yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_theta_residual_deg_contained'
@@ -351,7 +356,7 @@ figsize = [5.5, 6.0]
 type = 'SpineSpectra1D'
 variable = 'theta_mup_residual_deg_contained'
 yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_theta_residual_deg_exiting'
@@ -362,7 +367,7 @@ figsize = [5.5, 6.0]
 type = 'SpineSpectra1D'
 variable = 'theta_mup_residual_deg_exiting'
 yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false, 'text_side' = 'left'}
 
 # --- Smearing matrix ---
 
@@ -430,7 +435,7 @@ figsize = [5.5, 6.0]
 type = 'SpineSpectra1D'
 variable = 'abs_opening_angle_residual'
 yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_absolute_residual_contained'
@@ -441,7 +446,7 @@ figsize = [5.5, 6.0]
 type = 'SpineSpectra1D'
 variable = 'abs_opening_angle_residual_contained'
 yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false, 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_absolute_residual_exiting'
@@ -452,7 +457,7 @@ figsize = [5.5, 6.0]
 type = 'SpineSpectra1D'
 variable = 'abs_opening_angle_residual_exiting'
 yrange = 1.3
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false, 'text_side' = 'left'}
 
 # --- Systematics ---
 
@@ -467,7 +472,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 # yrange = [0.0, 0.45]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
-# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 # fractional = true
 # show_total = true
 # show_individual = true

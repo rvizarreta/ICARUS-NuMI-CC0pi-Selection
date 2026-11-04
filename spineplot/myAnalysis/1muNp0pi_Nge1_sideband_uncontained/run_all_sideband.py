@@ -9,6 +9,7 @@ workspace_root = os.path.dirname(os.path.abspath(__file__))
 OBSERVABLES = [
     'dalphaT',
     'dpT',
+    'dpTT_lp',
     'dphiT',
     'leading_muon_NuMI_angle',
     'leading_muon_length',

@@ -1,24 +1,40 @@
-# Reconstructed vertex y binning (2026-07-31). RECO HISTOGRAMS ONLY.
+# Vertex y binning (2026-11-03). CROSS-SECTION VARIABLE, COMBINED (contained + exiting) SAMPLE ONLY.
 #
-# RANGE CHANGED: [-200, 200] -> [-160, 115]. The data span only [-156.8, 110.0] and
-# the distribution is ASYMMETRIC about zero, so the old symmetric range left a third
-# of the axis blank, most of it above y = 110.
+# f_diag does NOT choose the bins here. The vertex y resolution is ~0.2 cm (median |reco-true|), so any
+# bin of several cm loses almost nothing to migration and f_diag stays far above the 0.70 used for the
+# angular variables (it is 0.96-0.98 for the bins below). Statistics set the width instead.
 #
-# CRITERION: EQUAL-POPULATION, 24 bins, sized at full POT 2.36124e20.
-# The distribution is flat, so this comes out close to uniform anyway - widths span
-# only 10.2-16.9 cm (ratio 1.7), which is the check that equal-population is harmless
-# here (unlike vertex_x, where a detector gap makes it actively wrong).
-# Per-bin counts at full POT: 1274-1299, occupancy ratio 1.02.
+# CRITERION: 20 truth bins (same count as vertex x), EQUAL-POPULATION in truth: edges are weighted
+# quantiles (ppfx_cv_weight) of the true vertex y of signal events, so every truth bin holds
+# 1263-1279 signal events at full POT 2.36124e20. The distribution is flat, so widths are close to
+# uniform (12.7-20.5 cm). First and last edge are the range limits [-160, 115].
+# Each truth bin is split into two reco bins at the median reco y inside it (clamped to 15-85%), as for the
+# other variables, so reco has 40 bins.
+#
+# RESULT: 20 truth bins, 40 reco bins. Worst-bin f_diag = 0.960.
+# reco_vertex_y (display histogram) uses the same edges as reco_vertex_y_smearing.
+# Contained and exiting blocks below are unchanged (display only).
+#
+# RANGE: [-160, 115] cm. The data span [-156.9, 110.0] (true), [-156.8, 109.9] (reco).
 
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_y]
 key = "reco_vertex_y"
 range = [-160.0, 115.0]
-nbins = 24
+nbins = 40
 binning_scheme = 'custom_bins'
-custom_bins = [-160.0, -146.31, -135.51, -125.31, -114.51, -103.26, -92.31, -81.5101, -70.71, -59.61, -48.66, -37.26, -26.01, -14.91, -4.11, 7.1431, 18.29, 29.79, 40.89, 52.2968, 63.69, 75.09, 86.69, 98.09, 115.0]
+custom_bins = [-160.0, -149.5, -143.1, -136.3, -129.8, -123.5, -117.1, -110.5, -103.7, -97.3, -90.9, -84.5, -78.0, -71.6, -65.3, -58.9, -52.5, -45.8, -39.1, -32.5, -26.0, -19.5, -13.0, -6.8, -0.2, 6.4, 12.9, 19.5, 26.3, 32.9, 39.4, 46.0, 52.8, 59.8, 66.5, 73.2, 80.2, 87.4, 94.5, 101.6, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.true_vertex_y]
+key = "true_vertex_y"
+range = [-160.0, 115.0]
+nbins = 20
+binning_scheme = 'custom_bins'
+custom_bins = [-160.0, -143.1, -129.8, -117.1, -103.7, -90.9, -78.0, -65.3, -52.5, -39.1, -26.0, -13.0, -0.2, 12.9, 26.3, 39.4, 52.8, 66.5, 80.2, 94.5, 115.0]
+xlabel = 'True Vertex Y [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.reco_vertex_y_residual]
@@ -35,15 +51,19 @@ xlabel = 'True Vertex Y [cm]'
 
 [variables.reco_vertex_y_smearing]
 key = "reco_vertex_y"
-range = [-200, 200]
-nbins = 10
+range = [-160.0, 115.0]
+nbins = 40
+binning_scheme = 'custom_bins'
+custom_bins = [-160.0, -149.5, -143.1, -136.3, -129.8, -123.5, -117.1, -110.5, -103.7, -97.3, -90.9, -84.5, -78.0, -71.6, -65.3, -58.9, -52.5, -45.8, -39.1, -32.5, -26.0, -19.5, -13.0, -6.8, -0.2, 6.4, 12.9, 19.5, 26.3, 32.9, 39.4, 46.0, 52.8, 59.8, 66.5, 73.2, 80.2, 87.4, 94.5, 101.6, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.true_vertex_y_smearing]
 key = "true_vertex_y"
-range = [-200, 200]
-nbins = 10
+range = [-160.0, 115.0]
+nbins = 20
+binning_scheme = 'custom_bins'
+custom_bins = [-160.0, -143.1, -129.8, -117.1, -103.7, -90.9, -78.0, -65.3, -52.5, -39.1, -26.0, -13.0, -0.2, 12.9, 26.3, 39.4, 52.8, 66.5, 80.2, 94.5, 115.0]
 xlabel = 'True Vertex Y [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 

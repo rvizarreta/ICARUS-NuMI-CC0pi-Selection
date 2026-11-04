@@ -7,6 +7,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -15,6 +16,7 @@ print_sys = true
 systematics = ['sideband_NuMIfluxsimTree']
 
 [samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -22,13 +24,15 @@ trees = ['sideband_nonmatched']
 
 # DATA SAMPLE
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.36124e19
+#override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 
 [samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -37,6 +41,7 @@ trees = ['sideband']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11

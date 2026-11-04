@@ -6,6 +6,7 @@ file = '../../../configurations/common/styles.toml'
 
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -27,25 +28,28 @@ pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
 truth_variable = 'true_leading_proton_momentum'
-truth_bin_edges = [0.31, 0.3927, 0.4571, 0.5239, 0.5934, 0.6689, 0.762, 0.9018, 1.2, 10000000.0]
+truth_bin_edges = [0.35, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 0.7814, 0.88, 10000000.0]
 signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
 nuniv = 1000
 seed = 0
 
 [samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.36124e19
+#override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
 [samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -54,6 +58,7 @@ trees = ['selected']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11

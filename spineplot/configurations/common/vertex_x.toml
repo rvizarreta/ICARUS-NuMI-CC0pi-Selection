@@ -1,29 +1,43 @@
-# Reconstructed vertex x binning (2026-07-31). RECO HISTOGRAMS ONLY.
+# Vertex x binning (2026-11-03). CROSS-SECTION VARIABLE, COMBINED (contained + exiting) SAMPLE ONLY.
 #
-# UNIFORM, NOT equal-population - this is the one variable in this round where the
-# equal-population rule is the wrong tool. There is a hard 174 cm gap between the two
-# cryostats: the selected sample has zero events between x = -86.94 and x = +86.99.
-# Equal-population places edges by counting events, so it sees nothing in the gap and
-# spans it with a single enormous bin, erasing the two-cryostat structure that is the
-# whole point of looking at this distribution.
+# f_diag does NOT choose the bins here. The vertex x resolution is ~1 cm (median |reco-true|), so a
+# 25 cm bin loses almost nothing to migration. The f_diag >= 0.70 criterion used for the angular
+# variables only starts to fail for bins of a few cm, far finer than the statistics can use.
+# Truth bin width is therefore set by statistics: 25 cm, 10 bins per cryostat, >= 900 weighted signal
+# events per truth bin at full POT (2.36124e20).
 #
-# Instead: 25 cm uniform bins, with edges placed exactly at +-87 so the gap is ONE
-# explicit empty bin rather than being smeared into its neighbours. That bin is not
-# quite empty - it holds ~11 events at full POT (0.04%), which are mis-reconstructed
-# vertices and are worth being able to see.
+# Cryostat gap: there is a 174 cm gap between the cryostats, no reconstructed event lies in
+# |x| < 87 cm, and 15 MC signal events are generated there. A TOML axis cannot have a hole, so the
+# edge lists keep ONE bin [-87, 87] (truth bin 10, reco bin 20). It is empty in reco, has no f_diag
+# and MUST be dropped from the fit (GUNDAM) and excluded from the cross-section result.
 #
-# RANGE CHANGED: [-400, 400] -> [-337, 337]. The data span only [-333.5, 333.5], so
-# the old range left 17% of the axis permanently blank at the edges.
+# RESULT: 21 truth bins (20 real + 1 gap), 41 reco bins (40 real + 1 gap). Each real truth bin is
+# split into two reco bins at the median reco x inside it (clamped to 15-85%), as for the other variables.
+# Worst-bin f_diag over the 20 real truth bins = 0.932; range 0.932-0.993.
+# reco_vertex_x (display histogram) uses the same edges as reco_vertex_x_smearing. The sideband
+# analysis includes this file directly (there is no vertex_x_sideband.toml), so it inherits them.
+# Contained and exiting blocks below are unchanged (display only, 21 uniform 25 cm bins).
+#
+# RANGE: [-337, 337]. The data span only [-333.5, 333.5].
 
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_x]
 key = "reco_vertex_x"
 range = [-337.0, 337.0]
+nbins = 41
+binning_scheme = 'custom_bins'
+custom_bins = [-337.0, -321.8, -312.0, -299.6, -287.0, -274.4, -262.0, -249.2, -237.0, -224.3, -212.0, -200.5, -187.0, -174.5, -162.0, -149.8, -137.0, -124.4, -112.0, -100.4, -87.0, 87.0, 100.2, 112.0, 124.7, 137.0, 149.6, 162.0, 174.7, 187.0, 200.6, 212.0, 224.4, 237.0, 249.7, 262.0, 274.5, 287.0, 299.1, 312.0, 321.9, 337.0]
+xlabel = 'Reco Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.true_vertex_x]
+key = "true_vertex_x"
+range = [-337.0, 337.0]
 nbins = 21
 binning_scheme = 'custom_bins'
 custom_bins = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
-xlabel = 'Reco Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
+xlabel = 'True Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.reco_vertex_x_residual]
@@ -40,15 +54,19 @@ xlabel = 'True Vertex X [cm]'
 
 [variables.reco_vertex_x_smearing]
 key = "reco_vertex_x"
-range = [-400, 400]
-nbins = 10
+range = [-337.0, 337.0]
+nbins = 41
+binning_scheme = 'custom_bins'
+custom_bins = [-337.0, -321.8, -312.0, -299.6, -287.0, -274.4, -262.0, -249.2, -237.0, -224.3, -212.0, -200.5, -187.0, -174.5, -162.0, -149.8, -137.0, -124.4, -112.0, -100.4, -87.0, 87.0, 100.2, 112.0, 124.7, 137.0, 149.6, 162.0, 174.7, 187.0, 200.6, 212.0, 224.4, 237.0, 249.7, 262.0, 274.5, 287.0, 299.1, 312.0, 321.9, 337.0]
 xlabel = 'Reco Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.true_vertex_x_smearing]
 key = "true_vertex_x"
-range = [-400, 400]
-nbins = 10
+range = [-337.0, 337.0]
+nbins = 21
+binning_scheme = 'custom_bins'
+custom_bins = [-337.0, -312.0, -287.0, -262.0, -237.0, -212.0, -187.0, -162.0, -137.0, -112.0, -87.0, 87.0, 112.0, 137.0, 162.0, 187.0, 212.0, 237.0, 262.0, 287.0, 312.0, 337.0]
 xlabel = 'True Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 

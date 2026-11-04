@@ -207,7 +207,7 @@ class SpineSpectra2D(SpineSpectra):
              draw_colorbar=True, invert_stack_order=False,
              fit_type=None, logx=False, logy=False, logz=False,
              draw_stat_error=False, annotate_threshold=0.1,
-             annotate_min_cell=0.022) -> None:
+             annotate_min_cell=0.0) -> None:
         """
         Plots the data for the SpineSpectra2D object.
 
@@ -254,14 +254,16 @@ class SpineSpectra2D(SpineSpectra):
             normalized value (in percent) is at or below this are left
             unlabelled, so that the near-empty off-diagonal cells do not
             crowd the informative ones. The colour scale still shows
-            them. Set to 0 to label every cell. The default is 0.1.
+            them. Set to 0 to label every cell, including empty ones (printed
+            as 0.0%). The default is 0.1.
         annotate_min_cell : float
             Only used by show_option='smearing'. Cells whose width or
             height is below this fraction of the corresponding axis span
             are left unlabelled, because there is no room for the text.
-            Needed for variable-width binnings where some bins are a
-            small percentage of the axis. Set to 0 to disable. The
-            default is 0.03.
+            Disabled by default (0): the labels are now fitted to their
+            cells from the real text size (shrunk, shortened or hidden),
+            which is more accurate than a fixed fraction of the axis. Set
+            e.g. 0.02 to force a minimum size. The default is 0.
 
         Returns
         -------
@@ -387,10 +389,11 @@ class SpineSpectra2D(SpineSpectra):
                 else (float(self._yrange[0]), float(self._yrange[1]))
             x_span = vis_x[1] - vis_x[0]
             y_span = vis_y[1] - vis_y[0]
+            annotations = []   # (text, x0, x1, y0, y1, percent): label, its visible cell, value
             for i in range(ny):
                 for j in range(nx):
                     percentage = normalized_values.T[i, j] * 100
-                    if percentage <= annotate_threshold:
+                    if annotate_threshold > 0 and percentage <= annotate_threshold:
                         continue
                     # skip cells lying wholly outside the visible window
                     if x_edges[j + 1] <= vis_x[0] or x_edges[j] >= vis_x[1]:
@@ -410,9 +413,13 @@ class SpineSpectra2D(SpineSpectra):
                     # from the luminance of the cell color actually drawn.
                     r, g, b, _ = im.cmap(im.norm(percentage / 100.0))
                     text_color = 'white' if (0.299 * r + 0.587 * g + 0.114 * b) < 0.5 else 'black'
-                    ax.text(x_pos, y_pos, f'{percentage:.1f}%',
-                            ha='center', va='center',
-                            color=text_color, fontsize=6, weight='bold')
+                    label = ax.text(x_pos, y_pos, f'{percentage:.1f}%',
+                                    ha='center', va='center',
+                                    color=text_color, fontsize=6, weight='bold')
+                    annotations.append((label,
+                                        max(x_edges[j], vis_x[0]), min(x_edges[j + 1], vis_x[1]),
+                                        max(y_edges[i], vis_y[0]), min(y_edges[i + 1], vis_y[1]),
+                                        percentage))
 
             ax.set_xlim(*vis_x)
             ax.set_ylim(*vis_y)
@@ -432,20 +439,76 @@ class SpineSpectra2D(SpineSpectra):
             # the end of the range (an angular axis on [0, 180] stops
             # labelling at 150), so an explicit xticks list on the Variable
             # overrides them per axis.
-            if getattr(self._variables[0], '_xticks', None):
-                ax.set_xticks(self._variables[0]._xticks)
+            # With a fixed tick list, only the ticks inside the visible window
+            # are used (set_xticks would otherwise widen the view back to the
+            # full range); if fewer than 3 remain, e.g. in a zoom, automatic
+            # ticks are used instead.
+            def _ticks_in(var, lo, hi):
+                ticks = getattr(var, '_xticks', None)
+                if not ticks:
+                    return None
+                ticks = [t for t in ticks if lo - 1e-9 <= t <= hi + 1e-9]
+                return ticks if len(ticks) >= 3 else None
+
+            xt = _ticks_in(self._variables[0], *vis_x)
+            if xt:
+                ax.set_xticks(xt)
             else:
                 ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
-            if getattr(self._variables[1], '_xticks', None):
-                ax.set_yticks(self._variables[1]._xticks)
+            yt = _ticks_in(self._variables[1], *vis_y)
+            if yt:
+                ax.set_yticks(yt)
             else:
                 ax.yaxis.set_major_locator(plt.MaxNLocator(nbins=6, steps=[1,2,5,10]))
+            ax.set_xlim(*vis_x)
+            ax.set_ylim(*vis_y)
 
             # Add colorbar
             if draw_colorbar:
                 cbar = plt.colorbar(im, ax=ax)
                 cbar.set_label('Column Normalized Fraction', fontsize=12, weight='bold')
                 cbar.ax.tick_params(labelsize=12, size=6, width=1.5)
+
+            # Make every label fit its cell. The labels are drawn first and
+            # measured, so the test uses the real text size, the real figure
+            # size and the final axis limits (the cell-size rule above is only a
+            # cheap pre-filter). For each label the following are tried in
+            # order, and the first that fits is kept:
+            #   1. the full text, e.g. '27.0%', at the normal font size
+            #   2. the same text shrunk to fit (not below min_label_fontsize)
+            #   3. the shorter texts '27%' and then '27' (only for values of
+            #      1% or more, which keep their meaning without decimals),
+            #      each shrunk the same way
+            # If nothing fits the label is hidden, because it would otherwise
+            # print on top of its neighbours.
+            min_label_fontsize = 5.0
+            if annotations:
+                fig = ax.figure
+                fig.canvas.draw()
+                renderer = fig.canvas.get_renderer()
+                for label, cx0, cx1, cy0, cy1, percentage in annotations:
+                    (px0, py0), (px1, py1) = ax.transData.transform([(cx0, cy0), (cx1, cy1)])
+                    cell_w, cell_h = 0.95 * abs(px1 - px0), 0.95 * abs(py1 - py0)
+                    base_size = label.get_fontsize()
+                    candidates = [f'{percentage:.1f}%']
+                    if percentage >= 1.0:
+                        candidates += [f'{percentage:.0f}%', f'{percentage:.0f}']
+                    placed = False
+                    for text in candidates:
+                        label.set_text(text)
+                        label.set_fontsize(base_size)
+                        ext = label.get_window_extent(renderer)
+                        fit = min(cell_w / ext.width, cell_h / ext.height)
+                        if fit >= 1.0:
+                            placed = True
+                            break
+                        if base_size * fit >= min_label_fontsize:
+                            label.set_fontsize(base_size * fit)
+                            placed = True
+                            break
+                    if not placed:
+                        label.set_visible(False)
+
         if show_option == 'projection' and self._plotdata_diagonal is not None:
             labels, data = zip(*self._plotdata_diagonal.items())
             colors = [self._colors[label] for label in labels]

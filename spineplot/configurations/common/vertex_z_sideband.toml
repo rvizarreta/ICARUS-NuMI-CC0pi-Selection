@@ -8,47 +8,59 @@
 # not through R. What the sideband does is contribute a Poisson term and a
 # data/MC comparison, and both want uniform occupancy.
 #
-# CRITERION: EQUAL-POPULATION, 24 bins, weighted by ppfx_cv_weight,
-# sized at full POT 2.36124e+20 (MC POT 7.17839e+20).
-# Only the plain reco_* display blocks were re-binned. The true_* and
-# *_smearing blocks below are carried over from the signal-region file
-# unchanged and are meaningless for this sample - do not plot them.
+# CRITERION: reco_vertex_z (combined) uses the same 40 reco edges as the signal smearing matrix.
+# reco_vertex_z_contained and reco_vertex_z_exiting stay equal-population, 24 bins,
+# weighted by ppfx_cv_weight, sized at full POT 2.36124e+20 (MC POT 7.17839e+20).
+# The true_* and *_smearing blocks below are copied from the signal-region file
+# and are diagnostics for this sample.
 #
-#   reco_vertex_z: 24 bins, 453 events/bin at full POT, widths 66.58 to 91.08 (ratio 1), 100.00% of the sample in range
+#   reco_vertex_z: 40 bins, same edges as the signal-region combined reco axis and reco_vertex_z_smearing.
 #   reco_vertex_z_contained: 24 bins, 136 events/bin at full POT, widths 57.6 to 156.1 (ratio 3), 100.00% of the sample in range
 #   reco_vertex_z_exiting: 24 bins, 317 events/bin at full POT, widths 62.4 to 94.1 (ratio 2), 100.00% of the sample in range
 #
 # NOT re-binned, still on the uniform binning they had (no custom_bins
 # in the signal-region file): reco_vertex_z_residual_contained, reco_vertex_z_residual_exiting
 #
-# Widths are strongly non-uniform, so these histograms MUST be drawn with
-# per_bin_width = true or the shape is meaningless.
-#
 # ----------------------------------------------------------------------
-# Below is the header of the signal-region file vertex_z.toml, from which this
-# one was generated. It documents the true_* and *_smearing blocks, which are
-# carried over verbatim. Its f_diag and Cramer-Rao numbers describe the
-# SIGNAL reco binning and do NOT apply to the reco_* blocks in this file.
+# Header of the signal-region file vertex_z.toml (combined binning copied below):
 # ----------------------------------------------------------------------
-# Reconstructed vertex z binning (2026-07-31). RECO HISTOGRAMS ONLY.
+# Vertex z binning (2026-11-03). SIGNAL-REGION BINNING (copied into this sideband file).
 #
-# RANGE CHANGED: [-1000, 1000] -> [-880, 860]. The data span only [-865, 845], so the
-# old range left 14% of the axis blank at the two ends.
+# f_diag does NOT choose the bins here. The vertex z resolution is ~0.2 cm (median |reco-true|), so any
+# bin of several cm loses almost nothing to migration and f_diag stays far above the 0.70 used for the
+# angular variables (it is 0.99-1.00 for the bins below). Statistics set the width instead.
 #
-# CRITERION: EQUAL-POPULATION, 24 bins, sized at full POT 2.36124e20.
-# The distribution is flat along the beam axis, so this comes out near-uniform -
-# widths span 67.8-91.1 cm (ratio 1.3). Per-bin counts at full POT: 1281-1289,
-# occupancy ratio 1.01.
+# CRITERION: 20 truth bins (same count as vertex x), EQUAL-POPULATION in truth: edges are weighted
+# quantiles (ppfx_cv_weight) of the true vertex z of signal events, so every truth bin holds
+# 1268-1272 signal events at full POT 2.36124e20. The distribution is flat, so widths are close to
+# uniform (81.7-107.9 cm). First and last edge are the range limits [-880, 860].
+# Each truth bin is split into two reco bins at the median reco z inside it (clamped to 15-85%), as for the
+# other variables, so reco has 40 bins.
+#
+# RESULT: 20 truth bins, 40 reco bins. Worst-bin f_diag = 0.990.
+# reco_vertex_z (display histogram) uses the same edges as reco_vertex_z_smearing.
+# Contained and exiting blocks below are unchanged (display only).
+#
+# RANGE: [-880, 860] cm. The data span [-864.9, 844.9] (true), [-865.0, 844.9] (reco).
 
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_z]
 key = "reco_vertex_z"
 range = [-880.0, 860.0]
-nbins = 24
+nbins = 40
 binning_scheme = 'custom_bins'
-custom_bins = [-880.0, -788.9159, -716.601, -643.701, -573.501, -501.59, -431.301, -361.101, -287.6933, -217.026, -150.4478, -81.001, -10.5009, 58.899, 128.9082, 199.4906, 271.2991, 344.0802, 413.8786, 485.4091, 554.7975, 625.0991, 696.626, 769.5991, 860.0]
+custom_bins = [-880.0, -817.4, -772.1, -728.2, -686.4, -643.7, -600.7, -559.6, -517.3, -476.3, -433.5, -393.1, -351.1, -310.8, -269.4, -227.5, -186.2, -144.3, -101.6, -59.2, -17.3, 26.3, 67.5, 109.6, 150.7, 192.5, 235.2, 276.8, 320.1, 364.9, 408.6, 450.4, 492.6, 534.8, 577.1, 620.5, 661.0, 705.5, 752.1, 796.6, 860.0]
 xlabel = 'Reco Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.true_vertex_z]
+key = "true_vertex_z"
+range = [-880.0, 860.0]
+nbins = 20
+binning_scheme = 'custom_bins'
+custom_bins = [-880.0, -772.1, -686.4, -600.7, -517.3, -433.5, -351.1, -269.4, -186.2, -101.6, -17.3, 67.5, 150.7, 235.2, 320.1, 408.6, 492.6, 577.1, 661.0, 752.1, 860.0]
+xlabel = 'True Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.reco_vertex_z_residual]
@@ -65,15 +77,19 @@ xlabel = 'True Vertex Z [cm]'
 
 [variables.reco_vertex_z_smearing]
 key = "reco_vertex_z"
-range = [-1000, 1000]
-nbins = 10
+range = [-880.0, 860.0]
+nbins = 40
+binning_scheme = 'custom_bins'
+custom_bins = [-880.0, -817.4, -772.1, -728.2, -686.4, -643.7, -600.7, -559.6, -517.3, -476.3, -433.5, -393.1, -351.1, -310.8, -269.4, -227.5, -186.2, -144.3, -101.6, -59.2, -17.3, 26.3, 67.5, 109.6, 150.7, 192.5, 235.2, 276.8, 320.1, 364.9, 408.6, 450.4, 492.6, 534.8, 577.1, 620.5, 661.0, 705.5, 752.1, 796.6, 860.0]
 xlabel = 'Reco Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.true_vertex_z_smearing]
 key = "true_vertex_z"
-range = [-1000, 1000]
-nbins = 10
+range = [-880.0, 860.0]
+nbins = 20
+binning_scheme = 'custom_bins'
+custom_bins = [-880.0, -772.1, -686.4, -600.7, -517.3, -433.5, -351.1, -269.4, -186.2, -101.6, -17.3, 67.5, 150.7, 235.2, 320.1, 408.6, 492.6, 577.1, 661.0, 752.1, 860.0]
 xlabel = 'True Vertex Z [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 

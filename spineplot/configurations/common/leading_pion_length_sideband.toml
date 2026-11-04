@@ -14,7 +14,7 @@
 # *_smearing blocks below are carried over from the signal-region file
 # unchanged and are meaningless for this sample - do not plot them.
 #
-#   reco_leading_pion_length: 24 bins, 451 events/bin at full POT, widths 1.984 to 108.7 (ratio 55), 99.55% of the sample in range
+#   reco_leading_pion_length: 24 bins, 413-415 events/bin at full POT (re-derived 2026-11-03 on the current file), widths 1.96 to 108.1 (ratio 55), 99.55% of the sample in range
 #   reco_leading_pion_length_contained: 24 bins, 417 events/bin at full POT, widths 1.81 to 113 (ratio 62), 99.62% of the sample in range
 #   reco_leading_pion_length_exiting: 24 bins, 33 events/bin at full POT, widths 2.956 to 79.65 (ratio 27), 98.62% of the sample in range
 #
@@ -56,7 +56,7 @@ key = "reco_leading_pion_length"
 range = [0.0, 250.0]
 nbins = 24
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 4.7812, 6.7767, 8.7609, 11.0202, 13.1369, 15.6611, 17.9452, 20.6832, 23.2002, 26.3499, 29.4682, 32.9993, 36.7583, 40.9229, 45.4568, 50.77, 56.6071, 63.4969, 71.9978, 81.8352, 94.4699, 111.3118, 141.2905, 250.0]
+custom_bins = [0.0, 4.7529, 6.7161, 8.6965, 10.9677, 13.063, 15.5554, 17.8451, 20.6055, 23.1259, 26.2808, 29.3642, 32.9636, 36.6286, 40.919, 45.4331, 50.7746, 56.6647, 63.6916, 72.2161, 82.084, 94.881, 111.7224, 141.9142, 250.0]
 #range = [0, 10]
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained + Exiting $\pi^\pm$)'

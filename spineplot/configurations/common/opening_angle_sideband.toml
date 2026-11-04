@@ -14,7 +14,9 @@
 # *_smearing blocks below are carried over from the signal-region file
 # unchanged and are meaningless for this sample - do not plot them.
 #
-#   reco_opening_angle: 24 bins, 453 events/bin at full POT, widths 0.0457 to 0.2629 (ratio 6), 100.00% of the sample in range
+#   reco_opening_angle: NOT equal-population. Uses the same 22 reco edges as the signal-region combined reco axis
+#       and reco_opening_angle_smearing, so histogram and smearing matrix share one axis. 108 to 982 events/bin at full POT
+#       (min 342 raw MC events), 100% in range. Combined (contained + exiting) sample; no p_mu cut.
 #   reco_opening_angle_contained: 24 bins, 136 events/bin at full POT, widths 0.0516 to 0.2012 (ratio 4), 100.00% of the sample in range
 #   reco_opening_angle_exiting: 24 bins, 317 events/bin at full POT, widths 0.0433 to 0.3031 (ratio 7), 100.00% of the sample in range
 #
@@ -56,9 +58,9 @@
 [variables.reco_opening_angle]
 key = "reco_opening_angle_cos"
 range = [-1, 1]
-nbins = 24
+nbins = 22
 binning_scheme = 'custom_bins'
-custom_bins = [-1.0, -0.7371, -0.5175, -0.35, -0.2052, -0.0865, 0.0084, 0.0912, 0.1677, 0.236, 0.2984, 0.3545, 0.4074, 0.4589, 0.5092, 0.557, 0.6027, 0.6513, 0.698, 0.7452, 0.7921, 0.8405, 0.8898, 0.941, 1.0]
+custom_bins = [-1.0, -0.9103, -0.84, -0.7499, -0.67, -0.5623, -0.47, -0.3642, -0.27, -0.1642, -0.0725, 0.0194, 0.105, 0.1838, 0.265, 0.3403, 0.4275, 0.5044, 0.595, 0.6824, 0.7775, 0.8711, 1.0]
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained + Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10

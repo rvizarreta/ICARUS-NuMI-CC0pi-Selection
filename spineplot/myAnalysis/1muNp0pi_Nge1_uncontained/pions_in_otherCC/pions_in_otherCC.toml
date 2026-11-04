@@ -7,6 +7,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
@@ -18,7 +19,8 @@ systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_Nu
 
 # DATA SAMPLE
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
 override_category = -100
 trees = ['selected']

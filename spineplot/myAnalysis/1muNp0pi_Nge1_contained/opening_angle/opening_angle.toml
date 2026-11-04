@@ -42,7 +42,7 @@ style = 'selected_icarus_1muNp0pi_N>=1'
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_opening_angle'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = true, 'draw_error' = 'stats', 'draw_ratio'='True'}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = true, 'draw_error' = 'stats', 'draw_ratio'='True', 'text_side' = 'left'}
 
 [[figure]]
 name = 'opening_angle_fractional_residual'

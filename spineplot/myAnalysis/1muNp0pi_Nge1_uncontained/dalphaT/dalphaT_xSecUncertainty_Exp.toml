@@ -7,6 +7,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -37,6 +38,7 @@ seed = 0
 abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
 [samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -47,9 +49,10 @@ abs_dalphaT_residual = "reco_dalphaT_deg - true_dalphaT_deg"
 
 # DATA SAMPLE
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.36124e19
+#override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
@@ -57,6 +60,7 @@ trees = ['selected']
 abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
 
 [samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -68,6 +72,7 @@ abs_dalphaT_residual = "reco_dalphaT_deg - reco_dalphaT_deg"
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11

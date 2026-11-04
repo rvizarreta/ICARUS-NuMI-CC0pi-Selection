@@ -153,8 +153,11 @@ class Variable:
                     self._bin_widths[g] = self._bin_edges[g][1:] - self._bin_edges[g][:-1]
 
     # Trailing "(Contained + Exiting $\mu^\pm$)"-type suffix of an x label.
+    # An optional extra requirement may follow the muon symbol after a comma,
+    # e.g. "(Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)".
     _CONTAINMENT_RE = re.compile(
-        r'\s*\(\s*(Contained \+ Exiting|Contained|Exiting)\s*\$[^$]*\$\s*\)\s*$')
+        r'\s*\(\s*(Contained \+ Exiting|Contained|Exiting)\s*\$[^$]*\$'
+        r'(?:\s*,\s*([^)]*?))?\s*\)\s*$')
     # Leading "Reco $...$" / "True $...$" of an x label.
     _RECO_TRUE_RE = re.compile(r'^(Reco|True)\s+(\$[^$]+\$)(.*)$')
 
@@ -192,7 +195,14 @@ class Variable:
         if m is None:
             return None
         text = m.group(1).replace(' ', r'\ ')
-        return r'$\mathbf{' + text + r'\ \mu^{\pm}}$'
+        label = r'$\mathbf{' + text + r'\ \mu^{\pm}'
+        extra = m.group(2)
+        if extra:
+            # Extra requirement, e.g. "$p_\mu < 0.8$ GeV/c": drop the inner
+            # $ delimiters (we are already in math mode) and escape spaces.
+            extra = extra.replace('$', '').strip().replace(' ', r'\ ')
+            label += r',\ ' + extra
+        return label + '}$'
 
     @property
     def containment_text(self):

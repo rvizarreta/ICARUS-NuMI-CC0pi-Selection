@@ -14,9 +14,10 @@
 # *_smearing blocks below are carried over from the signal-region file
 # unchanged and are meaningless for this sample - do not plot them.
 #
-#   reco_dpT: 24 bins, 402 events/bin at full POT, widths 20.22 to 85.03 (ratio 4), 88.82% of the sample in range
-#   reco_dpT_contained: 24 bins, 129 events/bin at full POT, widths 18.71 to 93.61 (ratio 5), 94.59% of the sample in range
-#   reco_dpT_exiting: 24 bins, 273 events/bin at full POT, widths 20.54 to 86.24 (ratio 4), 86.31% of the sample in range
+#   reco_dpT: 24 bins, 382 events/bin at full POT, widths 20.45 to 84.3 (ratio 4), 91.80% of the sample in range
+#   reco_dpT_contained: NOT equal-population. Uses the same 20 reco edges as reco_dpT_smearing_contained (in range),
+#       so the histogram and the smearing matrix share one axis. 37 to 177 events/bin at full POT, 2241 in range.
+#   reco_dpT_exiting: 24 bins, 259 events/bin at full POT, widths 20.61 to 85.39 (ratio 4), 90.32% of the sample in range
 #
 # NOT re-binned, still on the uniform binning they had (no custom_bins
 # in the signal-region file): reco_dpT_residual_contained, reco_dpT_residual_exiting
@@ -35,7 +36,10 @@
 ### TRUTH BINNING is the physics choice: the finest binning with min f_diag above a
 ### per-sample threshold in every truth bin - 0.5 contained, 0.4 exiting and combined -
 ### over [0, 800] MeV/c, no quality cut.
-###   contained N=10: min/mean f_diag 0.522/0.549, worst in-range Cramer-Rao unc 13.8%
+###   contained N=10: min/mean f_diag 0.531/0.561   (re-derived 2026-11-03 WITH the p_mu < 0.8 GeV/c cut;
+###                   Cramer-Rao unc and the overflow/contamination numbers below were NOT recomputed and are pre-cut;
+###                   with the cut: 1.89% of contained signal has true dpT > 800, 33.3% of those reconstruct below 800,
+###                   overflow f_diag 66.7%, overflow reco split 842.3)
 ###   exiting   N= 5: 0.420/0.441,  9.9%
 ###   combined  N= 6: 0.445/0.471,  7.4%      (at 2.36124e20 POT, with the overflow bin)
 ###
@@ -110,60 +114,66 @@ key = "reco_dpT_lp"
 range = [0,800]
 nbins = 24
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 85.035, 120.6626, 147.5901, 173.128, 196.3158, 218.4192, 238.9165, 259.5423, 280.0353, 300.2571, 321.1602, 342.6676, 363.3785, 387.896, 412.2021, 438.3375, 464.6539, 496.313, 528.9045, 565.241, 607.1963, 657.8077, 721.7447, 800.0]
+custom_bins = [0.0, 84.3035, 119.9693, 146.7989, 171.9405, 194.9395, 216.7634, 237.2261, 257.8857, 278.3932, 298.8416, 319.4729, 340.6344, 361.6187, 385.8111, 409.7518, 435.7476, 462.3261, 493.0006, 526.9804, 563.0672, 604.5315, 654.8809, 719.9336, 800.0]
 xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
 
 ### dpT - Contained ------------------------------------
+### Extra requirement on the contained sample: reco muon momentum below 0.8 GeV/c (same as
+### common/dpT.toml). Applied through the variable mask and quoted in the xlabel suffix,
+### which the plotting code turns into the box on the plot. The reco_dpT_contained bins
+### below are the contained smearing-matrix reco edges (2026-11-03), not equal population. The *_smearing and
+### true_* contained blocks are the signal-region ones, re-derived with the cut (2026-11-03).
+
 
 [variables.reco_dpT_residual_contained]
 key = "reco_dpT_lp"
 range = [0,800]
 nbins = 100
 xlabel = 'Reco $\delta p_T$ [MeV/c]'
-mask = 'reco_leading_muon_containment == 1'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
 
 [variables.true_dpT_residual_contained]
 key = "true_dpT_lp_genie"
 range = [0,800]
 nbins = 100
 xlabel = 'True $\delta p_T$ [MeV/c]'
-mask = 'reco_leading_muon_containment == 1'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
 
 [variables.reco_dpT_smearing_contained]
 key = "reco_dpT_lp"
 range = [0.0, 10000000.0]
 nbins = 22
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 52.7416, 76.0, 112.814, 147.0, 178.588, 213.0, 241.599, 280.0, 311.841, 350.0, 382.643, 422.0, 458.304, 500.0, 539.405, 589.0, 633.782, 686.0, 733.324, 800.0, 863.498, 1e+07]
-xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+custom_bins = [0.0, 48.8, 71.0, 106.6, 140.0, 172.5, 206.0, 233.5, 270.0, 301.8, 339.0, 372.6, 410.0, 445.9, 489.0, 528.3, 579.0, 623.8, 681.0, 732.1, 800.0, 842.3, 1e+07]
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
 
 [variables.true_dpT_smearing_contained]
 key = "true_dpT_lp_genie"
 range = [0.0, 10000000.0]
 nbins = 11
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 76.0, 147.0, 213.0, 280.0, 350.0, 422.0, 500.0, 589.0, 686.0, 800.0, 1e+07]
-xlabel = 'True $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+custom_bins = [0.0, 71.0, 140.0, 206.0, 270.0, 339.0, 410.0, 489.0, 579.0, 681.0, 800.0, 1e+07]
+xlabel = 'True $\delta p_T$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
 
 [variables.true_dpT_contained]
 key = "true_dpT_lp_genie"
 range = [0,800]
 nbins = 10
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 76.0, 147.0, 213.0, 280.0, 350.0, 422.0, 500.0, 589.0, 686.0, 800.0]
-xlabel = 'True $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+custom_bins = [0.0, 71.0, 140.0, 206.0, 270.0, 339.0, 410.0, 489.0, 579.0, 681.0, 800.0]
+xlabel = 'True $\delta p_T$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
 
 [variables.reco_dpT_contained]
 key = "reco_dpT_lp"
 range = [0,800]
-nbins = 24
+nbins = 20
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 82.2967, 116.7329, 143.4834, 168.0257, 190.2257, 210.0028, 232.1879, 250.895, 270.8241, 291.4736, 310.7909, 331.9345, 352.0288, 374.2297, 399.7803, 424.2671, 451.1145, 481.2513, 514.5032, 547.7998, 588.5054, 637.0805, 706.3896, 800.0]
-xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+custom_bins = [0.0, 48.8, 71.0, 106.6, 140.0, 172.5, 206.0, 233.5, 270.0, 301.8, 339.0, 372.6, 410.0, 445.9, 489.0, 528.3, 579.0, 623.8, 681.0, 732.1, 800.0]
+xlabel = 'Reco $\delta p_T$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
 
 ### dpT - Exiting ------------------------------------
 
@@ -213,6 +223,6 @@ key = "reco_dpT_lp"
 range = [0,800]
 nbins = 24
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 86.2435, 122.3669, 149.5008, 175.7597, 199.7515, 221.7791, 242.3189, 263.4354, 284.3207, 305.0905, 325.8961, 347.3001, 370.6498, 393.6536, 417.5897, 444.6608, 471.5449, 502.0486, 535.8609, 572.7581, 616.3166, 666.2344, 726.7712, 800.0]
+custom_bins = [0.0, 85.386, 121.5223, 148.1743, 173.7318, 197.5949, 219.5528, 240.1688, 261.2525, 281.9955, 302.6016, 323.8091, 345.4717, 367.7259, 390.8568, 414.9092, 441.9048, 468.1653, 499.5385, 532.9248, 569.7495, 612.7796, 662.8621, 725.1594, 800.0]
 xlabel = 'Reco $\delta p_T$ [MeV/c] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_muon_containment == 0'

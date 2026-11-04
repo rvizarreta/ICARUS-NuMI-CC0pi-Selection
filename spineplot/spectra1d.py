@@ -6,7 +6,7 @@ from spectra import SpineSpectra
 from style import Style
 from variable import Variable
 from systematic import Systematic
-from utilities import mark_pot, mark_preliminary, mark_containment, draw_error_boxes
+from utilities import mark_pot, mark_preliminary, mark_containment, draw_error_boxes, fit_left_text_block, add_zoom_inset
 
 # Generator configuration quoted on the plots (technote, MC sample section).
 GENIE_VERSION = 'GENIE v3.04.00'
@@ -161,7 +161,8 @@ class SpineSpectra1D(SpineSpectra):
              show_component_percentage=False, invert_stack_order=False,
              fit_type=None, logx=False, logy=False, normalize=False,
              draw_error=None, draw_ratio=False, ratio_yrange=None, prediction=True, show_fraction=False, draw_data=True,
-             per_bin_width=False) -> None:
+             per_bin_width=False, text_side='right', inset_zoom=None,
+             inset_loc=(0.10, 0.17, 0.42, 0.33), hide_bins=None) -> None:
         """
         Plots the data for the SpineSpectra1D object.
 
@@ -217,6 +218,24 @@ class SpineSpectra1D(SpineSpectra):
             chi2, legend counts and Data/MC ratio panel still use raw
             counts, so they are unchanged by this option. Ignored when
             show_fraction or normalize is set. The default is False.
+        text_side : str, optional
+            'right' or 'left'. Side of the plot that holds the text block
+            (containment box, PPFX, chi2/ndf, chi2_shape/ndf, GENIE). Use
+            'left' for observables whose distribution peaks on the right.
+            The default is 'right'.
+        inset_zoom : list, optional
+            [xmin, xmax]. If given, a zoom of the histogram and data in this
+            x range is drawn as an inset (see add_zoom_inset) and the zoomed
+            region is marked on the main axes. The default is None.
+        hide_bins : list, optional
+            [lo, hi]. Bins whose center lies in this x range are left out of
+            the data points and of the ratio panel (points and uncertainty
+            bands), e.g. a wide bin spanning a region with no acceptance.
+            The chi2 values still include those bins. The default is None.
+        inset_loc : list, optional
+            Inset position [x0, y0, width, height] in axes fractions. The
+            default is (0.10, 0.17, 0.42, 0.33), the empty lower left part
+            of a distribution that peaks on the right.
 
         Returns
         -------
@@ -426,6 +445,9 @@ class SpineSpectra1D(SpineSpectra):
 
                     # Filter out bins with no data
                     data_mask = data[scatter_mask[i]] > 0
+                    if hide_bins is not None:
+                        _bc = np.asarray(bincenters[scatter_mask[i]])
+                        data_mask = data_mask & ~((_bc >= hide_bins[0]) & (_bc <= hide_bins[1]))
                     if not np.any(data_mask):  # Skip if no data at all
                         continue
 
@@ -451,6 +473,12 @@ class SpineSpectra1D(SpineSpectra):
         # Legend centered on the top of the axes. borderaxespad is the gap
         # (in units of the legend font size) between the legend and the
         # axes border it is anchored to.
+        # Text block side: x position, alignment and the bbox edge (0 = left,
+        # 1 = right) to which the lines below are anchored.
+        if text_side == 'left':
+            _tx, _ha, _edge = 0.10, 'left', 0
+        else:
+            _tx, _ha, _edge = 0.90, 'right', 1
         legend_kw = dict(fontsize=10, ncol=2, loc='upper center',
                          bbox_to_anchor=(0.5, 1.0), borderaxespad=1.2,
                          labelspacing=0.3)
@@ -465,10 +493,10 @@ class SpineSpectra1D(SpineSpectra):
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 ax.legend(h_reversed, l_reversed, **legend_kw)
-                ppfx_text = ax.text(0.90, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ppfx_text = ax.text(_tx, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
-                        horizontalalignment='right',
+                        horizontalalignment=_ha,
                         verticalalignment='top')
             else:
                 h_reversed = h[::-1]
@@ -477,10 +505,10 @@ class SpineSpectra1D(SpineSpectra):
                 l_reversed.append('')
                 h_reversed.append(plt.Line2D([0], [0], color='none'))
                 ax.legend(h_reversed, l_reversed, **legend_kw)
-                ppfx_text = ax.text(0.90, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                ppfx_text = ax.text(_tx, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                         transform=ax.transAxes,
                         fontsize=7, color='black',
-                        horizontalalignment='right',
+                        horizontalalignment=_ha,
                         verticalalignment='top')
         else:
             h, l = ax.get_legend_handles_labels()
@@ -491,10 +519,10 @@ class SpineSpectra1D(SpineSpectra):
             l.append('')
             h.append(plt.Line2D([0], [0], color='none'))
             ax.legend(h, l, **legend_kw)
-            ppfx_text = ax.text(0.90, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+            ppfx_text = ax.text(_tx, 0.55, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                     transform=ax.transAxes,
                     fontsize=7, color='black',
-                    horizontalalignment='right',
+                    horizontalalignment=_ha,
                     verticalalignment='top')
 
         # Text block on the right-hand side, containment box, chi2, chi2_shape and GENIE are right-aligned to the
@@ -507,40 +535,55 @@ class SpineSpectra1D(SpineSpectra):
         #   chi2_shape/ndf
         #   GENIE version + tune
         containment = self._variable.containment_label
+        block_texts = [ppfx_text]
         if containment is not None:
-            ax.annotate(containment,
-                        xy=(1, 1), xycoords=ppfx_text,
+            block_texts.append(ax.annotate(containment,
+                        xy=(_edge, 1), xycoords=ppfx_text,
                         xytext=(0, 8), textcoords='offset points',
                         fontsize=8, color='black',
-                        horizontalalignment='right',
+                        horizontalalignment=_ha,
                         verticalalignment='bottom',
                         bbox=dict(boxstyle='square,pad=0.35', fc='white',
-                                  ec='black', lw=0.8))
+                                  ec='black', lw=0.8)))
 
         prev_text = ppfx_text
         if draw_error and draw_data and getattr(self, '_chi2_result', None) is not None:
             chi2_val, ndf = self._chi2_result
             prev_text = ax.annotate(rf'$\chi^2/\mathrm{{ndf}} = {chi2_val:.1f}/{ndf}$',
-                                    xy=(1, 0), xycoords=prev_text,
+                                    xy=(_edge, 0), xycoords=prev_text,
                                     xytext=(0, -2), textcoords='offset points',
                                     fontsize=legend_kw['fontsize'], color='black',
-                                    horizontalalignment='right',
+                                    horizontalalignment=_ha,
                                     verticalalignment='top')
+            block_texts.append(prev_text)
             if getattr(self, '_chi2_shape_result', None) is not None:
                 chi2_shape_val, ndf_shape = self._chi2_shape_result
                 prev_text = ax.annotate(rf'$\chi^2_{{\mathrm{{shape}}}}/\mathrm{{ndf}} = {chi2_shape_val:.1f}/{ndf_shape}$',
-                                        xy=(1, 0), xycoords=prev_text,
+                                        xy=(_edge, 0), xycoords=prev_text,
                                         xytext=(0, -1), textcoords='offset points',
                                         fontsize=legend_kw['fontsize'], color='black',
-                                        horizontalalignment='right',
+                                        horizontalalignment=_ha,
                                         verticalalignment='top')
+                block_texts.append(prev_text)
 
-        ax.annotate(f'{GENIE_VERSION}\n{GENIE_TUNE}',
-                    xy=(1, 0), xycoords=prev_text,
-                    xytext=(0, -3), textcoords='offset points',
-                    fontsize=legend_kw['fontsize'], color='gray',
-                    horizontalalignment='right',
-                    verticalalignment='top')
+        follow_texts = []
+        if text_side == 'left':
+            # Left column: containment, PPFX, chi2. GENIE goes in a second,
+            # left-aligned column (placed in axes coordinates; the helper below
+            # puts it next to the first column, top aligned with it).
+            genie_text = ax.text(0.5, 0.55, f'{GENIE_VERSION}\n{GENIE_TUNE}',
+                                 transform=ax.transAxes,
+                                 fontsize=legend_kw['fontsize'], color='gray',
+                                 horizontalalignment='left', verticalalignment='top')
+            follow_texts.append(genie_text)
+            block_texts.append(genie_text)
+        else:
+            block_texts.append(ax.annotate(f'{GENIE_VERSION}\n{GENIE_TUNE}',
+                        xy=(_edge, 0), xycoords=prev_text,
+                        xytext=(0, -3), textcoords='offset points',
+                        fontsize=legend_kw['fontsize'], color='gray',
+                        horizontalalignment=_ha,
+                        verticalalignment='top'))
 
         # Automatically extend y-axis by 35% to make room for legend
         #if self._yrange is None:
@@ -553,10 +596,24 @@ class SpineSpectra1D(SpineSpectra):
             yl = ax.get_ylim()[1]
             ax.set_ylim(None, yl * self._yrange)
 
+        # Left-hand text block: place it right under the legend and make room
+        # for it above the data (the right-hand block keeps its fixed place).
+        if text_side == 'left' and not isinstance(self._yrange, (tuple, list)):
+            fit_left_text_block(ax, ax.get_legend(), ppfx_text, block_texts,
+                               follow_texts=follow_texts)
+
+        if inset_zoom is not None:
+            add_zoom_inset(ax, inset_zoom, loc=inset_loc)
+
         if draw_ratio and ax_ratio is not None and scatter_mask:
             # Get data from self._plotdata directly
             data_values = self._plotdata['Data']
             data_centers = bincenters[scatter_mask[0]]
+            if hide_bins is not None:
+                keep_bins = ~((np.asarray(data_centers) >= hide_bins[0]) &
+                              (np.asarray(data_centers) <= hide_bins[1]))
+            else:
+                keep_bins = np.ones(len(data_centers), dtype=bool)
 
             # Use saved MC prediction
             mc_prediction_ratio = mc_sum_for_ratio
@@ -623,13 +680,13 @@ class SpineSpectra1D(SpineSpectra):
             stat_band_alpha = 0.6
             total_band_color = 'lightgray'   # same as the main histogram's band
             if draw_error and np.any(rel_total_err > 0):
-                draw_error_boxes(ax_ratio, data_centers, np.ones(len(data_centers)),
-                                 xerr_ratio_all, rel_total_err,
+                draw_error_boxes(ax_ratio, data_centers[keep_bins], np.ones(int(keep_bins.sum())),
+                                 xerr_ratio_all[keep_bins], rel_total_err[keep_bins],
                                  facecolor=total_band_color, edgecolor='gray',
                                  alpha=1.0, hatch='xxx', linewidth=0.0)
             if np.any(rel_stat_err > 0):
-                draw_error_boxes(ax_ratio, data_centers, np.ones(len(data_centers)),
-                                 xerr_ratio_all, rel_stat_err,
+                draw_error_boxes(ax_ratio, data_centers[keep_bins], np.ones(int(keep_bins.sum())),
+                                 xerr_ratio_all[keep_bins], rel_stat_err[keep_bins],
                                  facecolor=stat_band_color, edgecolor='none',
                                  alpha=stat_band_alpha, linewidth=0.0)
 

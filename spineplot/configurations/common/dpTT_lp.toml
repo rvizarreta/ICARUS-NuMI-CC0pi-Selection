@@ -1,0 +1,177 @@
+### dpTT_lp binning (2026-11-03). CROSS-SECTION VARIABLE, COMBINED (contained + exiting) SAMPLE ONLY.
+### dpTT_lp is the SIGNED component of the transverse imbalance perpendicular to the lepton in the
+### transverse plane (lepton + leading proton). The distribution is symmetric about 0 and 99.8% of the
+### signal events lie inside [-800, 800] MeV/c, so the axis is [-800, 800] with no under/overflow bins.
+### (The original placeholder note says missing values are stored as PLACEHOLDERVALUE, which an underflow bin
+### would count as real events; the 0.2% of signal outside the range is simply left out.)
+### Truth key: true_dpTT_lp (particle-level, same definition as reco). There is no GENIE-level
+### dpTT_lp variable yet (dpT uses true_dpT_lp_genie).
+###
+### Only the combined blocks (true_dpTT_lp, reco_dpTT_lp, *_smearing) are binned for the cross section.
+### The contained and exiting blocks below are still the UNIFORM PLACEHOLDERS (truth 200, reco 100 MeV/c)
+### and have not been optimised.
+###
+### CRITERION: f_diag >= 0.70 (same threshold as the opening-angle and muon-NuMI-angle variables).
+### f_diag is the fraction of events generated in a truth bin that are reconstructed in the same bin
+### range; events that migrate outside [-800, 800] count as lost. Truth bins are the finest set whose
+### worst-bin f_diag passes. Each truth bin is split into two reco bins (2:1 nesting), at the median reco
+### value inside the truth bin, so the diagonal of the smearing matrix is the sum of two reco rows.
+### Procedure: technote/binning_walkthrough.py, signal events only, ppfx_cv_weight, 1 MeV/c grid,
+### truth range [-800, 800], no p_mu cut (combined sample).
+###
+### RESULT: 6 truth bins, 12 reco bins.  Worst-bin f_diag = 0.701.
+### N=7 gives 0.657 and fails. For reference, a threshold of 0.4 would give 21 bins (0.412).
+###   truth: [-800.0, -427.0, -182.0, 3.0, 191.0, 435.0, 800.0]
+###   reco : [-800.0, -501.5, -427.0, -268.1, -182.0, -71.2, 3.0, 77.1, 191.0, 277.4, 435.0, 509.4, 800.0]
+###   f_diag per truth bin: [0.701, 0.788, 0.824, 0.821, 0.782, 0.705]
+### Bin widths span 185-373 MeV/c, so histograms MUST be drawn with per_bin_width = true.
+
+### dpTT_lp - Combined ------------------------------------
+
+[variables.reco_dpTT_lp_residual]
+key = "reco_dpTT_lp"
+range = [-800,800]
+nbins = 160
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c]'
+
+[variables.true_dpTT_lp_residual]
+key = "true_dpTT_lp"
+range = [-800,800]
+nbins = 160
+xlabel = 'True $\delta p_{TT}$ [MeV/c]'
+
+[variables.reco_dpTT_lp_smearing]
+key = "reco_dpTT_lp"
+range = [-800.0, 800.0]
+nbins = 12
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -501.5, -427.0, -268.1, -182.0, -71.2, 3.0, 77.1, 191.0, 277.4, 435.0, 509.4, 800.0]
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dpTT_lp_smearing]
+key = "true_dpTT_lp"
+range = [-800.0, 800.0]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -427.0, -182.0, 3.0, 191.0, 435.0, 800.0]
+xlabel = 'True $\delta p_{TT}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+[variables.true_dpTT_lp]
+key = "true_dpTT_lp"
+range = [-800,800]
+nbins = 6
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -427.0, -182.0, 3.0, 191.0, 435.0, 800.0]
+xlabel = 'True $\delta p_{TT}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+[variables.reco_dpTT_lp]
+key = "reco_dpTT_lp"
+range = [-800,800]
+nbins = 12
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -501.5, -427.0, -268.1, -182.0, -71.2, 3.0, 77.1, 191.0, 277.4, 435.0, 509.4, 800.0]
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+
+### dpTT_lp - Contained ------------------------------------
+
+[variables.reco_dpTT_lp_residual_contained]
+key = "reco_dpTT_lp"
+range = [-800,800]
+nbins = 160
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c]'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+
+[variables.true_dpTT_lp_residual_contained]
+key = "true_dpTT_lp"
+range = [-800,800]
+nbins = 160
+xlabel = 'True $\delta p_{TT}$ [MeV/c]'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+
+[variables.reco_dpTT_lp_smearing_contained]
+key = "reco_dpTT_lp"
+range = [-800.0, 800.0]
+nbins = 16
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+
+[variables.true_dpTT_lp_smearing_contained]
+key = "true_dpTT_lp"
+range = [-800.0, 800.0]
+nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
+xlabel = 'True $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+
+[variables.true_dpTT_lp_contained]
+key = "true_dpTT_lp"
+range = [-800,800]
+nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
+xlabel = 'True $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+
+[variables.reco_dpTT_lp_contained]
+key = "reco_dpTT_lp"
+range = [-800,800]
+nbins = 16
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
+mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+
+### dpTT_lp - Exiting ------------------------------------
+
+[variables.reco_dpTT_lp_residual_exiting]
+key = "reco_dpTT_lp"
+range = [-800,800]
+nbins = 160
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dpTT_lp_residual_exiting]
+key = "true_dpTT_lp"
+range = [-800,800]
+nbins = 160
+xlabel = 'True $\delta p_{TT}$ [MeV/c]'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dpTT_lp_smearing_exiting]
+key = "reco_dpTT_lp"
+range = [-800.0, 800.0]
+nbins = 16
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dpTT_lp_smearing_exiting]
+key = "true_dpTT_lp"
+range = [-800.0, 800.0]
+nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
+xlabel = 'True $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.true_dpTT_lp_exiting]
+key = "true_dpTT_lp"
+range = [-800,800]
+nbins = 8
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
+xlabel = 'True $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'
+
+[variables.reco_dpTT_lp_exiting]
+key = "reco_dpTT_lp"
+range = [-800,800]
+nbins = 16
+binning_scheme = 'custom_bins'
+custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
+xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
+mask = 'reco_leading_muon_containment == 0'

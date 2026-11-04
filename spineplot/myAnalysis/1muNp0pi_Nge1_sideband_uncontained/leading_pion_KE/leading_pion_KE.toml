@@ -7,6 +7,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"

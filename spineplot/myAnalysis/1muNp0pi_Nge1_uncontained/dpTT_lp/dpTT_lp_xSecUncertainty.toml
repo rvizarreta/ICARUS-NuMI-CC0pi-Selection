@@ -1,0 +1,187 @@
+[[this_includes]]
+file = '../../../configurations/common/dpTT_lp.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['selected']
+print_sys = true
+systematics = ['selected_multisigmaTree']
+
+[samples.mc.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+# --- Interaction-dial systematic method -------------------------------
+# 'truth'    : dial reweights selected events directly (original behaviour)
+# 'response' : each SIGNAL event's dial weight is divided by the change in
+#              the population of its true bin, so a pure normalisation
+#              change cancels. Only efficiency/migration effects survive.
+#              Backgrounds and non-GENIE dials are unaffected.
+# truth_bin_edges MUST be the template binning (binning_true_dpTT_lp.txt).
+[samples.mc.interaction_method]
+method = 'truth'  # McFarland 'response' method disabled 2026-10-25
+pattern = 'GENIEReWeight|ZExpPCAWeighter'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dpTT_lp'
+truth_bin_edges = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
+[samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['selected_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+# DATA SAMPLE
+[samples.onbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
+exposure_type = "pot"
+#override_exposure = 2.36124e19 # CORRECTED POT
+override_category = -100
+trees = ['selected']
+
+[samples.onbeam.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
+
+[samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 11
+trees = ['selected']
+
+[samples.offbeam.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
+
+
+# ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
+[samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "rock"
+exposure_type = "pot"
+override_category = 11
+trees = ['selected']
+
+[samples.rock.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'xsec_ccqe'
+label = 'CCQE'
+pattern = '\b(GENIEReWeight_SBN_v1_multisigma_(RPA_CCQE|CoulombCCQE|VecFFCCQEshape)|ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b[1-4])\b'
+
+[[systematic_recipe]]
+name = 'xsec_mec'
+label = 'MEC'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCMEC|NormNCMEC|DecayAngMEC)\b'
+
+[[systematic_recipe]]
+name = 'xsec_res'
+label = 'Resonant'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MaNCEL|EtaNCEL|MaCCRES|MvCCRES|MaNCRES|MvNCRES|CC1piTPi|RDecBR1gamma|RDecBR1eta|Theta_Delta2Npi|ThetaDelta2NRad)\b'
+
+[[systematic_recipe]]
+name = 'xsec_nonres'
+label = 'Non-resonant'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_NonRESBG(vp|vn|vbarp|vbarn)(CC|NC)(1|2)pi\b'
+
+[[systematic_recipe]]
+name = 'xsec_fsi'
+label = 'FSI'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(MFP|FrCEx|FrInel|FrAbs|FrPiProd)_(pi|N)\b'
+
+[[systematic_recipe]]
+name = 'xsec_other'
+label = 'Other'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_(NormCCCOH|NormNCCOH|AhtBY|BhtBY|CV1uBY|CV2uBY)\b'
+
+[analysis]
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [11], [-100]]
+category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$ NC', '$\nu_\mu$CC0$\pi$ OOFV', 'Others', 'Data']
+category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
+
+# [[figure]]
+# name = "dpTT_lp_xSecUncertainty"
+# type = "SimpleFigure"
+# style = 'selected_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dpTT_lp"
+# yrange = [0.0, 0.45]
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+# fractional = true
+# show_total = true
+# show_individual = true
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = "dpTT_lp_xSecUncertainty"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp"
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpTT_lp_xSecUncertainty_contained"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp_contained"
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "dpTT_lp_xSecUncertainty_exiting"
+type = "SimpleFigure"
+style = 'selected_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp_exiting"
+yrange = [0.0, 0.45]
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["xsec_ccqe", "xsec_mec", "xsec_res", "xsec_nonres", "xsec_fsi", "xsec_other"]
+fractional = true
+show_total = true
+show_individual = true

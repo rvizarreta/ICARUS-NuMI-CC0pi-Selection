@@ -30,6 +30,7 @@ mask = 'reco_leading_muon_containment == 0'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -52,8 +53,8 @@ abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - true_lead
 # Only dials matching `pattern` are affected: flux (hysyst_*) and detector
 # (var0*) dials keep the original treatment either way.
 # truth_bin_edges is the combined equal-population truth binning derived by
-# technote/proton_momentum_combined_binning.py (overflow bin included, since
-# [0.31, 1.2] is a reconstruction cut, not a physical bound - same reasoning
+# technote/proton_momentum_combined_binning.py (last bin is open-ended (overflow merged into it), since
+# [0.35, 1.2] is a reconstruction cut, not a physical bound - same reasoning
 # as dpT).
 [samples.mc.interaction_method]
 method = 'truth'  # McFarland 'response' method disabled 2026-10-25
@@ -61,7 +62,7 @@ pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
 truth_variable = 'true_leading_proton_momentum'
-truth_bin_edges = [0.31, 0.3927, 0.4571, 0.5239, 0.5934, 0.6689, 0.762, 0.9018, 1.2, 10000000.0]
+truth_bin_edges = [0.35, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 0.7814, 0.88, 10000000.0]
 signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
 nuniv = 1000
 seed = 0
@@ -92,6 +93,7 @@ binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/bin
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -102,9 +104,10 @@ abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - true_lead
 
 # DATA SAMPLE
 [samples.onbeam]
-key = "onbeam"
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.36124e19 # CORRECTED POT
+#override_exposure = 2.36124e19 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 
@@ -112,6 +115,7 @@ trees = ['selected']
 abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - reco_leading_proton_momentum"
 
 [samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -123,6 +127,7 @@ abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - reco_lead
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
@@ -196,7 +201,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # variable = 'reco_leading_proton_momentum'
 # ytitle = 'Candidates / (GeV/c)'
 # yrange = 1.6
-# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'draw_ratio' = 'True', 'per_bin_width' = true}
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
 
 # MC-only version of the combined reco distribution: no data points, no Data/MC
 # ratio panel. Uses the 'selected_icarus_mc' style so the header reads
@@ -212,7 +217,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # variable = 'reco_leading_proton_momentum'
 # ytitle = 'Candidates / (GeV/c)'
 # yrange = 1.6
-# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total', 'per_bin_width' = true, 'draw_data' = false}
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
 
 # MC-only, contained muons.
 # Combined (contained + exiting muons).
@@ -365,8 +370,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_leading_proton_momentum_smearing'
 yvariable = 'reco_leading_proton_momentum_smearing'
-xrange = [0.31, 1.2]
-yrange = [0.31, 1.2]
+xrange = [0.35, 1.2]
+yrange = [0.35, 1.2]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
@@ -377,8 +382,8 @@ style = 'selected_icarus_mc'
 type = 'SpineSpectra2D'
 xvariable = 'true_leading_proton_momentum_smearing_contained'
 yvariable = 'reco_leading_proton_momentum_smearing_contained'
-xrange = [0.31, 1.2]
-yrange = [0.31, 1.2]
+xrange = [0.35, 1.2]
+yrange = [0.35, 1.2]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 [[figure]]
@@ -453,7 +458,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 # yrange = [0.0, 0.45]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
-# systematic_names = ['detsys', 'flux', 'xsec', 'stats']
+# systematic_names = ['detsys', 'flux', 'xsec', 'g4', 'stats']
 # fractional = true
 # show_total = true
 # show_individual = true

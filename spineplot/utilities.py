@@ -1,5 +1,6 @@
 import re
 
+import copy
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
@@ -218,6 +219,183 @@ def mark_preliminary(ax, label, vadj=0, hadj=0, fontsize=10, va='bottom',
         except Exception:
             pass
     ax.text(x=usex, y=usey, s=label, fontsize=fontsize, color=color, verticalalignment=va)
+
+
+def fit_left_text_block(ax, legend, ppfx_text, block_texts, follow_texts=(), gap=0.045, margin=0.06,
+                        column_gap_pts=12):
+    """
+    Place the text block (containment box, PPFX, chi2 lines, ...) just under
+    the legend and, if needed, raise the top of the y axis so that no text of
+    the block overlaps the histogram or data underneath it.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        The main axis.
+    legend : matplotlib.legend.Legend
+        The legend drawn at the top of the axis.
+    ppfx_text : matplotlib.text.Text
+        The "PPFX REWEIGHT APPLIED" text, to which the other texts of the
+        left column are anchored.
+    block_texts : list of matplotlib.text.Text
+        All the texts of the block (including the PPFX text, the containment
+        annotation, whose box is the top of the block, and the follow_texts).
+    follow_texts : list of matplotlib.text.Text, optional
+        Texts placed in axes coordinates (a second column, left-aligned) that
+        are moved with the block: their top is aligned with the top of the
+        block and their left edge is put column_gap_pts to the right of the
+        widest text of the first column. The default is ().
+    gap : float, optional
+        Gap between the legend and the block, as a fraction of the axis
+        height. The default is 0.045.
+    margin : float, optional
+        Gap between each text and the data below it, as a fraction of the
+        axis height. The default is 0.06.
+    column_gap_pts : float, optional
+        Horizontal space, in points, between the first column and the
+        follow_texts column. The default is 12.
+
+    Returns
+    -------
+    None.
+    """
+    fig = ax.figure
+    fig.canvas.draw()
+    r = fig.canvas.get_renderer()
+
+    def _ext(t):
+        # Window extent, including the box patch if the text has one.
+        e = t.get_window_extent(r)
+        bp = t.get_bbox_patch()
+        return e.union([e, bp.get_window_extent(r)]) if bp is not None else e
+
+    ax_px = ax.get_window_extent(r)
+    left_texts = [t for t in block_texts if t not in follow_texts]
+    block_top = max(_ext(t).y1 for t in left_texts)
+    # (1) Move the block (anchored to the PPFX text) just under the legend.
+    target_top = legend.get_window_extent(r).y0 - gap * ax_px.height
+    x, y = ppfx_text.get_position()
+    ppfx_text.set_position((x, y + (target_top - block_top) / ax_px.height))
+    fig.canvas.draw()
+    # Texts of a second column: top aligned with the top of the block.
+    col_right = max(_ext(t).x1 for t in left_texts)
+    new_x = (col_right + column_gap_pts * fig.dpi / 72.0 - ax_px.x0) / ax_px.width
+    for t in follow_texts:
+        tx, ty = t.get_position()
+        t.set_position((new_x, ty + (target_top - _ext(t).y1) / ax_px.height))
+    fig.canvas.draw()
+
+    # (2) Raise the top of the y axis so that the data under every text fits
+    # below it (each text is checked over its own x range).
+    if ax.get_yscale() != 'linear':
+        return
+    inv = ax.transData.inverted()
+    ylo, yhi = ax.get_ylim()
+    top_needed = yhi
+    for t in block_texts:
+        e = _ext(t)
+        dx0, dx1 = inv.transform((e.x0, e.y0))[0], inv.transform((e.x1, e.y0))[0]
+        ymax = None
+        for line in ax.get_lines():
+            xd = np.asarray(line.get_xdata(), dtype=float)
+            yd = np.asarray(line.get_ydata(), dtype=float)
+            if len(xd) == 0 or len(xd) != len(yd):
+                continue
+            sel = (xd >= dx0) & (xd <= dx1) & np.isfinite(yd)
+            if np.any(sel):
+                m = yd[sel].max()
+                ymax = m if ymax is None else max(ymax, m)
+        free = (e.y0 - ax_px.y0) / ax_px.height - margin
+        if ymax is not None and free > 0.05:
+            top_needed = max(top_needed, ylo + (ymax - ylo) / free)
+    if top_needed > yhi:
+        ax.set_ylim(ylo, top_needed)
+
+
+
+def add_zoom_inset(ax, xrange, loc=(0.10, 0.17, 0.42, 0.33), ytop_factor=1.15, fontsize=8):
+    """
+    Add a zoom of the plotted histogram, prediction and data in the x range
+    `xrange` as an inset in the empty part of the axes. The artists of the main
+    axes (histogram bars, lines, error bars and error boxes) are copied into the inset, so it shows
+    exactly what the main plot shows. No marker is drawn on the main axes:
+    the inset's x axis states the zoomed range.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        The main axis, after the data and the prediction have been drawn.
+    xrange : tuple of float
+        The (min, max) x range to zoom on.
+    loc : tuple of float, optional
+        Inset position [x0, y0, width, height] in axes fractions.
+    ytop_factor : float, optional
+        The inset y axis goes from 0 to ytop_factor times the highest point
+        inside the zoomed range. The default is 1.15.
+    fontsize : float, optional
+        Font size of the inset tick labels. The default is 8.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The inset axes.
+    """
+    from matplotlib.patches import Rectangle
+    from matplotlib.lines import Line2D
+    x0, x1 = xrange
+    inset = ax.inset_axes(list(loc))
+    inset.set_zorder(5)
+    ymax = 0.0
+
+    def _clone(artist):
+        new = copy.copy(artist)
+        # Detach the copy from the original axes and figure (the attribute
+        # name depends on the matplotlib version).
+        for attr in ('_axes', '_parent_figure', 'figure', 'stale_callback', '_remove_method'):
+            if attr in new.__dict__:
+                new.__dict__[attr] = None
+        return new
+
+    for patch in list(ax.patches):
+        new = _clone(patch)
+        inset.add_patch(new)
+        new.set_transform(inset.transData)
+        if isinstance(patch, Rectangle):
+            xl, xr = patch.get_x(), patch.get_x() + patch.get_width()
+            if xr >= x0 and xl <= x1:
+                ymax = max(ymax, patch.get_y() + patch.get_height())
+    for coll in list(ax.collections):
+        new = _clone(coll)
+        inset.add_collection(new)
+        new.set_transform(inset.transData)
+        # Error boxes / error bars: use their extent inside the zoom range.
+        try:
+            for path in coll.get_paths():
+                v = path.vertices
+                sel = (v[:, 0] >= x0) & (v[:, 0] <= x1)
+                if np.any(sel):
+                    ymax = max(ymax, float(np.nanmax(v[sel, 1])))
+        except Exception:
+            pass
+    for line in list(ax.get_lines()):
+        xd = np.asarray(line.get_xdata(), dtype=float)
+        yd = np.asarray(line.get_ydata(), dtype=float)
+        new = _clone(line)
+        inset.add_line(new)
+        new.set_transform(inset.transData)
+        if len(xd) and len(xd) == len(yd):
+            sel = (xd >= x0) & (xd <= x1) & np.isfinite(yd)
+            if np.any(sel):
+                ymax = max(ymax, float(yd[sel].max()))
+
+    inset.set_xlim(x0, x1)
+    inset.set_ylim(0, ytop_factor * ymax if ymax > 0 else 1)
+    inset.tick_params(axis='both', which='major', labelsize=fontsize, size=4, width=1)
+    inset.ticklabel_format(axis='y', style='sci', scilimits=(0, 0))
+    inset.yaxis.get_offset_text().set_fontsize(fontsize)
+    inset.grid(True, alpha=0.3, linestyle='--')
+    return inset
+
 
 def draw_error_boxes(ax, x, y, xerr, yerr, **kwargs):
     """

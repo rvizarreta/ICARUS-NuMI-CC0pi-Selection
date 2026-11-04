@@ -11,6 +11,7 @@ xlabel_fontsize = 10
 # SIMULATION SAMPLE (MC only, no data points)
 [samples]
 [samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
 key = "nominal"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT

@@ -1,0 +1,440 @@
+[[this_includes]]
+#file = '../configurations/common/variables_uncontained.toml'
+#file = '../../../configurations/common/dpTT_lp.toml'
+file = '../../../configurations/common/dpTT_lp_sideband.toml'
+
+[[this_includes]]
+file = '../../../configurations/common/styles.toml'
+
+[variables.abs_dpTT_lp_residual]
+key = "abs_dpTT_lp_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pTT,\mathrm{reco}} - \delta_{pTT,\mathrm{true}}$ [MeV/c] (Contained + Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+
+[variables.abs_dpTT_lp_residual_contained]
+key = "abs_dpTT_lp_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pTT,\mathrm{reco}} - \delta_{pTT,\mathrm{true}}$ [MeV/c] (Contained $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 1'
+
+[variables.abs_dpTT_lp_residual_exiting]
+key = "abs_dpTT_lp_residual"
+range = [-600, 600]
+nbins = 50
+xlabel = '$\delta_{pTT,\mathrm{reco}} - \delta_{pTT,\mathrm{true}}$ [MeV/c] (Exiting $\mu^\pm$)'
+xlabel_fontsize = 10
+mask = 'reco_leading_muon_containment == 0'
+
+# SIMULATION SAMPLE
+[samples]
+[samples.mc]
+presel = 'reco_leading_proton_momentum >= 0.35'
+#key = "nominal"
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['sideband']
+print_sys = true
+# Comment this to avoid systematics when plotting (usually done for testing plots)
+systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+
+[samples.mc.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+# --- Interaction-dial systematic method -------------------------------
+# Truth binning reused verbatim from the signal-region interaction_method
+# (common/dpTT_lp.toml) - the truth binning describes the MC truth population
+# itself, which is the same regardless of which reco selection (signal or
+# sideband) is being examined.
+[samples.mc.interaction_method]
+method = 'truth'  # McFarland 'response' method disabled 2026-10-25
+pattern = 'GENIEReWeight'
+truth_tree = 'signal'
+truth_systematics_tree = 'signal_multisigmaTree'
+truth_variable = 'true_dpTT_lp'
+truth_bin_edges = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
+signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
+nuniv = 1000
+seed = 0
+
+# GEANT4 hadron-reinteraction (fate) systematics: one fractional covariance per particle from the
+# GUNDAM G4 ParameterSets, binned in the true leading-proton momentum or leading-pion KE
+# (binning_file). Each event is assigned to a parameter bin and the covariance is propagated
+# to every plotted variable, as the fit does (external_covariance.py, parameter-space mode).
+[[samples.mc.external_covariances]]
+name = 'G4_proton'
+label = 'G4 proton'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+condition = 'true_category != 9'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piplus'
+label = 'G4 $\pi^+$'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+condition = 'true_category != 9'
+
+[[samples.mc.external_covariances]]
+name = 'G4_piminus'
+label = 'G4 $\pi^-$'
+file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+condition = 'true_category != 9'
+
+[samples.mc_nonmatched]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "full"
+exposure_type = "pot"
+override_exposure = 7.178390e20 # CORRECTED POT
+trees = ['sideband_nonmatched']
+
+[samples.mc_nonmatched.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+# DATA SAMPLE
+[samples.onbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "onbeam_unblinded_full"
+exposure_type = "pot"
+#override_exposure = 2.36124e19 # CORRECTED POT
+override_category = -100
+trees = ['sideband']
+
+[samples.onbeam.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
+
+[samples.offbeam]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "offbeam"
+exposure_type = "livetime"
+override_category = 11
+trees = ['sideband']
+
+[samples.offbeam.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
+
+
+# ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
+[samples.rock]
+presel = 'reco_leading_proton_momentum >= 0.35'
+key = "rock"
+exposure_type = "pot"
+override_category = 11
+trees = ['selected']
+
+[samples.rock.precompute]
+abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
+
+[output]
+path = '.'
+
+[[systematic_recipe]]
+name = 'stats'
+label = 'Stat.'
+pattern = 'mc_statistical'
+
+[[systematic_recipe]]
+name = 'flux'
+label = 'Flux'
+pattern = 'hysyst*(?!\w*sigma\b)\w+\b'
+
+[[systematic_recipe]]
+name = 'xsec'
+label = 'Cross-section'
+#pattern = '\bGENIEReWeight_SBN_v1_multisim_\w+\b'
+pattern = '\bGENIEReWeight_SBN_v1_multisigma_\w+\b'
+
+[[systematic_recipe]]
+name = 'detsys'
+label = 'Detector'
+#pattern = '\bvar(00|01|02|03|04|05|06|07)\b'
+pattern = '\bvar(01|02|03|04|05|06|07|08|09)\b'
+
+[[systematic_recipe]]
+name = 'MC_total'
+label = 'All Systematics'
+pattern = '^(flux|xsec|stats|detsys)$'
+
+[[systematic_recipe]]
+name = 'g4'
+label = 'Geant4'
+pattern = '^G4_(proton|piplus|piminus)$'
+
+[[systematic_recipe]]
+name = 'MC_total_G4'
+label = 'All Systematics'
+pattern = '^(flux|xsec|stats|detsys|g4)$'
+
+[analysis]
+#ordinate_sample = 'mc'
+ordinate_sample = 'onbeam'
+category_branch = 'true_category'
+# Categories treated as signal. The smearing figures below plot the response
+# matrix R_ji of the forward model mu_j = sum_i R_ji s_i + b_j, which is a
+# SIGNAL-ONLY quantity: a background event has no signal truth bin to be
+# unfolded to and enters through b_j instead. Confirmed against Howard's
+# convention. Without this key every category is summed and the plotted
+# diagonal is diluted relative to the R the fit actually uses.
+signal_categories = [0, 1, 2]
+category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [11], [-100]]
+category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$ NC', '$\nu_\mu$CC0$\pi$ OOFV', 'Others', 'Data']
+#category_colors = ['darkgreen', 'darkgreen','C1', 'C3','C5', 'C4', 'black']
+category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
+category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
+
+# [[figure]]
+# name = 'dpTT_lp_reco'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_data'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_dpTT_lp'
+# yrange = 1.6
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'dpTT_lp_reco'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_data'
+figsize = [5.5, 6.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpTT_lp'
+yrange = 1.8
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
+
+[[figure]]
+name = 'dpTT_lp_reco_contained'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_data'
+figsize = [5.5, 6.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpTT_lp_contained'
+yrange = 1.8
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
+
+[[figure]]
+name = 'dpTT_lp_reco_exiting'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_data'
+figsize = [5.5, 6.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpTT_lp_exiting'
+yrange = 1.8
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
+
+# MC-only version of the combined reco distribution: no data points, no Data/MC
+# ratio panel. Uses the 'selected_icarus_mc' style so the header reads
+# "Simulation" rather than "Data (10% Run 2)". Always the merged sample.
+# --- combined sample plot: disabled, only contained/exiting are used ---
+# [[figure]]
+# name = 'dpTT_lp_reco_mc_only'
+# type = 'SimpleFigure'
+# style = 'selected_icarus_mc'
+# figsize = [5, 5]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'reco_dpTT_lp'
+# yrange = 1.7
+# ytitle = 'Candidates / (MeV/c)'
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
+
+# MC-only, contained muons.
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'dpTT_lp_reco_mc_only'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 5.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpTT_lp'
+yrange = 1.7
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
+
+[[figure]]
+name = 'dpTT_lp_reco_contained_mc_only'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 5.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpTT_lp_contained'
+yrange = 1.7
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
+
+# MC-only, exiting muons.
+[[figure]]
+name = 'dpTT_lp_reco_exiting_mc_only'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 5.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'reco_dpTT_lp_exiting'
+yrange = 1.7
+ytitle = 'Candidates / (MeV/c)'
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
+# [[figure]]
+# name = 'dpTT_lp_smearing_matrix_normalized'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# [[figure.artists]]
+# type = 'SpineSpectra2D'
+# xvariable = 'true_dpTT_lp_smearing'
+# yvariable = 'reco_dpTT_lp_smearing'
+# draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'dpTT_lp_smearing_matrix_normalized'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_dpTT_lp_smearing'
+yvariable = 'reco_dpTT_lp_smearing'
+xrange = [-800.0, 800.0]
+yrange = [-800.0, 800.0]
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true, annotate_threshold = 0}
+
+[[figure]]
+name = 'dpTT_lp_smearing_matrix_normalized_contained'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_dpTT_lp_smearing_contained'
+yvariable = 'reco_dpTT_lp_smearing_contained'
+xrange = [-800.0, 800.0]
+yrange = [-800.0, 800.0]
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true, annotate_threshold = 0}
+
+[[figure]]
+name = 'dpTT_lp_smearing_matrix_normalized_exiting'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+[[figure.artists]]
+type = 'SpineSpectra2D'
+xvariable = 'true_dpTT_lp_smearing_exiting'
+yvariable = 'reco_dpTT_lp_smearing_exiting'
+xrange = [-800.0, 800.0]
+yrange = [-800.0, 800.0]
+draw_kwargs = {show_option = 'smearing', draw_colorbar = true, annotate_threshold = 0}
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = "systematics_dpTT_lp"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["detsys", "flux", "xsec", "g4", "stats"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "systematics_dpTT_lp_contained"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp_contained"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["detsys", "flux", "xsec", "g4", "stats"]
+fractional = true
+show_total = true
+show_individual = true
+
+[[figure]]
+name = "systematics_dpTT_lp_exiting"
+type = "SimpleFigure"
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 4.0]
+[[figure.artists]]
+type = "SpineSpectra1D"
+variable = "reco_dpTT_lp_exiting"
+[figure.artists.draw_kwargs]
+method = "draw_systematics"
+systematic_names = ["detsys", "flux", "xsec", "g4", "stats"]
+fractional = true
+show_total = true
+show_individual = true
+
+# [[figure]]
+# name = "systematics_dpTT_lp"
+# type = "SimpleFigure"
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 4]
+# [[figure.artists]]
+# type = "SpineSpectra1D"
+# variable = "reco_dpTT_lp"
+# [figure.artists.draw_kwargs]
+# method = "draw_systematics"
+# systematic_names = ["detsys", "flux", "xsec", "g4", "stats"]
+# fractional = true
+# show_total = true
+# show_individual = true
+
+# [[figure]]
+# name = 'dpTT_lp_absolute_residual'
+# type = 'SimpleFigure'
+# style = 'selected_sideband_icarus_mc'
+# figsize = [5, 6]
+# [[figure.artists]]
+# type = 'SpineSpectra1D'
+# variable = 'abs_dpTT_lp_residual'
+# yrange = 1.3
+# draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+# Combined (contained + exiting muons).
+[[figure]]
+name = 'dpTT_lp_absolute_residual'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 6.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_dpTT_lp_residual'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+[[figure]]
+name = 'dpTT_lp_absolute_residual_contained'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 6.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_dpTT_lp_residual_contained'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
+
+[[figure]]
+name = 'dpTT_lp_absolute_residual_exiting'
+type = 'SimpleFigure'
+style = 'selected_sideband_icarus_mc'
+figsize = [5.5, 6.0]
+[[figure.artists]]
+type = 'SpineSpectra1D'
+variable = 'abs_dpTT_lp_residual_exiting'
+yrange = 1.3
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
