@@ -368,6 +368,11 @@ def add_zoom_inset(ax, xrange, loc=(0.10, 0.17, 0.42, 0.33), ytop_factor=1.15, f
         new = _clone(coll)
         inset.add_collection(new)
         new.set_transform(inset.transData)
+        # Hatched uncertainty boxes are opaque in the main axes. At the zoomed
+        # scale they would hide the histogram, so only the hatching is kept.
+        if coll.get_hatch():
+            new.set_facecolor('none')
+            new.set_edgecolor((0.5, 0.5, 0.5, 0.55))
         # Error boxes / error bars: use their extent inside the zoom range.
         try:
             for path in coll.get_paths():
@@ -383,6 +388,9 @@ def add_zoom_inset(ax, xrange, loc=(0.10, 0.17, 0.42, 0.33), ytop_factor=1.15, f
         new = _clone(line)
         inset.add_line(new)
         new.set_transform(inset.transData)
+        # Thinner lines: the uncertainty borders are large at the zoomed scale.
+        if new.get_color() in ('grey', 'gray') and new.get_marker() in (None, 'None', '', ' '):
+            new.set_linewidth(0.6 * new.get_linewidth())
         if len(xd) and len(xd) == len(yd):
             sel = (xd >= x0) & (xd <= x1) & np.isfinite(yd)
             if np.any(sel):

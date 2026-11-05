@@ -59,6 +59,40 @@ namespace selectors
     }
 
     /**
+     * @brief Finds the index corresponding to the leading primary particle of
+     * the specified particle type.
+     * @details Same as @ref leading_particle_index (highest kinetic energy),
+     * but only particles flagged as primary are considered. For true
+     * interactions this mirrors the generator-level definition of the leading
+     * particle (final-state particles produced in the neutrino interaction),
+     * so that secondaries produced during transport (e.g. protons knocked out
+     * by neutrons in the argon) cannot be picked as the leading particle.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to operate on.
+     * @param pid of the particle type.
+     * @return the index of the leading primary particle (highest KE).
+     */
+    template <class T>
+    size_t leading_primary_particle_index(const T & obj, uint16_t pid)
+    {
+        double leading_ke(0);
+        size_t index(kNoMatch);
+        for(size_t i(0); i < obj.particles.size(); ++i)
+        {
+            const auto & p = obj.particles[i];
+            if(pvars::primary_classification(p) != 1)
+                continue;
+            double energy(pvars::ke(p));
+            if(pvars::pid(p) == pid && energy > leading_ke)
+            {
+                leading_ke = energy;
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    /**
      * @brief Finds the index corresponding to the longest track.
      * @details The longest track is defined as the track with the longest
      * length, which is calculated upstream in SPINE. The particle instance is
@@ -202,6 +236,22 @@ namespace selectors
     REGISTER_SELECTOR(leading_muon, leading_muon);
 
     /**
+     * @brief Finds the index corresponding to the leading primary muon.
+     * @details The leading primary muon is defined as the primary muon
+     * with the highest kinetic energy. Unlike @ref leading_muon, particles
+     * that are not flagged as primary are ignored.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to operate on.
+     * @return the index of the leading primary muon (highest KE).
+     */
+    template<class T>
+    size_t leading_primary_muon(const T & obj)
+    {
+        return leading_primary_particle_index(obj, pvars::kMuon);
+    }
+    REGISTER_SELECTOR(leading_primary_muon, leading_primary_muon);
+
+    /**
      * @brief Finds the index corresponding to the leading pion.
      * @details The leading pion is defined as the pion with the highest
      * kinetic energy.
@@ -215,6 +265,22 @@ namespace selectors
         return leading_particle_index(obj, pvars::kPion);
     }
     REGISTER_SELECTOR(leading_pion, leading_pion);
+
+    /**
+     * @brief Finds the index corresponding to the leading primary pion.
+     * @details The leading primary pion is defined as the primary pion
+     * with the highest kinetic energy. Unlike @ref leading_pion, particles
+     * that are not flagged as primary are ignored.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to operate on.
+     * @return the index of the leading primary pion (highest KE).
+     */
+    template<class T>
+    size_t leading_primary_pion(const T & obj)
+    {
+        return leading_primary_particle_index(obj, pvars::kPion);
+    }
+    REGISTER_SELECTOR(leading_primary_pion, leading_primary_pion);
     
     /**
      * @brief Finds the index corresponding to the leading proton.
@@ -230,5 +296,21 @@ namespace selectors
         return leading_particle_index(obj, pvars::kProton);
     }
     REGISTER_SELECTOR(leading_proton, leading_proton);
+
+    /**
+     * @brief Finds the index corresponding to the leading primary proton.
+     * @details The leading primary proton is defined as the primary proton
+     * with the highest kinetic energy. Unlike @ref leading_proton, particles
+     * that are not flagged as primary are ignored.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to operate on.
+     * @return the index of the leading primary proton (highest KE).
+     */
+    template<class T>
+    size_t leading_primary_proton(const T & obj)
+    {
+        return leading_primary_particle_index(obj, pvars::kProton);
+    }
+    REGISTER_SELECTOR(leading_primary_proton, leading_primary_proton);
 }
 #endif // SELECTORS_H
