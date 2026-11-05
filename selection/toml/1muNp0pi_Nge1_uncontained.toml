@@ -437,6 +437,8 @@ branch = [
     { name = "px",                type = "both_particle", selector = "leading_muon" },
     { name = "py",                type = "both_particle", selector = "leading_muon" },
     { name = "pz",                type = "both_particle", selector = "leading_muon" },
+    # Leading PRIMARY MUON (primary particles only)
+    { name = "momentum",           type = "both_particle", selector = "leading_primary_muon"},
 
     # Leading PROTON particle-level
     { name = "momentum",           type = "both_particle", selector = "leading_proton"},
@@ -450,6 +452,8 @@ branch = [
     { name = "py",                 type = "both_particle", selector = "leading_proton" },
     { name = "pz",                 type = "both_particle", selector = "leading_proton" },
     { name = "polar_angle",        type = "both_particle", selector = "leading_proton" },
+    # Leading PRIMARY PROTON (primary particles only)
+    { name = "momentum",           type = "both_particle", selector = "leading_primary_proton"},
 
     # Leading PION particle-level
     { name = "momentum",           type = "both_particle", selector = "leading_pion"},
@@ -461,6 +465,8 @@ branch = [
     { name = "py",                 type = "both_particle", selector = "leading_pion" },
     { name = "pz",                 type = "both_particle", selector = "leading_pion" },
     { name = "polar_angle",        type = "both_particle", selector = "leading_pion" },
+    # Leading PRIMARY PION (primary particles only)
+    { name = "momentum",           type = "both_particle", selector = "leading_primary_pion"},
 
     # PID and PDG for leading particles
     { name = "pid", type = "both_particle", selector = "leading_muon"   },
@@ -725,6 +731,8 @@ branch = [
     { name = "px",                type = "both_particle", selector = "leading_muon" },
     { name = "py",                type = "both_particle", selector = "leading_muon" },
     { name = "pz",                type = "both_particle", selector = "leading_muon" },
+    # Leading PRIMARY MUON (primary particles only)
+    { name = "momentum",           type = "both_particle", selector = "leading_primary_muon"},
 
     # Leading PROTON particle-level
     { name = "momentum",           type = "both_particle", selector = "leading_proton"},
@@ -738,6 +746,8 @@ branch = [
     { name = "py",                 type = "both_particle", selector = "leading_proton" },
     { name = "pz",                 type = "both_particle", selector = "leading_proton" },
     { name = "polar_angle",        type = "both_particle", selector = "leading_proton" },
+    # Leading PRIMARY PROTON (primary particles only)
+    { name = "momentum",           type = "both_particle", selector = "leading_primary_proton"},
 
     # Leading PION particle-level
     { name = "momentum",           type = "both_particle", selector = "leading_pion"},
@@ -749,6 +759,8 @@ branch = [
     { name = "py",                 type = "both_particle", selector = "leading_pion" },
     { name = "pz",                 type = "both_particle", selector = "leading_pion" },
     { name = "polar_angle",        type = "both_particle", selector = "leading_pion" },
+    # Leading PRIMARY PION (primary particles only)
+    { name = "momentum",           type = "both_particle", selector = "leading_primary_pion"},
 
     # PID and PDG for leading particles
     { name = "pid", type = "both_particle", selector = "leading_muon"   },
