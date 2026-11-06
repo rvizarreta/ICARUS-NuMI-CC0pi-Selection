@@ -221,6 +221,38 @@ namespace selectors
     REGISTER_SELECTOR(leading_electron, leading_electron);
 
     /**
+     * @brief Finds the index corresponding to the leading primary photon.
+     * @details The leading primary photon is defined as the primary photon
+     * with the highest kinetic energy. Unlike @ref leading_photon, particles
+     * that are not flagged as primary are ignored.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to operate on.
+     * @return the index of the leading primary photon (highest KE).
+     */
+    template<class T>
+    size_t leading_primary_photon(const T & obj)
+    {
+        return leading_primary_particle_index(obj, pvars::kPhoton);
+    }
+    REGISTER_SELECTOR(leading_primary_photon, leading_primary_photon);
+
+    /**
+     * @brief Finds the index corresponding to the leading primary electron.
+     * @details The leading primary electron is defined as the primary electron
+     * with the highest kinetic energy. Unlike @ref leading_electron, particles
+     * that are not flagged as primary are ignored.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to operate on.
+     * @return the index of the leading primary electron (highest KE).
+     */
+    template<class T>
+    size_t leading_primary_electron(const T & obj)
+    {
+        return leading_primary_particle_index(obj, pvars::kElectron);
+    }
+    REGISTER_SELECTOR(leading_primary_electron, leading_primary_electron);
+
+    /**
      * @brief Finds the index corresponding to the leading muon.
      * @details The leading muon is defined as the muon with the highest
      * kinetic energy.

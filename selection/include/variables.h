@@ -726,8 +726,9 @@ namespace vars
 
     /**
      * @brief Variable for the opening angle between leading muon and proton.
-     * @details The leading muon and proton are defined as the particles with the
-     * highest kinetic energy. The opening angle is defined as the arccosine of
+     * @details The leading muon and proton are defined as the primary particles with the
+     * highest kinetic energy (secondary particles are ignored, as in the signal
+     * definition). The opening angle is defined as the arccosine of
      * the dot product of the momentum vectors of the leading muon and proton.
      * @tparam T the type of interaction (true or reco).
      * @param obj the interaction to apply the variable on.
@@ -737,8 +738,8 @@ namespace vars
     template<class T>
     double opening_angle(const T & obj)
     {
-        size_t mi = selectors::leading_muon(obj);
-        size_t pi = selectors::leading_proton(obj);
+        size_t mi = selectors::leading_primary_muon(obj);
+        size_t pi = selectors::leading_primary_proton(obj);
         if(mi == kNoMatch || pi == kNoMatch)
             return kNoMatchValue; // No leading muon or proton found.
         else
@@ -753,8 +754,9 @@ namespace vars
     /**
      * @brief Variable for the opening angle between leading muon and proton in degrees.
      * @details Same as opening_angle but converted to degrees for easier interpretation.
-     * The leading muon and proton are defined as the particles with the
-     * highest kinetic energy. The opening angle is defined as the arccosine of
+     * The leading muon and proton are defined as the primary particles with the
+     * highest kinetic energy (secondary particles are ignored, as in the signal
+     * definition). The opening angle is defined as the arccosine of
      * the dot product of the momentum vectors of the leading muon and proton.
      * @tparam T the type of interaction (true or reco).
      * @param obj the interaction to apply the variable on.
@@ -773,8 +775,9 @@ namespace vars
 
     /**
      * @brief Variable for the cosine of the opening angle between leading muon and proton.
-     * @details The leading muon and proton are defined as the particles with the
-     * highest kinetic energy. This variable returns the cosine of the opening angle,
+     * @details The leading muon and proton are defined as the primary particles with the
+     * highest kinetic energy (secondary particles are ignored, as in the signal
+     * definition). This variable returns the cosine of the opening angle,
      * which is simply the dot product of the direction vectors of the leading muon
      * and proton (assuming normalized direction vectors).
      * @tparam T the type of interaction (true or reco).
@@ -784,8 +787,8 @@ namespace vars
     template<class T>
     double opening_angle_cos(const T & obj)
     {
-        size_t mi = selectors::leading_muon(obj);
-        size_t pi = selectors::leading_proton(obj);
+        size_t mi = selectors::leading_primary_muon(obj);
+        size_t pi = selectors::leading_primary_proton(obj);
         if(mi == kNoMatch || pi == kNoMatch)
             return kNoMatchValue; // No leading muon or proton found.
         else
