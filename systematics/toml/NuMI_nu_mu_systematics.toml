@@ -13,7 +13,7 @@ path = '/exp/icarus/data/users/rvizarr/medulla/1muNp0pi_Nge1_uncontained_systema
 histogram_destination = 'variations/'
 
 [[sysvar]]
-name = 'reco_leading_muon_ke'
+name = 'reco_leading_primary_muon_ke'
 bins = [25, 0, 5000]
 
 [variations]
