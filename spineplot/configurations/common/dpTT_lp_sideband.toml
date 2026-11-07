@@ -81,14 +81,14 @@ key = "reco_dpTT_lp"
 range = [-800,800]
 nbins = 160
 xlabel = 'Reco $\delta p_{TT}$ [MeV/c]'
-mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.true_dpTT_lp_residual_contained]
 key = "true_dpTT_lp"
 range = [-800,800]
 nbins = 160
 xlabel = 'True $\delta p_{TT}$ [MeV/c]'
-mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.reco_dpTT_lp_smearing_contained]
 key = "reco_dpTT_lp"
@@ -97,7 +97,7 @@ nbins = 16
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
 xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
-mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.true_dpTT_lp_smearing_contained]
 key = "true_dpTT_lp"
@@ -106,7 +106,7 @@ nbins = 8
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
 xlabel = 'True $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
-mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.true_dpTT_lp_contained]
 key = "true_dpTT_lp"
@@ -115,7 +115,7 @@ nbins = 8
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
 xlabel = 'True $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
-mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.reco_dpTT_lp_contained]
 key = "reco_dpTT_lp"
@@ -124,7 +124,7 @@ nbins = 16
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
 xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
-mask = '(reco_leading_muon_containment == 1) & (reco_leading_muon_momentum < 0.8)'
+mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 ### dpTT_lp - Exiting ------------------------------------
 
@@ -133,14 +133,14 @@ key = "reco_dpTT_lp"
 range = [-800,800]
 nbins = 160
 xlabel = 'Reco $\delta p_{TT}$ [MeV/c]'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_dpTT_lp_residual_exiting]
 key = "true_dpTT_lp"
 range = [-800,800]
 nbins = 160
 xlabel = 'True $\delta p_{TT}$ [MeV/c]'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_dpTT_lp_smearing_exiting]
 key = "reco_dpTT_lp"
@@ -149,7 +149,7 @@ nbins = 16
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
 xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_dpTT_lp_smearing_exiting]
 key = "true_dpTT_lp"
@@ -158,7 +158,7 @@ nbins = 8
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
 xlabel = 'True $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_dpTT_lp_exiting]
 key = "true_dpTT_lp"
@@ -167,7 +167,7 @@ nbins = 8
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0]
 xlabel = 'True $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_dpTT_lp_exiting]
 key = "reco_dpTT_lp"
@@ -176,4 +176,4 @@ nbins = 16
 binning_scheme = 'custom_bins'
 custom_bins = [-800.0, -700.0, -600.0, -500.0, -400.0, -300.0, -200.0, -100.0, 0.0, 100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]
 xlabel = 'Reco $\delta p_{TT}$ [MeV/c] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

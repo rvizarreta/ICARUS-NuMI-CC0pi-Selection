@@ -77,21 +77,21 @@ binning_scheme = 'custom_bins'
 custom_bins = [-160.0, -146.31, -135.51, -125.31, -114.51, -103.26, -92.31, -81.5101, -70.71, -59.61, -48.66, -37.26, -26.01, -14.91, -4.11, 7.1431, 18.29, 29.79, 40.89, 52.2968, 63.69, 75.09, 86.69, 98.09, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.reco_vertex_y_residual_contained]
 key = "reco_vertex_y"
 range = [-200, 200]
 nbins = 200
 xlabel = 'Reco Vertex Y [cm] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_vertex_y_residual_contained]
 key = "true_vertex_y"
 range = [-200, 200]
 nbins = 200
 xlabel = 'True Vertex Y [cm] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.reco_vertex_y_smearing_contained]
 key = "reco_vertex_y"
@@ -99,7 +99,7 @@ range = [-200, 200]
 nbins = 10
 xlabel = 'Reco Vertex Y [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_vertex_y_smearing_contained]
 key = "true_vertex_y"
@@ -107,7 +107,7 @@ range = [-200, 200]
 nbins = 10
 xlabel = 'True Vertex Y [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 # --- Exiting muon ---
 
@@ -119,21 +119,21 @@ binning_scheme = 'custom_bins'
 custom_bins = [-160.0, -146.31, -135.51, -125.31, -114.51, -103.26, -92.31, -81.5101, -70.71, -59.61, -48.66, -37.26, -26.01, -14.91, -4.11, 7.1431, 18.29, 29.79, 40.89, 52.2968, 63.69, 75.09, 86.69, 98.09, 115.0]
 xlabel = 'Reco Vertex Y [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_vertex_y_residual_exiting]
 key = "reco_vertex_y"
 range = [-200, 200]
 nbins = 200
 xlabel = 'Reco Vertex Y [cm] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_vertex_y_residual_exiting]
 key = "true_vertex_y"
 range = [-200, 200]
 nbins = 200
 xlabel = 'True Vertex Y [cm] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_vertex_y_smearing_exiting]
 key = "reco_vertex_y"
@@ -141,7 +141,7 @@ range = [-200, 200]
 nbins = 10
 xlabel = 'Reco Vertex Y [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_vertex_y_smearing_exiting]
 key = "true_vertex_y"
@@ -149,4 +149,4 @@ range = [-200, 200]
 nbins = 10
 xlabel = 'True Vertex Y [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

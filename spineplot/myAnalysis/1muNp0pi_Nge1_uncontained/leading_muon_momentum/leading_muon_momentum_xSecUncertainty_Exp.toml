@@ -7,7 +7,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -21,21 +21,21 @@ systematics = ['selected_multisigmaTree']
 #              the population of its true bin, so a pure normalisation
 #              change cancels. Only efficiency/migration effects survive.
 #              Backgrounds and non-GENIE dials are unaffected.
-# truth_bin_edges is the current combined true_leading_muon_momentum binning,
+# truth_bin_edges is the current combined true_leading_primary_muon_momentum binning,
 # with overflow (see common/leading_muon_momentum.toml).
 [samples.mc.interaction_method]
 method = 'truth'  # McFarland 'response' method disabled 2026-10-25
 pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
-truth_variable = 'true_leading_muon_momentum'
+truth_variable = 'true_leading_primary_muon_momentum'
 truth_bin_edges = [0.226, 0.3971, 0.6402, 0.9714, 1.3589, 1.7897, 3.0, 10000000.0]
 signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
 nuniv = 1000
 seed = 0
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -43,7 +43,7 @@ trees = ['selected_nonmatched']
 
 # DATA SAMPLE
 [samples.onbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -51,7 +51,7 @@ override_category = -100
 trees = ['selected']
 
 [samples.offbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -60,7 +60,7 @@ trees = ['selected']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
@@ -355,7 +355,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # figsize = [5, 4]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'reco_leading_muon_momentum'
+# variable = 'reco_leading_primary_muon_momentum'
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
 # systematic_names = [
@@ -384,7 +384,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum'
+variable = 'reco_leading_primary_muon_momentum'
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
 systematic_names = [
@@ -412,7 +412,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum_contained'
+variable = 'reco_leading_primary_muon_momentum_contained'
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
 systematic_names = [
@@ -440,7 +440,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_momentum_exiting'
+variable = 'reco_leading_primary_muon_momentum_exiting'
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
 systematic_names = [

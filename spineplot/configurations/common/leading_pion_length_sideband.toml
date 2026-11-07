@@ -14,9 +14,9 @@
 # *_smearing blocks below are carried over from the signal-region file
 # unchanged and are meaningless for this sample - do not plot them.
 #
-#   reco_leading_pion_length: 24 bins, 413-415 events/bin at full POT (re-derived 2026-11-03 on the current file), widths 1.96 to 108.1 (ratio 55), 99.55% of the sample in range
-#   reco_leading_pion_length_contained: 24 bins, 417 events/bin at full POT, widths 1.81 to 113 (ratio 62), 99.62% of the sample in range
-#   reco_leading_pion_length_exiting: 24 bins, 33 events/bin at full POT, widths 2.956 to 79.65 (ratio 27), 98.62% of the sample in range
+#   reco_leading_primary_pion_length: 24 bins, 413-415 events/bin at full POT (re-derived 2026-11-03 on the current file), widths 1.96 to 108.1 (ratio 55), 99.55% of the sample in range
+#   reco_leading_primary_pion_length_contained: 24 bins, 417 events/bin at full POT, widths 1.81 to 113 (ratio 62), 99.62% of the sample in range
+#   reco_leading_primary_pion_length_exiting: 24 bins, 33 events/bin at full POT, widths 2.956 to 79.65 (ratio 27), 98.62% of the sample in range
 #
 # Widths are strongly non-uniform, so these histograms MUST be drawn with
 # per_bin_width = true or the shape is meaningless.
@@ -51,8 +51,8 @@
 
 # --- Combined (Contained + Exiting) ---
 
-[variables.reco_leading_pion_length]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length]
+key = "reco_leading_primary_pion_length"
 range = [0.0, 250.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -64,8 +64,8 @@ xlabel_fontsize = 10
 
 # --- Contained ---
 
-[variables.reco_leading_pion_length_contained]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length_contained]
+key = "reco_leading_primary_pion_length"
 range = [0.0, 250.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -74,12 +74,12 @@ custom_bins = [0.0, 4.6185, 6.5072, 8.3169, 10.4402, 12.3441, 14.4225, 16.768, 1
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 # --- Exiting ---
 
-[variables.reco_leading_pion_length_exiting]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length_exiting]
+key = "reco_leading_primary_pion_length"
 range = [0.0, 250.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -88,4 +88,4 @@ custom_bins = [0.0, 20.3509, 26.1391, 30.2156, 34.0166, 37.4823, 41.1156, 44.396
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

@@ -5,7 +5,7 @@ path = "."
 file = '../../../configurations/common/styles.toml'
 
 [samples.signal]
-presel = 'true_leading_proton_momentum >= 0.35'
+presel = 'true_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
@@ -36,26 +36,26 @@ nbins = 15
 binning_scheme = "equal_width"
 xlabel = "True Neutrino Energy [GeV]"
 
-[variables.true_leading_muon_momentum]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 3.0] # lower bound = KE threshold 143.425 MeV in momentum
 nbins = 15
 xlabel = 'True $p_\mu$ [GeV/c]'
 
-[variables.true_leading_proton_momentum]
-key = "true_leading_proton_momentum"
+[variables.true_leading_primary_proton_momentum]
+key = "true_leading_primary_proton_momentum"
 range = [0.31, 1.2]
 nbins = 15
 xlabel = 'True $p_p$ [GeV/c]'
 
-[variables.true_leading_proton_momentum_zoom]
-key = "true_leading_proton_momentum"
+[variables.true_leading_primary_proton_momentum_zoom]
+key = "true_leading_primary_proton_momentum"
 range = [0.31, 1.0]
 nbins = 23
 xlabel = 'True $p_p$ [GeV/c]'
 
-[variables.true_leading_muon_ke]
-key = "true_leading_muon_ke"
+[variables.true_leading_primary_muon_ke]
+key = "true_leading_primary_muon_ke"
 range = [143.425, 2896.0] # KE equivalent of p_mu = 3 GeV/c
 nbins = 15
 xlabel = "True $KE_\\mu$ [MeV]"
@@ -97,7 +97,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_muon_momentum"
+variable = "true_leading_primary_muon_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
@@ -119,7 +119,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_proton_momentum"
+variable = "true_leading_primary_proton_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
@@ -141,7 +141,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_proton_momentum_zoom"
+variable = "true_leading_primary_proton_momentum_zoom"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 
@@ -185,7 +185,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_muon_ke"
+variable = "true_leading_primary_muon_ke"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2}
 

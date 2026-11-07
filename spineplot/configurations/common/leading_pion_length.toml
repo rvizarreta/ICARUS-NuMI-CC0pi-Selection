@@ -19,8 +19,8 @@
 #
 # Widths are non-uniform, so these histograms MUST be drawn with per_bin_width = true.
 
-[variables.reco_leading_pion_length]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length]
+key = "reco_leading_primary_pion_length"
 range = [0.0, 10.0]
 nbins = 10
 binning_scheme = 'custom_bins'
@@ -32,8 +32,8 @@ xlabel_fontsize = 10
 
 # --- Contained ---
 
-[variables.reco_leading_pion_length_contained]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length_contained]
+key = "reco_leading_primary_pion_length"
 range = [0.0, 10.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -42,12 +42,12 @@ custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 # --- Exiting ---
 
-[variables.reco_leading_pion_length_exiting]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length_exiting]
+key = "reco_leading_primary_pion_length"
 range = [0.0, 10.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -56,4 +56,4 @@ custom_bins = [0.0, 4.7812, 6.7767, 8.7608, 11.02, 13.1366, 15.6584, 17.945, 20.
 #nbins = 10
 xlabel = '$L_\pi$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

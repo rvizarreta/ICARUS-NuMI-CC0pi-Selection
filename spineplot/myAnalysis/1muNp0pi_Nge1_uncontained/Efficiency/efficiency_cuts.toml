@@ -12,7 +12,7 @@ path = "."
 file = '../../../configurations/common/styles.toml'
 
 [samples.signal]
-presel = 'true_leading_proton_momentum >= 0.35'
+presel = 'true_leading_primary_proton_momentum >= 0.35'
 key = "nominal"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT
@@ -35,32 +35,32 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 
 ### Variables ------------------------------------
 
-[variables.true_leading_muon_momentum]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum]
+key = "true_leading_primary_muon_momentum"
 range = [0.0, 3.0]
 nbins = 30
 xlabel = 'True $p_\mu$ [GeV/c]'
 
-[variables.true_leading_proton_momentum]
-key = "true_leading_proton_momentum"
+[variables.true_leading_primary_proton_momentum]
+key = "true_leading_primary_proton_momentum"
 range = [0.0, 2.0]
 nbins = 40
 xlabel = 'True $p_p$ [GeV/c]'
 
-[variables.true_leading_pion_momentum]
-key = "true_leading_pion_momentum"
+[variables.true_leading_primary_pion_momentum]
+key = "true_leading_primary_pion_momentum"
 range = [0.0, 0.4]
 nbins = 20
 xlabel = 'True $p_\pi$ [GeV/c]'
 
-[variables.true_leading_electron_momentum]
-key = "true_leading_electron_momentum"
+[variables.true_leading_primary_electron_momentum]
+key = "true_leading_primary_electron_momentum"
 range = [0.0, 0.08]
 nbins = 10
 xlabel = 'True $p_e$ [GeV/c]'
 
-[variables.true_leading_photon_momentum]
-key = "true_leading_photon_momentum"
+[variables.true_leading_primary_photon_momentum]
+key = "true_leading_primary_photon_momentum"
 range = [0.0, 0.015]
 nbins = 10
 xlabel = 'True $p_\gamma$ [GeV/c]'
@@ -75,7 +75,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_muon_momentum"
+variable = "true_leading_primary_muon_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower right", legend_ncol = 2, threshold_line = 0.226}
 
@@ -93,7 +93,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_proton_momentum"
+variable = "true_leading_primary_proton_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower right", legend_ncol = 2, threshold_line = 0.31}
 
@@ -111,7 +111,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_pion_momentum"
+variable = "true_leading_primary_pion_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2, threshold_line = 0.0872}
 
@@ -129,7 +129,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_electron_momentum"
+variable = "true_leading_primary_electron_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2, threshold_line = 0.0255}
 
@@ -147,7 +147,7 @@ figsize = [5.0, 4.0]
 
 [[figure.artists]]
 type = "SpineEfficiency"
-variable = "true_leading_photon_momentum"
+variable = "true_leading_primary_photon_momentum"
 groups = ['1$\mu$Np0$\pi$']
 draw_kwargs = {show_option = "differential", percentage = true, show_seqeff = true, show_unseqeff = false, npts = 50000, yrange = [0.0, 120.0], legend_loc = "lower center", legend_ncol = 2, threshold_line = 0.01}
 

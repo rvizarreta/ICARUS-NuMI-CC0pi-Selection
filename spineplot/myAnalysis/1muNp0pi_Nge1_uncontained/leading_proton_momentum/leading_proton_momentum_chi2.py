@@ -33,9 +33,9 @@ data_file = os.environ.get(
 )
 
 VARS = [
-    'reco_leading_proton_momentum',
-    'reco_leading_proton_momentum_contained',
-    'reco_leading_proton_momentum_exiting',
+    'reco_leading_primary_proton_momentum',
+    'reco_leading_primary_proton_momentum_contained',
+    'reco_leading_primary_proton_momentum_exiting',
 ]
 
 ana = Analysis(os.path.join(workspace_root, 'leading_proton_momentum.toml'),

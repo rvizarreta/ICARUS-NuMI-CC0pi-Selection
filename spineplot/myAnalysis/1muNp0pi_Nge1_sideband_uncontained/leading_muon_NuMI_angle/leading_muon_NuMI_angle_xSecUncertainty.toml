@@ -6,7 +6,7 @@ file = '../../../configurations/common/styles.toml'
 
 [samples]
 [samples.mc]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -20,21 +20,21 @@ method = 'truth'  # McFarland 'response' method disabled 2026-10-25
 pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
-truth_variable = 'true_leading_muon_cos_theta_mu'
+truth_variable = 'true_leading_primary_muon_cos_theta_mu'
 truth_bin_edges = [-1.0, 0.0, 0.5566, 0.7787, 0.8823, 0.9389, 0.9734, 1.0]
 signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
 nuniv = 1000
 seed = 0
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['sideband_nonmatched']
 
 [samples.onbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -42,7 +42,7 @@ override_category = -100
 trees = ['sideband']
 
 [samples.offbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -51,7 +51,7 @@ trees = ['sideband']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
@@ -105,7 +105,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # figsize = [5, 4]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'reco_leading_muon_angle'
+# variable = 'reco_leading_primary_muon_angle'
 # yrange = [0.0, 0.45]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
@@ -122,7 +122,7 @@ style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_angle'
+variable = 'reco_leading_primary_muon_angle'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
@@ -138,7 +138,7 @@ style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_angle_contained'
+variable = 'reco_leading_primary_muon_angle_contained'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
@@ -154,7 +154,7 @@ style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_muon_angle_exiting'
+variable = 'reco_leading_primary_muon_angle_exiting'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'

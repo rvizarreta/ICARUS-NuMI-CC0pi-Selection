@@ -14,12 +14,12 @@
 # *_smearing blocks below are carried over from the signal-region file
 # unchanged and are meaningless for this sample - do not plot them.
 #
-#   reco_leading_muon_momentum: 24 bins, 433 events/bin at full POT, widths 0.0428 to 0.903 (ratio 21), 95.82% of the sample in range
-#   reco_leading_muon_momentum_contained: 24 bins, 130 events/bin at full POT, widths 0.0145 to 0.2437 (ratio 17), 95.84% of the sample in range
-#   reco_leading_muon_momentum_exiting: 24 bins, 297 events/bin at full POT, widths 0.0447 to 0.7611 (ratio 17), 94.08% of the sample in range
+#   reco_leading_primary_muon_momentum: 24 bins, 433 events/bin at full POT, widths 0.0428 to 0.903 (ratio 21), 95.82% of the sample in range
+#   reco_leading_primary_muon_momentum_contained: 24 bins, 130 events/bin at full POT, widths 0.0145 to 0.2437 (ratio 17), 95.84% of the sample in range
+#   reco_leading_primary_muon_momentum_exiting: 24 bins, 297 events/bin at full POT, widths 0.0447 to 0.7611 (ratio 17), 94.08% of the sample in range
 #
 # NOT re-binned, still on the uniform binning they had (no custom_bins
-# in the signal-region file): reco_leading_muon_momentum_residual_contained, reco_leading_muon_momentum_residual_exiting
+# in the signal-region file): reco_leading_primary_muon_momentum_residual_contained, reco_leading_primary_muon_momentum_residual_exiting
 #
 # Widths are strongly non-uniform, so these histograms MUST be drawn with
 # per_bin_width = true or the shape is meaningless.
@@ -87,20 +87,20 @@
 # The display variables keep the physical range; the smearing FIGURES set xrange/yrange to
 # crop the overflow out of view while the column normalisation still accounts for it.
 
-[variables.reco_leading_muon_momentum_residual]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_residual]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 200
 xlabel = 'Reco $p_\mu$ [GeV/c]'
 
-[variables.true_leading_muon_momentum_residual]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_residual]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 200
 xlabel = 'True $p_\mu$ [GeV/c]'
 
-[variables.true_leading_muon_momentum]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 6
 binning_scheme = 'custom_bins'
@@ -108,24 +108,24 @@ custom_bins = [0.226, 0.3971, 0.6402, 0.9714, 1.3589, 1.7897, 3.0]
 xlabel = 'True $p_\\mu$ [GeV/c] (Contained + Exiting $\\mu^\\pm$)'
 xlabel_fontsize = 10
 
-[variables.reco_leading_muon_momentum_smearing]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_smearing]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 10000000.0]
 nbins = 14
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.3082, 0.3971, 0.5124, 0.6402, 0.7997, 0.9714, 1.1422, 1.3589, 1.5416, 1.7897, 2.1122, 3.0, 3.003, 1e+07]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 
-[variables.true_leading_muon_momentum_smearing]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_smearing]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 10000000.0]
 nbins = 7
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.3971, 0.6402, 0.9714, 1.3589, 1.7897, 3.0, 1e+07]
 xlabel = 'True $p_\mu$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 
-[variables.reco_leading_muon_momentum]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -135,108 +135,108 @@ xlabel_fontsize = 10
 
 ### leading_muon_momentum - Contained ------------------------------------
 
-[variables.reco_leading_muon_momentum_residual_contained]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_residual_contained]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 200
 xlabel = 'Reco $p_\mu$ [GeV/c]'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.true_leading_muon_momentum_residual_contained]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_residual_contained]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 200
 xlabel = 'True $p_\mu$ [GeV/c]'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.true_leading_muon_momentum_contained]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_contained]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 1.5]
 nbins = 10
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.2604, 0.293, 0.3298, 0.3739, 0.4284, 0.5011, 0.6012, 0.7629, 1.0272, 1.5]
 xlabel = 'True $p_\\mu$ [GeV/c] (Contained $\\mu^\\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.reco_leading_muon_momentum_smearing_contained]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_smearing_contained]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 10000000.0]
 nbins = 22
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.2437, 0.2604, 0.276, 0.293, 0.3107, 0.3298, 0.3505, 0.3739, 0.3998, 0.4284, 0.4627, 0.5011, 0.5467, 0.6012, 0.672, 0.7629, 0.8831, 1.0272, 1.2283, 1.5, 1.7224, 1e+07]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.true_leading_muon_momentum_smearing_contained]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_smearing_contained]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 10000000.0]
 nbins = 11
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.2604, 0.293, 0.3298, 0.3739, 0.4284, 0.5011, 0.6012, 0.7629, 1.0272, 1.5, 1e+07]
 xlabel = 'True $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.reco_leading_muon_momentum_contained]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_contained]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 1.5]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.2405, 0.2559, 0.2725, 0.2901, 0.3096, 0.3278, 0.3504, 0.3722, 0.3943, 0.4207, 0.4475, 0.477, 0.5085, 0.5454, 0.5835, 0.6312, 0.6783, 0.7381, 0.8077, 0.8879, 0.9802, 1.0995, 1.2563, 1.5]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 ### leading_muon_momentum - Exiting ------------------------------------
 
-[variables.reco_leading_muon_momentum_residual_exiting]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_residual_exiting]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 200
 xlabel = 'Reco $p_\mu$ [GeV/c]'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.true_leading_muon_momentum_residual_exiting]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_residual_exiting]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 200
 xlabel = 'True $p_\mu$ [GeV/c]'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.true_leading_muon_momentum_exiting]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_exiting]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 4
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.7849, 1.2585, 1.7495, 3.0]
 xlabel = 'True $p_\\mu$ [GeV/c] (Exiting $\\mu^\\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.reco_leading_muon_momentum_smearing_exiting]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_smearing_exiting]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 10000000.0]
 nbins = 10
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.5707, 0.7849, 0.9972, 1.2585, 1.46, 1.7495, 2.0908, 3.0, 3.003, 1e+07]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.true_leading_muon_momentum_smearing_exiting]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_smearing_exiting]
+key = "true_leading_primary_muon_momentum"
 range = [0.226, 10000000.0]
 nbins = 5
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.7849, 1.2585, 1.7495, 3.0, 1e+07]
 xlabel = 'True $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.reco_leading_muon_momentum_exiting]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_exiting]
+key = "reco_leading_primary_muon_momentum"
 range = [0.226, 3.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [0.226, 0.3584, 0.435, 0.4996, 0.5558, 0.6064, 0.6589, 0.7045, 0.7511, 0.7958, 0.8457, 0.8907, 0.9431, 0.9974, 1.0525, 1.1109, 1.1801, 1.2548, 1.3377, 1.44, 1.5584, 1.7092, 1.9287, 2.2389, 3.0]
 xlabel = 'Reco $p_\mu$ [GeV/c] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

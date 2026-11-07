@@ -6,7 +6,7 @@ file = '../../../configurations/common/styles.toml'
 
 [samples]
 [samples.mc]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -15,14 +15,14 @@ print_sys = true
 systematics = ['selected_NuMIfluxsimTree']
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 [samples.onbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -30,7 +30,7 @@ override_category = -100
 trees = ['selected']
 
 [samples.offbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -39,7 +39,7 @@ trees = ['selected']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
@@ -73,7 +73,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # figsize = [5, 4]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'reco_leading_pion_length'
+# variable = 'reco_leading_primary_pion_length'
 # yrange = [0.0, 0.25]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
@@ -90,7 +90,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_pion_length'
+variable = 'reco_leading_primary_pion_length'
 yrange = [0.0, 0.25]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
@@ -106,7 +106,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_pion_length_contained'
+variable = 'reco_leading_primary_pion_length_contained'
 yrange = [0.0, 0.25]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
@@ -122,7 +122,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_pion_length_exiting'
+variable = 'reco_leading_primary_pion_length_exiting'
 yrange = [0.0, 0.25]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'

@@ -143,38 +143,38 @@ xlabel = 'Reco $\delta \phi_T$ [degrees]'
 
 ### leading_muon_momentum ------------------------------------
 
-[variables.reco_leading_muon_momentum_residual]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_residual]
+key = "reco_leading_primary_muon_momentum"
 range = [0,3]
 nbins = 200
 xlabel = 'Reco Leading Muon Momentum [GeV/c]'
 
-[variables.true_leading_muon_momentum_residual]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_residual]
+key = "true_leading_primary_muon_momentum"
 range = [0,3]
 nbins = 200
 xlabel = 'True Leading Muon Momentum [GeV/c]'
 
-[variables.reco_leading_muon_momentum_smearing]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum_smearing]
+key = "reco_leading_primary_muon_momentum"
 range = [0,3]
 nbins = 10
 xlabel = 'Reco Leading Muon Momentum [GeV/c]'
 
-[variables.true_leading_muon_momentum_smearing]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum_smearing]
+key = "true_leading_primary_muon_momentum"
 range = [0,3]
 nbins = 10
 xlabel = 'True Leading Muon Momentum [GeV/c]'
 
-[variables.true_leading_muon_momentum]
-key = "true_leading_muon_momentum"
+[variables.true_leading_primary_muon_momentum]
+key = "true_leading_primary_muon_momentum"
 range = [0,3]
 nbins = 25
 xlabel = 'True Leading Muon Momentum [GeV/c]'
 
-[variables.reco_leading_muon_momentum]
-key = "reco_leading_muon_momentum"
+[variables.reco_leading_primary_muon_momentum]
+key = "reco_leading_primary_muon_momentum"
 range = [0,3]
 nbins = 25
 xlabel = 'Reco Leading Muon Momentum [GeV/c]'
@@ -219,152 +219,152 @@ xlabel = 'Reco $\cos{(\theta_{\mu p})}$'
 
 ### leading_muon_ke ------------------------------------
 
-[variables.reco_leading_muon_ke_residual]
-key = "reco_leading_muon_ke"
+[variables.reco_leading_primary_muon_ke_residual]
+key = "reco_leading_primary_muon_ke"
 range = [0,2000]
 nbins = 200
 xlabel = 'Reconstructed Leading Muon Ke [MeV/c]'
 
-[variables.true_leading_muon_ke_residual]
-key = "true_leading_muon_ke"
+[variables.true_leading_primary_muon_ke_residual]
+key = "true_leading_primary_muon_ke"
 range = [0,2000]
 nbins = 200
 xlabel = 'True Leading Muon Ke [MeV/c]'
 
-[variables.reco_leading_muon_ke_smearing]
-key = "reco_leading_muon_ke"
+[variables.reco_leading_primary_muon_ke_smearing]
+key = "reco_leading_primary_muon_ke"
 range = [0,2000]
 nbins = 10
 xlabel = 'Reconstructed Leading Muon Ke [MeV/c]'
 
-[variables.true_leading_muon_ke_smearing]
-key = "true_leading_muon_ke"
+[variables.true_leading_primary_muon_ke_smearing]
+key = "true_leading_primary_muon_ke"
 range = [0,2000]
 nbins = 10
 xlabel = 'True Leading Muon Ke [MeV/c]'
 
-[variables.reco_leading_muon_ke]
-key = "reco_leading_muon_ke"
+[variables.reco_leading_primary_muon_ke]
+key = "reco_leading_primary_muon_ke"
 range = [0,2000]
 nbins = 25
 xlabel = 'Reconstructed Leading Muon Ke [MeV/c]'
 
-[variables.true_leading_muon_ke]
-key = "true_leading_muon_ke"
+[variables.true_leading_primary_muon_ke]
+key = "true_leading_primary_muon_ke"
 range = [0,2000]
 nbins = 25
 xlabel = 'True Leading Muon Ke [MeV/c]'
 
 ### leading_muon_length ------------------------------------
 
-[variables.reco_leading_muon_length_residual]
-key = "reco_leading_muon_length"
+[variables.reco_leading_primary_muon_length_residual]
+key = "reco_leading_primary_muon_length"
 range = [50,500]
 nbins = 200
 xlabel = 'Reconstructed Leading Muon Length [cm]'
 
-[variables.true_leading_muon_length_residual]
-key = "true_leading_muon_length"
+[variables.true_leading_primary_muon_length_residual]
+key = "true_leading_primary_muon_length"
 range = [50,500]
 nbins = 200
 xlabel = 'True Leading Muon Length [cm]'
 
-[variables.reco_leading_muon_length_smearing]
-key = "reco_leading_muon_length"
+[variables.reco_leading_primary_muon_length_smearing]
+key = "reco_leading_primary_muon_length"
 range = [50,500]
 nbins = 10
 xlabel = 'Reconstructed Leading Muon Length [cm]'
 
-[variables.true_leading_muon_length_smearing]
-key = "true_leading_muon_length"
+[variables.true_leading_primary_muon_length_smearing]
+key = "true_leading_primary_muon_length"
 range = [50,500]
 nbins = 10
 xlabel = 'True Leading Muon Length [cm]'
 
-[variables.reco_leading_muon_length]
-key = "reco_leading_muon_length"
+[variables.reco_leading_primary_muon_length]
+key = "reco_leading_primary_muon_length"
 range = [50,500]
 nbins = 25
 xlabel = 'Reconstructed Leading Muon Length [cm]'
 
-[variables.true_leading_muon_length]
-key = "true_leading_muon_length"
+[variables.true_leading_primary_muon_length]
+key = "true_leading_primary_muon_length"
 range = [50,500]
 nbins = 25
 xlabel = 'True Leading Muon Length [cm]'
 
 ### leading_muon_polar_angle ------------------------------------
 
-[variables.reco_leading_muon_polar_angle_residual]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_residual]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1,1]
 nbins = 200
 xlabel = 'Reconstructed Leading Muon Polar Angle'
 
-[variables.true_leading_muon_polar_angle_residual]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_residual]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1,1]
 nbins = 200
 xlabel = 'True Leading Muon Polar Angle'
 
-[variables.reco_leading_muon_polar_angle_smearing]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_smearing]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1,1]
 nbins = 10
 xlabel = 'Reconstructed Leading Muon Polar Angle'
 
-[variables.true_leading_muon_polar_angle_smearing]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_smearing]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1,1]
 nbins = 10
 xlabel = 'True Leading Muon Polar Angle'
 
-[variables.reco_leading_muon_polar_angle]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1,1]
 nbins = 25
 xlabel = 'Reconstructed Leading Muon Polar Angle'
 
-[variables.true_leading_muon_polar_angle]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1,1]
 nbins = 25
 xlabel = 'True Leading Muon Polar Angle'
 
 ### leading_proton_momentum ------------------------------------
 
-[variables.reco_leading_proton_momentum_residual]
-key = "reco_leading_proton_momentum"
+[variables.reco_leading_primary_proton_momentum_residual]
+key = "reco_leading_primary_proton_momentum"
 range = [0.25,1.5]
 nbins = 200
 xlabel = 'Reco Leading Proton Momentum [GeV/c]'
 
-[variables.true_leading_proton_momentum_residual]
-key = "true_leading_proton_momentum"
+[variables.true_leading_primary_proton_momentum_residual]
+key = "true_leading_primary_proton_momentum"
 range = [0.25,1.5]
 nbins = 200
 xlabel = 'True Leading Proton Momentum [GeV/c]'
 
-[variables.reco_leading_proton_momentum_smearing]
-key = "reco_leading_proton_momentum"
+[variables.reco_leading_primary_proton_momentum_smearing]
+key = "reco_leading_primary_proton_momentum"
 range = [0.25,1.5]
 nbins = 10
 xlabel = 'Reco Leading Proton Momentum [GeV/c]'
 
-[variables.true_leading_proton_momentum_smearing]
-key = "true_leading_proton_momentum"
+[variables.true_leading_primary_proton_momentum_smearing]
+key = "true_leading_primary_proton_momentum"
 range = [0.25,1.5]
 nbins = 10
 xlabel = 'True Leading Proton Momentum [GeV/c]'
 
-[variables.true_leading_proton_momentum]
-key = "true_leading_proton_momentum"
+[variables.true_leading_primary_proton_momentum]
+key = "true_leading_primary_proton_momentum"
 range = [0.25,1.5]
 nbins = 25
 xlabel = 'True Leading Proton Momentum [GeV/c]'
 
-[variables.reco_leading_proton_momentum]
-key = "reco_leading_proton_momentum"
+[variables.reco_leading_primary_proton_momentum]
+key = "reco_leading_primary_proton_momentum"
 range = [0.25,1.5]
 nbins = 25
 xlabel = 'Reco Leading Proton Momentum [GeV/c]'
@@ -485,38 +485,38 @@ xlabel = 'True Vertex Z [cm]'
 
 ### leading_muon_cos_theta_mu ------------------------------------
 
-[variables.reco_leading_muon_angle_residual]
-key = "reco_leading_muon_cos_theta_mu"
+[variables.reco_leading_primary_muon_angle_residual]
+key = "reco_leading_primary_muon_cos_theta_mu"
 range = [-1,1]
 nbins = 200
 xlabel = 'Reco $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
 
-[variables.true_leading_muon_angle_residual]
-key = "true_leading_muon_cos_theta_mu"
+[variables.true_leading_primary_muon_angle_residual]
+key = "true_leading_primary_muon_cos_theta_mu"
 range = [-1,1]
 nbins = 200
 xlabel = 'True $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
 
-[variables.reco_leading_muon_angle_smearing]
-key = "reco_leading_muon_cos_theta_mu"
+[variables.reco_leading_primary_muon_angle_smearing]
+key = "reco_leading_primary_muon_cos_theta_mu"
 range = [-1,1]
 nbins = 10
 xlabel = 'Reco $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
 
-[variables.true_leading_muon_angle_smearing]
-key = "true_leading_muon_cos_theta_mu"
+[variables.true_leading_primary_muon_angle_smearing]
+key = "true_leading_primary_muon_cos_theta_mu"
 range = [-1,1]
 nbins = 10
 xlabel = 'True $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
 
-[variables.reco_leading_muon_angle]
-key = "reco_leading_muon_cos_theta_mu"
+[variables.reco_leading_primary_muon_angle]
+key = "reco_leading_primary_muon_cos_theta_mu"
 range = [-1,1]
 nbins = 25
 xlabel = 'Reco $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
 
-[variables.true_leading_muon_angle]
-key = "true_leading_muon_cos_theta_mu"
+[variables.true_leading_primary_muon_angle]
+key = "true_leading_primary_muon_cos_theta_mu"
 range = [-1,1]
 nbins = 25
 xlabel = 'True $\cos{(\theta_{\mu})}$ (w.r.t. NuMI)'
@@ -529,24 +529,24 @@ range = [0,2]
 nbins = 5
 xlabel = 'No charged pions cut'
 
-[variables.true_leading_pion_ke]
-key = "true_leading_pion_ke"
+[variables.true_leading_primary_pion_ke]
+key = "true_leading_primary_pion_ke"
 range = [0,200]
 nbins = 50
 xlabel = 'True Leading Pion Energy'
 
 ### leading_pion_KE ------------------------------------
 
-#[variables.true_leading_pion_KE]
-#key = "true_leading_pion_ke"
+#[variables.true_leading_primary_pion_KE]
+#key = "true_leading_primary_pion_ke"
 #range = [0,1000]
 #nbins = 100
 #xlabel = 'True Leading Pion KE [MeV]'
 
 ## leading_pion_length ------------------------------------
 
-[variables.reco_leading_pion_length]
-key = "reco_leading_pion_length"
+[variables.reco_leading_primary_pion_length]
+key = "reco_leading_primary_pion_length"
 range = [0,100]
 nbins = 40
 xlabel = 'Reco Leading Pion Length [cm]'

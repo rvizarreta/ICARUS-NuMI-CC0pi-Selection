@@ -13,8 +13,8 @@
 
 ### leading_muon_length - Combined ------------------------------------
 
-[variables.reco_leading_muon_length]
-key = "reco_leading_muon_length"
+[variables.reco_leading_primary_muon_length]
+key = "reco_leading_primary_muon_length"
 range = [0.0, 800.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -24,24 +24,24 @@ xlabel_fontsize = 10
 
 ### leading_muon_length - Contained ------------------------------------
 
-[variables.reco_leading_muon_length_contained]
-key = "reco_leading_muon_length"
+[variables.reco_leading_primary_muon_length_contained]
+key = "reco_leading_primary_muon_length"
 range = [0.0, 800.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [0.0, 55.0837, 60.7548, 66.6555, 72.7042, 79.4252, 86.4428, 94.0547, 102.6067, 111.8314, 121.4341, 132.4783, 145.3131, 159.9699, 175.8954, 194.8201, 217.0381, 244.1404, 276.1156, 319.2189, 367.1311, 427.7833, 510.7541, 616.0398, 800.0]
 xlabel = '$L_\mu$ [cm] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 ### leading_muon_length - Exiting ------------------------------------
 
-[variables.reco_leading_muon_length_exiting]
-key = "reco_leading_muon_length"
+[variables.reco_leading_primary_muon_length_exiting]
+key = "reco_leading_primary_muon_length"
 range = [0.0, 800.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [0.0, 49.0234, 61.7076, 72.8932, 84.1485, 95.4527, 106.8246, 118.4885, 131.1176, 144.2283, 158.3463, 172.9666, 188.9563, 205.328, 223.4253, 242.3726, 262.7817, 284.5211, 309.7682, 337.8349, 371.8501, 412.0607, 465.682, 551.3046, 800.0]
 xlabel = '$L_\mu$ [cm] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

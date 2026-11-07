@@ -7,7 +7,7 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
@@ -38,7 +38,7 @@ style = 'selected_sideband_icarus_mc'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'true_leading_pion_ke'
+variable = 'true_leading_primary_pion_ke'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = false, 'normalize' = false, 'prediction' = false, 'show_fraction' = false}
 
 #[[figure]]
@@ -48,7 +48,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 #[[figure.artists]]
 #type = 'SpineSpectra1D'
 #yrange = [0.0, 1.4]
-#variable = 'true_leading_pion_ke'
+#variable = 'true_leading_primary_pion_ke'
 #draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = false, 'normalize' = false, 'prediction' = false, 'show_fraction' = true}
 
 #[figure.artists.cuts]

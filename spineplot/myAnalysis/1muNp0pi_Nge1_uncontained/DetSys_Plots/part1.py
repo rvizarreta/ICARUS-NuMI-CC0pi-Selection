@@ -3,7 +3,7 @@
 #
 # Confirmed from the previous exploration:
 # - `events/full/selected` in the main analysis file is a real TTree (CV
-#   sample) with `reco_vertex_x/y/z`, `reco_leading_muon_end_x/y/z`, etc.
+#   sample) with `reco_vertex_x/y/z`, `reco_leading_primary_muon_end_x/y/z`, etc.
 # - The Cathode Bending variation (var09) in that same file is stored ONLY as
 #   histograms (`var09_1D`, `var09_2D`) — no per-event position info.
 # - The raw per-event Cathode Bending sample lives separately at:
@@ -97,7 +97,7 @@ if var09_files:
 # differs, adjust VTX_X_VAR09 accordingly.
 VTX_X_CV = "reco_vertex_x"
 VTX_X_VAR09 = "reco_vertex_x"  # <-- confirm matches Part 1c
-OBSERVABLE = "reco_leading_muon_ke"  # matches the existing Fig 31 style (Var/CV vs muon KE)
+OBSERVABLE = "reco_leading_primary_muon_ke"  # matches the existing Fig 31 style (Var/CV vs muon KE)
 
 # Cathode-plane x-position(s) in the same coordinate convention as the vertex
 # branches above. ICARUS has one cathode per cryostat (2 cryostats) — this
@@ -192,11 +192,11 @@ plt.show()
 #
 # 1. Vertex-only distance may not capture "crossing the cathode" for long
 #    tracks that start far from it but cross it — consider also computing
-#    distance using `reco_leading_muon_end_x` and taking whichever endpoint
+#    distance using `reco_leading_primary_muon_end_x` and taking whichever endpoint
 #    is closer, or checking whether the track's x-range spans a cathode
 #    plane at all (a boolean "crosses" flag), since Anne asked about both
 #    proximity AND crossing.
-# 2. Split contained vs. exiting (`reco_leading_muon_containment` /
+# 2. Split contained vs. exiting (`reco_leading_primary_muon_containment` /
 #    `reco_containment_cut`) — the existing systematics tables already show
 #    Cathode Bending differs between these two samples (7.8% vs 6.4%), so
 #    mixing them here could wash out or exaggerate the proximity effect.

@@ -86,7 +86,7 @@ custom_bins = [-1.0, -0.915, -0.855, -0.7674, -0.6875, -0.5786, -0.4825, -0.3746
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_opening_angle_contained]
 key = "true_opening_angle_cos"
@@ -97,7 +97,7 @@ custom_bins = [-1.0, -0.855, -0.6875, -0.4825, -0.2725, -0.0525, 0.1625, 0.365, 
 xlabel = 'True $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.reco_opening_angle_residual_contained]
 key = "reco_opening_angle_cos"
@@ -105,7 +105,7 @@ range = [-1, 1]
 nbins = 200
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_opening_angle_residual_contained]
 key = "true_opening_angle_cos"
@@ -113,7 +113,7 @@ range = [-1, 1]
 nbins = 200
 xlabel = 'True $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.reco_opening_angle_smearing_contained]
 key = "reco_opening_angle_cos"
@@ -124,7 +124,7 @@ custom_bins = [-1.0, -0.915, -0.855, -0.7674, -0.6875, -0.5786, -0.4825, -0.3746
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_opening_angle_smearing_contained]
 key = "true_opening_angle_cos"
@@ -135,7 +135,7 @@ custom_bins = [-1.0, -0.855, -0.6875, -0.4825, -0.2725, -0.0525, 0.1625, 0.365, 
 xlabel = 'True $\cos(\theta_{\mu p})$ (Contained $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 # --- Exiting muon ---
 
@@ -148,7 +148,7 @@ custom_bins = [-1.0, -0.8986, -0.8125, -0.7087, -0.625, -0.5147, -0.425, -0.3156
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_opening_angle_exiting]
 key = "true_opening_angle_cos"
@@ -159,7 +159,7 @@ custom_bins = [-1.0, -0.8125, -0.625, -0.425, -0.225, -0.0375, 0.13, 0.285, 0.44
 xlabel = 'True $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_opening_angle_residual_exiting]
 key = "reco_opening_angle_cos"
@@ -167,7 +167,7 @@ range = [-1, 1]
 nbins = 200
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_opening_angle_residual_exiting]
 key = "true_opening_angle_cos"
@@ -175,7 +175,7 @@ range = [-1, 1]
 nbins = 200
 xlabel = 'True $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_opening_angle_smearing_exiting]
 key = "reco_opening_angle_cos"
@@ -186,7 +186,7 @@ custom_bins = [-1.0, -0.8986, -0.8125, -0.7087, -0.625, -0.5147, -0.425, -0.3156
 xlabel = 'Reco $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_opening_angle_smearing_exiting]
 key = "true_opening_angle_cos"
@@ -197,4 +197,4 @@ custom_bins = [-1.0, -0.8125, -0.625, -0.425, -0.225, -0.0375, 0.13, 0.285, 0.44
 xlabel = 'True $\cos(\theta_{\mu p})$ (Exiting $\mu^\pm$)'
 xticks = [-1.0, -0.5, 0.0, 0.5, 1.0]
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

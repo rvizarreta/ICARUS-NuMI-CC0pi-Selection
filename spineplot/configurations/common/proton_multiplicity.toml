@@ -15,7 +15,7 @@ range = [0.0, 5.0]
 nbins = 5
 xlabel = 'Reco Proton Multiplicity (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 # --- Exiting muon ---
 
@@ -25,4 +25,4 @@ range = [0.0, 5.0]
 nbins = 5
 xlabel = 'Reco Proton Multiplicity (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'

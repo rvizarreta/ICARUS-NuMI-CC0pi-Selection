@@ -4,33 +4,33 @@ file = '../../../configurations/common/leading_proton_momentum.toml'
 [[this_includes]]
 file = '../../../configurations/common/styles.toml'
 
-[variables.abs_leading_proton_momentum_residual]
-key = "abs_leading_proton_momentum_residual"
+[variables.abs_leading_primary_proton_momentum_residual]
+key = "abs_leading_primary_proton_momentum_residual"
 range = [-0.5, 0.5]
 nbins = 50
 xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
-[variables.abs_leading_proton_momentum_residual_contained]
-key = "abs_leading_proton_momentum_residual"
+[variables.abs_leading_primary_proton_momentum_residual_contained]
+key = "abs_leading_primary_proton_momentum_residual"
 range = [-0.5, 0.5]
 nbins = 50
 xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.abs_leading_proton_momentum_residual_exiting]
-key = "abs_leading_proton_momentum_residual"
+[variables.abs_leading_primary_proton_momentum_residual_exiting]
+key = "abs_leading_primary_proton_momentum_residual"
 range = [-0.5, 0.5]
 nbins = 50
 xlabel = '$p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}$ [GeV/c] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -39,7 +39,7 @@ print_sys = true
 systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 [samples.mc.precompute]
-abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - true_leading_proton_momentum"
+abs_leading_primary_proton_momentum_residual = "reco_leading_primary_proton_momentum - true_leading_primary_proton_momentum"
 
 # --- Interaction-dial systematic method -------------------------------
 # 'truth'    : dial reweights selected events directly (original behaviour).
@@ -61,7 +61,7 @@ method = 'truth'  # McFarland 'response' method disabled 2026-10-25
 pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
-truth_variable = 'true_leading_proton_momentum'
+truth_variable = 'true_leading_primary_proton_momentum'
 truth_bin_edges = [0.35, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 0.7814, 0.88, 10000000.0]
 signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
 nuniv = 1000
@@ -93,18 +93,18 @@ binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/bin
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 [samples.mc_nonmatched.precompute]
-abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - true_leading_proton_momentum"
+abs_leading_primary_proton_momentum_residual = "reco_leading_primary_proton_momentum - true_leading_primary_proton_momentum"
 
 # DATA SAMPLE
 [samples.onbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -112,29 +112,29 @@ override_category = -100
 trees = ['selected']
 
 [samples.onbeam.precompute]
-abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - reco_leading_proton_momentum"
+abs_leading_primary_proton_momentum_residual = "reco_leading_primary_proton_momentum - reco_leading_primary_proton_momentum"
 
 [samples.offbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
 trees = ['selected']
 
 [samples.offbeam.precompute]
-abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - reco_leading_proton_momentum"
+abs_leading_primary_proton_momentum_residual = "reco_leading_primary_proton_momentum - reco_leading_primary_proton_momentum"
 
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
 trees = ['selected']
 
 [samples.rock.precompute]
-abs_leading_proton_momentum_residual = "reco_leading_proton_momentum - true_leading_proton_momentum"
+abs_leading_primary_proton_momentum_residual = "reco_leading_primary_proton_momentum - true_leading_primary_proton_momentum"
 
 [output]
 path = '.'
@@ -198,7 +198,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # figsize = [5, 6]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'reco_leading_proton_momentum'
+# variable = 'reco_leading_primary_proton_momentum'
 # ytitle = 'Candidates / (GeV/c)'
 # yrange = 1.6
 # draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
@@ -214,7 +214,7 @@ category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram
 # figsize = [5, 5]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'reco_leading_proton_momentum'
+# variable = 'reco_leading_primary_proton_momentum'
 # ytitle = 'Candidates / (GeV/c)'
 # yrange = 1.6
 # draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
@@ -228,7 +228,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum'
+variable = 'reco_leading_primary_proton_momentum'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
@@ -240,7 +240,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum_contained'
+variable = 'reco_leading_primary_proton_momentum_contained'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
@@ -253,7 +253,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum_exiting'
+variable = 'reco_leading_primary_proton_momentum_exiting'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.6
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'per_bin_width' = true, 'draw_data' = false}
@@ -265,7 +265,7 @@ style = 'selected_icarus_data'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum'
+variable = 'reco_leading_primary_proton_momentum'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
@@ -277,7 +277,7 @@ style = 'selected_icarus_data'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum_contained'
+variable = 'reco_leading_primary_proton_momentum_contained'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
@@ -289,7 +289,7 @@ style = 'selected_icarus_data'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum_exiting'
+variable = 'reco_leading_primary_proton_momentum_exiting'
 ytitle = 'Candidates / (GeV/c)'
 yrange = 1.8
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
@@ -303,8 +303,8 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 # figsize = [5, 4]
 # [[figure.artists]]
 # type = 'SpineSpectra2D'
-# yvariable = 'reco_leading_proton_momentum_residual'
-# xvariable = 'true_leading_proton_momentum_residual'
+# yvariable = 'reco_leading_primary_proton_momentum_residual'
+# xvariable = 'true_leading_primary_proton_momentum_residual'
 # xrange = [-1, 1]
 # xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Contained + Exiting $\mu^\pm$)'
 # draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
@@ -317,8 +317,8 @@ style = 'selected_icarus_mc'
 figsize = [5, 4]
 [[figure.artists]]
 type = 'SpineSpectra2D'
-yvariable = 'reco_leading_proton_momentum_residual'
-xvariable = 'true_leading_proton_momentum_residual'
+yvariable = 'reco_leading_primary_proton_momentum_residual'
+xvariable = 'true_leading_primary_proton_momentum_residual'
 xrange = [-1, 1]
 xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
@@ -330,8 +330,8 @@ style = 'selected_icarus_mc'
 figsize = [5, 4]
 [[figure.artists]]
 type = 'SpineSpectra2D'
-yvariable = 'reco_leading_proton_momentum_residual_contained'
-xvariable = 'true_leading_proton_momentum_residual_contained'
+yvariable = 'reco_leading_primary_proton_momentum_residual_contained'
+xvariable = 'true_leading_primary_proton_momentum_residual_contained'
 xrange = [-1, 1]
 xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Contained $\mu^\pm$)'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
@@ -343,8 +343,8 @@ style = 'selected_icarus_mc'
 figsize = [5, 4]
 [[figure.artists]]
 type = 'SpineSpectra2D'
-yvariable = 'reco_leading_proton_momentum_residual_exiting'
-xvariable = 'true_leading_proton_momentum_residual_exiting'
+yvariable = 'reco_leading_primary_proton_momentum_residual_exiting'
+xvariable = 'true_leading_primary_proton_momentum_residual_exiting'
 xrange = [-1, 1]
 xtitle = '$\frac{p_{p,\mathrm{reco}} - p_{p,\mathrm{true}}}{p_{p,\mathrm{true}}}$ (Exiting $\mu^\pm$)'
 draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_colorbar' = true, 'logz' = true}
@@ -357,8 +357,8 @@ draw_kwargs = {'show_option' = 'projection', 'draw_identity' = true, 'draw_color
 # style = 'selected_icarus_mc'
 # [[figure.artists]]
 # type = 'SpineSpectra2D'
-# xvariable = 'true_leading_proton_momentum_smearing'
-# yvariable = 'reco_leading_proton_momentum_smearing'
+# xvariable = 'true_leading_primary_proton_momentum_smearing'
+# yvariable = 'reco_leading_primary_proton_momentum_smearing'
 # draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 
 # Combined (contained + exiting muons).
@@ -368,8 +368,8 @@ type = 'SimpleFigure'
 style = 'selected_icarus_mc'
 [[figure.artists]]
 type = 'SpineSpectra2D'
-xvariable = 'true_leading_proton_momentum_smearing'
-yvariable = 'reco_leading_proton_momentum_smearing'
+xvariable = 'true_leading_primary_proton_momentum_smearing'
+yvariable = 'reco_leading_primary_proton_momentum_smearing'
 xrange = [0.35, 1.2]
 yrange = [0.35, 1.2]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
@@ -380,8 +380,8 @@ type = 'SimpleFigure'
 style = 'selected_icarus_mc'
 [[figure.artists]]
 type = 'SpineSpectra2D'
-xvariable = 'true_leading_proton_momentum_smearing_contained'
-yvariable = 'reco_leading_proton_momentum_smearing_contained'
+xvariable = 'true_leading_primary_proton_momentum_smearing_contained'
+yvariable = 'reco_leading_primary_proton_momentum_smearing_contained'
 xrange = [0.35, 1.2]
 yrange = [0.35, 1.2]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
@@ -392,8 +392,8 @@ type = 'SimpleFigure'
 style = 'selected_icarus_mc'
 [[figure.artists]]
 type = 'SpineSpectra2D'
-xvariable = 'true_leading_proton_momentum_smearing_exiting'
-yvariable = 'reco_leading_proton_momentum_smearing_exiting'
+xvariable = 'true_leading_primary_proton_momentum_smearing_exiting'
+yvariable = 'reco_leading_primary_proton_momentum_smearing_exiting'
 xrange = [0.31, 1.2]
 yrange = [0.31, 1.2]
 draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
@@ -407,7 +407,7 @@ draw_kwargs = {show_option = 'smearing', draw_colorbar = true}
 # figsize = [5, 6]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'abs_leading_proton_momentum_residual'
+# variable = 'abs_leading_primary_proton_momentum_residual'
 # yrange = 1.3
 # draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
@@ -419,7 +419,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'abs_leading_proton_momentum_residual'
+variable = 'abs_leading_primary_proton_momentum_residual'
 yrange = 1.3
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
@@ -430,7 +430,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'abs_leading_proton_momentum_residual_contained'
+variable = 'abs_leading_primary_proton_momentum_residual_contained'
 yrange = 1.3
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
@@ -441,7 +441,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'abs_leading_proton_momentum_residual_exiting'
+variable = 'abs_leading_primary_proton_momentum_residual_exiting'
 yrange = 1.3
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_data' = false}
 
@@ -454,7 +454,7 @@ draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = tru
 # figsize = [5, 4]
 # [[figure.artists]]
 # type = 'SpineSpectra1D'
-# variable = 'reco_leading_proton_momentum'
+# variable = 'reco_leading_primary_proton_momentum'
 # yrange = [0.0, 0.45]
 # [figure.artists.draw_kwargs]
 # method = 'draw_systematics'
@@ -471,7 +471,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum'
+variable = 'reco_leading_primary_proton_momentum'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
@@ -487,7 +487,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum_contained'
+variable = 'reco_leading_primary_proton_momentum_contained'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'
@@ -503,7 +503,7 @@ style = 'selected_icarus_mc'
 figsize = [5.5, 4.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
-variable = 'reco_leading_proton_momentum_exiting'
+variable = 'reco_leading_primary_proton_momentum_exiting'
 yrange = [0.0, 0.45]
 [figure.artists.draw_kwargs]
 method = 'draw_systematics'

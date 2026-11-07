@@ -17,7 +17,7 @@ range = [-90, 90]
 nbins = 50
 xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.abs_dphiT_residual_exiting]
 key = "abs_dphiT_residual"
@@ -25,12 +25,12 @@ range = [-90, 90]
 nbins = 50
 xlabel = '$\delta_{\phi T,\mathrm{reco}} - \delta_{\phi T,\mathrm{true}}$ [degrees] (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
@@ -69,7 +69,7 @@ binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/bin
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.178390e20 # CORRECTED POT
@@ -80,7 +80,7 @@ abs_dphiT_residual = "reco_dphiT_deg - true_dphiT_deg"
 
 # DATA SAMPLE
 [samples.onbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -91,7 +91,7 @@ trees = ['selected']
 abs_dphiT_residual = "reco_dphiT_deg - reco_dphiT_deg"
 
 [samples.offbeam]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -103,7 +103,7 @@ abs_dphiT_residual = "reco_dphiT_deg - reco_dphiT_deg"
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_proton_momentum >= 0.35'
+presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11

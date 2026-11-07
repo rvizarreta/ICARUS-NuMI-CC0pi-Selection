@@ -20,8 +20,8 @@
 
 # --- Combined (Contained + Exiting) ---
 
-[variables.reco_leading_muon_polar_angle]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1.0, 1.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -29,27 +29,27 @@ custom_bins = [-1.0, -0.4499, -0.1052, 0.1233, 0.2845, 0.4052, 0.4976, 0.5715, 0
 xlabel = '$\cos(\theta_z)$ (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
-[variables.reco_leading_muon_polar_angle_residual]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_residual]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 200
 xlabel = 'Reco $\cos(\theta_z)$'
 
-[variables.true_leading_muon_polar_angle_residual]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_residual]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 200
 xlabel = 'True $\cos(\theta_z)$'
 
-[variables.reco_leading_muon_polar_angle_smearing]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_smearing]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'Reco $\cos(\theta_z)$ (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
-[variables.true_leading_muon_polar_angle_smearing]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_smearing]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'True $\cos(\theta_z)$ (Contained + Exiting $\mu^\pm$)'
@@ -57,80 +57,80 @@ xlabel_fontsize = 10
 
 # --- Contained ---
 
-[variables.reco_leading_muon_polar_angle_contained]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_contained]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1.0, 1.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [-1.0, -0.6957, -0.4735, -0.2842, -0.1254, 0.0085, 0.1331, 0.2395, 0.3397, 0.4265, 0.5067, 0.5838, 0.651, 0.7129, 0.7669, 0.8137, 0.8542, 0.8892, 0.9164, 0.9387, 0.9569, 0.9716, 0.983, 0.9922, 1.0]
 xlabel = '$\cos(\theta_z)$ (Contained $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.reco_leading_muon_polar_angle_residual_contained]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_residual_contained]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 200
 xlabel = 'Reco $\cos(\theta_z)$ (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.true_leading_muon_polar_angle_residual_contained]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_residual_contained]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 200
 xlabel = 'True $\cos(\theta_z)$ (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.reco_leading_muon_polar_angle_smearing_contained]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_smearing_contained]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'Reco $\cos(\theta_z)$ (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
-[variables.true_leading_muon_polar_angle_smearing_contained]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_smearing_contained]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'True $\cos(\theta_z)$ (Contained $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 1'
+mask = 'reco_leading_primary_muon_containment == 1'
 
 # --- Exiting ---
 
-[variables.reco_leading_muon_polar_angle_exiting]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_exiting]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1.0, 1.0]
 nbins = 24
 binning_scheme = 'custom_bins'
 custom_bins = [-1.0, -0.1414, 0.181, 0.3538, 0.4668, 0.5468, 0.6066, 0.6553, 0.6938, 0.7268, 0.7543, 0.7795, 0.8011, 0.8212, 0.8402, 0.8574, 0.8733, 0.8884, 0.9035, 0.9189, 0.9339, 0.9482, 0.9628, 0.9786, 1.0]
 xlabel = '$\cos(\theta_z)$ (Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.reco_leading_muon_polar_angle_residual_exiting]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_residual_exiting]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 200
 xlabel = 'Reco $\cos(\theta_z)$ (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.true_leading_muon_polar_angle_residual_exiting]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_residual_exiting]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 200
 xlabel = 'True $\cos(\theta_z)$ (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.reco_leading_muon_polar_angle_smearing_exiting]
-key = "reco_leading_muon_polar_angle_cos"
+[variables.reco_leading_primary_muon_polar_angle_smearing_exiting]
+key = "reco_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'Reco $\cos(\theta_z)$ (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
 
-[variables.true_leading_muon_polar_angle_smearing_exiting]
-key = "true_leading_muon_polar_angle_cos"
+[variables.true_leading_primary_muon_polar_angle_smearing_exiting]
+key = "true_leading_primary_muon_polar_angle_cos"
 range = [-1, 1]
 nbins = 10
 xlabel = 'True $\cos(\theta_z)$ (Exiting $\mu^\pm$)'
-mask = 'reco_leading_muon_containment == 0'
+mask = 'reco_leading_primary_muon_containment == 0'
