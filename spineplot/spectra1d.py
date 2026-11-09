@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,6 +8,58 @@ from style import Style
 from variable import Variable
 from systematic import Systematic
 from utilities import mark_pot, mark_preliminary, mark_containment, draw_error_boxes, fit_left_text_block, add_zoom_inset
+
+
+def _chi2_sf(x, k):
+    """Upper-tail chi2 probability Q(k/2, x/2) without scipy (series / continued fraction)."""
+    import math
+    a, z = k / 2.0, x / 2.0
+    if z <= 0:
+        return 1.0
+    lg = math.lgamma(a)
+    if z < a + 1:  # lower regularized gamma by series, then 1 - P
+        term = total = 1.0 / a
+        n = a
+        for _ in range(1000):
+            n += 1
+            term *= z / n
+            total += term
+            if abs(term) < abs(total) * 1e-14:
+                break
+        return 1.0 - total * math.exp(-z + a * math.log(z) - lg)
+    tiny = 1e-300  # Lentz continued fraction for Q
+    b = z + 1 - a
+    c = 1 / tiny
+    d = 1 / b
+    h = d
+    for i in range(1, 1000):
+        an = -i * (i - a)
+        b += 2
+        d = an * d + b
+        d = tiny if abs(d) < tiny else d
+        c = b + an / c
+        c = tiny if abs(c) < tiny else c
+        d = 1 / d
+        delta = d * c
+        h *= delta
+        if abs(delta - 1) < 1e-14:
+            break
+    return math.exp(-z + a * math.log(z) - lg) * h
+
+
+def format_pvalue(chi2_val, ndf):
+    """p = P(chi2_ndf >= chi2_val), the upper tail of the chi2 distribution."""
+    try:
+        from scipy.stats import chi2 as chi2_dist
+        p = float(chi2_dist.sf(chi2_val, ndf))
+    except ImportError:
+        p = _chi2_sf(chi2_val, ndf)
+    if p < 0.001:
+        return r'p < 0.001'
+    if p < 0.01:
+        return rf'p = {p:.3f}'
+    return rf'p = {p:.2f}'
+
 
 # Generator configuration quoted on the plots (technote, MC sample section).
 GENIE_VERSION = 'GENIE v3.04.00'
@@ -140,6 +193,31 @@ class SpineSpectra1D(SpineSpectra):
             self._binedges = {}
             self._onebincount = {}
         data, weights = sample.get_data([self._variable._key,], with_mask=self._variable.mask)
+
+        # Diagnostic: per-bin raw event counts and weights for every category,
+        # including categories that are not stacked. Enable with
+        #   SPINEPLOT_DIAG=<substring of the variable name>   e.g. reco_opening_angle
+        _diag = os.environ.get('SPINEPLOT_DIAG')
+        if _diag and _diag in self._variable._name:
+            _xr = self._variable._range if self._xrange is None else self._xrange
+            for _cat, _vals in data.items():
+                _v = np.asarray(_vals[0])
+                _w = np.asarray(weights[_cat])
+                _grp = self._categories.get(_cat, 'NOT STACKED')
+                if self._variable._binning_scheme == 'custom_bins' and _grp in self._variable._bin_edges:
+                    _bins = self._variable._bin_edges[_grp]
+                elif self._variable._binning_scheme == 'custom_bins' and len(self._variable._bin_edges):
+                    _bins = list(self._variable._bin_edges.values())[0]
+                else:
+                    _bins = self._variable._nbins
+                _n, _edges = np.histogram(_v, bins=_bins, range=None if np.ndim(_bins) else _xr)
+                _sw, _ = np.histogram(_v, bins=_edges, weights=_w)
+                print(f"[DIAG] {self._variable._name} sample={getattr(sample, '_name', '?')} category={_cat} group={_grp}  total raw={int(_n.sum())} sumw={_sw.sum():.2f}")
+                print("[DIAG]   bin  low      high     raw  sumw      mean_w")
+                for _i in range(len(_n)):
+                    _mw = _sw[_i] / _n[_i] if _n[_i] else 0.0
+                    print(f"[DIAG]   {_i:3d}  {_edges[_i]:7.3f}  {_edges[_i+1]:7.3f}  {int(_n[_i]):5d}  {_sw[_i]:9.2f}  {_mw:7.3f}")
+
         for category, values in data.items():
             values = values[0]
             if category not in self._categories.keys():
@@ -549,7 +627,7 @@ class SpineSpectra1D(SpineSpectra):
         prev_text = ppfx_text
         if draw_error and draw_data and getattr(self, '_chi2_result', None) is not None:
             chi2_val, ndf = self._chi2_result
-            prev_text = ax.annotate(rf'$\chi^2/\mathrm{{ndf}} = {chi2_val:.1f}/{ndf}$',
+            prev_text = ax.annotate(rf'$\chi^2/\mathrm{{ndf}} = {chi2_val:.1f}/{ndf}\ ({format_pvalue(chi2_val, ndf)})$',
                                     xy=(_edge, 0), xycoords=prev_text,
                                     xytext=(0, -2), textcoords='offset points',
                                     fontsize=legend_kw['fontsize'], color='black',
@@ -558,7 +636,7 @@ class SpineSpectra1D(SpineSpectra):
             block_texts.append(prev_text)
             if getattr(self, '_chi2_shape_result', None) is not None:
                 chi2_shape_val, ndf_shape = self._chi2_shape_result
-                prev_text = ax.annotate(rf'$\chi^2_{{\mathrm{{shape}}}}/\mathrm{{ndf}} = {chi2_shape_val:.1f}/{ndf_shape}$',
+                prev_text = ax.annotate(rf'$\chi^2_{{\mathrm{{shape}}}}/\mathrm{{ndf}} = {chi2_shape_val:.1f}/{ndf_shape}\ ({format_pvalue(chi2_shape_val, ndf_shape)})$',
                                         xy=(_edge, 0), xycoords=prev_text,
                                         xytext=(0, -1), textcoords='offset points',
                                         fontsize=legend_kw['fontsize'], color='black',

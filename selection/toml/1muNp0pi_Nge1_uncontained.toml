@@ -416,6 +416,14 @@ branch = [
     { name = "Q2",            type = "both" },
     { name = "W",             type = "both" },
 
+    # Longest-track direction, for the rock-vs-cosmic angular cut
+    # Cos(theta_LTYD) = start_dir_y / |start_dir| > 0.06 (applied to the rock sample
+    # in spineplot; same definition as in Preselection.ipynb). Added 2026-11-09.
+    { name = "start_dir_x", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
+    { name = "length",      type = "both_particle", selector = "longest_track" },
+
     # Leading MUON particle-level
     {name = "momentum",           type = "both_particle", selector = "leading_primary_muon"},
     {name = "mass",               type = "both_particle", selector = "leading_primary_muon"},
@@ -695,6 +703,14 @@ branch = [
     # Fundamental kinematic variables
     { name = "Q2",            type = "both" },
     { name = "W",             type = "both" },
+
+    # Longest-track direction, for the rock-vs-cosmic angular cut
+    # Cos(theta_LTYD) = start_dir_y / |start_dir| > 0.06 (applied to the rock sample
+    # in spineplot; same definition as in Preselection.ipynb). Added 2026-11-09.
+    { name = "start_dir_x", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_y", type = "both_particle", selector = "longest_track" },
+    { name = "start_dir_z", type = "both_particle", selector = "longest_track" },
+    { name = "length",      type = "both_particle", selector = "longest_track" },
 
     # Leading MUON particle-level
     {name = "momentum",           type = "both_particle", selector = "leading_primary_muon"},

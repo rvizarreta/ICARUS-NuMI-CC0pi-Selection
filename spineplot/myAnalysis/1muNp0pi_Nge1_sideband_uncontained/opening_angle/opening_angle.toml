@@ -59,10 +59,10 @@ mask = 'reco_leading_primary_muon_containment == 0'
 presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178390e20 # CORRECTED POT
+override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['sideband']
 print_sys = true
-systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
+#systematics = ['sideband_variationTree', 'sideband_multisigmaTree', 'sideband_NuMIfluxsimTree']
 
 [samples.mc.precompute]
 abs_opening_angle_residual = "reco_opening_angle_cos - true_opening_angle_cos"
@@ -84,32 +84,32 @@ seed = 0
 # GUNDAM G4 ParameterSets, binned in the true leading-proton momentum or leading-pion KE
 # (binning_file). Each event is assigned to a parameter bin and the covariance is propagated
 # to every plotted variable, as the fit does (external_covariance.py, parameter-space mode).
-[[samples.mc.external_covariances]]
-name = 'G4_proton'
-label = 'G4 proton'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
-condition = 'true_category != 9'
-
-[[samples.mc.external_covariances]]
-name = 'G4_piplus'
-label = 'G4 $\pi^+$'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
-condition = 'true_category != 9'
-
-[[samples.mc.external_covariances]]
-name = 'G4_piminus'
-label = 'G4 $\pi^-$'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
-condition = 'true_category != 9'
+#[[samples.mc.external_covariances]]
+#name = 'G4_proton'
+#label = 'G4 proton'
+#file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+#binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+#condition = 'true_category != 9'
+#
+#[[samples.mc.external_covariances]]
+#name = 'G4_piplus'
+#label = 'G4 $\pi^+$'
+#file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+#binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+#condition = 'true_category != 9'
+#
+#[[samples.mc.external_covariances]]
+#name = 'G4_piminus'
+#label = 'G4 $\pi^-$'
+#file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+#binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+#condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
 presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178390e20 # CORRECTED POT
+override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['sideband_nonmatched']
 
 [samples.mc_nonmatched.precompute]
@@ -147,7 +147,7 @@ presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
-trees = ['selected']
+trees = ['sideband']
 
 [samples.rock.precompute]
 abs_opening_angle_residual = "reco_opening_angle_cos - true_opening_angle_cos"

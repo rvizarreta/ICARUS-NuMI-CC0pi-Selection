@@ -35,7 +35,7 @@ presel = 'reco_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178390e20 # CORRECTED POT
+override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['sideband']
 print_sys = true
 # Comment this to avoid systematics when plotting (usually done for testing plots)
@@ -73,7 +73,7 @@ condition = 'true_category != 9'
 presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178390e20 # CORRECTED POT
+override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['sideband_nonmatched']
 
 [samples.mc_nonmatched.precompute]
@@ -108,7 +108,7 @@ presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
-trees = ['selected']
+trees = ['sideband']
 
 [samples.rock.precompute]
 abs_dphiT_residual = "reco_dphiT_deg - true_dphiT_deg"

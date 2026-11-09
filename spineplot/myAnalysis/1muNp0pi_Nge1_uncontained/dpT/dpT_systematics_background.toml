@@ -10,7 +10,7 @@ file = '../../../configurations/common/styles.toml'
 [samples.mc]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178390e20 # CORRECTED POT
+override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['selected']
 print_sys = true
 presel = '(reco_leading_primary_proton_momentum >= 0.35) and (true_category == 2 or true_category == 5 or true_category == 6 or true_category == 7 or true_category == 8 or true_category == 9 or true_category == 10)'
@@ -22,7 +22,7 @@ abs_dpT_residual = "reco_dpT_lp - true_dpT_lp_genie"
 [samples.mc_nonmatched]
 key = "full"
 exposure_type = "pot"
-override_exposure = 7.178390e20 # CORRECTED POT
+override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['selected_nonmatched']
 presel = '(reco_leading_primary_proton_momentum >= 0.35) and (true_category == 2 or true_category == 5 or true_category == 6 or true_category == 7 or true_category == 8 or true_category == 9 or true_category == 10)'
 
