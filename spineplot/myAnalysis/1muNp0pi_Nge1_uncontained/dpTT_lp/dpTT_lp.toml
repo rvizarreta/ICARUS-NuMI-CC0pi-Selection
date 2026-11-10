@@ -31,7 +31,6 @@ mask = 'reco_leading_primary_muon_containment == 0'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
@@ -77,14 +76,14 @@ label = 'G4 proton'
 file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
 binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
 condition = 'true_category != 9'
-
+#
 [[samples.mc.external_covariances]]
 name = 'G4_piplus'
 label = 'G4 $\pi^+$'
 file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
 binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
 condition = 'true_category != 9'
-
+#
 [[samples.mc.external_covariances]]
 name = 'G4_piminus'
 label = 'G4 $\pi^-$'
@@ -93,7 +92,6 @@ binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/bin
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.095833928884415e+20 # CORRECTED POT
@@ -104,7 +102,6 @@ abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
 
 # DATA SAMPLE
 [samples.onbeam]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -115,7 +112,6 @@ trees = ['selected']
 abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
 
 [samples.offbeam]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -127,11 +123,12 @@ abs_dpTT_lp_residual = "reco_dpTT_lp - reco_dpTT_lp"
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
 trees = ['selected']
+# Rock-vs-cosmic angular cut (Cos theta_LTYD), same definition as Preselection.ipynb
+presel = 'reco_longest_track_start_dir_y / sqrt(reco_longest_track_start_dir_x**2 + reco_longest_track_start_dir_y**2 + reco_longest_track_start_dir_z**2) > 0.06'
 
 [samples.rock.precompute]
 abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
@@ -214,7 +211,7 @@ figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpTT_lp'
-yrange = 1.8
+yrange = 3.2
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
@@ -226,7 +223,7 @@ figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpTT_lp_contained'
-yrange = 1.8
+yrange = 3.2
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
@@ -238,7 +235,7 @@ figsize = [5.5, 6.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpTT_lp_exiting'
-yrange = 1.8
+yrange = 3.2
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio'='True', 'per_bin_width' = true}
 
@@ -268,7 +265,7 @@ figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpTT_lp'
-yrange = 1.7
+yrange = 3.2
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
 
@@ -280,7 +277,7 @@ figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpTT_lp_contained'
-yrange = 1.7
+yrange = 3.2
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
 
@@ -293,7 +290,7 @@ figsize = [5.5, 5.0]
 [[figure.artists]]
 type = 'SpineSpectra1D'
 variable = 'reco_dpTT_lp_exiting'
-yrange = 1.7
+yrange = 3.2
 ytitle = 'Candidates / (MeV/c)'
 draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_data' = false, 'per_bin_width' = true}
 # [[figure]]

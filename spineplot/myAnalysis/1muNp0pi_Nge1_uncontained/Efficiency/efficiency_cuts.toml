@@ -12,7 +12,6 @@ path = "."
 file = '../../../configurations/common/styles.toml'
 
 [samples.signal]
-presel = 'true_leading_primary_proton_momentum >= 0.35'
 key = "nominal"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT

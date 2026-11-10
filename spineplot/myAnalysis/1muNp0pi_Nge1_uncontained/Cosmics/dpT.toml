@@ -7,7 +7,6 @@ file = '../../../configurations/common/styles.toml'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"
@@ -24,7 +23,6 @@ systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_Nu
 
 # DATA SAMPLE
 [samples.onbeam]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -32,7 +30,6 @@ override_category = -100
 trees = ['selected']
 
 [samples.offbeam]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -41,11 +38,12 @@ trees = ['selected']
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
 trees = ['selected']
+# Rock-vs-cosmic angular cut (Cos theta_LTYD), same definition as Preselection.ipynb
+presel = 'reco_longest_track_start_dir_y / sqrt(reco_longest_track_start_dir_x**2 + reco_longest_track_start_dir_y**2 + reco_longest_track_start_dir_z**2) > 0.06'
 
 [output]
 path = '.'

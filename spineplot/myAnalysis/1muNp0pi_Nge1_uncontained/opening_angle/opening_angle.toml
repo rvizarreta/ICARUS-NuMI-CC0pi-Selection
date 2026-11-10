@@ -55,7 +55,6 @@ mask = 'reco_leading_primary_muon_containment == 0'
 # SIMULATION SAMPLE
 [samples]
 [samples.mc]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.095833928884415e+20 # CORRECTED POT
@@ -117,7 +116,6 @@ binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/bin
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "full"
 exposure_type = "pot"
 override_exposure = 7.095833928884415e+20 # CORRECTED POT
@@ -129,7 +127,6 @@ theta_mup_residual_deg = "reco_opening_angle_deg - true_opening_angle_deg"
 
 # DATA SAMPLE
 [samples.onbeam]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
 #override_exposure = 2.36124e19 # CORRECTED POT
@@ -141,7 +138,6 @@ abs_opening_angle_residual = "reco_opening_angle_cos - reco_opening_angle_cos"
 theta_mup_residual_deg = "reco_opening_angle_deg - reco_opening_angle_deg"
 
 [samples.offbeam]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "offbeam"
 exposure_type = "livetime"
 override_category = 11
@@ -154,11 +150,12 @@ theta_mup_residual_deg = "reco_opening_angle_deg - reco_opening_angle_deg"
 
 # ROCK MUON SAMPLE (merged into 'Others' category with cosmics)
 [samples.rock]
-presel = 'reco_leading_primary_proton_momentum >= 0.35'
 key = "rock"
 exposure_type = "pot"
 override_category = 11
 trees = ['selected']
+# Rock-vs-cosmic angular cut (Cos theta_LTYD), same definition as Preselection.ipynb
+presel = 'reco_longest_track_start_dir_y / sqrt(reco_longest_track_start_dir_x**2 + reco_longest_track_start_dir_y**2 + reco_longest_track_start_dir_z**2) > 0.06'
 
 [samples.rock.precompute]
 abs_opening_angle_residual = "reco_opening_angle_cos - true_opening_angle_cos"

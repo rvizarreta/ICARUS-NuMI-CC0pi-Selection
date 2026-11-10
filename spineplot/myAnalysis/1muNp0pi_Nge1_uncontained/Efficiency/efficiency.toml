@@ -5,7 +5,6 @@ path = "."
 file = '../../../configurations/common/styles.toml'
 
 [samples.signal]
-presel = 'true_leading_primary_proton_momentum >= 0.35'
 #key = "nominal"
 key = "full"
 exposure_type = "pot"

@@ -1,70 +1,60 @@
-# leading_proton_momentum truth + smearing binning, RE-DERIVED 2026-11-04 WITH THE PRESELECTION
-# reco_leading_primary_proton_momentum >= 0.35 GeV/c (presel in the analysis TOMLs).
-# COMBINED SAMPLE ONLY is the one used for the cross section. The contained blocks were not updated in the
-# last step (see the end of this header).
+# leading_proton_momentum truth + smearing binning, COMBINED SAMPLE, re-derived 2026-11-09 with NO preselection on the
+# proton momentum (the range starts at 0.31 GeV/c, the lowest value in the selected sample).
+# COMBINED SAMPLE ONLY is the one used for the cross section. The contained and exiting blocks were not touched.
 #
-# COMBINED CRITERION: SIGNAL EVENTS ONLY (true_category 0, 1, 2; same basis as dpT, dalphaT and the other
-# variables), weighted by ppfx_cv_weight. Minimum f_diag per truth bin = 0.50, where f_diag is the fraction of
-# events generated in a truth bin (and passing the preselection) that are reconstructed in the same range.
+# CRITERION: SIGNAL EVENTS ONLY (true_category 0, 1, 2), weighted by ppfx_cv_weight. Minimum f_diag per truth bin
+# = 0.70 (raised from 0.50 on 2026-11-10, same as opening angle and dpTT_lp), where f_diag is the fraction of events generated in a truth bin that are reconstructed in the same range.
 # Proton reconstruction is a one-sided low bias, so the highest bin has the lowest f_diag. The last truth bin is
-# open-ended, [0.88, 1e7] (no separate overflow bin: it could never reach 0.5, it was ~0.18), and it is made
-# LARGER on purpose: it starts at 0.88 GeV/c, below where an equal-population split would put it (~0.92-0.97),
-# because f_diag of the last bin falls as its lower edge rises. That frees the bins below it to be finer:
-# 9 closed equal-population truth bins over [0.35, 0.88] (2120 signal events each at full POT 2.36124e20), plus
-# the open last bin (4582 events, 19% of the sample).
-# Each closed truth bin is split into two reco bins at the weighted median reco value inside it, clamped to
-# 15-85%; the last truth bin is a single reco bin (a median split there gives a sliver).
-# The display blocks (reco_/true_leading_primary_proton_momentum) stop at 1.2: their last bin is [0.88, 1.2], a truncated
-# view of the open-ended last bin of the smearing blocks.
+# open-ended, [0.7092, 1e7], and a single reco bin; the display blocks (reco_/true_leading_primary_proton_momentum)
+# stop at 1.2, so their last bin is the truncated view [0.7092, 1.2].
+# The closed bins above 0.4077 are the equal-population bins derived earlier (about 8.2-8.7% of the signal each).
+# At 0.70 the three highest bins of the 0.50 binning (f_diag 0.659, 0.599, 0.504) fail, so they were merged into one open-ended bin [0.7092, 1e7] (f_diag 0.723, 34% of the signal).
+# Without the 0.35 presel the old first bin [0.31, 0.4077] held 15% of the signal, so it was split at the median of
+# the true momentum inside it (0.366). Reco bins: each closed truth bin is split in two at the truth-bin midpoint,
+# not at the median reco value (which gave alternating narrow and wide bins)(equal-width halves, so adjacent reco bins have similar widths; reviewer request).
 #
-#   combined : 10 truth bins, 19 reco bins, 76047 signal events with true >= 0.35. Worst f_diag = 0.528
-#              truth edges [0.35, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 0.7814, 0.88, 10000000.0]
-#              f_diag per truth bin [0.958, 0.82, 0.796, 0.788, 0.767, 0.746, 0.705, 0.648, 0.589, 0.528]
-#              (an equal-population split into 6 bins with no larger last bin gave 0.475 at best)
-# The first bin is high partly because the preselection already removes events reconstructed below 0.35.
+#   combined : 9 truth bins, 17 reco bins. Worst f_diag = 0.714 (bin [0.65, 0.7092])
+#              truth edges [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 10000000.0]
+#              f_diag per truth bin [0.957, 0.733, 0.798, 0.788, 0.783, 0.768, 0.755, 0.714, 0.723]
+#              numbers from the selected tree of icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root (file dated 2026-11-07)
 #
-# CONTAINED (muon contained, p_mu < 0.8) and EXITING: NOT part of this update. The contained blocks still carry
-# the previous derivation (equal-population, minimum f_diag 0.45, 9 truth bins, last edge 0.9248); the exiting
-# blocks still start at 0.31.
-#
-# Widths are strongly non-uniform, so histograms of these blocks MUST be drawn with
-# per_bin_width = true or the shape is meaningless.
+# Widths are strongly non-uniform, so histograms of these blocks MUST be drawn with per_bin_width = true.
 [variables.reco_leading_primary_proton_momentum]
 key = "reco_leading_primary_proton_momentum"
-range = [0.35, 1.2]
-nbins = 19
+range = [0.31, 1.2]
+nbins = 17
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.3779, 0.4077, 0.4246, 0.4531, 0.4702, 0.4999, 0.5176, 0.5488, 0.5653, 0.5983, 0.6147, 0.65, 0.6658, 0.7092, 0.7236, 0.7814, 0.7962, 0.88, 1.2]
+custom_bins = [0.31, 0.338, 0.366, 0.3869, 0.4077, 0.4304, 0.4531, 0.4765, 0.4999, 0.5243, 0.5488, 0.5736, 0.5983, 0.6241, 0.65, 0.6796, 0.7092, 1.2]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.reco_leading_primary_proton_momentum_residual]
 key = "reco_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 200
 xlabel = 'Reco $p_p$ [GeV/c]'
 
 [variables.true_leading_primary_proton_momentum_residual]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 200
 xlabel = 'True $p_p$ [GeV/c]'
 
 [variables.reco_leading_primary_proton_momentum_smearing]
 key = "reco_leading_primary_proton_momentum"
-range = [0.35, 10000000.0]
-nbins = 19
+range = [0.31, 10000000.0]
+nbins = 17
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.3779, 0.4077, 0.4246, 0.4531, 0.4702, 0.4999, 0.5176, 0.5488, 0.5653, 0.5983, 0.6147, 0.65, 0.6658, 0.7092, 0.7236, 0.7814, 0.7962, 0.88, 10000000.0]
+custom_bins = [0.31, 0.338, 0.366, 0.3869, 0.4077, 0.4304, 0.4531, 0.4765, 0.4999, 0.5243, 0.5488, 0.5736, 0.5983, 0.6241, 0.65, 0.6796, 0.7092, 10000000.0]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.true_leading_primary_proton_momentum_smearing]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 10000000.0]
-nbins = 10
+range = [0.31, 10000000.0]
+nbins = 9
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 0.7814, 0.88, 10000000.0]
+custom_bins = [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 10000000.0]
 xlabel = 'True $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -77,51 +67,51 @@ xlabel_fontsize = 10
 
 [variables.reco_leading_primary_proton_momentum_contained]
 key = "reco_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 17
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.3764, 0.4049, 0.4229, 0.4516, 0.4703, 0.5022, 0.5236, 0.5563, 0.5763, 0.6161, 0.6375, 0.6822, 0.7039, 0.7724, 0.7953, 0.9248, 1.2]
+custom_bins = [0.31, 0.3764, 0.4049, 0.4229, 0.4516, 0.4703, 0.5022, 0.5236, 0.5563, 0.5763, 0.6161, 0.6375, 0.6822, 0.7039, 0.7724, 0.7953, 0.9248, 1.2]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
 mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.reco_leading_primary_proton_momentum_residual_contained]
 key = "reco_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 200
 xlabel = 'Reco $p_p$ [GeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
 mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.true_leading_primary_proton_momentum_residual_contained]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 200
 xlabel = 'True $p_p$ [GeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
 mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.reco_leading_primary_proton_momentum_smearing_contained]
 key = "reco_leading_primary_proton_momentum"
-range = [0.35, 10000000.0]
+range = [0.31, 10000000.0]
 nbins = 17
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.3764, 0.4049, 0.4229, 0.4516, 0.4703, 0.5022, 0.5236, 0.5563, 0.5763, 0.6161, 0.6375, 0.6822, 0.7039, 0.7724, 0.7953, 0.9248, 10000000.0]
+custom_bins = [0.31, 0.3764, 0.4049, 0.4229, 0.4516, 0.4703, 0.5022, 0.5236, 0.5563, 0.5763, 0.6161, 0.6375, 0.6822, 0.7039, 0.7724, 0.7953, 0.9248, 10000000.0]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
 mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.true_leading_primary_proton_momentum_smearing_contained]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 10000000.0]
+range = [0.31, 10000000.0]
 nbins = 9
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.4049, 0.4516, 0.5022, 0.5563, 0.6161, 0.6822, 0.7724, 0.9248, 10000000.0]
+custom_bins = [0.31, 0.4049, 0.4516, 0.5022, 0.5563, 0.6161, 0.6822, 0.7724, 0.9248, 10000000.0]
 xlabel = 'True $p_p$ [GeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
 mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
 [variables.true_leading_primary_proton_momentum_contained]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 9
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.4049, 0.4516, 0.5022, 0.5563, 0.6161, 0.6822, 0.7724, 0.9248, 1.2]
+custom_bins = [0.31, 0.4049, 0.4516, 0.5022, 0.5563, 0.6161, 0.6822, 0.7724, 0.9248, 1.2]
 xlabel = 'True $p_p$ [GeV/c] (Contained $\mu^\pm$, $p_\mu < 0.8$ GeV/c)'
 mask = '(reco_leading_primary_muon_containment == 1) & (reco_leading_primary_muon_momentum < 0.8)'
 
@@ -177,10 +167,10 @@ mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_leading_primary_proton_momentum]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 1.2]
-nbins = 10
+range = [0.31, 1.2]
+nbins = 9
 binning_scheme = 'custom_bins'
-custom_bins = [0.35, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 0.7814, 0.88, 1.2]
+custom_bins = [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 1.2]
 xlabel = 'True $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 

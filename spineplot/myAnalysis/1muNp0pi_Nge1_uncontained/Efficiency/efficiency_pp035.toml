@@ -10,7 +10,6 @@ key = "full"
 exposure_type = "pot"
 override_exposure = 2.36124e19 # CORRECTED POT
 trees = ["signal"]
-presel = "true_leading_primary_proton_momentum >= 0.35"   # new signal definition: leading proton p >= 0.35 GeV/c (was 0.31)
 
 [samples.signal.precompute]
 no_photons_cut = "reco_photon_multiplicity == 0"
@@ -44,13 +43,13 @@ xlabel = 'True $p_\mu$ [GeV/c]'
 
 [variables.true_leading_primary_proton_momentum]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 1.2]
+range = [0.31, 1.2]
 nbins = 15
 xlabel = 'True $p_p$ [GeV/c]'
 
 [variables.true_leading_primary_proton_momentum_zoom]
 key = "true_leading_primary_proton_momentum"
-range = [0.35, 1.0]
+range = [0.31, 1.0]
 nbins = 22
 xlabel = 'True $p_p$ [GeV/c]'
 
