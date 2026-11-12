@@ -40,9 +40,9 @@ def load_tables(path, good_runs=None, qc="all"):
         sel = np.ones(len(krec), bool)
     if good_runs is not None:
         sel &= np.isin(rec["run"], good_runs)
-    t, pot = rec["time"][sel], rec["pot"][sel]
+    t, pot, run = rec["time"][sel], rec["pot"][sel], rec["run"][sel]
     o = np.argsort(t)
-    return ev, t[o], pot[o]
+    return ev, t[o], pot[o], run[o]
 
 
 def candidate_times(ev, cands):
@@ -95,6 +95,35 @@ def plots(res, label, out):
     fig.tight_layout(); fig.savefig(out, dpi=150); plt.close(fig)
 
 
+def per_run(run_spill, pot, cand_run, label, out):
+    """Supplementary check: candidates per POT in each run, compared with the constant average rate.
+    Chi2 = sum (N - rate*POT)^2 / (rate*POT) over runs, ndf = nruns - 1 (Poisson, approximate when
+    the expected count in a run is small)."""
+    from scipy.stats import chi2 as chi2d
+    runs = np.unique(run_spill)
+    pot_r = np.array([pot[run_spill == r].sum() for r in runs])
+    n_r = np.array([(cand_run == r).sum() for r in runs])
+    n_out = int((~np.isin(cand_run, runs)).sum())
+    keep = pot_r > 0
+    runs, pot_r, n_r = runs[keep], pot_r[keep], n_r[keep]
+    rate = n_r.sum() / pot_r.sum()
+    exp = rate * pot_r
+    chi2 = ((n_r - exp) ** 2 / exp).sum(); ndf = len(runs) - 1
+    p = chi2d.sf(chi2, ndf)
+    print("   per-run: %d runs, mean rate %.3e cand/POT, chi2/ndf = %.1f/%d, p = %.3f "
+          "(runs with expected <5 events: %d; candidates in runs with no POT: %d)"
+          % (len(runs), rate, chi2, ndf, p, (exp < 5).sum(), n_out))
+    import matplotlib; matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(9, 4))
+    ax.errorbar(runs, n_r / pot_r / rate, yerr=np.sqrt(np.maximum(n_r, 1)) / pot_r / rate, fmt="o", ms=3)
+    ax.axhline(1, color="k", lw=1)
+    ax.set_xlabel("run"); ax.set_ylabel("(candidates / POT) / mean")
+    ax.set_title("%s: chi2/ndf = %.1f/%d, p = %.3f" % (label, chi2, ndf, p))
+    fig.tight_layout(); fig.savefig(out, dpi=150); plt.close(fig)
+    return dict(chi2=chi2, ndf=ndf, p=p)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tables", required=True)
@@ -107,7 +136,7 @@ def main():
     good = None
     if o.good_runs:
         good = np.array([int(l) for l in open(o.good_runs) if l.strip() and not l.startswith("#")])
-    ev, t_spill, pot = load_tables(o.tables, good, o.qc)
+    ev, t_spill, pot, run_spill = load_tables(o.tables, good, o.qc)
     print("POT CDF (qc=%s): %d spills, %.4e POT" % (o.qc, len(t_spill), pot.sum()))
     for spec in o.cands:
         name, path = spec.split("=")
@@ -116,6 +145,7 @@ def main():
         print("%-12s Ncand=%d  Neff=%.1f  D=%.4f  p(kstwo)=%.3f  p(toys)=%.3f" %
               (name, res["n_cand"], res["n_eff"], res["D"], res["p_scipy"], res["p_toys"]))
         plots(res, name, "ks_%s%s.png" % (name, o.tag))
+        per_run(run_spill, pot, c["run"], name, "perrun_%s%s.png" % (name, o.tag))
 
 
 if __name__ == "__main__":
