@@ -1,19 +1,18 @@
-# leading_pion_length binning, SIGNAL SELECTION (2026-11-03). RECO HISTOGRAMS ONLY.
+# leading_pion_length binning, SIGNAL SELECTION (re-derived 2026-11-11). RECO HISTOGRAMS ONLY.
 #
-# COMBINED SAMPLE, SHORT PIONS ONLY: the axis is zoomed to [0, 10] cm on purpose. In the signal selection
-# only 5451 MC entries (6.0% of events) have a leading pion candidate at all, 1707 events
-# at full POT (2.36124e20), median length 3.1 cm. We only care about short pions here, so the range stops
-# at 10 cm: 78.0% of those candidates (1331 events at full POT) lie inside it. The rest are
-# not shown.
+# COMBINED SAMPLE, SHORT PIONS ONLY. With the leading_primary selector only 1971 of 91579 selected MC entries (2.2%)
+# have a leading primary pion candidate, 624 events at 2.36124e20 POT (MC POT 7.095834e20). Their lengths run from
+# 0.30 to 2.86 cm (median 1.80 cm), so the axis is [0, 3] cm and every candidate is inside it. The earlier version of
+# this file (10 bins over [0, 10] cm) was derived with the old leading selector, which had 5451 entries and a median
+# of 3.1 cm; above 3 cm that axis is now empty.
 #
-# CRITERION: EQUAL-POPULATION with a 0.5 cm MINIMUM WIDTH, 10 bins over [0, 10] cm, weighted by
-# ppfx_cv_weight, edges rounded to 0.1 cm. Per-bin counts at full POT: 53-210.
-# Why not finer: the reco lengths are quantised (about 90 distinct values below 3 cm, ~29 entries each), so
-# an earlier 19-bin version with 0.14-0.29 cm wide bins sat on those spikes and its bin heights alternated
-# (54-88 events) even though it was nominally equal-population. 0.5 cm spans several quantisation steps.
-# Widths span 0.5-2.7 cm.
-# The sideband uses its own binning (leading_pion_length_sideband.toml), which is fine for this variable.
+# CRITERION: EQUAL-POPULATION, 6 bins over [0, 3] cm, weighted by ppfx_cv_weight, edges rounded to 0.1 cm.
+# Per-bin counts at 2.36124e20 POT: 86, 125, 104, 107, 97, 104. Widths span 0.3-0.9 cm.
+# Why not finer: the reco lengths are quantised (148 distinct values below 3 cm, about 13 entries each), so from
+# 8 bins up the bin heights alternate (51 next to 93, 50 next to 86) even though the bins are nominally equal-population.
+# The earlier 0.5 cm minimum width would allow only 4 bins on this axis, which is too coarse.
 #
+# The sideband uses its own binning (leading_pion_length_sideband.toml), which is not changed here.
 # Contained and exiting blocks below are NOT re-derived: they keep the old sideband-derived edges and
 # are not usable in the signal selection (the exiting split holds ~1 event per bin).
 #
@@ -21,12 +20,12 @@
 
 [variables.reco_leading_primary_pion_length]
 key = "reco_leading_primary_pion_length"
-range = [0.0, 10.0]
-nbins = 10
+range = [0.0, 3.0]
+nbins = 6
 binning_scheme = 'custom_bins'
-custom_bins = [0.0, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.4, 7.3, 10.0]
-#range = [0, 10]
-#nbins = 10
+custom_bins = [0.0, 0.9, 1.4, 1.8, 2.2, 2.5, 3.0]
+#range = [0, 3]
+#nbins = 6
 xlabel = '$L_\pi$ [cm] (Contained + Exiting $\pi^\pm$)'
 xlabel_fontsize = 10
 

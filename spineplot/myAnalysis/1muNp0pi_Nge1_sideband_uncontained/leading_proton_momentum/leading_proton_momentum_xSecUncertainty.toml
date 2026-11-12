@@ -20,7 +20,7 @@ pattern = 'GENIEReWeight'
 truth_tree = 'signal'
 truth_systematics_tree = 'signal_multisigmaTree'
 truth_variable = 'true_leading_primary_proton_momentum'
-truth_bin_edges = [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 10000000.0]
+truth_bin_edges = [0.31, 0.3765, 0.4431, 0.5096, 0.5761, 0.6427, 0.7092, 10000000.0]
 signal_mask = '(true_category == 0 or true_category == 1 or true_category == 2)'
 nuniv = 1000
 seed = 0

@@ -194,7 +194,7 @@ type = 'SpineSpectra1D'
 variable = 'reco_leading_primary_pion_length'
 yrange = 1.8
 ytitle = 'Candidates / cm'
-draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true}
+draw_kwargs = {'show_component_number' = true, 'show_component_percentage' = true, 'invert_stack_order' = true, 'normalize' = false, 'draw_error' = 'MC_total_G4', 'draw_ratio' = 'True', 'per_bin_width' = true, 'text_side' = 'left'}
 
 [[figure]]
 name = 'leading_pion_length_contained'

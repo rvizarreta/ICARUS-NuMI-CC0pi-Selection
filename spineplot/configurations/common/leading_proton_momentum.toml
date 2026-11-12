@@ -5,26 +5,29 @@
 # CRITERION: SIGNAL EVENTS ONLY (true_category 0, 1, 2), weighted by ppfx_cv_weight. Minimum f_diag per truth bin
 # = 0.70 (raised from 0.50 on 2026-11-10, same as opening angle and dpTT_lp), where f_diag is the fraction of events generated in a truth bin that are reconstructed in the same range.
 # Proton reconstruction is a one-sided low bias, so the highest bin has the lowest f_diag. The last truth bin is
-# open-ended, [0.7092, 1e7], and a single reco bin; the display blocks (reco_/true_leading_primary_proton_momentum)
-# stop at 1.2, so their last bin is the truncated view [0.7092, 1.2].
-# The closed bins above 0.4077 are the equal-population bins derived earlier (about 8.2-8.7% of the signal each).
-# At 0.70 the three highest bins of the 0.50 binning (f_diag 0.659, 0.599, 0.504) fail, so they were merged into one open-ended bin [0.7092, 1e7] (f_diag 0.723, 34% of the signal).
-# Without the 0.35 presel the old first bin [0.31, 0.4077] held 15% of the signal, so it was split at the median of
-# the true momentum inside it (0.366). Reco bins: each closed truth bin is split in two at the truth-bin midpoint,
-# not at the median reco value (which gave alternating narrow and wide bins)(equal-width halves, so adjacent reco bins have similar widths; reviewer request).
+# open-ended, [0.7092, 1e7], and is split in two reco bins at 0.83 (the reco median of the signal inside it, so the 2:1 nesting
+# holds for every truth bin); the display blocks (reco_/true_leading_primary_proton_momentum)
+# stop at 1.2, so their last bin is the truncated view [0.83, 1.2].
+# TRUTH BINS: six equal-width closed bins over [0.31, 0.7092] (width 0.0665) plus the open-ended bin [0.7092, 1e7]. Re-derived
+# 2026-11-11: the reco momentum has a dip at 0.39-0.40, a spike at 0.40-0.41 and jumps of about 15% on the 0.01 GeV/c scale
+# (the true momentum is smooth), so with the earlier equal-population bins (reco widths 0.021-0.030) the histogram went up
+# and down from bin to bin (6 significant reversals); with these bins there is 1. The upper edge 0.7092 is where the open-ended
+# last bin still has f_diag >= 0.70 (0.723). Closed truth bins hold 2413-3252 signal events at 2.36124e20 POT, the open bin 8773.
+# Reco bins: each closed truth bin is split in two at its midpoint, so every closed reco bin below 0.7092 is 0.0332 wide;
+# the open-ended last truth bin is split at 0.83.
 #
-#   combined : 9 truth bins, 17 reco bins. Worst f_diag = 0.714 (bin [0.65, 0.7092])
-#              truth edges [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 10000000.0]
-#              f_diag per truth bin [0.957, 0.733, 0.798, 0.788, 0.783, 0.768, 0.755, 0.714, 0.723]
+#   combined : 7 truth bins, 14 reco bins. Worst f_diag = 0.723 (last bin)
+#              truth edges [0.31, 0.3765, 0.4431, 0.5096, 0.5761, 0.6427, 0.7092, 10000000.0]
+#              f_diag per truth bin [0.967, 0.831, 0.833, 0.816, 0.769, 0.731, 0.723]
 #              numbers from the selected tree of icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx.root (file dated 2026-11-07)
 #
 # Widths are strongly non-uniform, so histograms of these blocks MUST be drawn with per_bin_width = true.
 [variables.reco_leading_primary_proton_momentum]
 key = "reco_leading_primary_proton_momentum"
 range = [0.31, 1.2]
-nbins = 17
+nbins = 14
 binning_scheme = 'custom_bins'
-custom_bins = [0.31, 0.338, 0.366, 0.3869, 0.4077, 0.4304, 0.4531, 0.4765, 0.4999, 0.5243, 0.5488, 0.5736, 0.5983, 0.6241, 0.65, 0.6796, 0.7092, 1.2]
+custom_bins = [0.31, 0.3432, 0.3765, 0.4098, 0.4431, 0.4764, 0.5096, 0.5429, 0.5761, 0.6094, 0.6427, 0.676, 0.7092, 0.83, 1.2]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -43,18 +46,18 @@ xlabel = 'True $p_p$ [GeV/c]'
 [variables.reco_leading_primary_proton_momentum_smearing]
 key = "reco_leading_primary_proton_momentum"
 range = [0.31, 10000000.0]
-nbins = 17
+nbins = 14
 binning_scheme = 'custom_bins'
-custom_bins = [0.31, 0.338, 0.366, 0.3869, 0.4077, 0.4304, 0.4531, 0.4765, 0.4999, 0.5243, 0.5488, 0.5736, 0.5983, 0.6241, 0.65, 0.6796, 0.7092, 10000000.0]
+custom_bins = [0.31, 0.3432, 0.3765, 0.4098, 0.4431, 0.4764, 0.5096, 0.5429, 0.5761, 0.6094, 0.6427, 0.676, 0.7092, 0.83, 10000000.0]
 xlabel = 'Reco $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
 [variables.true_leading_primary_proton_momentum_smearing]
 key = "true_leading_primary_proton_momentum"
 range = [0.31, 10000000.0]
-nbins = 9
+nbins = 7
 binning_scheme = 'custom_bins'
-custom_bins = [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 10000000.0]
+custom_bins = [0.31, 0.3765, 0.4431, 0.5096, 0.5761, 0.6427, 0.7092, 10000000.0]
 xlabel = 'True $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
@@ -168,9 +171,9 @@ mask = 'reco_leading_primary_muon_containment == 0'
 [variables.true_leading_primary_proton_momentum]
 key = "true_leading_primary_proton_momentum"
 range = [0.31, 1.2]
-nbins = 9
+nbins = 7
 binning_scheme = 'custom_bins'
-custom_bins = [0.31, 0.366, 0.4077, 0.4531, 0.4999, 0.5488, 0.5983, 0.65, 0.7092, 1.2]
+custom_bins = [0.31, 0.3765, 0.4431, 0.5096, 0.5761, 0.6427, 0.7092, 1.2]
 xlabel = 'True $p_p$ [GeV/c] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 
