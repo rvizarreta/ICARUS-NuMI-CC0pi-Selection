@@ -25,7 +25,7 @@ def key(run, sub, evt):
     return (run.astype(np.int64) << 40) | (sub.astype(np.int64) << 26) | evt.astype(np.int64)
 
 
-def load_tables(path, good_runs=None):
+def load_tables(path, good_runs=None, qc="all"):
     d = np.load(path)
     ev = {k[3:]: d[k] for k in d.files if k.startswith("ev_")}
     rec = {k[4:]: d[k] for k in d.files if k.startswith("rec_")}
@@ -34,7 +34,10 @@ def load_tables(path, good_runs=None):
             raise SystemExit("tables have no 'time' column: add spill time to make_qc_lists.py first")
     kev = key(ev["run"], ev["subrun"], ev["evt"])
     krec = key(rec["run"], rec["subrun"], rec["event"])
-    sel = (rec["flags"] == 15) & np.isin(krec, kev)
+    if qc == "all":      # all four QC cuts and event in the SPINE list
+        sel = (rec["flags"] == 15) & np.isin(krec, kev)
+    else:                # qc == "none": every spill record, no quality cuts (first pass)
+        sel = np.ones(len(krec), bool)
     if good_runs is not None:
         sel &= np.isin(rec["run"], good_runs)
     t, pot = rec["time"][sel], rec["pot"][sel]
@@ -97,19 +100,22 @@ def main():
     ap.add_argument("--tables", required=True)
     ap.add_argument("--cands", nargs="+", required=True, help="name=file.npz, one per selection")
     ap.add_argument("--good-runs"); ap.add_argument("--toys", type=int, default=1000)
+    ap.add_argument("--qc", choices=["all", "none"], default="all",
+                    help="all = spills passing the 4 QC cuts (final); none = uncut POT (first pass)")
+    ap.add_argument("--tag", default="", help="suffix for output figure names")
     o = ap.parse_args()
     good = None
     if o.good_runs:
         good = np.array([int(l) for l in open(o.good_runs) if l.strip() and not l.startswith("#")])
-    ev, t_spill, pot = load_tables(o.tables, good)
-    print("POT CDF: %d spills, %.4e POT" % (len(t_spill), pot.sum()))
+    ev, t_spill, pot = load_tables(o.tables, good, o.qc)
+    print("POT CDF (qc=%s): %d spills, %.4e POT" % (o.qc, len(t_spill), pot.sum()))
     for spec in o.cands:
         name, path = spec.split("=")
         c = np.load(path)
         res = ks_test(t_spill, pot, candidate_times(ev, c), o.toys)
         print("%-12s Ncand=%d  Neff=%.1f  D=%.4f  p(kstwo)=%.3f  p(toys)=%.3f" %
               (name, res["n_cand"], res["n_eff"], res["D"], res["p_scipy"], res["p_toys"]))
-        plots(res, name, "ks_%s.png" % name)
+        plots(res, name, "ks_%s%s.png" % (name, o.tag))
 
 
 if __name__ == "__main__":
