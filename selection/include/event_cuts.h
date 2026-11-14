@@ -13,6 +13,7 @@
 #include "sbnanaobj/StandardRecord/Proxy/SRProxy.h"
 #include "numi_spill_quality.h"
 
+#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
@@ -155,7 +156,8 @@ namespace ecut
      * position at the target (stringent mode, run dependent) and beam width.
      * The cuts are evaluated in this order and the beam width is only
      * evaluated if the first three pass. It is applied on ICARUS data only;
-     * off-beam events (no NuMI spill, noffbeamnumi > 0) pass.
+     * off-beam events (unfilled spillnumiinfo, TRTGTD NaN, and empty
+     * numiinfo) pass.
      * @tparam T the top-level record.
      * @param sr the StandardRecord to apply the cut on.
      * @return true if the spill passes all four cuts or the event is MC,
@@ -166,11 +168,14 @@ namespace ecut
     {
         if(sr.hdr.det == caf::kICARUS && !sr.hdr.ismc)
         {
-            // Off-beam events have no NuMI spill (empty numiinfo) and are
-            // counted through noffbeamnumi (see the livetime in framework.cc),
-            // so there is no beam to check: they pass. Every other data
-            // event is cut, including an on-beam event with no spill record.
-            if(sr.hdr.numiinfo.size() == 0 && sr.hdr.noffbeamnumi > 0) return true;
+            // Off-beam events have no NuMI spill record: spillnumiinfo is left
+            // unfilled (TRTGTD is NaN) and numiinfo is empty, so there is no
+            // beam to check and they pass. On-beam events always carry a
+            // filled spillnumiinfo and go through the four cuts below.
+            // (noffbeamnumi cannot be used for this: it is only set on about
+            // one event per off-beam file.)
+            const double trtgtd = sr.hdr.spillnumiinfo.TRTGTD;
+            if(std::isnan(trtgtd) && sr.hdr.numiinfo.size() == 0) return true;
 
             // The beam width needs two ROOT fits and this cut is evaluated
             // once per tree (and per exposure tree) for every event, so the
