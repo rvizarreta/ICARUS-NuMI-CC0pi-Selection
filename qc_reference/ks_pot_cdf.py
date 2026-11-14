@@ -21,6 +21,13 @@ import numpy as np
 from scipy.stats import kstwo
 
 
+T_MIN, T_MAX = 1.5e9, 2.0e9   # valid Unix times (2017-2033); anything else is an unset/garbage time
+
+
+def valid_time(t):
+    return np.isfinite(t) & (t > T_MIN) & (t < T_MAX)
+
+
 def key(run, sub, evt):
     return (run.astype(np.int64) << 40) | (sub.astype(np.int64) << 26) | evt.astype(np.int64)
 
@@ -40,20 +47,36 @@ def load_tables(path, good_runs=None, qc="all"):
         sel = np.ones(len(krec), bool)
     if good_runs is not None:
         sel &= np.isin(rec["run"], good_runs)
+    n_bad = int((sel & ~valid_time(rec["time"])).sum())
+    if n_bad:
+        print("WARNING: dropping %d spill records with an invalid time (outside %.1e-%.1e)" % (n_bad, T_MIN, T_MAX))
+    sel &= valid_time(rec["time"])
     t, pot, run = rec["time"][sel], rec["pot"][sel], rec["run"][sel]
     o = np.argsort(t)
     return ev, t[o], pot[o], run[o]
 
 
-def candidate_times(ev, cands):
+def candidate_times(ev, cands, drop_failed=False):
     """look the candidate (run, subrun, evt) up in the event table to get the trigger-spill time"""
     kev = key(ev["run"], ev["subrun"], ev["evt"])
     kc = key(cands["run"], cands["subrun"], cands["evt"])
     idx = {k: i for i, k in enumerate(kev)}
     miss = [k for k in kc if k not in idx]
     if miss:
-        print("WARNING: %d candidates not found in event table (dropped)" % len(miss))
-    return np.sort(np.array([ev["time"][idx[k]] for k in kc if k in idx]))
+        print("   WARNING: %d candidates not found in event table (dropped)" % len(miss))
+    rows = np.array([idx[k] for k in kc if k in idx], dtype=np.int64)
+    t = ev["time"][rows]
+    ok = valid_time(t)
+    n_time = int((~ok).sum())
+    n_fail = 0
+    if drop_failed:   # also drop candidates whose triggering spill fails the QC cuts
+        f = ev["flags"][rows] != 15
+        n_fail = int((ok & f).sum()); ok &= ~f
+    if n_time or n_fail:
+        print("   candidates dropped: %d with invalid spill time, %d failing QC (kept %d of %d)"
+              % (n_time, n_fail, ok.sum(), len(kc)))
+    o = np.argsort(t[ok])
+    return t[ok][o], ev["run"][rows][ok][o]
 
 
 def ks_test(t_spill, pot, t_cand, n_toys=1000, seed=1):
@@ -132,6 +155,8 @@ def main():
     ap.add_argument("--qc", choices=["all", "none"], default="all",
                     help="all = spills passing the 4 QC cuts (final); none = uncut POT (first pass)")
     ap.add_argument("--tag", default="", help="suffix for output figure names")
+    ap.add_argument("--drop-failed-cands", action="store_true",
+                    help="drop candidates whose triggering spill fails the QC cuts (use with --qc all)")
     o = ap.parse_args()
     good = None
     if o.good_runs:
@@ -141,11 +166,12 @@ def main():
     for spec in o.cands:
         name, path = spec.split("=")
         c = np.load(path)
-        res = ks_test(t_spill, pot, candidate_times(ev, c), o.toys)
+        t_cand, run_cand = candidate_times(ev, c, o.drop_failed_cands)
+        res = ks_test(t_spill, pot, t_cand, o.toys)
         print("%-12s Ncand=%d  Neff=%.1f  D=%.4f  p(kstwo)=%.3f  p(toys)=%.3f" %
               (name, res["n_cand"], res["n_eff"], res["D"], res["p_scipy"], res["p_toys"]))
         plots(res, name, "ks_%s%s.png" % (name, o.tag))
-        per_run(run_spill, pot, c["run"], name, "perrun_%s%s.png" % (name, o.tag))
+        per_run(run_spill, pot, run_cand, name, "perrun_%s%s.png" % (name, o.tag))
 
 
 if __name__ == "__main__":
