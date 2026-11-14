@@ -18,6 +18,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 
 #include "framework.h"
@@ -171,11 +172,23 @@ namespace ecut
             // event is cut, including an on-beam event with no spill record.
             if(sr.hdr.numiinfo.size() == 0 && sr.hdr.noffbeamnumi > 0) return true;
 
+            // The beam width needs two ROOT fits and this cut is evaluated
+            // once per tree (and per exposure tree) for every event, so the
+            // result is cached per event.
+            static std::unordered_map<uint64_t, bool> cache;
+            const uint64_t key = ((uint64_t)sr.hdr.run << 44) ^
+                                 ((uint64_t)sr.hdr.subrun << 24) ^
+                                 (uint64_t)sr.hdr.evt;
+            const auto hit = cache.find(key);
+            if(hit != cache.end()) return hit->second;
+
             const auto & info = sr.hdr.spillnumiinfo;
-            return numi_qc::POTInSpillCut(info, true) &&
-                   numi_qc::HornCurrentCut(info, true) &&
-                   numi_qc::BeamPositionAtTargetCut(info, sr.hdr.run, true) &&
-                   numi_qc::BeamWidthCut(info);
+            const bool pass = numi_qc::POTInSpillCut(info, true) &&
+                              numi_qc::HornCurrentCut(info, true) &&
+                              numi_qc::BeamPositionAtTargetCut(info, sr.hdr.run, true) &&
+                              numi_qc::BeamWidthCut(info);
+            cache.emplace(key, pass);
+            return pass;
         }
         else
         {
