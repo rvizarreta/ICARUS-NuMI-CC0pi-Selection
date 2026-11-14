@@ -11,7 +11,7 @@
 #ifndef EVENT_CUTS_H
 #define EVENT_CUTS_H
 #include "sbnanaobj/StandardRecord/Proxy/SRProxy.h"
-#include "sbnana/SBNAna/Vars/BeamExposureVars.h"
+#include "numi_spill_quality.h"
 
 #include <cstdint>
 #include <cstdlib>
@@ -172,10 +172,10 @@ namespace ecut
             if(sr.hdr.numiinfo.size() == 0 && sr.hdr.noffbeamnumi > 0) return true;
 
             const auto & info = sr.hdr.spillnumiinfo;
-            return ana::POTInSpillCut(info, true) &&
-                   ana::HornCurrentCut(info, true) &&
-                   ana::BeamPositionAtTargetCut(info, sr.hdr.run, true) &&
-                   ana::BeamWidthCut(info);
+            return numi_qc::POTInSpillCut(info, true) &&
+                   numi_qc::HornCurrentCut(info, true) &&
+                   numi_qc::BeamPositionAtTargetCut(info, sr.hdr.run, true) &&
+                   numi_qc::BeamWidthCut(info);
         }
         else
         {
