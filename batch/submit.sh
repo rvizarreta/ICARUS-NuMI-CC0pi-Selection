@@ -63,6 +63,7 @@ ups active
 # Build medulla
 git clone https://github.com/rvizarreta/ICARUS-NuMI-CC0pi-Selection.git
 cd ICARUS-NuMI-CC0pi-Selection
+REPO_ROOT=$PWD
 git checkout feature/rvizarr_cc0pi_selection
 cd medulla
 mkdir build && cd build
@@ -89,6 +90,14 @@ fi
 sqlite3 -noheader -cmd ".mode list" project.db "SELECT cfg FROM configuration WHERE jobid=${JOBID};" > job_config.toml
 # Copy the systematics TOML file
 ifdh cp --cp_maxretries=0 --web_timeout=100 $PROJECT/systematics.toml systematics.toml
+
+# Trigger quality bad-event list (read by trigger_quality_cut). It is committed
+# in the repository, so it comes with the clone.
+export MEDULLA_TRIGGER_BAD_LIST=$REPO_ROOT/qc_reference/trigger_bad_events.txt
+if [ ! -s "$MEDULLA_TRIGGER_BAD_LIST" ]; then
+    echo "FATAL: missing $MEDULLA_TRIGGER_BAD_LIST" >&2
+    exit 1
+fi
 
 # Copy the input data file(s)
 mkdir data

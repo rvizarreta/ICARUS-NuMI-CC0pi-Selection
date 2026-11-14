@@ -11,6 +11,14 @@
 #ifndef EVENT_CUTS_H
 #define EVENT_CUTS_H
 #include "sbnanaobj/StandardRecord/Proxy/SRProxy.h"
+#include "sbnana/SBNAna/Vars/BeamExposureVars.h"
+
+#include <cstdint>
+#include <cstdlib>
+#include <fstream>
+#include <stdexcept>
+#include <string>
+#include <unordered_set>
 
 #include "framework.h"
 #include "utilities.h"
@@ -136,6 +144,94 @@ namespace ecut
         }
     }
     REGISTER_CUT_SCOPE(RegistrationScope::Event, data_quality_cut, data_quality_cut);
+
+    /**
+     * @brief Apply the NuMI beam quality cuts to the spill that triggered the
+     * event.
+     * @details This cut rejects events whose own spill (hdr.spillnumiinfo)
+     * fails any of the four NuMI spill quality cuts of the mesonless analysis
+     * (Howard, SBNAna BeamExposureVars): spill POT, horn current, beam
+     * position at the target (stringent mode, run dependent) and beam width.
+     * The cuts are evaluated in this order and the beam width is only
+     * evaluated if the first three pass. It is applied on ICARUS data only;
+     * off-beam events (no NuMI spill, noffbeamnumi > 0) pass.
+     * @tparam T the top-level record.
+     * @param sr the StandardRecord to apply the cut on.
+     * @return true if the spill passes all four cuts or the event is MC,
+     * false otherwise.
+     */
+    template<typename T>
+    bool numi_beam_quality_cut(const T & sr)
+    {
+        if(sr.hdr.det == caf::kICARUS && !sr.hdr.ismc)
+        {
+            // Off-beam events have no NuMI spill (empty numiinfo) and are
+            // counted through noffbeamnumi (see the livetime in framework.cc),
+            // so there is no beam to check: they pass. Every other data
+            // event is cut, including an on-beam event with no spill record.
+            if(sr.hdr.numiinfo.size() == 0 && sr.hdr.noffbeamnumi > 0) return true;
+
+            const auto & info = sr.hdr.spillnumiinfo;
+            return ana::POTInSpillCut(info, true) &&
+                   ana::HornCurrentCut(info, true) &&
+                   ana::BeamPositionAtTargetCut(info, sr.hdr.run, true) &&
+                   ana::BeamWidthCut(info);
+        }
+        else
+        {
+            return true;
+        }
+    }
+    REGISTER_CUT_SCOPE(RegistrationScope::Event, numi_beam_quality_cut, numi_beam_quality_cut);
+
+    /**
+     * @brief Apply the trigger quality cut using an external list of bad
+     * events.
+     * @details The trigger quality check compares, for consecutive majority
+     * gates, the change of the NuMI gate counter with the number of IFBeam
+     * spills between the gates. This needs the trigger database and the
+     * IFBeam spill times, which are not in the flat CAFs, so the check is done
+     * outside of medulla and written to a text file with one "run event" pair
+     * per line for every event that fails it. This cut rejects the events in
+     * that file. The file path is read from the environment variable
+     * MEDULLA_TRIGGER_BAD_LIST. It is applied on ICARUS data only, and the cut
+     * throws if the variable is not set or the file cannot be read, so it can
+     * never pass silently without the list. The join is on (run, event),
+     * never on subrun.
+     * @tparam T the top-level record.
+     * @param sr the StandardRecord to apply the cut on.
+     * @return true if the event is not in the bad-event list or is MC, false
+     * otherwise.
+     */
+    template<typename T>
+    bool trigger_quality_cut(const T & sr)
+    {
+        if(sr.hdr.det == caf::kICARUS && !sr.hdr.ismc)
+        {
+            static const std::unordered_set<uint64_t> bad_events = []() {
+                const char * path = std::getenv("MEDULLA_TRIGGER_BAD_LIST");
+                if(path == nullptr)
+                    throw std::runtime_error("trigger_quality_cut: MEDULLA_TRIGGER_BAD_LIST is not set.");
+                std::ifstream in(path);
+                if(!in)
+                    throw std::runtime_error(std::string("trigger_quality_cut: cannot read ") + path);
+                std::unordered_set<uint64_t> events;
+                uint64_t run, evt;
+                while(in >> run >> evt)
+                    events.insert((run << 32) | evt);
+                if(events.empty())
+                    throw std::runtime_error(std::string("trigger_quality_cut: no events read from ") + path);
+                return events;
+            }();
+            const uint64_t key = ((uint64_t)sr.hdr.run << 32) | (uint64_t)sr.hdr.evt;
+            return bad_events.find(key) == bad_events.end();
+        }
+        else
+        {
+            return true;
+        }
+    }
+    REGISTER_CUT_SCOPE(RegistrationScope::Event, trigger_quality_cut, trigger_quality_cut);
 
     /**
      * @brief Cut that implements trigger emulation on simulated data.

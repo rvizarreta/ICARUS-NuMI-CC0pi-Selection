@@ -238,6 +238,8 @@ cut = [
     { name = "fiducial_cut",          type = "reco" },
     { name = "trigger_emulation_cut", type = "event", decrements_exposure = false },
     { name = "data_quality_cut",      type = "event", decrements_exposure = true  },
+    { name = "numi_beam_quality_cut",   type = "event", decrements_exposure = true  },
+    { name = "trigger_quality_cut",   type = "event", decrements_exposure = true  },
 ]
 branch = [
     # Interaction-level
@@ -359,6 +361,8 @@ cut = [
     { name = "exiting_muon_energy_cut",   type = "reco",  parameters = [ "@muon_mcs_ke_max", "@muon_threshold" ] },
     { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
     { name = "data_quality_cut",          type = "event", decrements_exposure = true  },
+    { name = "numi_beam_quality_cut",    type = "event", decrements_exposure = true  },
+    { name = "trigger_quality_cut",    type = "event", decrements_exposure = true  },
 ]
 branch = [
     # Interaction-level truth/reco branches
@@ -647,6 +651,8 @@ cut = [
     { name = "exiting_muon_energy_cut",   type = "reco",  parameters = [ "@muon_mcs_ke_max", "@muon_threshold" ] },
     { name = "trigger_emulation_cut",     type = "event", decrements_exposure = false },
     { name = "data_quality_cut",          type = "event", decrements_exposure = true },
+    { name = "numi_beam_quality_cut",    type = "event", decrements_exposure = true },
+    { name = "trigger_quality_cut",    type = "event", decrements_exposure = true },
 ]
 branch = [
     # Interaction-level truth/reco branches
