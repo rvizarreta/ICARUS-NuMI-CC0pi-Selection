@@ -24,7 +24,7 @@ trees = ['sideband_nonmatched']
 [samples.onbeam]
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
-#override_exposure = 2.36124e19 # CORRECTED POT
+override_exposure = 2.16076e20 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 
@@ -95,7 +95,7 @@ pattern = '\bvar09\b'
 [analysis]
 ordinate_sample = 'onbeam'
 category_branch = 'true_category'
-category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [11], [-100]]
+category_assignment = [[0], [1], [2], [4], [5,6,7], [8], [3], [9,11], [-100]]
 category_labels = ['$\nu_\mu$CC0$\pi$ QE', '$\nu_\mu$CC0$\pi$ 2p2h', '$\nu_\mu$CC0$\pi$ $\pi$ abs.', '$\nu_\mu$CC1$\pi^\pm$', 'Other CC', '$\nu$ NC', '$\nu_\mu$CC0$\pi$ OOFV', 'Others', 'Data']
 category_colors = ['#003087', '#4A7CC7', '#9DC3F7', '#FF8C00', '#FFD100', '#CC0000', '#2E8B57', '#FF69B4', 'black']
 category_types = ['histogram', 'histogram', 'histogram', 'histogram', 'histogram','histogram','histogram', 'histogram', 'scatter']
