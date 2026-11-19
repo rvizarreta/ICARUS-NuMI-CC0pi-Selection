@@ -608,6 +608,130 @@ namespace vars
     REGISTER_VAR_SCOPE(RegistrationScope::Both, dalphaT_deg, dalphaT_deg);
 
     /**
+     * @brief Variable for the delta phi_T transverse kinematic imbalance
+     * using only the leading charged lepton and the leading proton.
+     * @details Same definition as vars::dphiT, but the hadronic system is the
+     * leading proton alone (the proton with the highest kinetic energy among
+     * the final state signal protons) instead of the sum of all final state
+     * hadrons. The leading charged lepton is chosen in the same way as in
+     * vars::dpT_lp. The neutrino direction is handled by
+     * utilities::transverse_momentum.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to apply the variable on.
+     * @return the angle in radians between the transverse momentum of the
+     * leading lepton and (minus) the transverse momentum of the leading
+     * proton, or PLACEHOLDERVALUE if there is no lepton or no proton.
+     */
+    template<class T>
+    double dphiT_lp(const T & obj)
+    {
+        utilities::three_vector l_pt = {0, 0, 0};
+        utilities::three_vector p_pt = {0, 0, 0};
+        double l_ke(0), p_ke(0);
+        for(const auto & p : obj.particles)
+        {
+            if(pcuts::final_state_signal(p))
+            {
+                // Find the leading charged lepton and proton
+                if((pvars::pid(p) == pvars::kElectron || pvars::pid(p) == pvars::kMuon) && pvars::ke(p) > l_ke)
+                {
+                    l_ke = pvars::ke(p);
+                    utilities::three_vector momentum = {pvars::px(p), pvars::py(p), pvars::pz(p)};
+                    utilities::three_vector vtx = {pvars::start_x(p), pvars::start_y(p), pvars::start_z(p)};
+                    l_pt = utilities::transverse_momentum(momentum, vtx);
+                }
+                else if(pvars::pid(p) == pvars::kProton && pvars::ke(p) > p_ke)
+                {
+                    p_ke = pvars::ke(p);
+                    utilities::three_vector momentum = {pvars::px(p), pvars::py(p), pvars::pz(p)};
+                    utilities::three_vector vtx = {pvars::start_x(p), pvars::start_y(p), pvars::start_z(p)};
+                    p_pt = utilities::transverse_momentum(momentum, vtx);
+                }
+            }
+        }
+        if(l_ke == 0 || p_ke == 0)
+            return PLACEHOLDERVALUE;
+        else
+            return std::acos(-1 * utilities::dot_product(l_pt, p_pt) / (utilities::magnitude(l_pt) * utilities::magnitude(p_pt)));
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::Both, dphiT_lp, dphiT_lp);
+
+    /**
+     * @brief Variable for delta phi_T (leading lepton and leading proton) in
+     * degrees.
+     * @details Same as dphiT_lp but converted to degrees for easier
+     * interpretation.
+     */
+    template<class T>
+    double dphiT_lp_deg(const T & obj)
+    {
+        return dphiT_lp(obj) * 180.0 / M_PI;
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::Both, dphiT_lp_deg, dphiT_lp_deg);
+
+    /**
+     * @brief Variable for the delta alpha_T transverse kinematic imbalance
+     * using only the leading charged lepton and the leading proton.
+     * @details Same definition as vars::dalphaT, but the imbalance vector is
+     * dpT = pT(leading lepton) + pT(leading proton) (the vector whose magnitude
+     * is vars::dpT_lp) instead of the sum over all final state particles.
+     * @tparam T the type of interaction (true or reco).
+     * @param obj the interaction to apply the variable on.
+     * @return the angle in radians between the transverse momentum of the
+     * leading lepton and (minus) the imbalance vector, or PLACEHOLDERVALUE if
+     * there is no lepton or no proton.
+     */
+    template<class T>
+    double dalphaT_lp(const T & obj)
+    {
+        utilities::three_vector l_pt = {0, 0, 0};
+        utilities::three_vector p_pt = {0, 0, 0};
+        double l_ke(0), p_ke(0);
+        for(const auto & p : obj.particles)
+        {
+            if(pcuts::final_state_signal(p))
+            {
+                // Find the leading charged lepton and proton
+                if((pvars::pid(p) == pvars::kElectron || pvars::pid(p) == pvars::kMuon) && pvars::ke(p) > l_ke)
+                {
+                    l_ke = pvars::ke(p);
+                    utilities::three_vector momentum = {pvars::px(p), pvars::py(p), pvars::pz(p)};
+                    utilities::three_vector vtx = {pvars::start_x(p), pvars::start_y(p), pvars::start_z(p)};
+                    l_pt = utilities::transverse_momentum(momentum, vtx);
+                }
+                else if(pvars::pid(p) == pvars::kProton && pvars::ke(p) > p_ke)
+                {
+                    p_ke = pvars::ke(p);
+                    utilities::three_vector momentum = {pvars::px(p), pvars::py(p), pvars::pz(p)};
+                    utilities::three_vector vtx = {pvars::start_x(p), pvars::start_y(p), pvars::start_z(p)};
+                    p_pt = utilities::transverse_momentum(momentum, vtx);
+                }
+            }
+        }
+        if(l_ke == 0 || p_ke == 0)
+            return PLACEHOLDERVALUE;
+        else
+        {
+            utilities::three_vector total_pt = utilities::add(l_pt, p_pt);
+            return std::acos(-1 * utilities::dot_product(total_pt, l_pt) / (utilities::magnitude(total_pt) * utilities::magnitude(l_pt)));
+        }
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::Both, dalphaT_lp, dalphaT_lp);
+
+    /**
+     * @brief Variable for delta alpha_T (leading lepton and leading proton) in
+     * degrees.
+     * @details Same as dalphaT_lp but converted to degrees for easier
+     * interpretation.
+     */
+    template<class T>
+    double dalphaT_lp_deg(const T & obj)
+    {
+        return dalphaT_lp(obj) * 180.0 / M_PI;
+    }
+    REGISTER_VAR_SCOPE(RegistrationScope::Both, dalphaT_lp_deg, dalphaT_lp_deg);
+
+    /**
      * @brief Variable for the missing longitudinal momentum of the
      * interaction.
      * @details The missing longitudinal momentum is calculated as the
