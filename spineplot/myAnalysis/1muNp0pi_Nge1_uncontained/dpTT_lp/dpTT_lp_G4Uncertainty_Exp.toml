@@ -60,7 +60,7 @@ abs_dpTT_lp_residual = "reco_dpTT_lp - true_dpTT_lp"
 [samples.onbeam]
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.16076e20 # CORRECTED POT
+override_exposure = 2.14332e20 # CORRECTED POT
 override_category = -100
 trees = ['selected']
 

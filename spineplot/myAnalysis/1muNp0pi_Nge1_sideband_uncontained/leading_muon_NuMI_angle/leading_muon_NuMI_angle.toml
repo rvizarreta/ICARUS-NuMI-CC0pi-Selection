@@ -118,7 +118,7 @@ theta_mu_residual_deg = "arccos(reco_leading_primary_muon_cos_theta_mu)*57.29577
 [samples.onbeam]
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.16076e20 # CORRECTED POT
+override_exposure = 2.14332e20 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 

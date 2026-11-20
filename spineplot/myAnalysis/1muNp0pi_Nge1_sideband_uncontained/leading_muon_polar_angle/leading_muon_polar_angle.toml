@@ -118,7 +118,7 @@ theta_mu_polar_residual_deg = "(reco_leading_primary_muon_polar_angle - true_lea
 [samples.onbeam]
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.16076e20 # CORRECTED POT
+override_exposure = 2.14332e20 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 

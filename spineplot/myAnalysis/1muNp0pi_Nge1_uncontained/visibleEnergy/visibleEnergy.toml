@@ -50,7 +50,7 @@ trees = ['selected_nonmatched']
 # DATA SAMPLE
 [samples.onbeam]
 key = "onbeam_unblinded_full"
-override_exposure = 2.16076e20 # CORRECTED POT
+override_exposure = 2.14332e20 # CORRECTED POT
 exposure_type = "pot"
 override_category = -100
 trees = ['selected']

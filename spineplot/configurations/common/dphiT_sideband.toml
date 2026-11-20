@@ -56,19 +56,19 @@
 ### dphiT - Combined ------------------------------------
 
 [variables.reco_dphiT_residual]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'Reco $\delta \phi_T$ [degrees]'
 
 [variables.true_dphiT_residual]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'True $\delta \phi_T$ [degrees]'
 
 [variables.reco_dphiT_smearing]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 14
 binning_scheme = 'custom_bins'
@@ -76,7 +76,7 @@ custom_bins = [0.0, 5.1, 11.0, 17.1, 26.0, 34.1, 46.0, 56.6, 71.0, 83.7, 100.0, 
 xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 
 [variables.true_dphiT_smearing]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 7
 binning_scheme = 'custom_bins'
@@ -84,7 +84,7 @@ custom_bins = [0.0, 11.0, 26.0, 46.0, 71.0, 100.0, 136.0, 180.0]
 xlabel = 'True $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 
 [variables.true_dphiT]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0.0, 180.0]
 nbins = 7
 binning_scheme = 'custom_bins'
@@ -92,7 +92,7 @@ custom_bins = [0.0, 11.0, 26.0, 46.0, 71.0, 100.0, 136.0, 180.0]
 xlabel = 'True $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 
 [variables.reco_dphiT]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0.0, 180.0]
 nbins = 14
 binning_scheme = 'custom_bins'
@@ -102,35 +102,35 @@ xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained + Exiting $\mu^\pm$)'
 ### dphiT - Contained ------------------------------------
 
 [variables.reco_dphiT_residual_contained]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'Reco $\delta \phi_T$ [degrees]'
 mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_dphiT_residual_contained]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'True $\delta \phi_T$ [degrees]'
 mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.reco_dphiT_smearing_contained]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 10
 xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
 mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_dphiT_smearing_contained]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 10
 xlabel = 'True $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
 mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.reco_dphiT_contained]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0.0, 180.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -139,7 +139,7 @@ xlabel = 'Reco $\delta \phi_T$ [degrees] (Contained $\mu^\pm$)'
 mask = 'reco_leading_primary_muon_containment == 1'
 
 [variables.true_dphiT_contained]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0.0, 180.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -150,35 +150,35 @@ mask = 'reco_leading_primary_muon_containment == 1'
 ### dphiT - Exiting ------------------------------------
 
 [variables.reco_dphiT_residual_exiting]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'Reco $\delta \phi_T$ [degrees]'
 mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_dphiT_residual_exiting]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 100
 xlabel = 'True $\delta \phi_T$ [degrees]'
 mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_dphiT_smearing_exiting]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 10
 xlabel = 'Reco $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_dphiT_smearing_exiting]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 10
 xlabel = 'True $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.reco_dphiT_exiting]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0.0, 180.0]
 nbins = 24
 binning_scheme = 'custom_bins'
@@ -187,7 +187,7 @@ xlabel = 'Reco $\delta \phi_T$ [degrees] (Exiting $\mu^\pm$)'
 mask = 'reco_leading_primary_muon_containment == 0'
 
 [variables.true_dphiT_exiting]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0.0, 180.0]
 nbins = 24
 binning_scheme = 'custom_bins'

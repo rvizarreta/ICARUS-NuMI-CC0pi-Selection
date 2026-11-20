@@ -61,37 +61,37 @@ xlabel = 'Reco $\delta p_T$ [MeV/c]'
 ### dphiT ------------------------------------
 
 [variables.reco_dphiT_residual]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 200
 xlabel = 'Reco $\delta \phi_T$ [degrees]'
 
 [variables.true_dphiT_residual]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 200
 xlabel = 'True $\delta \phi_T$ [degrees]'
 
 [variables.reco_dphiT_smearing]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 20
 xlabel = 'Reco $\delta \phi_T$ [degrees]'
 
 [variables.true_dphiT_smearing]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 10
 xlabel = 'True $\delta \phi_T$ [degrees]'
 
 [variables.true_dphiT]
-key = "true_dphiT_deg"
+key = "true_dphiT_lp_deg"
 range = [0,180]
 nbins = 25
 xlabel = 'True $\delta \phi_T$ [degrees]'
 
 [variables.reco_dphiT]
-key = "reco_dphiT_deg"
+key = "reco_dphiT_lp_deg"
 range = [0,180]
 nbins = 25
 xlabel = 'Reco $\delta \phi_T$ [degrees]'
@@ -99,37 +99,37 @@ xlabel = 'Reco $\delta \phi_T$ [degrees]'
 ### dalphaT ------------------------------------
 
 [variables.reco_dalphaT_residual]
-key = "reco_dalphaT_deg"
+key = "reco_dalphaT_lp_deg"
 range = [0,180]
 nbins = 200
 xlabel = 'Reco $\delta \alpha_T$ [degrees]'
 
 [variables.true_dalphaT_residual]
-key = "true_dalphaT_deg"
+key = "true_dalphaT_lp_deg"
 range = [0,180]
 nbins = 200
 xlabel = 'True $\delta \alpha_T$ [degrees]'
 
 [variables.reco_dalphaT_smearing]
-key = "reco_dalphaT_deg"
+key = "reco_dalphaT_lp_deg"
 range = [0,180]
 nbins = 20
 xlabel = 'Reco $\delta \alpha_T$ [degrees]'
 
 [variables.true_dalphaT_smearing]
-key = "true_dalphaT_deg"
+key = "true_dalphaT_lp_deg"
 range = [0,180]
 nbins = 10
 xlabel = 'True $\delta \alpha_T$ [degrees]'
 
 [variables.true_dalphaT]
-key = "true_dalphaT_deg"
+key = "true_dalphaT_lp_deg"
 range = [0,180]
 nbins = 25
 xlabel = 'True $\delta \alpha_T$ [degrees]'
 
 [variables.reco_dalphaT]
-key = "reco_dalphaT_deg"
+key = "reco_dalphaT_lp_deg"
 range = [0,180]
 nbins = 25
 xlabel = 'Reco $\delta \alpha_T$ [degrees]'

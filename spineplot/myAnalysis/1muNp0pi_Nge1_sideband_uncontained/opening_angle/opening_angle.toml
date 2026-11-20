@@ -118,7 +118,7 @@ theta_mup_residual_deg = "reco_opening_angle_deg - true_opening_angle_deg"
 [samples.onbeam]
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.16076e20 # CORRECTED POT
+override_exposure = 2.14332e20 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 

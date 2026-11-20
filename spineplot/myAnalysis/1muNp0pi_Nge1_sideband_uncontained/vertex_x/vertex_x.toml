@@ -89,7 +89,7 @@ abs_vertex_x_residual = "reco_vertex_x - true_vertex_x"
 [samples.onbeam]
 key = "onbeam_unblinded_full"
 exposure_type = "pot"
-override_exposure = 2.16076e20 # CORRECTED POT
+override_exposure = 2.14332e20 # CORRECTED POT
 override_category = -100
 trees = ['sideband']
 
