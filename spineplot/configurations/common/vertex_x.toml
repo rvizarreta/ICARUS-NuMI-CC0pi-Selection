@@ -14,8 +14,8 @@
 # RESULT: 21 truth bins (20 real + 1 gap), 41 reco bins (40 real + 1 gap). Each real truth bin is
 # split into two reco bins at the median reco x inside it (clamped to 15-85%), as for the other variables.
 # Worst-bin f_diag over the 20 real truth bins = 0.932; range 0.932-0.993.
-# reco_vertex_x (display histogram) uses the same edges as reco_vertex_x_smearing. The sideband
-# analysis includes this file directly (there is no vertex_x_sideband.toml), so it inherits them.
+# reco_vertex_x (display histogram) used the same edges as reco_vertex_x_smearing until 2026-11-24; it now
+# uses uniform 10 cm bins (see its block). The sideband analysis includes this file directly, so it inherits them.
 # Contained and exiting blocks below are unchanged (display only, 21 uniform 25 cm bins).
 #
 # RANGE: [-337, 337]. The data span only [-333.5, 333.5].
@@ -23,11 +23,16 @@
 # --- Combined (Contained + Exiting muons) ---
 
 [variables.reco_vertex_x]
+# DISPLAY ONLY (2026-11-24): uniform 10 cm bins centred on the cathodes. Edges at +-(210.215 +- 5 + 10k) cm,
+# i.e. +-85.215 ... +-335.215, 25 bins per cryostat plus the empty gap bin [-85.215, 85.215]; each cathode
+# (|x| = 210.215 cm) is the centre of the bin [205.215, 215.215].
+# Reach: data |x| in [86.94, 333.49]; corrected MC (vertex_x.toml, s(t) + h(u) correction) |x| in [85.23, 335.12].
+# The fit variable reco_vertex_x_smearing below keeps the 41-bin scheme.
 key = "reco_vertex_x"
-range = [-337.0, 337.0]
-nbins = 41
+range = [-335.215, 335.215]
+nbins = 51
 binning_scheme = 'custom_bins'
-custom_bins = [-337.0, -321.8, -312.0, -299.6, -287.0, -274.4, -262.0, -249.2, -237.0, -224.3, -212.0, -200.5, -187.0, -174.5, -162.0, -149.8, -137.0, -124.4, -112.0, -100.4, -87.0, 87.0, 100.2, 112.0, 124.7, 137.0, 149.6, 162.0, 174.7, 187.0, 200.6, 212.0, 224.4, 237.0, 249.7, 262.0, 274.5, 287.0, 299.1, 312.0, 321.9, 337.0]
+custom_bins = [-335.215, -325.215, -315.215, -305.215, -295.215, -285.215, -275.215, -265.215, -255.215, -245.215, -235.215, -225.215, -215.215, -205.215, -195.215, -185.215, -175.215, -165.215, -155.215, -145.215, -135.215, -125.215, -115.215, -105.215, -95.215, -85.215, 85.215, 95.215, 105.215, 115.215, 125.215, 135.215, 145.215, 155.215, 165.215, 175.215, 185.215, 195.215, 205.215, 215.215, 225.215, 235.215, 245.215, 255.215, 265.215, 275.215, 285.215, 295.215, 305.215, 315.215, 325.215, 335.215]
 xlabel = 'Reco Vertex X [cm] (Contained + Exiting $\mu^\pm$)'
 xlabel_fontsize = 10
 

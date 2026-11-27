@@ -38,6 +38,23 @@ print_sys = true
 systematics = ['selected_variationTree', 'selected_multisigmaTree', 'selected_NuMIfluxsimTree']
 
 [samples.mc.precompute]
+# MC-only cathode correction of the reco vertex x (2026-11-25). See data/cathode_study/.
+# PROBLEM: in MC the reconstructed x of the whole event is displaced toward the cathode (|x| = 210.215 cm) by
+#   s(t) = 0.327 + 0.1573 * reco_flash_time cm (median vs flash time, bulk vertices 5-145 cm from the cathode);
+#   reco events from the two TPCs overlap at the plane (spike). Data shows no shift (R = 0.968 +- 0.031 vs 1.194 in MC).
+# CORRECTION (MC only, no events removed):
+#   d_corr = d_reco + s(t) * sign(d_true),  d = |x| - 210.215 cm,  sign of x kept.
+#   sign(d_true) = +1 if the TRUE vertex is in the outer TPC, -1 if inner; if there is no true vertex in the same
+#   cryostat, the TPC where reco put it is used (186 rows of 91,579).                 -> vtx_x_outer_tpc
+#   Equivalent form used below: |x_corr| = |x_reco| + s(t) * (2 * vtx_x_outer_tpc - 1).
+# Checked against vertex_x_truthside_correction.py: identical (max difference 0).
+# Expected (stat-only, MC scaled to data shape): full range 4 cm bins chi2/ndf 164.9/119 -> 133.5/119; MC fraction within
+#   +-5 cm of the cathode 4.043 % vs data 3.979 +- 0.115 %. Residual: a dip at the plane with a bump on each side in 1 cm bins.
+# Data and off-beam are not corrected. Order matters: abs_vertex_x_residual uses the corrected x.
+vtx_x_shift = "0.327 + 0.1573 * reco_flash_time"
+vtx_x_true_same_cryo = "(true_vertex_x * reco_vertex_x) > 0"
+vtx_x_outer_tpc = "(vtx_x_true_same_cryo & (abs(true_vertex_x) > 210.215)) | (~vtx_x_true_same_cryo & (abs(reco_vertex_x) > 210.215))"
+reco_vertex_x = "reco_vertex_x / abs(reco_vertex_x) * (abs(reco_vertex_x) + vtx_x_shift * (2 * vtx_x_outer_tpc - 1))"
 abs_vertex_x_residual = "reco_vertex_x - true_vertex_x"
 
 # --- Interaction-dial systematic method -------------------------------
@@ -66,22 +83,28 @@ seed = 0
 [[samples.mc.external_covariances]]
 name = 'G4_proton'
 label = 'G4 proton'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+#file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root'
+#binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Proton.txt'
+binning_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_G4Proton.txt'
 condition = 'true_category != 9'
 
 [[samples.mc.external_covariances]]
 name = 'G4_piplus'
 label = 'G4 $\pi^+$'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+#file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus.root'
+#binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
+binning_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_G4Piplus.txt'
 condition = 'true_category != 9'
 
 [[samples.mc.external_covariances]]
 name = 'G4_piminus'
 label = 'G4 $\pi^-$'
-file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
-binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+#file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root'
+#binning_file = '/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
+binning_file = '/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/configs/binnings/binning_G4Piminus.txt'
 condition = 'true_category != 9'
 
 [samples.mc_nonmatched]
@@ -91,6 +114,11 @@ override_exposure = 7.095833928884415e+20 # CORRECTED POT
 trees = ['selected_nonmatched']
 
 [samples.mc_nonmatched.precompute]
+# Same MC-only correction as [samples.mc.precompute].
+vtx_x_shift = "0.327 + 0.1573 * reco_flash_time"
+vtx_x_true_same_cryo = "(true_vertex_x * reco_vertex_x) > 0"
+vtx_x_outer_tpc = "(vtx_x_true_same_cryo & (abs(true_vertex_x) > 210.215)) | (~vtx_x_true_same_cryo & (abs(reco_vertex_x) > 210.215))"
+reco_vertex_x = "reco_vertex_x / abs(reco_vertex_x) * (abs(reco_vertex_x) + vtx_x_shift * (2 * vtx_x_outer_tpc - 1))"
 abs_vertex_x_residual = "reco_vertex_x - true_vertex_x"
 
 # DATA SAMPLE
@@ -124,6 +152,11 @@ trees = ['selected']
 presel = 'reco_longest_track_start_dir_y / sqrt(reco_longest_track_start_dir_x**2 + reco_longest_track_start_dir_y**2 + reco_longest_track_start_dir_z**2) > 0.06'
 
 [samples.rock.precompute]
+# Same MC-only correction as [samples.mc.precompute].
+vtx_x_shift = "0.327 + 0.1573 * reco_flash_time"
+vtx_x_true_same_cryo = "(true_vertex_x * reco_vertex_x) > 0"
+vtx_x_outer_tpc = "(vtx_x_true_same_cryo & (abs(true_vertex_x) > 210.215)) | (~vtx_x_true_same_cryo & (abs(reco_vertex_x) > 210.215))"
+reco_vertex_x = "reco_vertex_x / abs(reco_vertex_x) * (abs(reco_vertex_x) + vtx_x_shift * (2 * vtx_x_outer_tpc - 1))"
 abs_vertex_x_residual = "reco_vertex_x - true_vertex_x"
 
 [output]

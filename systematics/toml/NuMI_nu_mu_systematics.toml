@@ -73,8 +73,20 @@ name = 'selected'
 action = 'copy'
 
 [[tree]]
+origin = 'events/onbeam/selected'
+destination = 'events/onbeam/'
+name = 'selected'
+action = 'copy'
+
+[[tree]]
 origin = 'events/onbeam_unblinded_full/sideband'
 destination = 'events/onbeam_unblinded_full/'
+name = 'sideband'
+action = 'copy'
+
+[[tree]]
+origin = 'events/onbeam/sideband'
+destination = 'events/onbeam/'
 name = 'sideband'
 action = 'copy'
 
